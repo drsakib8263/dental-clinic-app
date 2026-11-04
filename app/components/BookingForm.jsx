@@ -118,7 +118,7 @@ export default function BookingForm() {
         status: 'pending'
       }
 
-      const googleSheetUrl = "https://script.google.com/macros/s/AKfycby9BtsNiYnJ6q0PlQ7J8TUbSvHoz87WwHfX6tQiDtm04rpDKHRvH7luSpzZTFDWowhk/exec"
+      const googleSheetUrl = "https://script.google.com/macros/s/AKfycbxKO4XwBzxkdIuQdctz8tfp4vnJ_4c25ZZjAiCmaL86NVHHSCZwNJeavtBQeatwFVoF/exec"
       
       try {
         await fetch(googleSheetUrl, {
