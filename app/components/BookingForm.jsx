@@ -16,6 +16,9 @@ export default function BookingForm() {
   const [availableDates, setAvailableDates] = useState([])
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
+  
+  // মোবাইলে ও ডেস্কটপে পপ-আপ নোটিফিকেশন দেখানোর জন্য নতুন স্টেট
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   useEffect(() => {
     const dates = []
@@ -29,7 +32,7 @@ export default function BookingForm() {
       'Sat': 'শনিবার'
     }
     const monthsMap = {
-      'Jan': 'জানুয়ারি', 'Feb': 'ফেব্রুয়ারি', 'Mar': 'মার্চ', 'Apr': 'এপ্রিল',
+      'Jan': 'জানুয়ারি', 'Feb': 'ফেব্রুয়ারি', 'Mar': 'মার্চ', 'Apr': 'এপ্রিল',
       'May': 'মে', 'Jun': 'জুন', 'Jul': 'জুলাই', 'Aug': 'আগস্ট',
       'Sep': 'সেপ্টেম্বর', 'Oct': 'অক্টোবর', 'Nov': 'নভেম্বর', 'Dec': 'ডিসেম্বর'
     }
@@ -51,7 +54,7 @@ export default function BookingForm() {
         const bnMonth = monthsMap[enMonth] || enMonth
         const year = d.getFullYear()
         
-        // ডাটাবেজে সেভ হওয়ার জন্য ইংরেজি YYYY-MM-DD ফরম্যাট
+        // ডাটাবেজে সেভ হওয়ার জন্য ইংরেজি YYYY-MM-DD ফরম্যাট
         const value = d.toISOString().split('T')[0]
         
         // ড্রপডাউনে দেখানোর জন্য সম্পূর্ণ বাংলা ফরম্যাট
@@ -104,10 +107,8 @@ export default function BookingForm() {
 
       if (error) throw error
 
-      setMessage({
-        type: 'success',
-        text: 'আপনার অ্যাপয়েন্টমেন্ট আবেদনটি সফলভাবে জমা হয়েছে! শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।'
-      })
+      // সফলভাবে ডেটা সেভ হলে পপ-আপ ট্রিগার হবে
+      setShowSuccessModal(true)
 
       setFormData({
         patient_name: '',
@@ -121,7 +122,7 @@ export default function BookingForm() {
       console.error('Error submitting appointment:', error)
       setMessage({
         type: 'error',
-        text: 'বুকিং জমা দিতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।'
+        text: 'বুকিং জমা দিতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।'
       })
     } finally {
       setLoading(false)
@@ -129,7 +130,7 @@ export default function BookingForm() {
   }
 
   return (
-    <section className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-teal-100 max-w-2xl mx-auto my-8">
+    <section className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-teal-100 max-w-2xl mx-auto my-8 relative">
       <h2 className="text-2xl font-bold text-[#800000] text-center mb-2">
         অনলাইন অ্যাপয়েন্টমেন্ট বুকিং
       </h2>
@@ -168,7 +169,7 @@ export default function BookingForm() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              বয়স *
+              বয়স *
             </label>
             <input
               type="number"
@@ -211,10 +212,10 @@ export default function BookingForm() {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white text-gray-800"
           >
             <option value="">চিকিৎসার ধরণ নির্বাচন করুন</option>
-            <option value="দাঁতের নতুন সমস্যা নিয়ে দেখাব">দাঁতের নতুন সমস্যা নিয়ে দেখাব</option>
-            <option value="দাঁতের চিকিৎসা চলমান রয়েছে">দাঁতের চিকিৎসা চলমান রয়েছে</option>
-            <option value="ওষুধ খাওয়ার পরে আমার চিকিৎসা শুরু হবে">ওষুধ খাওয়ার পরে আমার চিকিৎসা শুরু হবে</option>
-            <option value="ওষুধ খাওয়ার পরেও ব্যথা কমছে না">ওষুধ খাওয়ার পরেও ব্যথা কমছে না</option>
+            <option value="দাঁতের নতুন সমস্যা নিয়ে দেখাব">দাঁতের নতুন সমস্যা নিয়ে দেখাব</option>
+            <option value="দাঁতের চিকিৎসা চলমান রয়েছে">দাঁতের চিকিৎসা চলমান রয়েছে</option>
+            <option value="ওষুধ খাওয়ার পরে আমার চিকিৎসা শুরু হবে">ওষুধ খাওয়ার পরে আমার চিকিৎসা শুরু হবে</option>
+            <option value="ওষুধ খাওয়ার পরেও ব্যথা কমছে না">ওষুধ খাওয়ার পরেও ব্যথা কমছে না</option>
           </select>
         </div>
 
@@ -241,7 +242,7 @@ export default function BookingForm() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              পছন্দের সময় (বিকেল ৪টা - রাত ৯টা) *
+              পছন্দের সময় (বিকেল ৪টা - রাত ৯টা) *
             </label>
             <select
               name="appointment_time"
@@ -250,7 +251,7 @@ export default function BookingForm() {
               required
               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white text-gray-800"
             >
-              <option value="">সময় নির্বাচন করুন</option>
+              <option value="">সময় নির্বাচন করুন</option>
               {availableTimes.map((time, index) => (
                 <option key={index} value={time}>
                   {time}
@@ -265,9 +266,32 @@ export default function BookingForm() {
           disabled={loading}
           className="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md disabled:opacity-50"
         >
-          {loading ? 'জমা দেওয়া হচ্ছে...' : 'অ্যাপয়েন্টমেন্ট বুক করুন'}
+          {loading ? 'জমা দেওয়া হচ্ছে...' : 'অ্যাপয়েন্টমেন্ট বুক করুন'}
         </button>
       </form>
+
+      {/* মোবাইল এবং ডেস্কটপের জন্য সুন্দর পপ-আপ (Modal) নোটিফিকেশন */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl text-center space-y-4 border border-teal-100 animate-in fade-in zoom-in duration-200">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-teal-100 text-teal-700 text-3xl font-bold shadow-inner">
+              ✓
+            </div>
+            <h3 className="text-xl font-bold text-teal-900">
+              অ্যাপয়েন্টমেন্ট সফল হয়েছে!
+            </h3>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              আপনার অ্যাপয়েন্টমেন্ট আবেদনটি সফলভাবে জমা হয়েছে। খুব শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।
+            </p>
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="w-full rounded-xl bg-teal-700 hover:bg-teal-800 py-3 font-semibold text-white transition shadow-md"
+            >
+              ঠিক আছে
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
