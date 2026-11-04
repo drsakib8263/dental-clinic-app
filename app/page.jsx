@@ -15,6 +15,9 @@ export default function Home() {
   const [message, setMessage] = useState({ type: '', text: '' })
   const [showTreatments, setShowTreatments] = useState(false)
 
+  // ডার্ক মোড স্টেট
+  const [darkMode, setDarkMode] = useState(false)
+
   const [formData, setFormData] = useState({
     patient_name: '',
     age: '',
@@ -23,6 +26,31 @@ export default function Home() {
     appointment_date: '',
     appointment_time: ''
   })
+
+  // পেজ লোড হওয়ার সময় লোকাল স্টোরেজ থেকে ডার্ক মোড সেট করা
+  useEffect(() => {
+    const isDark = localStorage.getItem('theme') === 'dark' ||
+      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    
+    setDarkMode(isDark)
+    if (isDark) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [])
+
+  const toggleTheme = () => {
+    if (darkMode) {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+      setDarkMode(false)
+    } else {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+      setDarkMode(true)
+    }
+  }
 
   const t = {
     bn: {
@@ -310,16 +338,26 @@ export default function Home() {
 
   return (
     <main 
-      className="min-h-screen text-slate-800 relative py-8 px-4 md:px-8 bg-cover bg-center bg-fixed"
+      className="min-h-screen text-slate-800 dark:text-slate-100 relative py-8 px-4 md:px-8 bg-cover bg-center bg-fixed transition-colors duration-200"
       style={{ backgroundImage: `url('/site-bg.jpeg')` }}
     >
       
-      {/* ল্যাঙ্গুয়েজ টগল বাটন */}
-      <div className="max-w-4xl mx-auto flex justify-end mb-4 relative z-50">
+      {/* ল্যাঙ্গুয়েজ ও ডার্ক মোড টগল বাটন বার */}
+      <div className="max-w-4xl mx-auto flex justify-end gap-3 mb-4 relative z-50">
+        {/* ডার্ক মোড টগল বাটন */}
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold px-4 py-2.5 rounded-full shadow-lg border-2 border-slate-300 dark:border-slate-600 transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
+        >
+          <span>{darkMode ? '☀️ লাইট মোড' : '🌙 ডার্ক মোড'}</span>
+        </button>
+
+        {/* ভাষা পরিবর্তনের বাটন */}
         <button
           type="button"
           onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-          className="bg-white hover:bg-sky-50 text-sky-900 font-extrabold px-5 py-2.5 rounded-full shadow-lg border-2 border-sky-500 transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
+          className="bg-white dark:bg-slate-800 hover:bg-sky-50 dark:hover:bg-slate-700 text-sky-900 dark:text-sky-300 font-extrabold px-5 py-2.5 rounded-full shadow-lg border-2 border-sky-500 transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
         >
           <span>🌐</span>
           <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
@@ -328,8 +366,8 @@ export default function Home() {
 
       <div className="max-w-4xl mx-auto space-y-10 relative z-10">
         
-        {/* ডক্টরের প্রোফাইল ও হেডার সেকশন (অসচ্ছ গ্লাস লুক সহ আপডেট করা হয়েছে) */}
-        <section className="p-6 md:p-8 rounded-3xl shadow-xl border border-gray-200/80 relative overflow-hidden bg-white/80 backdrop-blur-md">
+        {/* ডক্টরের প্রোফাইল ও হেডার সেকশন */}
+        <section className="p-6 md:p-8 rounded-3xl shadow-xl border border-gray-200/80 dark:border-slate-700 relative overflow-hidden bg-white/80 dark:bg-slate-900/85 backdrop-blur-md">
           <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
             <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden shadow-md border-2 border-sky-600 bg-white shrink-0">
               <img 
@@ -340,23 +378,23 @@ export default function Home() {
             </div>
 
             <div className="space-y-1.5 flex-1">
-              <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+              <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {t[lang].title}
               </h1>
               
-              <p className="text-sky-800 font-extrabold text-xl md:text-2xl pt-1">
+              <p className="text-sky-800 dark:text-sky-400 font-extrabold text-xl md:text-2xl pt-1">
                 {t[lang].subtitle}
               </p>
 
-              <p className="text-slate-800 font-bold text-base md:text-lg">
+              <p className="text-slate-800 dark:text-slate-200 font-bold text-base md:text-lg">
                 {t[lang].degree}
               </p>
 
-              <p className="text-slate-700 font-bold text-sm md:text-base">
+              <p className="text-slate-700 dark:text-slate-300 font-bold text-sm md:text-base">
                 {t[lang].bmdc}
               </p>
 
-              <p className="text-slate-800 font-bold text-base md:text-lg pt-2">
+              <p className="text-slate-800 dark:text-slate-200 font-bold text-base md:text-lg pt-2">
                 {t[lang].training}
               </p>
             </div>
@@ -364,14 +402,14 @@ export default function Home() {
         </section>
 
         {/* অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স */}
-        <section className="bg-sky-200 p-6 md:p-8 rounded-3xl shadow-xl border border-sky-300 max-w-2xl mx-auto relative z-10">
+        <section className="bg-sky-200 dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-xl border border-sky-300 dark:border-slate-700 max-w-2xl mx-auto relative z-10">
           <div className="flex items-center justify-center gap-2 mb-2">
             <span className="text-2xl">📅</span>
-            <h2 className="text-2xl font-bold text-slate-900 text-center">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white text-center">
               {t[lang].bookingTitle}
             </h2>
           </div>
-          <p className="text-rose-600 font-semibold text-center mb-6 text-sm">
+          <p className="text-rose-600 dark:text-rose-400 font-semibold text-center mb-6 text-sm">
             {t[lang].bookingSub}
           </p>
 
@@ -379,8 +417,8 @@ export default function Home() {
             <div
               className={`p-4 mb-6 rounded-xl text-sm font-medium ${
                 message.type === 'success'
-                  ? 'bg-teal-50 text-teal-800 border border-teal-200'
-                  : 'bg-red-50 text-red-800 border border-red-200'
+                  ? 'bg-teal-50 dark:bg-teal-950 text-teal-800 dark:text-teal-200 border border-teal-200 dark:border-teal-800'
+                  : 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800'
               }`}
             >
               {message.text}
@@ -390,7 +428,7 @@ export default function Home() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   {t[lang].patientName}
                 </label>
                 <input
@@ -400,12 +438,12 @@ export default function Home() {
                   onChange={handleChange}
                   required
                   placeholder={t[lang].patientNamePlaceholder}
-                  className="w-full px-4 py-2.5 bg-white border border-sky-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition text-slate-800"
+                  className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   {t[lang].ageLabel}
                 </label>
                 <input
@@ -417,13 +455,13 @@ export default function Home() {
                   min="1"
                   max="120"
                   placeholder={t[lang].agePlaceholder}
-                  className="w-full px-4 py-2.5 bg-white border border-sky-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition text-slate-800"
+                  className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 {t[lang].phoneLabel}
               </label>
               <input
@@ -433,13 +471,12 @@ export default function Home() {
                 onChange={handleChange}
                 required
                 placeholder="017XXXXXXXX"
-                className="w-full px-4 py-2.5 bg-white border border-sky-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition text-slate-800"
+                className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
               />
             </div>
 
-            {/* ১. সার্ভিসের ড্রপডাউন বক্স */}
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 {t[lang].serviceLabel}
               </label>
               <select
@@ -447,7 +484,7 @@ export default function Home() {
                 value={formData.service}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-white border-2 border-sky-400 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 font-medium cursor-pointer"
+                className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
               >
                 <option value="">{t[lang].serviceDefault}</option>
                 <option value={t[lang].service1}>{t[lang].service1}</option>
@@ -457,9 +494,8 @@ export default function Home() {
               </select>
             </div>
 
-            {/* ২. ক্যালেন্ডার ডেট পিকার */}
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 {t[lang].dateLabel}
               </label>
               <input
@@ -470,16 +506,15 @@ export default function Home() {
                 max={maxDate}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-white border-2 border-sky-400 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 font-medium cursor-pointer"
+                className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
               />
-              <p className="text-xs text-rose-600 mt-1.5 font-bold">
+              <p className="text-xs text-rose-600 dark:text-rose-400 mt-1.5 font-bold">
                 * ক্যালেন্ডার থেকে কেবল সামনের ৭টি সচল দিন (শুক্রবার বাদে) সিলেক্ট করা যাবে।
               </p>
             </div>
 
-            {/* ৩. সময়ের ড্রপডাউন বক্স */}
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 {t[lang].timeLabel}
               </label>
               <select
@@ -487,7 +522,7 @@ export default function Home() {
                 value={formData.appointment_time}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-white border-2 border-sky-400 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 font-medium cursor-pointer"
+                className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
               >
                 <option value="">{t[lang].timeDefault}</option>
                 {availableTimes.map((time, index) => (
@@ -508,15 +543,15 @@ export default function Home() {
           </form>
         </section>
 
-        {/* চেম্বারের চিকিৎসা ও খরচের তালিকা (টগল বক্স) */}
-        <section className="bg-white/95 backdrop-blur-md rounded-3xl shadow-xl border-2 border-sky-300 overflow-hidden">
+        {/* চেম্বারের চিকিৎসা ও খরচের তালিকা */}
+        <section className="bg-white/95 dark:bg-slate-900 backdrop-blur-md rounded-3xl shadow-xl border-2 border-sky-300 dark:border-slate-700 overflow-hidden">
           <div 
             onClick={() => setShowTreatments(!showTreatments)}
-            className="w-full p-5 md:p-6 flex items-center justify-between bg-sky-100 hover:bg-sky-200 transition cursor-pointer select-none"
+            className="w-full p-5 md:p-6 flex items-center justify-between bg-sky-100 dark:bg-slate-800 hover:bg-sky-200 dark:hover:bg-slate-700 transition cursor-pointer select-none"
           >
             <div className="flex items-center gap-3">
-              <span className="text-2xl p-2 bg-white rounded-2xl shadow-sm border border-sky-200">💰</span>
-              <h2 className="text-lg md:text-xl font-bold text-sky-950">
+              <span className="text-2xl p-2 bg-white dark:bg-slate-700 rounded-2xl shadow-sm border border-sky-200 dark:border-slate-600">💰</span>
+              <h2 className="text-lg md:text-xl font-bold text-sky-950 dark:text-white">
                 {t[lang].treatmentToggle}
               </h2>
             </div>
@@ -530,22 +565,22 @@ export default function Home() {
           </div>
 
           {showTreatments && (
-            <div className="p-4 md:p-6 border-t border-sky-200 bg-sky-50">
-              <div className="overflow-x-auto rounded-2xl border border-sky-200 bg-white shadow-inner">
+            <div className="p-4 md:p-6 border-t border-sky-200 dark:border-slate-800 bg-sky-50 dark:bg-slate-900/50">
+              <div className="overflow-x-auto rounded-2xl border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-inner">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-sky-200 text-sky-950 bg-sky-100">
+                    <tr className="border-b border-sky-200 dark:border-slate-700 text-sky-950 dark:text-white bg-sky-100 dark:bg-slate-700">
                       <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].treatmentName}</th>
                       <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].approxCost}</th>
                       <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].approxTime}</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-sky-100 text-xs md:text-sm">
+                  <tbody className="divide-y divide-sky-100 dark:divide-slate-700 text-xs md:text-sm">
                     {treatmentsList.map((item, index) => (
-                      <tr key={index} className="hover:bg-sky-50 transition">
-                        <td className="py-3 px-4 font-medium text-slate-800">{item.name}</td>
-                        <td className="py-3 px-4 font-semibold text-sky-700">{item.price}</td>
-                        <td className="py-3 px-4 text-slate-600">{item.time}</td>
+                      <tr key={index} className="hover:bg-sky-50 dark:hover:bg-slate-700/50 transition">
+                        <td className="py-3 px-4 font-medium text-slate-800 dark:text-slate-200">{item.name}</td>
+                        <td className="py-3 px-4 font-semibold text-sky-700 dark:text-sky-400">{item.price}</td>
+                        <td className="py-3 px-4 text-slate-600 dark:text-slate-400">{item.time}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -557,40 +592,40 @@ export default function Home() {
 
         {/* চেম্বারের সময়সূচি ও যোগাযোগ */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-lg border border-gray-200">
+          <div className="bg-white/90 dark:bg-slate-900 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-lg border border-gray-200 dark:border-slate-700">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-xl">🕒</span>
-              <h3 className="text-xl font-bold text-slate-900">{t[lang].scheduleTitle}</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t[lang].scheduleTitle}</h3>
             </div>
-            <ul className="space-y-3 text-slate-700 text-sm">
-              <li className="flex justify-between border-b border-slate-100 pb-2.5">
+            <ul className="space-y-3 text-slate-700 dark:text-slate-300 text-sm">
+              <li className="flex justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
                 <span className="font-medium">
                   <strong>{t[lang].scheduleDays}</strong>
                 </span>
-                <span className="text-sky-700 font-semibold">{t[lang].scheduleTime}</span>
+                <span className="text-sky-700 dark:text-sky-400 font-semibold">{t[lang].scheduleTime}</span>
               </li>
-              <li className="flex justify-between border-b border-slate-100 pb-2.5">
+              <li className="flex justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
                 <span className="font-medium">
                   <strong>{t[lang].scheduleFriday}</strong>
                 </span>
-                <span className="text-rose-600 font-semibold">{t[lang].scheduleClosed}</span>
+                <span className="text-rose-600 dark:text-rose-400 font-semibold">{t[lang].scheduleClosed}</span>
               </li>
             </ul>
           </div>
 
-          <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-lg border border-gray-200">
+          <div className="bg-white/90 dark:bg-slate-900 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-lg border border-gray-200 dark:border-slate-700">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-xl">📞</span>
-              <h3 className="text-xl font-bold text-slate-900">{t[lang].contactTitle}</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t[lang].contactTitle}</h3>
             </div>
-            <div className="space-y-3 text-slate-700 text-sm">
+            <div className="space-y-3 text-slate-700 dark:text-slate-300 text-sm">
               <p>
                 <span className="font-medium">{t[lang].hotline}</span>{' '}
-                <a href="tel:01816011701" className="font-bold text-sky-700 hover:underline cursor-pointer">
+                <a href="tel:01816011701" className="font-bold text-sky-700 dark:text-sky-400 hover:underline cursor-pointer">
                   01816 011 701
                 </a>
               </p>
-              <p><span className="font-medium">{t[lang].email}</span> <a href="mailto:sakibcmc@hotmail.com" className="text-sky-600 hover:underline">sakibcmc@hotmail.com</a></p>
+              <p><span className="font-medium">{t[lang].email}</span> <a href="mailto:sakibcmc@hotmail.com" className="text-sky-600 dark:text-sky-400 hover:underline">sakibcmc@hotmail.com</a></p>
               
               <div className="flex flex-wrap gap-2 pt-2">
                 <a 
@@ -616,17 +651,17 @@ export default function Home() {
         </section>
 
         {/* স্বাস্থ্য বিষয়ক উপদেশমূলক ব্লগ / টিপস সেকশন */}
-        <section className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-lg border border-gray-200">
-          <h2 className="text-2xl font-bold text-slate-900 mb-6 text-center">
+        <section className="bg-white/90 dark:bg-slate-900 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-lg border border-gray-200 dark:border-slate-700">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 text-center">
             {t[lang].tipsTitle}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {dentalTips.map((tip, index) => (
-              <div key={index} className="bg-sky-50/50 p-6 rounded-2xl border border-sky-100 flex flex-col justify-between">
+              <div key={index} className="bg-sky-50/50 dark:bg-slate-800 p-6 rounded-2xl border border-sky-100 dark:border-slate-700 flex flex-col justify-between">
                 <div>
                   <div className="text-3xl mb-3">{tip.icon}</div>
-                  <h3 className="font-bold text-sky-900 text-lg mb-2">{tip.title}</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">{tip.description}</p>
+                  <h3 className="font-bold text-sky-900 dark:text-sky-300 text-lg mb-2">{tip.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{tip.description}</p>
                 </div>
               </div>
             ))}
@@ -634,14 +669,14 @@ export default function Home() {
         </section>
 
         {/* ইউটিউব ভিডিও ইন্টিগ্রেশন সেকশন */}
-        <section className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-lg border border-gray-200 text-center">
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">
+        <section className="bg-white/90 dark:bg-slate-900 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-lg border border-gray-200 dark:border-slate-700 text-center">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
             {t[lang].videoTitle}
           </h2>
-          <p className="text-slate-500 text-sm mb-6 max-w-lg mx-auto">
+          <p className="text-slate-500 dark:text-slate-400 text-sm mb-6 max-w-lg mx-auto">
             {t[lang].videoSub}
           </p>
-          <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-md border border-slate-200">
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700">
             <iframe 
               className="w-full h-full"
               src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
