@@ -89,7 +89,8 @@ export default function BookingForm() {
     setMessage({ type: '', text: '' })
 
     try {
-      const { error } = await supabase
+      // ১. সুপাবেজ ডেটাবেজে ইনসার্ট করা এবং ইউনিক ID বা ডেটা রিটার্ন নেওয়া
+      const { data, error } = await supabase
         .from('appointments')
         .insert([
           {
@@ -101,8 +102,37 @@ export default function BookingForm() {
             appointment_time: formData.appointment_time
           }
         ])
+        .select() // ইনসার্ট হওয়া ডেটা ফেরত নেওয়ার জন্য
 
       if (error) throw error
+
+      // ২. গুগল শিটে ডেটা পাঠানো (আপনার ওয়েব অ্যাপ ইউআরএল দিয়ে)
+      const insertedRecord = data && data.length > 0 ? data[0] : {
+        id: Date.now(), // ফলব্যাক আইডি
+        patient_name: formData.patient_name,
+        age: formData.age ? parseInt(formData.age) : null,
+        patient_phone: formData.phone,
+        service: formData.service,
+        appointment_date: formData.appointment_date,
+        appointment_time: formData.appointment_time,
+        status: 'pending'
+      }
+
+      const googleSheetUrl = "https://script.google.com/macros/s/AKfycby9BtsNiYnJ6q0PlQ7J8TUbSvHoz87WwHfX6tQiDtm04rpDKHRvH7luSpzZTFDWowhk/exec"
+      
+      try {
+        await fetch(googleSheetUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'INSERT',
+            record: insertedRecord
+          })
+        })
+      } catch (sheetError) {
+        console.error('Failed to sync with Google Sheet:', sheetError)
+      }
 
       // সফলভাবে বুকিং হলে পপ-আপ মোডাল ওপেন হবে
       setShowSuccessModal(true)
@@ -270,7 +300,7 @@ export default function BookingForm() {
               ✓
             </div>
             <h3 className="text-xl font-bold text-teal-900">
-              অ্যাপয়েন্টমেন্ট সফল হয়েছে!
+              অ্যাপয়েন্টমেন্ট সফল হয়েছে!
             </h3>
             <p className="text-sm text-gray-600 leading-relaxed">
               Your appointment request has been successfully submitted! We will contact you soon.
