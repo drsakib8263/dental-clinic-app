@@ -15,6 +15,9 @@ export default function Home() {
   const [message, setMessage] = useState({ type: '', text: '' })
   const [showTreatments, setShowTreatments] = useState(false)
 
+  // বুকিং ফর্ম পপ-আপ বা বক্স ওপেন/ক্লোজ করার স্টেট
+  const [showBookingBox, setShowBookingBox] = useState(false)
+
   // ডার্ক মোড স্টেট
   const [darkMode, setDarkMode] = useState(false)
 
@@ -59,6 +62,8 @@ export default function Home() {
       degree: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)',
       bmdc: 'বিএমডিসি রেজি. ৮২৬৩',
       training: 'স্পেশাল ট্রেইনড ইন ইমপ্ল্যান্ট এন্ড কসমেটিক ডেন্টিস্ট্রি',
+      bookingMainBtn: '📅 অনলাইন অ্যাপয়েন্টমেন্ট বুকিং করুন',
+      bookingCloseBtn: '✕ ফর্ম বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
       bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
       patientName: 'রোগীর নাম *',
@@ -103,6 +108,8 @@ export default function Home() {
       degree: 'BDS (Chattagong Medical College)',
       bmdc: 'BMDC Reg. 8263',
       training: 'Special Trained in Implant & Cosmetic Dentistry',
+      bookingMainBtn: '📅 Book Online Appointment',
+      bookingCloseBtn: '✕ Close Form',
       bookingTitle: 'Online Appointment Booking',
       bookingSub: 'Saturday to Thursday (4:00 PM - 9:00 PM), Friday Closed',
       patientName: 'Patient Name *',
@@ -401,147 +408,168 @@ export default function Home() {
           </div>
         </section>
 
-        {/* অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স */}
-        <section className="bg-sky-200 dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-xl border border-sky-300 dark:border-slate-700 max-w-2xl mx-auto relative z-10">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <span className="text-2xl">📅</span>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white text-center">
-              {t[lang].bookingTitle}
-            </h2>
-          </div>
-          <p className="text-rose-600 dark:text-rose-400 font-semibold text-center mb-6 text-sm">
-            {t[lang].bookingSub}
-          </p>
+        {/* অ্যাপয়েন্টমেন্ট বুকিং টগল বাটন */}
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={() => setShowBookingBox(!showBookingBox)}
+            className="bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-lg py-4 px-8 rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border-2 border-sky-400 flex items-center justify-center gap-3 mx-auto"
+          >
+            <span>{showBookingBox ? t[lang].bookingCloseBtn : t[lang].bookingMainBtn}</span>
+          </button>
+        </div>
 
-          {message.text && (
-            <div
-              className={`p-4 mb-6 rounded-xl text-sm font-medium ${
-                message.type === 'success'
-                  ? 'bg-teal-50 dark:bg-teal-950 text-teal-800 dark:text-teal-200 border border-teal-200 dark:border-teal-800'
-                  : 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800'
-              }`}
-            >
-              {message.text}
+        {/* অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স (টগল করার পর শো করবে) */}
+        {showBookingBox && (
+          <section className="bg-sky-200 dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-xl border border-sky-300 dark:border-slate-700 max-w-2xl mx-auto relative z-10 animate-in fade-in zoom-in duration-300">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2 mx-auto">
+                <span className="text-2xl">📅</span>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white text-center">
+                  {t[lang].bookingTitle}
+                </h2>
+              </div>
+              <button 
+                onClick={() => setShowBookingBox(false)}
+                className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white font-bold text-lg p-1"
+              >
+                ✕
+              </button>
             </div>
-          )}
+            <p className="text-rose-600 dark:text-rose-400 font-semibold text-center mb-6 text-sm">
+              {t[lang].bookingSub}
+            </p>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="md:col-span-2">
+            {message.text && (
+              <div
+                className={`p-4 mb-6 rounded-xl text-sm font-medium ${
+                  message.type === 'success'
+                    ? 'bg-teal-50 dark:bg-teal-950 text-teal-800 dark:text-teal-200 border border-teal-200 dark:border-teal-800'
+                    : 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800'
+                }`}
+              >
+                {message.text}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    {t[lang].patientName}
+                  </label>
+                  <input
+                    type="text"
+                    name="patient_name"
+                    value={formData.patient_name}
+                    onChange={handleChange}
+                    required
+                    placeholder={t[lang].patientNamePlaceholder}
+                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    {t[lang].ageLabel}
+                  </label>
+                  <input
+                    type="number"
+                    name="age"
+                    value={formData.age}
+                    onChange={handleChange}
+                    required
+                    min="1"
+                    max="120"
+                    placeholder={t[lang].agePlaceholder}
+                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
+                  />
+                </div>
+              </div>
+
+              <div>
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  {t[lang].patientName}
+                  {t[lang].phoneLabel}
                 </label>
                 <input
-                  type="text"
-                  name="patient_name"
-                  value={formData.patient_name}
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
                   onChange={handleChange}
                   required
-                  placeholder={t[lang].patientNamePlaceholder}
+                  placeholder="017XXXXXXXX"
                   className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  {t[lang].ageLabel}
+                  {t[lang].serviceLabel}
                 </label>
-                <input
-                  type="number"
-                  name="age"
-                  value={formData.age}
+                <select
+                  name="service"
+                  value={formData.service}
                   onChange={handleChange}
                   required
-                  min="1"
-                  max="120"
-                  placeholder={t[lang].agePlaceholder}
-                  className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
-                />
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+                >
+                  <option value="">{t[lang].serviceDefault}</option>
+                  <option value={t[lang].service1}>{t[lang].service1}</option>
+                  <option value={t[lang].service2}>{t[lang].service2}</option>
+                  <option value={t[lang].service3}>{t[lang].service3}</option>
+                  <option value={t[lang].service4}>{t[lang].service4}</option>
+                </select>
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                {t[lang].phoneLabel}
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                placeholder="017XXXXXXXX"
-                className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
-              />
-            </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  {t[lang].dateLabel}
+                </label>
+                <input
+                  type="date"
+                  name="appointment_date"
+                  value={formData.appointment_date}
+                  min={minDate}
+                  max={maxDate}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+                />
+                <p className="text-xs text-rose-600 dark:text-rose-400 mt-1.5 font-bold">
+                  * ক্যালেন্ডার থেকে কেবল সামনের ৭টি সচল দিন (শুক্রবার বাদে) সিলেক্ট করা যাবে।
+                </p>
+              </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                {t[lang].serviceLabel}
-              </label>
-              <select
-                name="service"
-                value={formData.service}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  {t[lang].timeLabel}
+                </label>
+                <select
+                  name="appointment_time"
+                  value={formData.appointment_time}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+                >
+                  <option value="">{t[lang].timeDefault}</option>
+                  {availableTimes.map((time, index) => (
+                    <option key={index} value={time}>
+                      {time}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-sky-700 hover:bg-sky-800 text-white font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-md disabled:opacity-50 mt-4 cursor-pointer"
               >
-                <option value="">{t[lang].serviceDefault}</option>
-                <option value={t[lang].service1}>{t[lang].service1}</option>
-                <option value={t[lang].service2}>{t[lang].service2}</option>
-                <option value={t[lang].service3}>{t[lang].service3}</option>
-                <option value={t[lang].service4}>{t[lang].service4}</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                {t[lang].dateLabel}
-              </label>
-              <input
-                type="date"
-                name="appointment_date"
-                value={formData.appointment_date}
-                min={minDate}
-                max={maxDate}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
-              />
-              <p className="text-xs text-rose-600 dark:text-rose-400 mt-1.5 font-bold">
-                * ক্যালেন্ডার থেকে কেবল সামনের ৭টি সচল দিন (শুক্রবার বাদে) সিলেক্ট করা যাবে।
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                {t[lang].timeLabel}
-              </label>
-              <select
-                name="appointment_time"
-                value={formData.appointment_time}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
-              >
-                <option value="">{t[lang].timeDefault}</option>
-                {availableTimes.map((time, index) => (
-                  <option key={index} value={time}>
-                    {time}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-sky-700 hover:bg-sky-800 text-white font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-md disabled:opacity-50 mt-4 cursor-pointer"
-            >
-              {loading ? t[lang].submitting : t[lang].submitBtn}
-            </button>
-          </form>
-        </section>
+                {loading ? t[lang].submitting : t[lang].submitBtn}
+              </button>
+            </form>
+          </section>
+        )}
 
         {/* চেম্বারের চিকিৎসা ও খরচের তালিকা */}
         <section className="bg-white/95 dark:bg-slate-900 backdrop-blur-md rounded-3xl shadow-xl border-2 border-sky-300 dark:border-slate-700 overflow-hidden">
