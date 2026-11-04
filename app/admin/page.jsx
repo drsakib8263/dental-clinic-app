@@ -8,7 +8,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState(null)
   
-  // ফিল্টারিংয়ের জন্য সিলেক্টেড ডেট (YYYY-MM-DD ফরম্যাট, খালি থাকলে সব দেখাবে)
+  // ফিল্টারিংয়ের জন্য সিলেক্টেড ডেট (YYYY-MM-DD ফরম্যাট, খালি থাকলে সব দেখাবে)
   const [selectedDate, setSelectedDate] = useState('')
   const [dateTabs, setDateTabs] = useState([])
 
@@ -20,7 +20,7 @@ export default function AdminDashboard() {
       'Wed': 'বুধবার', 'Thu': 'বৃহস্পতিবার', 'Fri': 'শুক্রবার', 'Sat': 'শনিবার'
     }
     const monthsMap = {
-      'Jan': 'জানুয়ারি', 'Feb': 'ফেব্রুয়ারি', 'Mar': 'মার্চ', 'Apr': 'এপ্রিল',
+      'Jan': 'জানুয়ারি', 'Feb': 'ফেব্রুয়ারি', 'Mar': 'মার্চ', 'Apr': 'এপ্রিল',
       'May': 'মে', 'Jun': 'জুন', 'Jul': 'জুলাই', 'Aug': 'আগস্ট',
       'Sep': 'সেপ্টেম্বর', 'Oct': 'অক্টোবর', 'Nov': 'নভেম্বর', 'Dec': 'ডিসেম্বর'
     }
@@ -61,7 +61,7 @@ export default function AdminDashboard() {
     setDateTabs(dates)
   }, [])
 
-  // ইংরেজি তারিখকে বাংলায় (যেমন: ৩১ অক্টোবর ২০২৬) রূপান্তর করার ফাংশন
+  // ইংরেজি তারিখকে বাংলায় রূপান্তর করার ফাংশন
   const formatDateToBangla = (dateStr) => {
     if (!dateStr) return '-'
     const parts = dateStr.split('-')
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
     const dayNum = parts[2]
 
     const monthsMap = {
-      '01': 'জানুয়ারি', '02': 'ফেব্রুয়ারি', '03': 'মার্চ', '04': 'এপ্রিল',
+      '01': 'জানুয়ারি', '02': 'ফেব্রুয়ারি', '03': 'মার্চ', '04': 'এপ্রিল',
       '05': 'মে', '06': 'জুন', '07': 'জুলাই', '08': 'আগস্ট',
       '09': 'সেপ্টেম্বর', '10': 'অক্টোবর', '11': 'নভেম্বর', '12': 'ডিসেম্বর'
     }
@@ -117,35 +117,43 @@ export default function AdminDashboard() {
     fetchAppointments()
   }, [selectedDate])
 
-  // স্ট্যাটাস আপডেট এবং ট্র্যাকার এসএমএস গেটওয়ে দিয়ে এসএমএস পাঠানো
-  const handleUpdateStatus = async (id, phone, newStatus) => {
+  // অ্যাপয়েন্টমেন্ট কনফার্ম করার ফাংশন
+  const handleConfirm = async (id) => {
     try {
       setActionLoading(id)
-
       const { error } = await supabase
         .from('appointments')
-        .update({ status: newStatus })
+        .update({ status: 'confirmed' })
         .eq('id', id)
 
       if (error) throw error
-
-      if (newStatus === 'cancelled' && phone) {
-        const messageText = "Your Appointment Is Cancelled. Plz Visit Our Site For reappointment"
-        const gatewayUrl = `http://192.168.0.106:8082/?to=${encodeURIComponent(phone)}&message=${encodeURIComponent(messageText)}`
-        
-        try {
-          await fetch(gatewayUrl, { mode: 'no-cors' })
-        } catch (smsError) {
-          console.error('Failed to send SMS via Traccar:', smsError)
-        }
-      }
-
       fetchAppointments()
     } catch (error) {
-      console.error('Error updating status:', error)
-      alert('স্ট্যাটাস আপডেট করতে সমস্যা হয়েছে।')
+      console.error('Error confirming appointment:', error)
+      alert('অ্যাপয়েন্টমেন্ট কনফার্ম করতে সমস্যা হয়েছে।')
     } finally {
       setActionLoading(null)
+    }
+  }
+
+  // অ্যাপয়েন্টমেন্ট সম্পূর্ণ ডিলিট করার ফাংশন
+  const handleDelete = async (id) => {
+    if (window.confirm("আপনি কি নিশ্চিতভাবে এই অ্যাপয়েন্টমেন্টটি মুছে ফেলতে চান?")) {
+      try {
+        setActionLoading(id)
+        const { error } = await supabase
+          .from('appointments')
+          .delete()
+          .eq('id', id)
+
+        if (error) throw error
+        setAppointments(appointments.filter(app => app.id !== id))
+      } catch (error) {
+        console.error('Error deleting appointment:', error)
+        alert('অ্যাপয়েন্টমেন্ট মুছতে সমস্যা হয়েছে। আবার চেষ্টা করুন।')
+      } finally {
+        setActionLoading(null)
+      }
     }
   }
 
@@ -168,7 +176,7 @@ export default function AdminDashboard() {
         {/* তারিখের বক্স / ফিল্টার ট্যাব */}
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-teal-100 mb-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-semibold text-gray-700">তারিখ অনুযায়ী ফিল্টার করুন:</h3>
+            <h3 className="text-sm font-semibold text-gray-700">তারিখ অনুযায়ী ফিল্টার করুন:</h3>
             {selectedDate && (
               <button 
                 onClick={() => setSelectedDate('')}
@@ -218,11 +226,11 @@ export default function AdminDashboard() {
                 <thead>
                   <tr className="bg-teal-700 text-white text-sm">
                     <th className="p-4 font-semibold">রোগীর নাম</th>
-                    <th className="p-4 font-semibold">বয়স</th>
+                    <th className="p-4 font-semibold">বয়স</th>
                     <th className="p-4 font-semibold">মোবাইল নম্বর</th>
                     <th className="p-4 font-semibold">চিকিৎসার ধরণ</th>
                     <th className="p-4 font-semibold">তারিখ</th>
-                    <th className="p-4 font-semibold">সময়</th>
+                    <th className="p-4 font-semibold">সময়</th>
                     <th className="p-4 font-semibold">স্ট্যাটাস</th>
                     <th className="p-4 font-semibold text-center">কার্যক্রম</th>
                   </tr>
@@ -238,9 +246,7 @@ export default function AdminDashboard() {
                       <td className="p-4 font-medium text-teal-800">{item.appointment_time}</td>
                       <td className="p-4">
                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          item.status === 'confirmed' ? 'bg-teal-100 text-teal-800' :
-                          item.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                          'bg-amber-100 text-amber-800'
+                          item.status === 'confirmed' ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800'
                         }`}>
                           {item.status || 'pending'}
                         </span>
@@ -249,21 +255,19 @@ export default function AdminDashboard() {
                         {item.status !== 'confirmed' && (
                           <button
                             disabled={actionLoading === item.id}
-                            onClick={() => handleUpdateStatus(item.id, item.patient_phone, 'confirmed')}
-                            className="bg-teal-600 hover:bg-teal-700 text-white px-3 py-1.5 rounded text-xs font-medium transition disabled:opacity-50"
+                            onClick={() => handleConfirm(item.id)}
+                            className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-xs font-medium transition disabled:opacity-50"
                           >
                             কনফার্ম
                           </button>
                         )}
-                        {item.status !== 'cancelled' && (
-                          <button
-                            disabled={actionLoading === item.id}
-                            onClick={() => handleUpdateStatus(item.id, item.patient_phone, 'cancelled')}
-                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded text-xs font-medium transition disabled:opacity-50"
-                          >
-                            ক্যানসেল ও এসএমএস
-                          </button>
-                        )}
+                        <button
+                          disabled={actionLoading === item.id}
+                          onClick={() => handleDelete(item.id)}
+                          className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded text-xs font-medium transition disabled:opacity-50"
+                        >
+                          ডিলিট
+                        </button>
                       </td>
                     </tr>
                   ))}

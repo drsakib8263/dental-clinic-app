@@ -17,7 +17,7 @@ export default function BookingForm() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
   
-  // মোবাইলে ও ডেস্কটপে পপ-আপ নোটিফিকেশন দেখানোর জন্য নতুন স্টেট
+  // পপ-আপ মোডাল দেখানোর জন্য স্টেট
   const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   useEffect(() => {
@@ -54,10 +54,7 @@ export default function BookingForm() {
         const bnMonth = monthsMap[enMonth] || enMonth
         const year = d.getFullYear()
         
-        // ডাটাবেজে সেভ হওয়ার জন্য ইংরেজি YYYY-MM-DD ফরম্যাট
         const value = d.toISOString().split('T')[0]
-        
-        // ড্রপডাউনে দেখানোর জন্য সম্পূর্ণ বাংলা ফরম্যাট
         const label = (count === 0)
           ? `আজ (${bnDay}, ${dayNum} ${bnMonth} ${year})`
           : `${bnDay}, ${dayNum} ${bnMonth} ${year}`
@@ -107,7 +104,7 @@ export default function BookingForm() {
 
       if (error) throw error
 
-      // সফলভাবে ডেটা সেভ হলে পপ-আপ ট্রিগার হবে
+      // সফলভাবে বুকিং হলে পপ-আপ মোডাল ওপেন হবে
       setShowSuccessModal(true)
 
       setFormData({
@@ -138,14 +135,9 @@ export default function BookingForm() {
         শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ
       </p>
 
-      {message.text && (
-        <div
-          className={`p-4 mb-6 rounded-lg text-sm font-medium ${
-            message.type === 'success'
-              ? 'bg-teal-50 text-teal-800 border border-teal-200'
-              : 'bg-red-50 text-red-800 border border-red-200'
-          }`}
-        >
+      {/* শুধু এরর মেসেজ থাকলে সেটি ফর্মে দেখাবে */}
+      {message.text && message.type === 'error' && (
+        <div className="p-4 mb-6 rounded-lg text-sm font-medium bg-red-50 text-red-800 border border-red-200">
           {message.text}
         </div>
       )}
@@ -270,7 +262,7 @@ export default function BookingForm() {
         </button>
       </form>
 
-      {/* মোবাইল এবং ডেস্কটপের জন্য সুন্দর পপ-আপ (Modal) নোটিফিকেশন */}
+      {/* ব্যাকগ্রাউন্ড ব্লার সহ পপ-আপ মোডাল নোটিফিকেশন */}
       {showSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl text-center space-y-4 border border-teal-100 animate-in fade-in zoom-in duration-200">
@@ -281,7 +273,7 @@ export default function BookingForm() {
               অ্যাপয়েন্টমেন্ট সফল হয়েছে!
             </h3>
             <p className="text-sm text-gray-600 leading-relaxed">
-              আপনার অ্যাপয়েন্টমেন্ট আবেদনটি সফলভাবে জমা হয়েছে। খুব শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।
+              Your appointment request has been successfully submitted! We will contact you soon.
             </p>
             <button
               onClick={() => setShowSuccessModal(false)}
