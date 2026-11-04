@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
+/* ম্যানুয়াল .dark ক্লাসের জন্য ভ্যারিয়েন্ট ডিফাইন */
+@variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+/* সিস্টেমে ডার্ক মোড অন থাকলে বা .dark ক্লাস যুক্ত হলে */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -10,13 +19,6 @@
   --color-foreground: var(--foreground);
   --font-sans: 'Kalpurush', 'Times New Roman', Times, serif;
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
