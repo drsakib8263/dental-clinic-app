@@ -159,7 +159,6 @@ export default function Home() {
     const { name, value } = e.target
 
     if (name === 'appointment_date' && value) {
-      // মোবাইল টাইমজোন বাগ এড়ানোর জন্য স্থানীয় ডেট পার্সিং
       const parts = value.split('-')
       const selectedDate = new Date(parts[0], parts[1] - 1, parts[2])
       const dayOfWeek = selectedDate.getDay()
@@ -181,7 +180,7 @@ export default function Home() {
     e.preventDefault()
 
     if (!formData.patient_name || !formData.phone || !formData.service || !formData.appointment_date || !formData.appointment_time) {
-      alert(lang === 'bn' ? 'দয়া করে সব ফিল্ড সঠিকভাবে পূরণ করুন।' : 'Please fill in all required fields.')
+      alert(lang === 'bn' ? 'দয়া করে সব ফিল্ড সঠিকভাবে পূরণ করুন।' : 'Please fill in all required fields.')
       return
     }
 
@@ -190,7 +189,7 @@ export default function Home() {
     const dayOfWeek = selectedDateObj.getDay()
 
     if (dayOfWeek === 5) {
-      alert(lang === 'bn' ? 'শুক্রবার অ্যাপয়েন্টমেন্ট নেওয়া যাবে না।' : 'Appointments cannot be booked on Fridays.')
+      alert(lang === 'bn' ? 'শুক্রবার অ্যাপয়েন্টমেন্ট নেওয়া যাবে না।' : 'Appointments cannot be booked on Fridays.')
       return
     }
 
@@ -329,13 +328,8 @@ export default function Home() {
 
       <div className="max-w-4xl mx-auto space-y-10 relative z-10">
         
-        {/* ডক্টরের প্রোফাইল ও হেডার সেকশন */}
-        <section 
-          className="p-6 md:p-8 rounded-3xl shadow-xl border border-gray-200 relative overflow-hidden bg-cover bg-center"
-          style={{ backgroundImage: `url('/dental-banner.jpeg')` }}
-        >
-          <div className="absolute inset-0 bg-white/70 backdrop-blur-md z-0" />
-
+        {/* ডক্টরের প্রোফাইল ও হেডার সেকশন (অসচ্ছ গ্লাস লুক সহ আপডেট করা হয়েছে) */}
+        <section className="p-6 md:p-8 rounded-3xl shadow-xl border border-gray-200/80 relative overflow-hidden bg-white/80 backdrop-blur-md">
           <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
             <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden shadow-md border-2 border-sky-600 bg-white shrink-0">
               <img 
@@ -483,7 +477,7 @@ export default function Home() {
               </p>
             </div>
 
-            {/* ৩. সময়ের ড্রপডাউন বক্স */}
+            {/* ৩. সময়ের ড্রপডাউন বক্স */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1">
                 {t[lang].timeLabel}
