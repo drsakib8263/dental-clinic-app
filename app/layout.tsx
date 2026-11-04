@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard",
+  title: "Dr Sakib Admin Panel",
   description: "Dental Clinic Appointment Management System",
   manifest: "/manifest.json",
   appleWebApp: {
