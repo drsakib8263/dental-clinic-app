@@ -20,7 +20,21 @@ export default function BookingForm() {
   // পপ-আপ মোডাল দেখানোর জন্য স্টেট
   const [showSuccessModal, setShowSuccessModal] = useState(false)
 
+  // ডার্ক মোড স্টেট
+  const [darkMode, setDarkMode] = useState(false)
+
   useEffect(() => {
+    // লোকাল স্টোরেজ বা সিস্টেম প্রিফারেন্স চেক করে ডার্ক মোড সেট করা
+    const isDark = localStorage.getItem('theme') === 'dark' ||
+      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    
+    setDarkMode(isDark)
+    if (isDark) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+
     const dates = []
     const daysMap = {
       'Sun': 'রবিবার',
@@ -66,6 +80,18 @@ export default function BookingForm() {
     }
     setAvailableDates(dates)
   }, [])
+
+  const toggleTheme = () => {
+    if (darkMode) {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+      setDarkMode(false)
+    } else {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+      setDarkMode(true)
+    }
+  }
 
   const availableTimes = [
     "বিকেল ৪:০০ টা", "বিকেল ৪:৩০ টা",
@@ -127,11 +153,23 @@ export default function BookingForm() {
   }
 
   return (
-    <section className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-teal-100 max-w-2xl mx-auto my-8 relative">
-      <h2 className="text-2xl font-bold text-[#800000] text-center mb-2">
+    <section className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6 md:p-8 rounded-2xl shadow-lg border border-teal-100 dark:border-gray-800 max-w-2xl mx-auto my-8 relative transition-colors duration-200">
+      
+      {/* থিম পরিবর্তন করার টগল বাটন (ফর্মের ওপরের ডান কোণায়) */}
+      <div className="flex justify-end mb-2">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="px-3 py-1.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 transition shadow-sm flex items-center gap-1.5"
+        >
+          {darkMode ? '☀️ লাইট মোড' : '🌙 ডার্ক মোড'}
+        </button>
+      </div>
+
+      <h2 className="text-2xl font-bold text-[#800000] dark:text-red-400 text-center mb-2">
         অনলাইন অ্যাপয়েন্টমেন্ট বুকিং
       </h2>
-      <p className="text-gray-600 text-center mb-6 text-sm">
+      <p className="text-gray-600 dark:text-gray-400 text-center mb-6 text-sm">
         শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ
       </p>
 
@@ -145,7 +183,7 @@ export default function BookingForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               রোগীর নাম *
             </label>
             <input
@@ -155,12 +193,12 @@ export default function BookingForm() {
               onChange={handleChange}
               required
               placeholder="আপনার নাম লিখুন"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white text-gray-800"
+              className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               বয়স *
             </label>
             <input
@@ -172,13 +210,13 @@ export default function BookingForm() {
               min="1"
               max="120"
               placeholder="যেমন: ৩২"
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white text-gray-800"
+              className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             মোবাইল নম্বর *
           </label>
           <input
@@ -188,12 +226,12 @@ export default function BookingForm() {
             onChange={handleChange}
             required
             placeholder="017XXXXXXXX"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white text-gray-800"
+            className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             চিকিৎসার ধরণ *
           </label>
           <select
@@ -201,7 +239,7 @@ export default function BookingForm() {
             value={formData.service}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white text-gray-800"
+            className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           >
             <option value="">চিকিৎসার ধরণ নির্বাচন করুন</option>
             <option value="দাঁতের নতুন সমস্যা নিয়ে দেখাব">দাঁতের নতুন সমস্যা নিয়ে দেখাব</option>
@@ -213,7 +251,7 @@ export default function BookingForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               পছন্দের তারিখ (শুক্রবার বাদে) *
             </label>
             <select
@@ -221,7 +259,7 @@ export default function BookingForm() {
               value={formData.appointment_date}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white text-gray-800"
+              className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             >
               <option value="">তারিখ নির্বাচন করুন</option>
               {availableDates.map((item, index) => (
@@ -233,7 +271,7 @@ export default function BookingForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               পছন্দের সময় (বিকেল ৪টা - রাত ৯টা) *
             </label>
             <select
@@ -241,7 +279,7 @@ export default function BookingForm() {
               value={formData.appointment_time}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white text-gray-800"
+              className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             >
               <option value="">সময় নির্বাচন করুন</option>
               {availableTimes.map((time, index) => (
@@ -265,14 +303,14 @@ export default function BookingForm() {
       {/* ব্যাকগ্রাউন্ড ব্লার সহ পপ-আপ মোডাল নোটিফিকেশন */}
       {showSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl text-center space-y-4 border border-teal-100 animate-in fade-in zoom-in duration-200">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-teal-100 text-teal-700 text-3xl font-bold shadow-inner">
+          <div className="w-full max-w-md rounded-2xl bg-white dark:bg-gray-800 p-6 shadow-2xl text-center space-y-4 border border-teal-100 dark:border-gray-700 animate-in fade-in zoom-in duration-200">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-teal-100 dark:bg-teal-900 text-teal-700 dark:text-teal-300 text-3xl font-bold shadow-inner">
               ✓
             </div>
-            <h3 className="text-xl font-bold text-teal-900">
+            <h3 className="text-xl font-bold text-teal-900 dark:text-teal-100">
               অ্যাপয়েন্টমেন্ট সফল হয়েছে!
             </h3>
-            <p className="text-sm text-gray-600 leading-relaxed">
+            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
               Your appointment request has been successfully submitted! We will contact you soon.
             </p>
             <button
