@@ -10,6 +10,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 export default function Home() {
   const [lang, setLang] = useState('bn')
   const [availableDates, setAvailableDates] = useState([])
+  const [bookedSlotsCount, setBookedSlotsCount] = useState({}) // কোন তারিখে কোন সময়ে কয়টি বুকিং আছে তা ট্র্যাক করার জন্য
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
   const [showTreatments, setShowTreatments] = useState(false)
@@ -29,7 +30,31 @@ export default function Home() {
     appointment_time: ''
   })
 
-  // পেজ লোড হওয়ার সময় লোকাল স্টোরেজ থেকে ডার্ক মোড সেট করা এবং বাংলায় তারিখের ড্রপডাউন তৈরি করা
+  // ডেটাবেজ থেকে বর্তমান বুকিং কাউন্ট ফেচ করার ফাংশন
+  const fetchBookingsCount = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('appointments')
+        .select('appointment_date, appointment_time')
+
+      if (error) {
+        console.error('Error fetching bookings:', error)
+        return
+      }
+
+      // ডেটাগুলোকে কাউন্ট করার অবজেক্টে রূপান্তর করা (যেমন: {"2026-06-06|বিকেল ৪:০০ টা": 2})
+      const counts = {}
+      data.forEach(item => {
+        const key = `${item.appointment_date}|${item.appointment_time}`
+        counts[key] = (counts[key] || 0) + 1
+      })
+      setBookedSlotsCount(counts)
+    } catch (err) {
+      console.error('Error:', err)
+    }
+  }
+
+  // পেজ লোড হওয়ার সময় লোকাল স্টোরেজ থেকে ডার্ক মোড সেট করা, বাংলায় তারিখের ড্রপডাউন এবং বুকিং কাউন্ট লোড করা
   useEffect(() => {
     const isDark = localStorage.getItem('theme') === 'dark' ||
       (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -41,6 +66,8 @@ export default function Home() {
       document.documentElement.classList.remove('dark')
     }
 
+    fetchBookingsCount()
+
     // সামনের ৭টি সচল দিন (শুক্রবার বাদে) বাংলায় তৈরি করার লজিক
     const dates = []
     const daysList = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার']
@@ -49,7 +76,6 @@ export default function Home() {
       'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
     ]
 
-    // সংখ্যাগুলোকে বাংলায় রূপান্তর করার ফাংশন
     const toBengaliNumber = (num) => {
       const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯']
       return num.toString().split('').map(digit => {
@@ -65,9 +91,8 @@ export default function Home() {
       const d = new Date(today)
       d.setDate(today.getDate() + i)
       
-      const dayOfWeek = d.getDay() // 0 = রবিবার, 5 = শুক্রবার, ইত্যাদি
+      const dayOfWeek = d.getDay()
       
-      // শুক্রবার (৫ নম্বর দিন) বাদ দিয়ে বাকি দিনগুলো নেওয়া হবে
       if (dayOfWeek !== 5) {
         const bnDayName = daysList[dayOfWeek]
         const dayNum = toBengaliNumber(d.getDate())
@@ -123,7 +148,7 @@ export default function Home() {
       service4: 'ওষুধ খাওয়ার পরেও ব্যথা কমছে না',
       dateLabel: 'পছন্দের তারিখ (শুক্রবার বাদে) *',
       dateDefault: 'তারিখ নির্বাচন করুন',
-      timeLabel: 'পছন্দের সময় (বিকেল ৪টা - রাত ৯টা) *',
+      timeLabel: 'পছন্দের সময় (প্রতি স্লটে সর্বোচ্চ ২ জন) *',
       timeDefault: 'সময় নির্বাচন করুন',
       submitBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       submitting: 'জমা দেওয়া হচ্ছে...',
@@ -170,7 +195,7 @@ export default function Home() {
       service4: 'Pain persists even after taking medicine',
       dateLabel: 'Select Date (Excluding Friday) *',
       dateDefault: 'Select Date',
-      timeLabel: 'Preferred Time (4 PM - 9 PM) *',
+      timeLabel: 'Preferred Time (Max 2 per slot) *',
       timeDefault: 'Select time',
       submitBtn: 'Book Appointment',
       submitting: 'Submitting...',
@@ -196,24 +221,27 @@ export default function Home() {
     }
   }
 
-  const availableTimes = lang === 'bn' ? [
+  const rawTimes = [
     "বিকেল ৪:০০ টা", "বিকেল ৪:৩০ টা",
     "বিকেল ৫:০০ টা", "বিকেল ৫:৩০ টা",
     "সন্ধ্যা ৬:০০ টা", "সন্ধ্যা ৬:৩০ টা",
     "সন্ধ্যা ৭:০০ টা", "সন্ধ্যা ৭:৩০ টা",
     "রাত ৮:০০ টা", "রাত ৮:৩০ টা",
     "রাত ৯:০০ টা"
-  ] : [
-    "4:00 PM", "4:30 PM",
-    "5:00 PM", "5:30 PM",
-    "6:00 PM", "6:30 PM",
-    "7:00 PM", "7:30 PM",
-    "8:00 PM", "8:30 PM",
-    "9:00 PM"
   ]
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    
+    // যদি কেউ ফুল স্লটে ক্লিক করার চেষ্টা করে (যদি ব্রাউজারে অপশন ডিজেবল থাকা সত্ত্বেও সিলেক্ট হয়)
+    if (name === 'appointment_time' && formData.appointment_date) {
+      const slotKey = `${formData.appointment_date}|${value}`
+      if ((bookedSlotsCount[slotKey] || 0) >= 2) {
+        alert(lang === 'bn' ? 'এই সময়ে এপয়েন্টমেন্ট খালি নেই।' : 'This time slot is fully booked.')
+        return
+      }
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: value
@@ -225,6 +253,13 @@ export default function Home() {
 
     if (!formData.patient_name || !formData.phone || !formData.service || !formData.appointment_date || !formData.appointment_time) {
       alert(lang === 'bn' ? 'দয়া করে সব ফিল্ড সঠিকভাবে পূরণ করুন।' : 'Please fill in all required fields.')
+      return
+    }
+
+    // সাবমিট করার সময় আবারও চেক করা যে স্লটটি ফুল হয়ে গেছে কি না
+    const slotKey = `${formData.appointment_date}|${formData.appointment_time}`
+    if ((bookedSlotsCount[slotKey] || 0) >= 2) {
+      alert(lang === 'bn' ? 'দুঃখিত, এই সময়ে এপয়েন্টমেন্ট খালি নেই।' : 'Sorry, this time slot is fully booked.')
       return
     }
 
@@ -251,6 +286,9 @@ export default function Home() {
         setLoading(false)
         return
       }
+
+      // সফল হওয়ার পর কাউন্ট আপডেট করা
+      await fetchBookingsCount()
 
       setMessage({
         type: 'success',
@@ -419,7 +457,7 @@ export default function Home() {
           </button>
         </div>
 
-        {/* অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স (টগল করার পর শো করবে) */}
+        {/* অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স */}
         {showBookingBox && (
           <section className="bg-sky-200 dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-xl border border-sky-300 dark:border-slate-700 max-w-2xl mx-auto relative z-10 animate-in fade-in zoom-in duration-300">
             <div className="flex items-center justify-between mb-2">
@@ -521,7 +559,7 @@ export default function Home() {
                 </select>
               </div>
 
-              {/* তারিখ নির্বাচনের জন্য বাংলায় রূপান্তরকৃত ড্রপডাউন */}
+              {/* তারিখ নির্বাচন */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   {t[lang].dateLabel}
@@ -542,6 +580,7 @@ export default function Home() {
                 </select>
               </div>
 
+              {/* সময় নির্বাচন (লাল রঙের স্লট ও ফিল্টারিং লজিক সহ) */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   {t[lang].timeLabel}
@@ -554,12 +593,28 @@ export default function Home() {
                   className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
                 >
                   <option value="">{t[lang].timeDefault}</option>
-                  {availableTimes.map((time, index) => (
-                    <option key={index} value={time}>
-                      {time}
-                    </option>
-                  ))}
+                  {rawTimes.map((time, index) => {
+                    const slotKey = `${formData.appointment_date}|${time}`
+                    const count = bookedSlotsCount[slotKey] || 0
+                    const isFull = count >= 2
+
+                    return (
+                      <option 
+                        key={index} 
+                        value={time}
+                        disabled={isFull}
+                        style={{ color: isFull ? 'red' : 'inherit' }}
+                      >
+                        {time} {isFull ? (lang === 'bn' ? '(এই সময়ে এপয়েন্টমেন্ট খালি নেই)' : '(Fully Booked)') : `(বুকড: ${count}/২)`}
+                      </option>
+                    )
+                  })}
                 </select>
+                {!formData.appointment_date && (
+                  <p className="text-xs text-rose-600 dark:text-rose-400 mt-1 font-medium">
+                    * প্রথমে তারিখ নির্বাচন করুন, এরপর খালি সময় দেখতে পাবেন।
+                  </p>
+                )}
               </div>
 
               <button
