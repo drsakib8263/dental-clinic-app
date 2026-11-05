@@ -5,7 +5,6 @@ import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default function AdminDashboard() {
   const [appointments, setAppointments] = useState([])
@@ -14,7 +13,7 @@ export default function AdminDashboard() {
   const [selectedDate, setSelectedDate] = useState('all')
   const [availableDates, setAvailableDates] = useState([])
 
-  // অ্যাডমিন ড্যাশবোর্ডের নিজস্ব নোটিশ ও নোটিফিকেশন কন্ট্রোল স্টেট
+  // চেম্বার বন্ধ ও নোটিশ কন্ট্রোল স্টেট
   const [showNoticeControl, setShowNoticeControl] = useState(false)
   const [chamberNotice, setChamberNotice] = useState({
     isClosed: false,
@@ -25,10 +24,10 @@ export default function AdminDashboard() {
   })
   const [notificationEnabled, setNotificationEnabled] = useState(true)
 
-  // অ্যাপয়েন্টমেন্ট ডেটা ফেচ করার ফাংশন
   const fetchAppointments = async () => {
     setLoading(true)
     try {
+      const supabase = createClient(supabaseUrl, supabaseAnonKey)
       const { data, error } = await supabase
         .from('appointments')
         .select('*')
@@ -40,12 +39,11 @@ export default function AdminDashboard() {
         setAppointments(data || [])
         setFilteredAppointments(data || [])
         
-        // ইউনিক তারিখগুলো বের করা ফিল্টারের জন্য
         const uniqueDates = [...new Set((data || []).map(item => item.appointment_date))]
         setAvailableDates(uniqueDates)
       }
     } catch (err) {
-      console.error('Error:', err)
+      console.error('Catch Error:', err)
     } finally {
       setLoading(false)
     }
@@ -54,7 +52,6 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchAppointments()
 
-    // লোকালস্টোরেজ থেকে আগের সেভ করা নোটিশ ও নোটিফিকেশন সেটিংস লোড করা
     const savedNotice = localStorage.getItem('chamberNotice')
     if (savedNotice) {
       setChamberNotice(JSON.parse(savedNotice))
@@ -66,7 +63,6 @@ export default function AdminDashboard() {
     }
   }, [])
 
-  // অ্যাডমিন সেটিংস সেভ করার ফাংশন
   const handleSaveAdminSettings = (e) => {
     e.preventDefault()
     localStorage.setItem('chamberNotice', JSON.stringify(chamberNotice))
@@ -75,7 +71,6 @@ export default function AdminDashboard() {
     setShowNoticeControl(false)
   }
 
-  // তারিখ অনুযায়ী ফিল্টার করার লজিক
   const handleFilterDate = (date) => {
     setSelectedDate(date)
     if (date === 'all') {
@@ -90,7 +85,7 @@ export default function AdminDashboard() {
     <main className="min-h-screen bg-slate-100 text-slate-800 p-4 md:p-8">
       <div className="max-w-5xl mx-auto space-y-6">
         
-        {/* অ্যাডমিন ড্যাশবোর্ড হেডার ও কন্ট্রোল বাটন */}
+        {/* অ্যাডমিন হেডার ও কন্ট্রোল বাটন */}
         <div className="bg-white p-6 rounded-3xl shadow-lg border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900">
@@ -118,7 +113,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* তারিখ অনুযায়ী ফিল্টার সেকশন */}
+        {/* ফিল্টার সেকশন */}
         <div className="bg-white p-4 rounded-2xl shadow border border-slate-200">
           <p className="text-sm font-bold text-slate-700 mb-3">তারিখ অনুযায়ী ফিল্টার করুন:</p>
           <div className="flex flex-wrap gap-2">
@@ -148,7 +143,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* অ্যাপয়েন্টমেন্ট তালিকা টেবিল */}
+        {/* টেবিল সেকশন */}
         <div className="bg-white rounded-3xl shadow-lg border border-slate-200 overflow-hidden">
           {loading ? (
             <div className="p-8 text-center text-slate-500 font-medium">লোড হচ্ছে...</div>
@@ -191,7 +186,7 @@ export default function AdminDashboard() {
 
       </div>
 
-      {/* চেম্বার বন্ধ ও নোটিশ কন্ট্রোল মডাল */}
+      {/* চেম্বার বন্ধ ও নোটিশ কন্ট্রোল মডাল পপ-আপ */}
       {showNoticeControl && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
           <div className="bg-white p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-amber-500 max-w-lg w-full space-y-6 max-h-[90vh] overflow-y-auto">
