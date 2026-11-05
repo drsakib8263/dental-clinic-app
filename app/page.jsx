@@ -297,11 +297,13 @@ export default function Home() {
 
       await fetchBookingsCount()
 
-      // সফল বুকিংয়ের পর ব্রাউজার/ডিভাইস নোটিফিকেশন প্যানেলে নোটিফিকেশন দেখানো
-      if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification('নতুন অ্যাপয়েন্টমেন্ট সফল!', {
-          body: `রোগী: ${formData.patient_name}\nতারিখ: ${formData.appointment_date} (${formData.appointment_time})`,
-          icon: '/icon.png'
+      // সফল বুকিংয়ের পর সার্ভিস ওয়ার্কারের মাধ্যমে নোটিফিকেশন দেখানো
+      if ('serviceWorker' in navigator && Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then((registration) => {
+          registration.showNotification('নতুন অ্যাপয়েন্টমেন্ট সফল!', {
+            body: `রোগী: ${formData.patient_name}\nতারিখ: ${formData.appointment_date} (${formData.appointment_time})`,
+            icon: '/icon.png'
+          })
         })
       }
 
