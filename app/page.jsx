@@ -12,8 +12,11 @@ export default function Home() {
   const [availableDates, setAvailableDates] = useState([])
   const [bookedSlotsCount, setBookedSlotsCount] = useState({})
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState({ type: '', text: '' })
   const [showTreatments, setShowTreatments] = useState(false)
+
+  // সফল বুকিং পপ-আপ দেখানোর জন্য নতুন স্টেট
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [successDetails, setSuccessDetails] = useState({ name: '', date: '', time: '' })
 
   // বুকিং ফর্ম পপ-আপ বা বক্স ওপেন/ক্লোজ করার স্টেট
   const [showBookingBox, setShowBookingBox] = useState(false)
@@ -162,7 +165,9 @@ export default function Home() {
       timeDefault: 'সময় নির্বাচন করুন',
       submitBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       submitting: 'জমা দেওয়া হচ্ছে...',
+      successTitle: 'অভিনন্দন! বুকিং সফল হয়েছে',
       successMsg: 'আপনার অ্যাপয়েন্টমেন্ট আবেদনটি সফলভাবে জমা হয়েছে! শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।',
+      closeModalBtn: 'ঠিক আছে',
       errorMsg: 'বুকিং জমা দিতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।',
       treatmentToggle: 'চিকিৎসার খরচ ও আনুমানিক সময়সূচি দেখুন',
       treatmentName: 'চিকিৎসার নাম',
@@ -209,7 +214,9 @@ export default function Home() {
       timeDefault: 'Select time',
       submitBtn: 'Book Appointment',
       submitting: 'Submitting...',
+      successTitle: 'Congratulations! Booking Successful',
       successMsg: 'Your appointment request has been successfully submitted! We will contact you soon.',
+      closeModalBtn: 'OK',
       errorMsg: 'Error submitting appointment. Please try again.',
       treatmentToggle: 'View Treatment Costs & Estimated Schedule',
       treatmentName: 'Treatment Name',
@@ -272,7 +279,6 @@ export default function Home() {
     }
 
     setLoading(true)
-    setMessage({ type: '', text: '' })
 
     try {
       const payload = {
@@ -297,7 +303,7 @@ export default function Home() {
 
       await fetchBookingsCount()
 
-      // সফল বুকিংয়ের পর সার্ভিস ওয়ার্কারের মাধ্যমে নোটিফিকেশন দেখানো
+      // ব্যাকগ্রাউন্ড নোটিফিকেশন ট্রিগার করা
       if ('serviceWorker' in navigator && Notification.permission === 'granted') {
         navigator.serviceWorker.ready.then((registration) => {
           registration.showNotification('নতুন অ্যাপয়েন্টমেন্ট সফল!', {
@@ -307,10 +313,14 @@ export default function Home() {
         })
       }
 
-      setMessage({
-        type: 'success',
-        text: t[lang].successMsg
+      // সফল পপ-আপ মডালের জন্য ডেটা সেট করা এবং ফর্ম বন্ধ করা
+      setSuccessDetails({
+        name: formData.patient_name,
+        date: formData.appointment_date,
+        time: formData.appointment_time
       })
+      setShowSuccessModal(true)
+      setShowBookingBox(false)
 
       setFormData({
         patient_name: '',
@@ -406,7 +416,6 @@ export default function Home() {
       
       {/* ল্যাঙ্গুয়েজ ও ডার্ক মোড টগল বাটন বার */}
       <div className="max-w-4xl mx-auto flex justify-end gap-3 mb-4 relative z-50">
-        {/* ডার্ক মোড টগল বাটন */}
         <button
           type="button"
           onClick={toggleTheme}
@@ -415,7 +424,6 @@ export default function Home() {
           <span>{darkMode ? '☀️ লাইট মোড' : '🌙 ডার্ক মোড'}</span>
         </button>
 
-        {/* ভাষা পরিবর্তনের বাটন */}
         <button
           type="button"
           onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
@@ -495,18 +503,6 @@ export default function Home() {
               {t[lang].bookingSub}
             </p>
 
-            {message.text && (
-              <div
-                className={`p-4 mb-6 rounded-xl text-sm font-medium ${
-                  message.type === 'success'
-                    ? 'bg-teal-50 dark:bg-teal-950 text-teal-800 dark:text-teal-200 border border-teal-200 dark:border-teal-800'
-                    : 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800'
-                }`}
-              >
-                {message.text}
-              </div>
-            )}
-
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-2">
@@ -576,7 +572,6 @@ export default function Home() {
                 </select>
               </div>
 
-              {/* তারিখ নির্বাচন */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   {t[lang].dateLabel}
@@ -597,7 +592,6 @@ export default function Home() {
                 </select>
               </div>
 
-              {/* সময় নির্বাচন (সর্বোচ্চ ২ জন লিমিট ও লাল রঙ সহ) */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   {t[lang].timeLabel}
@@ -789,6 +783,38 @@ export default function Home() {
           </div>
         </section>
       </div>
+
+      {/* ব্যাকগ্রাউন্ড ব্লারসহ সফল বুকিং কনফার্মেশন পপ-আপ মডাল */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border border-sky-200 dark:border-slate-700 max-w-md w-full text-center space-y-4 scale-105 animate-in zoom-in-95 duration-200">
+            <div className="w-16 h-16 bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-400 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
+              ✅
+            </div>
+            
+            <h3 className="text-2xl font-extrabold text-slate-900 dark:text-white">
+              {t[lang].successTitle}
+            </h3>
+
+            <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+              {t[lang].successMsg}
+            </p>
+
+            <div className="bg-sky-50 dark:bg-slate-800 p-4 rounded-2xl border border-sky-100 dark:border-slate-700 text-left space-y-1.5 text-sm">
+              <p className="text-slate-800 dark:text-slate-200"><strong>রোগীর নাম:</strong> {successDetails.name}</p>
+              <p className="text-slate-800 dark:text-slate-200"><strong>তারিখ:</strong> {successDetails.date}</p>
+              <p className="text-slate-800 dark:text-slate-200"><strong>সময়:</strong> {successDetails.time}</p>
+            </div>
+
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer"
+            >
+              {t[lang].closeModalBtn}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ভাসমান হোয়াটসঅ্যাপ বাটন */}
       <a
