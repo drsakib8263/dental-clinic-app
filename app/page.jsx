@@ -808,7 +808,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* যোগাযোগ ও কন্টাক্ট সেকশন (আকর্ষণীয় ও প্রিমিয়াম ডিজাইন) */}
+        {/* যোগাযোগ ও কন্টাক্ট সেকশন */}
         <section className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border-2 border-sky-300 dark:border-slate-700 space-y-6">
           <div className="flex items-center gap-3 border-b border-sky-100 dark:border-slate-800 pb-4">
             <span className="text-3xl p-2 bg-sky-100 dark:bg-slate-800 rounded-2xl">📞</span>
@@ -846,7 +846,7 @@ export default function Home() {
 
           <div className="flex flex-col md:flex-row gap-3 pt-2">
             <a 
-              href="https://maps.google.com" 
+              href="https://maps.app.goo.gl/fk2Y1ujsnXuctkpL9?g_st=ac" 
               target="_blank" 
               rel="noopener noreferrer"
               className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-2xl text-center shadow-lg transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer"
@@ -854,7 +854,7 @@ export default function Home() {
               {t[lang].mapBtn}
             </a>
             <a 
-              href="https://wa.me/8801816011701" 
+              href="https://wa.me/message/KBZOTSKH66H4P1" 
               target="_blank" 
               rel="noopener noreferrer"
               className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 px-6 rounded-2xl text-center shadow-lg transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer"
