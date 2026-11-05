@@ -353,7 +353,6 @@ export default function Home() {
 
       await fetchBookingsCount()
 
-      // Supabase সেটিংস বা লোকাল স্টোরেজ থেকে পুশ নোটিফিকেশন চেক
       const { data: settingsData } = await supabase
         .from('settings')
         .select('notification_enabled')
@@ -429,6 +428,40 @@ export default function Home() {
     { name: 'Heat Cure Denture', price: '2500 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
     { name: 'Self Cure Denture', price: '1000 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
     { name: 'Night Guard', price: '7000 BDT (Per Arch)', time: '15 mins (Per Visit)' }
+  ]
+
+  const dentalTips = lang === 'bn' ? [
+    {
+      icon: '🦷',
+      title: 'দিনে দুবার ব্রাশ করার সঠিক নিয়ম',
+      description: 'সকালে নাস্তার পর এবং রাতে ঘুমাতে যাওয়ার আগে অন্তত ২ মিনিট ধরে ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে দাঁত ব্রাশ করুন। এটি দাঁতের ক্ষয় ও ক্যাভিটি রোধ করতে সবচেয়ে কার্যকরী।'
+    },
+    {
+      icon: '🧵',
+      title: 'মাড়ির সুস্থতা ও ডেন্টাল ফ্লস',
+      description: 'শুধু ব্রাশ করলেই মুখের সম্পূর্ণ hygiene রক্ষা হয় না। প্রতিদিন অন্তত একবার ডেন্টাল ফ্লস ব্যবহার করে দাঁতের মধ্যবর্তী জমে থাকা খাবারের কণা ও প্লাক পরিষ্কার করুন।'
+    },
+    {
+      icon: '🩺',
+      title: 'কবে ডেন্টাল সার্জনের কাছে যাবেন?',
+      description: 'দাঁতে সামান্য ব্যথা, মাড়ি দিয়ে রক্ত পড়া বা ঠান্ডা-গরম লাগার সমস্যা দেখা দিলেই অবহেলা না করে দ্রুত ডেন্টাল সার্জনের পরামর্শ নিন। নিয়মিত চেকআপ বড় জটিলতা থেকে রক্ষা করে।'
+    }
+  ] : [
+    {
+      icon: '🦷',
+      title: 'Proper Brushing Technique Twice Daily',
+      description: 'Brush your teeth with fluoride toothpaste for at least 2 minutes after breakfast and before going to bed at night. This is most effective in preventing tooth decay and cavities.'
+    },
+    {
+      icon: '🧵',
+      title: 'Gum Health and Dental Floss',
+      description: 'Brushing alone does not maintain complete oral hygiene. Use dental floss at least once a day to clean food particles and plaque trapped between your teeth.'
+    },
+    {
+      icon: '🩺',
+      title: 'When to Visit a Dental Surgeon?',
+      description: 'Do not neglect minor tooth pain, bleeding gums, or sensitivity. Consult a dental surgeon promptly. Regular checkups protect against major complications.'
+    }
   ]
 
   return (
@@ -710,6 +743,111 @@ export default function Home() {
               </div>
             </div>
           )}
+        </section>
+
+        {/* চেম্বারের সময়সূচি সেকশন */}
+        <section className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-sky-200 dark:border-slate-700">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">⏰</span>
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
+              {t[lang].scheduleTitle}
+            </h2>
+          </div>
+          <div className="space-y-3 text-slate-700 dark:text-slate-300 text-sm md:text-base">
+            <div className="flex justify-between items-center p-3 bg-sky-50 dark:bg-slate-800 rounded-xl border border-sky-100 dark:border-slate-700">
+              <span className="font-bold">{t[lang].scheduleDays}</span>
+              <span className="font-semibold text-sky-700 dark:text-sky-400">{t[lang].scheduleTime}</span>
+            </div>
+            <div className="flex justify-between items-center p-3 bg-rose-50 dark:bg-slate-800 rounded-xl border border-rose-100 dark:border-slate-700">
+              <span className="font-bold">{t[lang].scheduleFriday}</span>
+              <span className="font-semibold text-rose-600 dark:text-rose-400">{t[lang].scheduleClosed}</span>
+            </div>
+          </div>
+        </section>
+
+        {/* দাঁতের যত্ন ও স্বাস্থ্য টিপস (ব্লগ) সেকশন */}
+        <section className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-sky-200 dark:border-slate-700 space-y-6">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">📖</span>
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
+              {t[lang].tipsTitle}
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {dentalTips.map((tip, index) => (
+              <div key={index} className="bg-sky-50 dark:bg-slate-800 p-5 rounded-2xl border border-sky-100 dark:border-slate-700 space-y-2 flex flex-col justify-between">
+                <div>
+                  <div className="text-3xl mb-2">{tip.icon}</div>
+                  <h3 className="font-bold text-slate-900 dark:text-white text-base mb-1">{tip.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">{tip.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ভিডিও এমবেড সেকশন */}
+        <section className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-sky-200 dark:border-slate-700 space-y-4">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">🎥</span>
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
+              {t[lang].videoTitle}
+            </h2>
+          </div>
+          <p className="text-slate-600 dark:text-slate-300 text-sm">
+            {t[lang].videoSub}
+          </p>
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg border border-sky-200 dark:border-slate-700 bg-black">
+            <iframe
+              className="absolute top-0 left-0 w-full h-full"
+              src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+              title="Dental Care Awareness Video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </section>
+
+        {/* যোগাযোগ ও কন্টাক্ট সেকশন */}
+        <section className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-sky-200 dark:border-slate-700 space-y-4">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">📞</span>
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
+              {t[lang].contactTitle}
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base">
+            <div className="p-4 bg-sky-50 dark:bg-slate-800 rounded-2xl border border-sky-100 dark:border-slate-700 space-y-1">
+              <p className="font-bold text-slate-700 dark:text-slate-300">{t[lang].hotline}</p>
+              <a href="tel:+88017XXXXXXXX" className="text-sky-700 dark:text-sky-400 font-extrabold hover:underline block">
+                +880 17XX-XXXXXX
+              </a>
+            </div>
+            <div className="p-4 bg-sky-50 dark:bg-slate-800 rounded-2xl border border-sky-100 dark:border-slate-700 space-y-1">
+              <p className="font-bold text-slate-700 dark:text-slate-300">{t[lang].email}</p>
+              <a href="mailto:contact@drsakib.com" className="text-sky-700 dark:text-sky-400 font-extrabold hover:underline block">
+                contact@drsakib.com
+              </a>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row gap-3 pt-2">
+            <a 
+              href="https://maps.google.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-2xl text-center shadow transition duration-200 text-sm flex items-center justify-center gap-2"
+            >
+              {t[lang].mapBtn}
+            </a>
+            <a 
+              href="https://wa.me/88017XXXXXXXX" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-2xl text-center shadow transition duration-200 text-sm flex items-center justify-center gap-2"
+            >
+              {t[lang].whatsappBtn}
+            </a>
+          </div>
         </section>
 
       </div>
