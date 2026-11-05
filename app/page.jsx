@@ -14,10 +14,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [showTreatments, setShowTreatments] = useState(false)
 
-  // অ্যাডমিন প্যানেল দৃশ্যমান হওয়ার স্টেট (ডিফল্টভাবে হাইড থাকবে)
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false)
-  const [showAdminPanel, setShowAdminPanel] = useState(false)
-
+  // চেম্বার বন্ধ থাকার নোটিশ পপ-আপ স্টেট (লোকালস্টোরেজ বা অ্যাডমিন প্যানেল থেকে সিঙ্ক হবে)
+  const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
   const [chamberNotice, setChamberNotice] = useState({
     isClosed: false,
     titleBn: 'জরুরি নোটিশ: চেম্বার বন্ধ সংক্রান্ত',
@@ -25,8 +23,6 @@ export default function Home() {
     messageBn: 'আগামী ১০ নভেম্বর থেকে ১৫ নভেম্বর পর্যন্ত চেম্বার বন্ধ থাকবে। ১৬ নভেম্বর থেকে যথারীতি অ্যাপয়েন্টমেন্ট নেওয়া যাবে।',
     messageEn: 'The chamber will be closed from Nov 10 to Nov 15. Appointments will resume from Nov 16.'
   })
-  const [notificationEnabled, setNotificationEnabled] = useState(true)
-  const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
 
   // সফল বুকিং পপ-আপ স্টেট
   const [showSuccessModal, setShowSuccessModal] = useState(false)
@@ -79,16 +75,7 @@ export default function Home() {
 
     fetchBookingsCount()
 
-    // ইউআরএল চেক করা (যদি মোবাইলের অ্যাডমিন অ্যাপে ?admin=true বা সিক্রেট পাথ থাকে তবেই অ্যাডমিন মোড অন হবে)
-    const urlParams = new URLSearchParams(window.location.search)
-    if (urlParams.get('admin') === 'true' || localStorage.getItem('isAdminAuth') === 'true') {
-      setIsAdminLoggedIn(true)
-      if (urlParams.get('admin') === 'true') {
-        localStorage.setItem('isAdminAuth', 'true')
-      }
-    }
-
-    // লোকালস্টোরেজ থেকে নোটিশ ও নোটিফিকেশন সেটিংস লোড করা
+    // অ্যাডমিন প্যানেল থেকে সেভ করা নোটিশ চেক করা
     const savedNotice = localStorage.getItem('chamberNotice')
     if (savedNotice) {
       const parsed = JSON.parse(savedNotice)
@@ -96,11 +83,6 @@ export default function Home() {
       if (parsed.isClosed) {
         setShowChamberClosedModal(true)
       }
-    }
-
-    const savedNotifSetting = localStorage.getItem('notificationEnabled')
-    if (savedNotifSetting !== null) {
-      setNotificationEnabled(JSON.parse(savedNotifSetting))
     }
 
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
@@ -113,18 +95,6 @@ export default function Home() {
       }
     }
   }, [])
-
-  // অ্যাডমিন সেটিংস সেভ করার ফাংশন
-  const handleSaveAdminSettings = (e) => {
-    e.preventDefault()
-    localStorage.setItem('chamberNotice', JSON.stringify(chamberNotice))
-    localStorage.setItem('notificationEnabled', JSON.stringify(notificationEnabled))
-    alert(lang === 'bn' ? 'অ্যাডমিন সেটিংস সফলভাবে আপডেট করা হয়েছে!' : 'Admin settings updated successfully!')
-    setShowAdminPanel(false)
-    if (chamberNotice.isClosed) {
-      setShowChamberClosedModal(true)
-    }
-  }
 
   useEffect(() => {
     const dates = []
@@ -204,8 +174,6 @@ export default function Home() {
       training: 'স্পেশাল ট্রেইনড ইন ইমপ্ল্যান্ট এন্ড কসমেটিক ডেন্টিস্ট্রি',
       bookingMainBtn: '📅 অনলাইন অ্যাপয়েন্টমেন্ট বুকিং করুন',
       bookingCloseBtn: '✕ ফর্ম বন্ধ করুন',
-      adminPanelBtn: '⚙️ অ্যাডমিন কন্ট্রোল প্যানেল',
-      adminPanelTitle: 'অ্যাডমিন ড্যাশবোর্ড ও কন্ট্রোল',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
       bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
       patientName: 'রোগীর নাম *',
@@ -254,8 +222,6 @@ export default function Home() {
       training: 'Special Trained in Implant & Cosmetic Dentistry',
       bookingMainBtn: '📅 Book Online Appointment',
       bookingCloseBtn: '✕ Close Form',
-      adminPanelBtn: '⚙️ Admin Control Panel',
-      adminPanelTitle: 'Admin Dashboard & Controls',
       bookingTitle: 'Online Appointment Booking',
       bookingSub: 'Saturday to Thursday (4:00 PM - 9:00 PM), Friday Closed',
       patientName: 'Patient Name *',
@@ -370,7 +336,11 @@ export default function Home() {
 
       await fetchBookingsCount()
 
-      if (notificationEnabled && 'serviceWorker' in navigator && Notification.permission === 'granted') {
+      // লোকাল স্টোরেজ থেকে চেক করা নোটিফিকেশন অন আছে কিনা
+      const notifSetting = localStorage.getItem('notificationEnabled')
+      const isNotifOn = notifSetting !== null ? JSON.parse(notifSetting) : true
+
+      if (isNotifOn && 'serviceWorker' in navigator && Notification.permission === 'granted') {
         navigator.serviceWorker.ready.then((registration) => {
           registration.showNotification('নতুন অ্যাপয়েন্টমেন্ট সফল!', {
             body: `রোগী: ${formData.patient_name}\nতারিখ: ${formData.appointment_date} (${formData.appointment_time})`,
@@ -479,18 +449,8 @@ export default function Home() {
       style={{ backgroundImage: `url('/site-bg.jpeg')` }}
     >
       
-      {/* টপ বার: অ্যাডমিন বাটন কেবল তখনই দেখাবে যখন অ্যাডমিন ডিভাইস/লিঙ্ক থেকে প্রবেশ করা হবে */}
-      <div className="max-w-4xl mx-auto flex flex-wrap justify-end gap-3 mb-4 relative z-50">
-        {isAdminLoggedIn && (
-          <button
-            type="button"
-            onClick={() => setShowAdminPanel(true)}
-            className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2.5 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none animate-pulse"
-          >
-            <span>{t[lang].adminPanelBtn}</span>
-          </button>
-        )}
-
+      {/* টপ বার: থিম ও ল্যাঙ্গুয়েজ টগল বাটন (কোনো অ্যাডমিন বাটন এখানে থাকবে না) */}
+      <div className="max-w-4xl mx-auto flex justify-end gap-3 mb-4 relative z-50">
         <button
           type="button"
           onClick={toggleTheme}
@@ -862,108 +822,8 @@ export default function Home() {
         </section>
       </div>
 
-      {/* অ্যাডমিন কন্ট্রোল প্যানেল মডাল (শুধুমাত্র অ্যাডমিন ডিভাইসে দেখাবে) */}
-      {isAdminLoggedIn && showAdminPanel && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-amber-500 max-w-lg w-full space-y-6 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b pb-3 border-slate-200 dark:border-slate-700">
-              <h3 className="text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                <span>⚙️</span> {t[lang].adminPanelTitle}
-              </h3>
-              <button 
-                onClick={() => setShowAdminPanel(false)}
-                className="text-slate-500 hover:text-slate-700 dark:text-slate-400 font-bold text-lg p-1 cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveAdminSettings} className="space-y-4 text-sm">
-              <div className="flex items-center justify-between bg-amber-50 dark:bg-slate-800 p-4 rounded-2xl border border-amber-200 dark:border-slate-700">
-                <span className="font-bold text-slate-800 dark:text-slate-200">
-                  {lang === 'bn' ? 'চেম্বার বন্ধ রাখুন (Notice Active)' : 'Close Chamber (Notice Active)'}
-                </span>
-                <input 
-                  type="checkbox"
-                  checked={chamberNotice.isClosed}
-                  onChange={(e) => setChamberNotice({ ...chamberNotice, isClosed: e.target.checked })}
-                  className="w-6 h-6 accent-amber-600 cursor-pointer"
-                />
-              </div>
-
-              <div className="flex items-center justify-between bg-sky-50 dark:bg-slate-800 p-4 rounded-2xl border border-sky-200 dark:border-slate-700">
-                <span className="font-bold text-slate-800 dark:text-slate-200">
-                  {lang === 'bn' ? 'পুশ নোটিফিকেশন চালু রাখুন (Notifications)' : 'Enable Push Notifications'}
-                </span>
-                <input 
-                  type="checkbox"
-                  checked={notificationEnabled}
-                  onChange={(e) => setNotificationEnabled(e.target.checked)}
-                  className="w-6 h-6 accent-sky-600 cursor-pointer"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="block font-bold text-slate-700 dark:text-slate-300">
-                  {lang === 'bn' ? 'বাংলা নোটিশ শিরোনাম:' : 'Notice Title (Bangla):'}
-                </label>
-                <input 
-                  type="text"
-                  value={chamberNotice.titleBn}
-                  onChange={(e) => setChamberNotice({ ...chamberNotice, titleBn: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl outline-none dark:border-slate-700 text-slate-900 dark:text-white"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="block font-bold text-slate-700 dark:text-slate-300">
-                  {lang === 'bn' ? 'বাংলা নোটিশ বার্তা (কতদিন বন্ধ ও কবে খুলবে):' : 'Notice Message (Bangla):'}
-                </label>
-                <textarea 
-                  rows="3"
-                  value={chamberNotice.messageBn}
-                  onChange={(e) => setChamberNotice({ ...chamberNotice, messageBn: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl outline-none dark:border-slate-700 text-slate-900 dark:text-white"
-                ></textarea>
-              </div>
-
-              <div className="space-y-2">
-                <label className="block font-bold text-slate-700 dark:text-slate-300">
-                  {lang === 'bn' ? 'ইংরেজি নোটিশ শিরোনাম:' : 'Notice Title (English):'}
-                </label>
-                <input 
-                  type="text"
-                  value={chamberNotice.titleEn}
-                  onChange={(e) => setChamberNotice({ ...chamberNotice, titleEn: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl outline-none dark:border-slate-700 text-slate-900 dark:text-white"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="block font-bold text-slate-700 dark:text-slate-300">
-                  {lang === 'bn' ? 'ইংরেজি নোটিশ বার্তা:' : 'Notice Message (English):'}
-                </label>
-                <textarea 
-                  rows="3"
-                  value={chamberNotice.messageEn}
-                  onChange={(e) => setChamberNotice({ ...chamberNotice, messageEn: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl outline-none dark:border-slate-700 text-slate-900 dark:text-white"
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer mt-4"
-              >
-                {lang === 'bn' ? 'সেটিংস সংরক্ষণ করুন (Save Settings)' : 'Save Settings'}
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-
       {/* চেম্বার বন্ধ থাকার পপ-আপ নোটিশ বক্স (রোগীদের জন্য) */}
-      {chamberNotice.isClosed && (
+      {showChamberClosedModal && chamberNotice.isClosed && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-300">
           <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-rose-400 dark:border-rose-600 max-w-md w-full text-center space-y-4 scale-105 animate-in zoom-in-95 duration-200">
             <div className="w-16 h-16 bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
