@@ -10,7 +10,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 export default function Home() {
   const [lang, setLang] = useState('bn')
   const [availableDates, setAvailableDates] = useState([])
-  const [bookedSlotsCount, setBookedSlotsCount] = useState({}) // কোন তারিখে কোন সময়ে কয়টি বুকিং আছে তা ট্র্যাক করার জন্য
+  const [bookedSlotsCount, setBookedSlotsCount] = useState({})
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
   const [showTreatments, setShowTreatments] = useState(false)
@@ -42,7 +42,6 @@ export default function Home() {
         return
       }
 
-      // ডেটাগুলোকে কাউন্ট করার অবজেক্টে রূপান্তর করা (যেমন: {"2026-06-06|বিকেল ৪:০০ টা": 2})
       const counts = {}
       data.forEach(item => {
         const key = `${item.appointment_date}|${item.appointment_time}`
@@ -54,7 +53,7 @@ export default function Home() {
     }
   }
 
-  // পেজ লোড হওয়ার সময় লোকাল স্টোরেজ থেকে ডার্ক মোড সেট করা, বাংলায় তারিখের ড্রপডাউন এবং বুকিং কাউন্ট লোড করা
+  // পেজ লোড হওয়ার সময় লোকাল স্টোরেজ থেকে ডার্ক মোড, সার্ভিস ওয়ার্কার রেজিস্ট্রেশন ও তারিখ লোড করা
   useEffect(() => {
     const isDark = localStorage.getItem('theme') === 'dark' ||
       (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -67,6 +66,17 @@ export default function Home() {
     }
 
     fetchBookingsCount()
+
+    // ব্রাউজারে সার্ভিস ওয়ার্কার ও নোটিফিকেশন পারমিশন রেজিস্ট্রেশন
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => console.log('Service Worker Registered:', reg.scope))
+        .catch((err) => console.error('Service Worker Registration failed:', err))
+
+      if ('Notification' in window && Notification.permission !== 'granted') {
+        Notification.requestPermission()
+      }
+    }
 
     // সামনের ৭টি সচল দিন (শুক্রবার বাদে) বাংলায় তৈরি করার লজিক
     const dates = []
@@ -233,7 +243,6 @@ export default function Home() {
   const handleChange = (e) => {
     const { name, value } = e.target
     
-    // যদি কেউ ফুল স্লটে ক্লিক করার চেষ্টা করে (যদি ব্রাউজারে অপশন ডিজেবল থাকা সত্ত্বেও সিলেক্ট হয়)
     if (name === 'appointment_time' && formData.appointment_date) {
       const slotKey = `${formData.appointment_date}|${value}`
       if ((bookedSlotsCount[slotKey] || 0) >= 2) {
@@ -256,7 +265,6 @@ export default function Home() {
       return
     }
 
-    // সাবমিট করার সময় আবারও চেক করা যে স্লটটি ফুল হয়ে গেছে কি না
     const slotKey = `${formData.appointment_date}|${formData.appointment_time}`
     if ((bookedSlotsCount[slotKey] || 0) >= 2) {
       alert(lang === 'bn' ? 'দুঃখিত, এই সময়ে এপয়েন্টমেন্ট খালি নেই।' : 'Sorry, this time slot is fully booked.')
@@ -287,8 +295,15 @@ export default function Home() {
         return
       }
 
-      // সফল হওয়ার পর কাউন্ট আপডেট করা
       await fetchBookingsCount()
+
+      // সফল বুকিংয়ের পর ব্রাউজার/ডিভাইস নোটিফিকেশন প্যানেলে নোটিফিকেশন দেখানো
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('নতুন অ্যাপয়েন্টমেন্ট সফল!', {
+          body: `রোগী: ${formData.patient_name}\nতারিখ: ${formData.appointment_date} (${formData.appointment_time})`,
+          icon: '/icon.png'
+        })
+      }
 
       setMessage({
         type: 'success',
@@ -580,7 +595,7 @@ export default function Home() {
                 </select>
               </div>
 
-              {/* সময় নির্বাচন (লাল রঙের স্লট ও ফিল্টারিং লজিক সহ) */}
+              {/* সময় নির্বাচন (সর্বোচ্চ ২ জন লিমিট ও লাল রঙ সহ) */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   {t[lang].timeLabel}
