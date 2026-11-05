@@ -5,6 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default function AdminDashboard() {
   const [appointments, setAppointments] = useState([])
@@ -13,73 +14,71 @@ export default function AdminDashboard() {
   const [selectedDate, setSelectedDate] = useState('all')
   const [availableDates, setAvailableDates] = useState([])
 
-  // চেম্বার বন্ধ ও নোটিশ কন্ট্রোল স্টেট
   const [showNoticeControl, setShowNoticeControl] = useState(false)
   const [chamberNotice, setChamberNotice] = useState({
     isClosed: false,
-    titleBn: 'জরুরি নোটিশ: চেম্বার বন্ধ সংক্রান্ত',
-    titleEn: 'Important Notice: Chamber Closure',
-    messageBn: 'আগামী ১০ নভেম্বর থেকে ১৫ নভেম্বর পর্যন্ত চেম্বার বন্ধ থাকবে। ১৬ নভেম্বর থেকে যথারীতি অ্যাপয়েন্টমেন্ট নেওয়া যাবে।',
-    messageEn: 'The chamber will be closed from Nov 10 to Nov 15. Appointments will resume from Nov 16.'
+    titleBn: '',
+    titleEn: '',
+    messageBn: '',
+    messageEn: ''
   })
   const [notificationEnabled, setNotificationEnabled] = useState(true)
 
   const fetchAppointments = async () => {
     setLoading(true)
     try {
-      const supabase = createClient(supabaseUrl, supabaseAnonKey)
-      const { data, error } = await supabase
-        .from('appointments')
-        .select('*')
-
-      if (error) {
-        console.error('Error fetching appointments message:', error.message)
-      } else {
+      const { data, error } = await supabase.from('appointments').select('*')
+      if (!error) {
         setAppointments(data || [])
         setFilteredAppointments(data || [])
-        
         const uniqueDates = [...new Set((data || []).map(item => item.appointment_date))]
         setAvailableDates(uniqueDates)
       }
     } catch (err) {
-      console.error('Catch Error:', err.message || err)
+      console.error(err)
     } finally {
       setLoading(false)
     }
   }
 
+  const fetchSettings = async () => {
+    const { data, error } = await supabase.from('settings').select('*').eq('id', 'chamber_notice').single()
+    if (data && !error) {
+      setChamberNotice({
+        isClosed: data.is_closed,
+        titleBn: data.title_bn,
+        titleEn: data.title_en,
+        messageBn: data.message_bn,
+        messageEn: data.message_en
+      })
+      setNotificationEnabled(data.notification_enabled)
+    }
+  }
+
   useEffect(() => {
     fetchAppointments()
-
-    const loadAdminSettings = () => {
-      const savedNotice = localStorage.getItem('chamberNotice')
-      if (savedNotice) {
-        setChamberNotice(JSON.parse(savedNotice))
-      }
-
-      const savedNotifSetting = localStorage.getItem('notificationEnabled')
-      if (savedNotifSetting !== null) {
-        setNotificationEnabled(JSON.parse(savedNotifSetting))
-      }
-    }
-
-    loadAdminSettings()
-    window.addEventListener('storage', loadAdminSettings)
-    return () => {
-      window.removeEventListener('storage', loadAdminSettings)
-    }
+    fetchSettings()
   }, [])
 
-  const handleSaveAdminSettings = (e) => {
+  const handleSaveAdminSettings = async (e) => {
     e.preventDefault()
-    localStorage.setItem('chamberNotice', JSON.stringify(chamberNotice))
-    localStorage.setItem('notificationEnabled', JSON.stringify(notificationEnabled))
-    
-    // মোবাইল ও কম্পিউটার উভয় জায়গায় রিয়েল-টাইম সিঙ্ক করার জন্য
-    window.dispatchEvent(new Event('storage'))
+    const { error } = await supabase.from('settings').upsert({
+      id: 'chamber_notice',
+      is_closed: chamberNotice.isClosed,
+      title_bn: chamberNotice.titleBn,
+      title_en: chamberNotice.titleEn,
+      message_bn: chamberNotice.messageBn,
+      message_en: chamberNotice.messageEn,
+      notification_enabled: notificationEnabled,
+      updated_at: new Date()
+    })
 
-    alert('চেম্বারের নোটিশ ও পুশ নোটিফিকেশন সেটিংস সফলভাবে আপডেট করা হয়েছে!')
-    setShowNoticeControl(false)
+    if (error) {
+      alert('সেটিংস সেভ করতে সমস্যা হয়েছে: ' + error.message)
+    } else {
+      alert('সফলভাবে লাইভ ডেটাবেজে নোটিশ ও সেটিংস আপডেট করা হয়েছে!')
+      setShowNoticeControl(false)
+    }
   }
 
   const handleFilterDate = (date) => {
@@ -87,26 +86,18 @@ export default function AdminDashboard() {
     if (date === 'all') {
       setFilteredAppointments(appointments)
     } else {
-      const filtered = appointments.filter(item => item.appointment_date === date)
-      setFilteredAppointments(filtered)
+      setFilteredAppointments(appointments.filter(item => item.appointment_date === date))
     }
   }
 
   return (
     <main className="min-h-screen bg-slate-100 text-slate-800 p-4 md:p-8">
       <div className="max-w-5xl mx-auto space-y-6">
-        
-        {/* অ্যাডমিন হেডার ও কন্ট্রোল বাটন */}
         <div className="bg-white p-6 rounded-3xl shadow-lg border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900">
-              অ্যাডমিন ড্যাশবোর্ড
-            </h1>
-            <p className="text-slate-500 text-sm">
-              রোগীদের বুক করা অ্যাপয়েন্টমেন্টসমূহের তালিকা ও ব্যবস্থাপনা
-            </p>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900">অ্যাডমিন ড্যাশবোর্ড</h1>
+            <p className="text-slate-500 text-sm">রোগীদের অ্যাপয়েন্টমেন্ট তালিকা ও চেম্বার সেটিংস</p>
           </div>
-
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setShowNoticeControl(true)}
@@ -114,7 +105,6 @@ export default function AdminDashboard() {
             >
               ⚙️ চেম্বার বন্ধ/নোটিশ কন্ট্রোল
             </button>
-
             <button
               onClick={fetchAppointments}
               className="bg-teal-700 hover:bg-teal-800 text-white font-bold px-4 py-2.5 rounded-xl shadow transition text-sm cursor-pointer"
@@ -124,16 +114,13 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* ফিল্টার সেকশন */}
         <div className="bg-white p-4 rounded-2xl shadow border border-slate-200">
           <p className="text-sm font-bold text-slate-700 mb-3">তারিখ অনুযায়ী ফিল্টার করুন:</p>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => handleFilterDate('all')}
-              className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition cursor-pointer ${
-                selectedDate === 'all'
-                  ? 'bg-rose-900 text-white shadow'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition ${
+                selectedDate === 'all' ? 'bg-rose-900 text-white shadow' : 'bg-slate-100 text-slate-700'
               }`}
             >
               সকল তারিখ ({appointments.length})
@@ -142,10 +129,8 @@ export default function AdminDashboard() {
               <button
                 key={index}
                 onClick={() => handleFilterDate(date)}
-                className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition cursor-pointer ${
-                  selectedDate === date
-                    ? 'bg-rose-900 text-white shadow'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition ${
+                  selectedDate === date ? 'bg-rose-900 text-white shadow' : 'bg-slate-100 text-slate-700'
                 }`}
               >
                 {date}
@@ -154,12 +139,11 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* টেবিল সেকশন */}
         <div className="bg-white rounded-3xl shadow-lg border border-slate-200 overflow-hidden">
           {loading ? (
-            <div className="p-8 text-center text-slate-500 font-medium">লোড হচ্ছে...</div>
+            <div className="p-8 text-center text-slate-500">লোড হচ্ছে...</div>
           ) : filteredAppointments.length === 0 ? (
-            <div className="p-8 text-center text-slate-500 font-medium">কোনো অ্যাপয়েন্টমেন্ট পাওয়া যায়নি।</div>
+            <div className="p-8 text-center text-slate-500">কোনো অ্যাপয়েন্টমেন্ট পাওয়া যায়নি।</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
@@ -174,7 +158,7 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-xs md:text-sm">
                   {filteredAppointments.map((item, index) => (
-                    <tr key={index} className="hover:bg-slate-50 transition">
+                    <tr key={index} className="hover:bg-slate-50">
                       <td className="py-3.5 px-4 font-semibold text-slate-900">{item.patient_name}</td>
                       <td className="py-3.5 px-4 text-slate-700">{item.age ? `${item.age} বছর` : '-'}</td>
                       <td className="py-3.5 px-4 text-slate-700">
@@ -194,30 +178,21 @@ export default function AdminDashboard() {
             </div>
           )}
         </div>
-
       </div>
 
-      {/* চেম্বার বন্ধ ও নোটিশ কন্ট্রোল মডাল পপ-আপ */}
       {showNoticeControl && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
           <div className="bg-white p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-amber-500 max-w-lg w-full space-y-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b pb-3 border-slate-200">
               <h3 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                <span>⚙️</span> চেম্বার নোটিশ ও নোটিফিকেশন কন্ট্রোল
+                ⚙️ চেম্বার নোটিশ ও নোটিফিকেশন কন্ট্রোল
               </h3>
-              <button 
-                onClick={() => setShowNoticeControl(false)}
-                className="text-slate-500 hover:text-slate-700 font-bold text-lg p-1 cursor-pointer"
-              >
-                ✕
-              </button>
+              <button onClick={() => setShowNoticeControl(false)} className="text-slate-500 font-bold text-lg p-1">✕</button>
             </div>
 
             <form onSubmit={handleSaveAdminSettings} className="space-y-4 text-sm">
               <div className="flex items-center justify-between bg-amber-50 p-4 rounded-2xl border border-amber-200">
-                <span className="font-bold text-slate-800">
-                  চেম্বার বন্ধ রাখুন (রোগীদের নোটিশ দেখাবে)
-                </span>
+                <span className="font-bold text-slate-800">চেম্বার বন্ধ রাখুন (রোগীদের নোটিশ দেখাবে)</span>
                 <input 
                   type="checkbox"
                   checked={chamberNotice.isClosed}
@@ -227,9 +202,7 @@ export default function AdminDashboard() {
               </div>
 
               <div className="flex items-center justify-between bg-sky-50 p-4 rounded-2xl border border-sky-200">
-                <span className="font-bold text-slate-800">
-                  পুশ নোটিফিকেশন চালু রাখুন
-                </span>
+                <span className="font-bold text-slate-800">পুশ নোটিফিকেশন চালু রাখুন</span>
                 <input 
                   type="checkbox"
                   checked={notificationEnabled}
@@ -249,7 +222,7 @@ export default function AdminDashboard() {
               </div>
 
               <div className="space-y-1">
-                <label className="block font-bold text-slate-700">বাংলা নোটিশ বার্তা (কতদিন বন্ধ ও কবে খুলবে):</label>
+                <label className="block font-bold text-slate-700">বাংলা নোটিশ বার্তা:</label>
                 <textarea 
                   rows="3"
                   value={chamberNotice.messageBn}
@@ -280,9 +253,9 @@ export default function AdminDashboard() {
 
               <button
                 type="submit"
-                className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer mt-4"
+                className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3.5 px-6 rounded-xl transition shadow-lg cursor-pointer mt-4"
               >
-                সেটিংস সংরক্ষণ করুন (Save Settings)
+                লাইভ সেভ করুন (Save to Live DB)
               </button>
             </form>
           </div>
