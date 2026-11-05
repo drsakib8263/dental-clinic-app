@@ -24,6 +24,7 @@ export default function AdminDashboard() {
   })
   const [notificationEnabled, setNotificationEnabled] = useState(true)
 
+  // আপডেট করা ফেচ ফাংশন (যাতে সুপাবেজের আসল এরর মেসেজ জানা যায়)
   const fetchAppointments = async () => {
     setLoading(true)
     try {
@@ -34,7 +35,8 @@ export default function AdminDashboard() {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error fetching appointments:', error)
+        console.error('Error fetching appointments message:', error.message)
+        console.error('Error fetching appointments full:', JSON.stringify(error, null, 2))
       } else {
         setAppointments(data || [])
         setFilteredAppointments(data || [])
@@ -43,7 +45,7 @@ export default function AdminDashboard() {
         setAvailableDates(uniqueDates)
       }
     } catch (err) {
-      console.error('Catch Error:', err)
+      console.error('Catch Error:', err.message || err)
     } finally {
       setLoading(false)
     }
