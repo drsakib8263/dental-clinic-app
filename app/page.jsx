@@ -8,250 +8,759 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default function Home() {
-  const [appointments, setAppointments] = useState([])
-  const [formData, setFormData] = useState({
-    patient_name: '',
-    age: '',
-    patient_phone: '',
-    service: 'General Checkup',
-    appointment_date: '',
-    appointment_time: '10:00 AM'
-  })
+  const [lang, setLang] = useState('bn')
+  const [availableDates, setAvailableDates] = useState([])
+  const [bookedSlotsCount, setBookedSlotsCount] = useState({})
   const [loading, setLoading] = useState(false)
-  const [successMessage, setSuccessMessage] = useState('')
+  const [showTreatments, setShowTreatments] = useState(false)
 
-  // চেম্বার বন্ধ ও নোটিশ সংক্রান্ত স্টেট
+  // চেম্বার বন্ধ থাকার নোটিশ পপ-আপ স্টেট (Supabase লাইভ ডেটাবেজ থেকে সিঙ্ক হবে)
+  const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
   const [chamberNotice, setChamberNotice] = useState({
     isClosed: false,
     titleBn: 'জরুরি নোটিশ: চেম্বার বন্ধ সংক্রান্ত',
     titleEn: 'Important Notice: Chamber Closure',
-    messageBn: '',
-    messageEn: ''
+    messageBn: 'আগামী ১০ নভেম্বর থেকে ১৫ নভেম্বর পর্যন্ত চেম্বার বন্ধ থাকবে। ১৬ নভেম্বর থেকে যথারীতি অ্যাপয়েন্টমেন্ট নেওয়া যাবে।',
+    messageEn: 'The chamber will be closed from Nov 10 to Nov 15. Appointments will resume from Nov 16.'
   })
-  const [showNoticeModal, setShowNoticeModal] = useState(false)
-  const [language, setLanguage] = useState('bn') // 'bn' অথবা 'en'
 
-  // Supabase লাইভ ডেটাবেজ থেকে নোটিশ লোড করার জন্য useEffect
-  useEffect(() => {
-    const fetchLiveNotice = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('settings')
-          .select('*')
-          .eq('id', 'chamber_notice')
-          .single()
+  // সফল বুকিং পপ-আপ স্টেট
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [successDetails, setSuccessDetails] = useState({ name: '', date: '', time: '' })
 
-        if (data && !error) {
-          setChamberNotice({
-            isClosed: data.is_closed,
-            titleBn: data.title_bn,
-            titleEn: data.title_en,
-            messageBn: data.message_bn,
-            messageEn: data.message_en
-          })
-          if (data.is_closed) {
-            setShowNoticeModal(true)
-          }
+  const [showBookingBox, setShowBookingBox] = useState(false)
+  const [darkMode, setDarkMode] = useState(false)
+
+  const [formData, setFormData] = useState({
+    patient_name: '',
+    age: '',
+    phone: '',
+    service: '',
+    appointment_date: '',
+    appointment_time: ''
+  })
+
+  const fetchBookingsCount = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('appointments')
+        .select('appointment_date, appointment_time')
+
+      if (error) {
+        console.error('Error fetching bookings:', error)
+        return
+      }
+
+      const counts = {}
+      data.forEach(item => {
+        const key = `${item.appointment_date}|${item.appointment_time}`
+        counts[key] = (counts[key] || 0) + 1
+      })
+      setBookedSlotsCount(counts)
+    } catch (err) {
+      console.error('Error:', err)
+    }
+  }
+
+  // Supabase লাইভ ডেটাবেজ থেকে নোটিশ ও সেটিংস ফেচ করার ফাংশন
+  const fetchLiveNotice = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('*')
+        .eq('id', 'chamber_notice')
+        .single()
+
+      if (data && !error) {
+        setChamberNotice({
+          isClosed: data.is_closed,
+          titleBn: data.title_bn || 'জরুরি নোটিশ: চেম্বার বন্ধ সংক্রান্ত',
+          titleEn: data.title_en || 'Important Notice: Chamber Closure',
+          messageBn: data.message_bn || '',
+          messageEn: data.message_en || ''
+        })
+        if (data.is_closed) {
+          setShowChamberClosedModal(true)
         }
-      } catch (err) {
-        console.error('Error fetching live notice:', err)
+      }
+    } catch (err) {
+      console.error('Error fetching live notice:', err)
+    }
+  }
+
+  useEffect(() => {
+    const isDark = localStorage.getItem('theme') === 'dark' ||
+      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+     
+    setDarkMode(isDark)
+    if (isDark) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+
+    fetchBookingsCount()
+    fetchLiveNotice()
+
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => console.log('Service Worker Registered:', reg.scope))
+        .catch((err) => console.error('Service Worker Registration failed:', err))
+
+      if ('Notification' in window && Notification.permission !== 'granted') {
+        Notification.requestPermission()
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    const dates = []
+    const daysListBn = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার']
+    const monthsListBn = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর']
+    
+    const daysListEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    const monthsListEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+    const toBengaliNumber = (num) => {
+      const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯']
+      return num.toString().split('').map(digit => {
+        return /\d/.test(digit) ? bnDigits[parseInt(digit, 10)] : digit
+      }).join('')
+    }
+
+    const today = new Date()
+    let count = 0
+    let i = 0
+
+    while (count < 7 && i < 25) {
+      const d = new Date(today)
+      d.setDate(today.getDate() + i)
+      
+      const dayOfWeek = d.getDay()
+      
+      if (dayOfWeek !== 5) {
+        const value = d.toISOString().split('T')[0]
+        let label = ''
+
+        if (lang === 'bn') {
+          const bnDayName = daysListBn[dayOfWeek]
+          const dayNum = toBengaliNumber(d.getDate())
+          const bnMonthName = monthsListBn[d.getMonth()]
+          const yearNum = toBengaliNumber(d.getFullYear())
+          
+          label = (count === 0)
+            ? `আজ (${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum})`
+            : `${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum}`
+        } else {
+          const enDayName = daysListEn[dayOfWeek]
+          const dayNum = d.getDate()
+          const enMonthName = monthsListEn[d.getMonth()]
+          const yearNum = d.getFullYear()
+          
+          label = (count === 0)
+            ? `Today (${enDayName}, ${enMonthName} ${dayNum}, ${yearNum})`
+            : `${enDayName}, ${enMonthName} ${dayNum}, ${yearNum}`
+        }
+
+        dates.push({ value, label })
+        count++
+      }
+      i++
+    }
+    setAvailableDates(dates)
+  }, [lang])
+
+  const toggleTheme = () => {
+    if (darkMode) {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+      setDarkMode(false)
+    } else {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+      setDarkMode(true)
+    }
+  }
+
+  const t = {
+    bn: {
+      title: 'ডাঃ আসির মোসাদ্দেক সাকিব',
+      subtitle: 'ওরাল এন্ড ডেন্টাল সার্জন',
+      degree: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)',
+      bmdc: 'বিএমডিসি রেজি. ৮২৬৩',
+      training: 'স্পেশাল ট্রেইনড ইন ইমপ্ল্যান্ট এন্ড কসমেটিক ডেন্টিস্ট্রি',
+      bookingMainBtn: '📅 অনলাইন অ্যাপয়েন্টমেন্ট বুকিং করুন',
+      bookingCloseBtn: '✕ ফর্ম বন্ধ করুন',
+      bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
+      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
+      patientName: 'রোগীর নাম *',
+      patientNamePlaceholder: 'আপনার নাম লিখুন',
+      ageLabel: 'বয়স *',
+      agePlaceholder: 'যেমন: ৩২',
+      phoneLabel: 'মোবাইল নম্বর *',
+      serviceLabel: 'চিকিৎসার ধরণ *',
+      serviceDefault: 'চিকিৎসার ধরণ নির্বাচন করুন',
+      service1: 'দাঁতের নতুন সমস্যা নিয়ে দেখাব',
+      service2: 'দাঁতের চিকিৎসা চলমান রয়েছে',
+      service3: 'ওষুধ খাওয়ার পরে আমার চিকিৎসা শুরু হবে',
+      service4: 'ওষুধ খাওয়ার পরেও ব্যথা কমছে না',
+      dateLabel: 'পছন্দের তারিখ (শুক্রবার বাদে) *',
+      dateDefault: 'তারিখ নির্বাচন করুন',
+      timeLabel: 'পছন্দের সময় (প্রতি স্লটে সর্বোচ্চ ২ জন) *',
+      timeDefault: 'সময় নির্বাচন করুন',
+      submitBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
+      submitting: 'জমা দেওয়া হচ্ছে...',
+      successTitle: 'অভিনন্দন! বুকিং সফল হয়েছে',
+      successMsg: 'আপনার অ্যাপয়েন্টমেন্ট আবেদনটি সফলভাবে জমা হয়েছে! শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।',
+      closeModalBtn: 'ঠিক আছে',
+      treatmentToggle: 'চিকিৎসার খরচ ও আনুমানিক সময়সূচি দেখুন',
+      treatmentName: 'চিকিৎসার নাম',
+      approxCost: 'আনুমানিক খরচ',
+      approxTime: 'সময়',
+      scheduleTitle: 'চেম্বারের সময়সূচি',
+      scheduleDays: 'শনিবার - বৃহস্পতিবার:',
+      scheduleTime: 'বিকেল ৪:০০ টা - রাত ৯:০০ টা',
+      scheduleFriday: 'শুক্রবার:',
+      scheduleClosed: 'বন্ধ (সাপ্তাহিক ছুটি)',
+      contactTitle: 'যোগাযোগ ও কন্টাক্ট',
+      hotline: 'হটলাইন:',
+      email: 'ইমেল:',
+      mapBtn: '📍 গুগল ম্যাপ লোকেশন',
+      whatsappBtn: '💬 হোয়াটসঅ্যাপে চ্যাট করুন',
+      tipsTitle: 'দাঁতের যত্ন ও স্বাস্থ্য টিপস',
+      videoTitle: 'দাঁতের যত্ন বিষয়ক সচেতনতামূলক ভিডিও',
+      videoSub: 'নিচে আমাদের সচেতনতামূলক ভিডিওটি দেখে দাঁতের সঠিক সুরক্ষা সম্পর্কে আরও বিস্তারিত জেনে নিন।'
+    },
+    en: {
+      title: 'Dr. Asir Mosaddeque Sakib',
+      subtitle: 'Oral & Dental Surgeon',
+      degree: 'BDS (Chattagong Medical College)',
+      bmdc: 'BMDC Reg. 8263',
+      training: 'Special Trained in Implant & Cosmetic Dentistry',
+      bookingMainBtn: '📅 Book Online Appointment',
+      bookingCloseBtn: '✕ Close Form',
+      bookingTitle: 'Online Appointment Booking',
+      bookingSub: 'Saturday to Thursday (4:00 PM - 9:00 PM), Friday Closed',
+      patientName: 'Patient Name *',
+      patientNamePlaceholder: 'Enter your name',
+      ageLabel: 'Age *',
+      agePlaceholder: 'e.g. 32',
+      phoneLabel: 'Mobile Number *',
+      serviceLabel: 'Treatment Type *',
+      serviceDefault: 'Select treatment type',
+      service1: 'Consulting for new dental issue',
+      service2: 'Ongoing dental treatment',
+      service3: 'Treatment will start after taking medicine',
+      service4: 'Pain persists even after taking medicine',
+      dateLabel: 'Select Date (Excluding Friday) *',
+      dateDefault: 'Select Date',
+      timeLabel: 'Preferred Time (Max 2 per slot) *',
+      timeDefault: 'Select time',
+      submitBtn: 'Book Appointment',
+      submitting: 'Submitting...',
+      successTitle: 'Congratulations! Booking Successful',
+      successMsg: 'Your appointment request has been successfully submitted! We will contact you soon.',
+      closeModalBtn: 'OK',
+      treatmentToggle: 'View Treatment Costs & Estimated Schedule',
+      treatmentName: 'Treatment Name',
+      approxCost: 'Estimated Cost',
+      approxTime: 'Time',
+      scheduleTitle: 'Chamber Schedule',
+      scheduleDays: 'Saturday - Thursday:',
+      scheduleTime: '4:00 PM - 9:00 PM',
+      scheduleFriday: 'Friday:',
+      scheduleClosed: 'Closed (Weekly Holiday)',
+      contactTitle: 'Contact & Communication',
+      hotline: 'Hotline:',
+      email: 'Email:',
+      mapBtn: '📍 Google Map Location',
+      whatsappBtn: '💬 Chat on WhatsApp',
+      tipsTitle: 'Dental Care & Health Tips',
+      videoTitle: 'Dental Care Awareness Video',
+      videoSub: 'Watch our awareness video below to learn more about proper dental protection.'
+    }
+  }
+
+  const rawTimes = lang === 'bn' ? [
+    "বিকেল ৪:০০ টা", "বিকেল ৪:৩০ টা",
+    "বিকেল ৫:০০ টা", "বিকেল ৫:৩০ টা",
+    "সন্ধ্যা ৬:০০ টা", "সন্ধ্যা ৬:৩০ টা",
+    "সন্ধ্যা ৭:০০ টা", "সন্ধ্যা ৭:৩০ টা",
+    "রাত ৮:০০ টা", "রাত ৮:৩০ টা",
+    "রাত ৯:০০ টা"
+  ] : [
+    "4:00 PM", "4:30 PM",
+    "5:00 PM", "5:30 PM",
+    "6:00 PM", "6:30 PM",
+    "7:00 PM", "7:30 PM",
+    "8:00 PM", "8:30 PM",
+    "9:00 PM"
+  ]
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    
+    if (name === 'appointment_time' && formData.appointment_date) {
+      const slotKey = `${formData.appointment_date}|${value}`
+      if ((bookedSlotsCount[slotKey] || 0) >= 2) {
+        alert(lang === 'bn' ? 'এই সময়ে এপয়েন্টমেন্ট খালি নেই।' : 'This time slot is fully booked.')
+        return
       }
     }
 
-    fetchLiveNotice()
-  }, [])
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
-  // ফর্ম সাবমিট হ্যান্ডলার
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (!formData.patient_name || !formData.phone || !formData.service || !formData.appointment_date || !formData.appointment_time) {
+      alert(lang === 'bn' ? 'দয়া করে সব ফিল্ড সঠিকভাবে পূরণ করুন।' : 'Please fill in all required fields.')
+      return
+    }
+
+    const slotKey = `${formData.appointment_date}|${formData.appointment_time}`
+    if ((bookedSlotsCount[slotKey] || 0) >= 2) {
+      alert(lang === 'bn' ? 'দুঃখিত, এই সময়ে এপয়েন্টমেন্ট খালি নেই।' : 'Sorry, this time slot is fully booked.')
+      return
+    }
+
     setLoading(true)
-    setSuccessMessage('')
 
     try {
+      const payload = {
+        patient_name: formData.patient_name.trim(),
+        age: formData.age ? parseInt(formData.age, 10) : null,
+        patient_phone: formData.phone.trim(),
+        service: formData.service,
+        appointment_date: formData.appointment_date,
+        appointment_time: formData.appointment_time
+      }
+
       const { error } = await supabase
         .from('appointments')
-        .insert([formData])
+        .insert([payload])
 
       if (error) {
-        alert('অ্যাপয়েন্টমেন্ট বুক করতে সমস্যা হয়েছে: ' + error.message)
-      } else {
-        setSuccessMessage(
-          language === 'bn' 
-            ? 'আপনার অ্যাপয়েন্টমেন্ট সফলভাবে সংরক্ষিত হয়েছে!' 
-            : 'Your appointment has been successfully booked!'
-        )
-        setFormData({
-          patient_name: '',
-          age: '',
-          patient_phone: '',
-          service: 'General Checkup',
-          appointment_date: '',
-          appointment_time: '10:00 AM'
+        console.error('Supabase Error:', error)
+        alert('Database Error: ' + error.message)
+        setLoading(false)
+        return
+      }
+
+      await fetchBookingsCount()
+
+      // Supabase সেটিংস বা লোকাল স্টোরেজ থেকে পুশ নোটিফিকেশন চেক
+      const { data: settingsData } = await supabase
+        .from('settings')
+        .select('notification_enabled')
+        .eq('id', 'chamber_notice')
+        .single()
+
+      const isNotifOn = settingsData ? settingsData.notification_enabled : true
+
+      if (isNotifOn && 'serviceWorker' in navigator && Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then((registration) => {
+          registration.showNotification('নতুন অ্যাপয়েন্টমেন্ট সফল!', {
+            body: `রোগী: ${formData.patient_name}\nতারিখ: ${formData.appointment_date} (${formData.appointment_time})`,
+            icon: '/icon.png'
+          })
         })
       }
+
+      setSuccessDetails({
+        name: formData.patient_name,
+        date: formData.appointment_date,
+        time: formData.appointment_time
+      })
+      setShowSuccessModal(true)
+      setShowBookingBox(false)
+
+      setFormData({
+        patient_name: '',
+        age: '',
+        phone: '',
+        service: '',
+        appointment_date: '',
+        appointment_time: ''
+      })
     } catch (err) {
-      console.error(err)
+      console.error('Submission Error:', err)
+      alert('Error: ' + (err.message || err))
     } finally {
       setLoading(false)
     }
   }
 
+  const treatmentsList = lang === 'bn' ? [
+    { name: 'রুট ক্যানাল ট্রিটমেন্ট', price: '৪০০০ টাকা (প্রতি দাঁত)', time: '১৫-২০ মিনিট' },
+    { name: 'মেটাল-সিরামিক (PFM) ক্রাউন/ক্যাপ', price: '৪০০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট (প্রতি ভিজিট)' },
+    { name: 'জিরকনিয়া ক্রাউন/ক্যাপ', price: '১০০০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট (প্রতি ভিজিট)' },
+    { name: 'কম্পোজিট ফিলিং', price: '১৫০০ টাকা (প্রতি দাঁত)', time: '১৫-২০ মিনিট' },
+    { name: 'মিড-ডায়াস্টেমা ক্লোজ (সামনের দাঁতের ফাঁকা বন্ধ করা)', price: '৪০০০ টাকা', time: '৩০ মিনিট' },
+    { name: 'জি.আই ফিলিং', price: '৮০০ টাকা (প্রতি দাঁত)', time: '২০ মিনিট' },
+    { name: 'নরমাল এক্সট্রাকশন (দাঁত তোলা)', price: '১০০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট' },
+    { name: 'সার্জিক্যাল এক্সট্রাকশন (আক্কেল দাঁত অপারেশন)', price: '৬০০০ টাকা (প্রতি দাঁত)', time: '৩০-৬০ মিনিট' },
+    { name: 'বাচ্চাদের ফিলিং', price: '৫০০ টাকা (প্রতি দাঁত)', time: '১৫-২০ মিনিট' },
+    { name: 'বাচ্চাদের দাঁত তোলা', price: '৪০০ টাকা (প্রতি দাঁত)', time: '১০ মিনিট' },
+    { name: 'স্কেলিং ও পলিশিং', price: '২০০০ টাকা', time: '২০-২৫ মিনিট' },
+    { name: 'পোস্ট-কোর বিল্ডাপ (ফাইবার ও ফিলিং দ্বারা)', price: '১৫০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট' },
+    { name: 'ফ্লেক্সিবল ডেঞ্চার', price: '৪০০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট (প্রতি ভিজিট)' },
+    { name: 'হিট কিউর ডেঞ্চার', price: '২৫০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট (প্রতি ভিজিট)' },
+    { name: 'সেলফ কিউর ডেঞ্চার', price: '১০০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট (প্রতি ভিজিট)' },
+    { name: 'নাইট গার্ড', price: '৭০০০ টাকা (প্রতি চোয়ালের জন্য)', time: '১৫ মিনিট (প্রতি ভিজিট)' }
+  ] : [
+    { name: 'Root Canal Treatment', price: '4000 BDT (Per Tooth)', time: '15-20 mins' },
+    { name: 'Metal-Ceramic (PFM) Crown/Cap', price: '4000 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
+    { name: 'Zirconia Crown/Cap', price: '10000 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
+    { name: 'Composite Filling', price: '1500 BDT (Per Tooth)', time: '15-20 mins' },
+    { name: 'Mid-Diastema Closure (Front tooth gap filling)', price: '4000 BDT', time: '30 mins' },
+    { name: 'G.I. Filling', price: '800 BDT (Per Tooth)', time: '20 mins' },
+    { name: 'Normal Extraction (Tooth Removal)', price: '1000 BDT (Per Tooth)', time: '15 mins' },
+    { name: 'Surgical Extraction (Wisdom Tooth)', price: '6000 BDT (Per Tooth)', time: '30-60 mins' },
+    { name: 'Pediatric Filling', price: '500 BDT (Per Tooth)', time: '15-20 mins' },
+    { name: 'Pediatric Tooth Extraction', price: '400 BDT (Per Tooth)', time: '10 mins' },
+    { name: 'Scaling & Polishing', price: '2000 BDT', time: '20-25 mins' },
+    { name: 'Post-Core Buildup (Fiber & Filling)', price: '1500 BDT (Per Tooth)', time: '15 mins' },
+    { name: 'Flexible Denture', price: '4000 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
+    { name: 'Heat Cure Denture', price: '2500 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
+    { name: 'Self Cure Denture', price: '1000 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
+    { name: 'Night Guard', price: '7000 BDT (Per Arch)', time: '15 mins (Per Visit)' }
+  ]
+
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-800 p-4 md:p-8">
-      <div className="max-w-3xl mx-auto space-y-6">
+    <main 
+      className="min-h-screen text-slate-800 dark:text-slate-100 relative py-8 px-4 md:px-8 bg-cover bg-center bg-fixed transition-colors duration-200"
+      style={{ backgroundImage: `url('/site-bg.jpeg')` }}
+    >
+      
+      {/* টপ বার: থিম ও ল্যাঙ্গুয়েজ টগল বাটন */}
+      <div className="max-w-4xl mx-auto flex justify-end gap-3 mb-4 relative z-50">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold px-4 py-2.5 rounded-full shadow-lg border-2 border-slate-300 dark:border-slate-600 transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
+        >
+          <span>{darkMode ? '☀️ লাইট মোড' : '🌙 ডার্ক মোড'}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
+          className="bg-white dark:bg-slate-800 hover:bg-sky-50 dark:hover:bg-slate-700 text-sky-900 dark:text-sky-300 font-extrabold px-5 py-2.5 rounded-full shadow-lg border-2 border-sky-500 transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
+        >
+          <span>🌐</span>
+          <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
+        </button>
+      </div>
+
+      <div className="max-w-4xl mx-auto space-y-10 relative z-10">
         
-        {/* হেডার ও ভাষা পরিবর্তন বাটন */}
-        <div className="bg-white p-6 rounded-3xl shadow-lg border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-teal-800">
-              {language === 'bn' ? 'ডেন্টাল চেম্বার অ্যাপয়েন্টমেন্ট' : 'Dental Chamber Appointment'}
-            </h1>
-            <p className="text-slate-500 text-sm">
-              {language === 'bn' ? 'অনলাইনে সহজেই আপনার সময় বুক করুন' : 'Easily book your slot online'}
-            </p>
-          </div>
-
-          <button
-            onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
-            className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl transition text-xs md:text-sm cursor-pointer"
-          >
-            {language === 'bn' ? 'English' : 'বাংলা'}
-          </button>
-        </div>
-
-        {/* অ্যাপয়েন্টমেন্ট ফর্ম */}
-        <div className="bg-white p-6 md:p-8 rounded-3xl shadow-lg border border-slate-200">
-          {successMessage && (
-            <div className="mb-6 p-4 bg-teal-50 border border-teal-200 text-teal-800 rounded-2xl font-bold text-center">
-              {successMessage}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1">
-                {language === 'bn' ? 'রোগীর নাম' : 'Patient Name'}
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.patient_name}
-                onChange={(e) => setFormData({ ...formData, patient_name: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-teal-700 text-slate-900"
-                placeholder={language === 'bn' ? 'আপনার নাম লিখুন' : 'Enter your name'}
+        {/* ডক্টরের প্রোফাইল ও হেডার সেকশন */}
+        <section className="p-6 md:p-8 rounded-3xl shadow-xl border border-gray-200/80 dark:border-slate-700 relative overflow-hidden bg-white/80 dark:bg-slate-900/85 backdrop-blur-md">
+          <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
+            <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden shadow-md border-2 border-sky-600 bg-white shrink-0">
+              <img 
+                src="/doctor.jpeg" 
+                alt="Doctor Profile" 
+                className="w-full h-full object-cover"
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">
-                  {language === 'bn' ? 'বয়স' : 'Age'}
-                </label>
-                <input
-                  type="number"
-                  value={formData.age}
-                  onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-teal-700 text-slate-900"
-                  placeholder={language === 'bn' ? 'বয়স লিখুন' : 'Enter age'}
-                />
+            <div className="space-y-1.5 flex-1">
+              <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                {t[lang].title}
+              </h1>
+              
+              <p className="text-sky-800 dark:text-sky-400 font-extrabold text-xl md:text-2xl pt-1">
+                {t[lang].subtitle}
+              </p>
+
+              <p className="text-slate-800 dark:text-slate-200 font-bold text-base md:text-lg">
+                {t[lang].degree}
+              </p>
+
+              <p className="text-slate-700 dark:text-slate-300 font-bold text-sm md:text-base">
+                {t[lang].bmdc}
+              </p>
+
+              <p className="text-slate-800 dark:text-slate-200 font-bold text-base md:text-lg pt-2">
+                {t[lang].training}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* অ্যাপয়েন্টমেন্ট বুকিং টগল বাটন */}
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={() => setShowBookingBox(!showBookingBox)}
+            className="bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-lg py-4 px-8 rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border-2 border-sky-400 flex items-center justify-center gap-3 mx-auto"
+          >
+            <span>{showBookingBox ? t[lang].bookingCloseBtn : t[lang].bookingMainBtn}</span>
+          </button>
+        </div>
+
+        {/* অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স */}
+        {showBookingBox && (
+          <section className="bg-sky-200 dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-xl border border-sky-300 dark:border-slate-700 max-w-2xl mx-auto relative z-10 animate-in fade-in zoom-in duration-300">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2 mx-auto">
+                <span className="text-2xl">📅</span>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white text-center">
+                  {t[lang].bookingTitle}
+                </h2>
+              </div>
+              <button 
+                onClick={() => setShowBookingBox(false)}
+                className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white font-bold text-lg p-1"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="text-rose-600 dark:text-rose-400 font-semibold text-center mb-6 text-sm">
+              {t[lang].bookingSub}
+            </p>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    {t[lang].patientName}
+                  </label>
+                  <input
+                    type="text"
+                    name="patient_name"
+                    value={formData.patient_name}
+                    onChange={handleChange}
+                    required
+                    placeholder={t[lang].patientNamePlaceholder}
+                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    {t[lang].ageLabel}
+                  </label>
+                  <input
+                    type="number"
+                    name="age"
+                    value={formData.age}
+                    onChange={handleChange}
+                    required
+                    min="1"
+                    max="120"
+                    placeholder={t[lang].agePlaceholder}
+                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">
-                  {language === 'bn' ? 'মোবাইল নম্বর' : 'Mobile Number'}
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  {t[lang].phoneLabel}
                 </label>
                 <input
                   type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   required
-                  value={formData.patient_phone}
-                  onChange={(e) => setFormData({ ...formData, patient_phone: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-teal-700 text-slate-900"
-                  placeholder="01XXXXXXXXX"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1">
-                {language === 'bn' ? 'চিকিৎসার ধরণ' : 'Service Type'}
-              </label>
-              <select
-                value={formData.service}
-                onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-teal-700 text-slate-900 cursor-pointer"
-              >
-                <option value="General Checkup">General Checkup / সাধারণ পরীক্ষা</option>
-                <option value="Scaling & Polishing">Scaling & Polishing / স্কেলিং ও পলিশিং</option>
-                <option value="Tooth Extraction">Tooth Extraction / দাঁত তোলা</option>
-                <option value="Root Canal">Root Canal Treatment / রুট ক্যানেল</option>
-              </select>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">
-                  {language === 'bn' ? 'তারিখ নির্বাচন করুন' : 'Select Date'}
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={formData.appointment_date}
-                  onChange={(e) => setFormData({ ...formData, appointment_date: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-teal-700 text-slate-900 cursor-pointer"
+                  placeholder="017XXXXXXXX"
+                  className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">
-                  {language === 'bn' ? 'সময় নির্বাচন করুন' : 'Select Time'}
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  {t[lang].serviceLabel}
                 </label>
                 <select
-                  value={formData.appointment_time}
-                  onChange={(e) => setFormData({ ...formData, appointment_time: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-teal-700 text-slate-900 cursor-pointer"
+                  name="service"
+                  value={formData.service}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
                 >
-                  <option value="10:00 AM">10:00 AM</option>
-                  <option value="11:00 AM">11:00 AM</option>
-                  <option value="04:00 PM">04:00 PM</option>
-                  <option value="05:00 PM">05:00 PM</option>
-                  <option value="06:00 PM">06:00 PM</option>
-                  <option value="08:00 PM">08:00 PM</option>
+                  <option value="">{t[lang].serviceDefault}</option>
+                  <option value={t[lang].service1}>{t[lang].service1}</option>
+                  <option value={t[lang].service2}>{t[lang].service2}</option>
+                  <option value={t[lang].service3}>{t[lang].service3}</option>
+                  <option value={t[lang].service4}>{t[lang].service4}</option>
                 </select>
               </div>
-            </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-teal-800 hover:bg-teal-900 text-white font-bold py-4 rounded-xl transition duration-200 shadow-lg cursor-pointer mt-4"
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  {t[lang].dateLabel}
+                </label>
+                <select
+                  name="appointment_date"
+                  value={formData.appointment_date}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+                >
+                  <option value="">{t[lang].dateDefault}</option>
+                  {availableDates.map((item, index) => (
+                    <option key={index} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  {t[lang].timeLabel}
+                </label>
+                <select
+                  name="appointment_time"
+                  value={formData.appointment_time}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+                >
+                  <option value="">{t[lang].timeDefault}</option>
+                  {rawTimes.map((time, index) => {
+                    const slotKey = `${formData.appointment_date}|${time}`
+                    const count = bookedSlotsCount[slotKey] || 0
+                    const isFull = count >= 2
+
+                    const fullText = lang === 'bn' ? '(এই সময়ে এপয়েন্টমেন্ট খালি নেই)' : '(Fully Booked)'
+                    const bookedText = lang === 'bn' ? `(বুকড: ${count}/২)` : `(Booked: ${count}/2)`
+
+                    return (
+                      <option 
+                        key={index} 
+                        value={time}
+                        disabled={isFull}
+                        style={{ color: isFull ? 'red' : 'inherit' }}
+                      >
+                        {time} {isFull ? fullText : bookedText}
+                      </option>
+                    )
+                  })}
+                </select>
+                {!formData.appointment_date && (
+                  <p className="text-xs text-rose-600 dark:text-rose-400 mt-1 font-medium">
+                    {lang === 'bn' ? '* প্রথমে তারিখ নির্বাচন করুন, এরপর খালি সময় দেখতে পাবেন।' : '* Please select a date first to view available time slots.'}
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-sky-700 hover:bg-sky-800 text-white font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-md disabled:opacity-50 mt-4 cursor-pointer"
+              >
+                {loading ? t[lang].submitting : t[lang].submitBtn}
+              </button>
+            </form>
+          </section>
+        )}
+
+        {/* চেম্বারের চিকিৎসা ও খরচের তালিকা */}
+        <section className="bg-white/95 dark:bg-slate-900 backdrop-blur-md rounded-3xl shadow-xl border-2 border-sky-300 dark:border-slate-700 overflow-hidden">
+          <div 
+            onClick={() => setShowTreatments(!showTreatments)}
+            className="w-full p-5 md:p-6 flex items-center justify-between bg-sky-100 dark:bg-slate-800 hover:bg-sky-200 dark:hover:bg-slate-700 transition cursor-pointer select-none"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-2xl p-2 bg-white dark:bg-slate-700 rounded-2xl shadow-sm border border-sky-200 dark:border-slate-600">💰</span>
+              <h2 className="text-lg md:text-xl font-bold text-sky-950 dark:text-white">
+                {t[lang].treatmentToggle}
+              </h2>
+            </div>
+            
+            <button 
+              type="button"
+              className="bg-sky-700 text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold shadow-md pointer-events-none"
             >
-              {loading ? (language === 'bn' ? 'বুক হচ্ছে...' : 'Booking...') : (language === 'bn' ? 'অ্যাপয়েন্টমেন্ট কনফার্ম করুন' : 'Confirm Appointment')}
+              {showTreatments ? (lang === 'bn' ? 'বন্ধ করুন ▲' : 'Hide ▲') : (lang === 'bn' ? 'দেখুন ▼' : 'View ▼')}
             </button>
-          </form>
-        </div>
+          </div>
+
+          {showTreatments && (
+            <div className="p-4 md:p-6 border-t border-sky-200 dark:border-slate-800 bg-sky-50 dark:bg-slate-900/50">
+              <div className="overflow-x-auto rounded-2xl border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-inner">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-sky-200 dark:border-slate-700 text-sky-950 dark:text-white bg-sky-100 dark:bg-slate-700">
+                      <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].treatmentName}</th>
+                      <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].approxCost}</th>
+                      <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].approxTime}</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-sky-100 dark:divide-slate-700 text-xs md:text-sm">
+                    {treatmentsList.map((item, index) => (
+                      <tr key={index} className="hover:bg-sky-50/50 dark:hover:bg-slate-700/50 transition">
+                        <td className="py-3 px-4 font-semibold text-slate-900 dark:text-slate-100">{item.name}</td>
+                        <td className="py-3 px-4 text-sky-800 dark:text-sky-400 font-bold">{item.price}</td>
+                        <td className="py-3 px-4 text-slate-600 dark:text-slate-300">{item.time}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </section>
 
       </div>
 
-      {/* চেম্বার বন্ধ থাকলে রোগীর সামনে পপ-আপ নোটিশ দেখানোর মডাল */}
-      {showNoticeModal && chamberNotice.isClosed && (
+      {/* চেম্বার বন্ধ থাকলে পপ-আপ নোটিশ মডাল */}
+      {showChamberClosedModal && chamberNotice.isClosed && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-white p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-rose-500 max-w-md w-full space-y-4 text-center">
+          <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-rose-500 max-w-md w-full space-y-4 text-center">
             <div className="text-4xl">📢</div>
-            <h3 className="text-xl font-extrabold text-slate-900">
-              {language === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
+            <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">
+              {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
             </h3>
-            <p className="text-slate-600 text-sm whitespace-pre-line leading-relaxed">
-              {language === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
+            <p className="text-slate-600 dark:text-slate-300 text-sm whitespace-pre-line leading-relaxed">
+              {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
             </p>
             <button
-              onClick={() => setShowNoticeModal(false)}
+              onClick={() => setShowChamberClosedModal(false)}
               className="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 px-6 rounded-xl transition duration-200 shadow cursor-pointer mt-2"
             >
-              {language === 'bn' ? 'বুঝেছি (Close)' : 'Understood (Close)'}
+              {t[lang].closeModalBtn}
             </button>
           </div>
         </div>
       )}
+
+      {/* সফল বুকিং পপ-আপ মডাল */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-teal-500 max-w-md w-full space-y-4 text-center">
+            <div className="text-4xl">🎉</div>
+            <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">
+              {t[lang].successTitle}
+            </h3>
+            <div className="bg-teal-50 dark:bg-slate-800 p-4 rounded-2xl text-left space-y-2 border border-teal-200 dark:border-slate-700 text-sm">
+              <p className="font-semibold text-slate-800 dark:text-slate-200">রোগী: <span className="font-bold text-teal-800 dark:text-teal-400">{successDetails.name}</span></p>
+              <p className="font-semibold text-slate-800 dark:text-slate-200">তারিখ: <span className="font-bold text-teal-800 dark:text-teal-400">{successDetails.date}</span></p>
+              <p className="font-semibold text-slate-800 dark:text-slate-200">সময়: <span className="font-bold text-teal-800 dark:text-teal-400">{successDetails.time}</span></p>
+            </div>
+            <p className="text-slate-600 dark:text-slate-300 text-xs">
+              {t[lang].successMsg}
+            </p>
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-3 px-6 rounded-xl transition duration-200 shadow cursor-pointer mt-2"
+            >
+              {t[lang].closeModalBtn}
+            </button>
+          </div>
+        </div>
+      )}
+
     </main>
   )
 }
