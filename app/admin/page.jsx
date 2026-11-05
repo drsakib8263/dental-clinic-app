@@ -34,16 +34,16 @@ export default function AdminDashboard() {
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error fetching appointments:', error)
+        console.error('Error fetching appointments details:', error.message || error)
       } else {
         setAppointments(data || [])
         setFilteredAppointments(data || [])
         
-        const uniqueDates = [...new Set(data.map(item => item.appointment_date))]
+        const uniqueDates = [...new Set((data || []).map(item => item.appointment_date))]
         setAvailableDates(uniqueDates)
       }
     } catch (err) {
-      console.error('Error:', err)
+      console.error('Catch Error:', err)
     } finally {
       setLoading(false)
     }
