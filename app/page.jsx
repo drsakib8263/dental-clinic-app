@@ -808,42 +808,56 @@ export default function Home() {
           </div>
         </section>
 
-        {/* যোগাযোগ ও কন্টাক্ট সেকশন */}
-        <section className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-sky-200 dark:border-slate-700 space-y-4">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">📞</span>
-            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
-              {t[lang].contactTitle}
-            </h2>
+        {/* যোগাযোগ ও কন্টাক্ট সেকশন (আকর্ষণীয় ও প্রিমিয়াম ডিজাইন) */}
+        <section className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border-2 border-sky-300 dark:border-slate-700 space-y-6">
+          <div className="flex items-center gap-3 border-b border-sky-100 dark:border-slate-800 pb-4">
+            <span className="text-3xl p-2 bg-sky-100 dark:bg-slate-800 rounded-2xl">📞</span>
+            <div>
+              <h2 className="text-xl md:text-2xl font-extrabold text-slate-900 dark:text-white">
+                {t[lang].contactTitle}
+              </h2>
+              <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400">
+                {lang === 'bn' ? 'যেকোনো প্রয়োজনে সরাসরি যোগাযোগ করুন' : 'Feel free to reach out for any queries'}
+              </p>
+            </div>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base">
-            <div className="p-4 bg-sky-50 dark:bg-slate-800 rounded-2xl border border-sky-100 dark:border-slate-700 space-y-1">
-              <p className="font-bold text-slate-700 dark:text-slate-300">{t[lang].hotline}</p>
-              <a href="tel:+88017XXXXXXXX" className="text-sky-700 dark:text-sky-400 font-extrabold hover:underline block">
-                +880 17XX-XXXXXX
+            <div className="p-5 bg-gradient-to-br from-sky-50 to-teal-50 dark:from-slate-800 dark:to-slate-800/80 rounded-2xl border border-sky-200 dark:border-slate-700 shadow-sm space-y-2 hover:shadow-md transition">
+              <div className="flex items-center gap-2 text-sky-800 dark:text-sky-400 font-bold">
+                <span>📱</span>
+                <span>{t[lang].hotline}</span>
+              </div>
+              <a href="tel:+8801816011701" className="text-slate-900 dark:text-white font-black text-lg md:text-xl hover:text-sky-600 dark:hover:text-sky-400 transition block">
+                +880 1816 011 701
               </a>
             </div>
-            <div className="p-4 bg-sky-50 dark:bg-slate-800 rounded-2xl border border-sky-100 dark:border-slate-700 space-y-1">
-              <p className="font-bold text-slate-700 dark:text-slate-300">{t[lang].email}</p>
-              <a href="mailto:contact@drsakib.com" className="text-sky-700 dark:text-sky-400 font-extrabold hover:underline block">
-                contact@drsakib.com
+
+            <div className="p-5 bg-gradient-to-br from-sky-50 to-teal-50 dark:from-slate-800 dark:to-slate-800/80 rounded-2xl border border-sky-200 dark:border-slate-700 shadow-sm space-y-2 hover:shadow-md transition">
+              <div className="flex items-center gap-2 text-sky-800 dark:text-sky-400 font-bold">
+                <span>✉️</span>
+                <span>{t[lang].email}</span>
+              </div>
+              <a href="mailto:asir.mosaddeque@gmail.com" className="text-slate-900 dark:text-white font-bold text-sm md:text-base hover:text-sky-600 dark:hover:text-sky-400 transition block break-all">
+                asir.mosaddeque@gmail.com
               </a>
             </div>
           </div>
+
           <div className="flex flex-col md:flex-row gap-3 pt-2">
             <a 
               href="https://maps.google.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-2xl text-center shadow transition duration-200 text-sm flex items-center justify-center gap-2"
+              className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-2xl text-center shadow-lg transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer"
             >
               {t[lang].mapBtn}
             </a>
             <a 
-              href="https://wa.me/88017XXXXXXXX" 
+              href="https://wa.me/8801816011701" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-2xl text-center shadow transition duration-200 text-sm flex items-center justify-center gap-2"
+              className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 px-6 rounded-2xl text-center shadow-lg transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer"
             >
               {t[lang].whatsappBtn}
             </a>
