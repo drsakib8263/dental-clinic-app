@@ -24,7 +24,7 @@ export default function AdminDashboard() {
   })
   const [notificationEnabled, setNotificationEnabled] = useState(true)
 
-  // আপডেট করা ফেচ ফাংশন (যাতে সুপাবেজের আসল এরর মেসেজ জানা যায়)
+  // অ্যাপয়েন্টমেন্ট ফেচ ফাংশন (created_at বাদ দিয়ে ফিক্স করা হয়েছে)
   const fetchAppointments = async () => {
     setLoading(true)
     try {
@@ -32,11 +32,9 @@ export default function AdminDashboard() {
       const { data, error } = await supabase
         .from('appointments')
         .select('*')
-        .order('created_at', { ascending: false })
 
       if (error) {
         console.error('Error fetching appointments message:', error.message)
-        console.error('Error fetching appointments full:', JSON.stringify(error, null, 2))
       } else {
         setAppointments(data || [])
         setFilteredAppointments(data || [])
