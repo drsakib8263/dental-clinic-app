@@ -24,7 +24,6 @@ export default function AdminDashboard() {
   })
   const [notificationEnabled, setNotificationEnabled] = useState(true)
 
-  // অ্যাপয়েন্টমেন্ট ফেচ ফাংশন (created_at বাদ দিয়ে ফিক্স করা হয়েছে)
   const fetchAppointments = async () => {
     setLoading(true)
     try {
@@ -67,6 +66,10 @@ export default function AdminDashboard() {
     e.preventDefault()
     localStorage.setItem('chamberNotice', JSON.stringify(chamberNotice))
     localStorage.setItem('notificationEnabled', JSON.stringify(notificationEnabled))
+    
+    // মোবাইল ও ব্রাউজারের সিঙ্ক ঠিক রাখার জন্য ইভেন্ট ডিসপ্যাচ
+    window.dispatchEvent(new Event('storage'))
+
     alert('চেম্বারের নোটিশ ও সেটিংস সফলভাবে আপডেট করা হয়েছে!')
     setShowNoticeControl(false)
   }
