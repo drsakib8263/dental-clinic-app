@@ -14,7 +14,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [showTreatments, setShowTreatments] = useState(false)
 
-  // সফল বুকিং পপ-আপ দেখানোর জন্য নতুন স্টেট
+  // সফল বুকিং পপ-আপ দেখানোর জন্য স্টেট
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [successDetails, setSuccessDetails] = useState({ name: '', date: '', time: '' })
 
@@ -56,7 +56,7 @@ export default function Home() {
     }
   }
 
-  // পেজ লোড হওয়ার সময় লোকাল স্টোরেজ থেকে ডার্ক মোড, সার্ভিস ওয়ার্কার রেজিস্ট্রেশন ও তারিখ লোড করা
+  // ভাষা পরিবর্তনের সাথে সাথে তারিখের ড্রপডাউন আপডেট করার লজিক
   useEffect(() => {
     const isDark = localStorage.getItem('theme') === 'dark' ||
       (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -80,14 +80,16 @@ export default function Home() {
         Notification.requestPermission()
       }
     }
+  }, [])
 
-    // সামনের ৭টি সচল দিন (শুক্রবার বাদে) বাংলায় তৈরি করার লজিক
+  useEffect(() => {
+    // ভাষা অনুযায়ী দিন ও মাসের তালিকা তৈরি
     const dates = []
-    const daysList = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার']
-    const monthsList = [
-      'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 
-      'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
-    ]
+    const daysListBn = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার']
+    const monthsListBn = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর']
+    
+    const daysListEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    const monthsListEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
     const toBengaliNumber = (num) => {
       const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯']
@@ -107,15 +109,28 @@ export default function Home() {
       const dayOfWeek = d.getDay()
       
       if (dayOfWeek !== 5) {
-        const bnDayName = daysList[dayOfWeek]
-        const dayNum = toBengaliNumber(d.getDate())
-        const bnMonthName = monthsList[d.getMonth()]
-        const yearNum = toBengaliNumber(d.getFullYear())
-        
         const value = d.toISOString().split('T')[0]
-        const label = (count === 0)
-          ? `আজ (${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum})`
-          : `${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum}`
+        let label = ''
+
+        if (lang === 'bn') {
+          const bnDayName = daysListBn[dayOfWeek]
+          const dayNum = toBengaliNumber(d.getDate())
+          const bnMonthName = monthsListBn[d.getMonth()]
+          const yearNum = toBengaliNumber(d.getFullYear())
+          
+          label = (count === 0)
+            ? `আজ (${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum})`
+            : `${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum}`
+        } else {
+          const enDayName = daysListEn[dayOfWeek]
+          const dayNum = d.getDate()
+          const enMonthName = monthsListEn[d.getMonth()]
+          const yearNum = d.getFullYear()
+          
+          label = (count === 0)
+            ? `Today (${enDayName}, ${enMonthName} ${dayNum}, ${yearNum})`
+            : `${enDayName}, ${enMonthName} ${dayNum}, ${yearNum}`
+        }
 
         dates.push({ value, label })
         count++
@@ -123,7 +138,7 @@ export default function Home() {
       i++
     }
     setAvailableDates(dates)
-  }, [])
+  }, [lang])
 
   const toggleTheme = () => {
     if (darkMode) {
@@ -238,13 +253,21 @@ export default function Home() {
     }
   }
 
-  const rawTimes = [
+  // ভাষা অনুযায়ী সময় বা স্লট তালিকা পরিবর্তন
+  const rawTimes = lang === 'bn' ? [
     "বিকেল ৪:০০ টা", "বিকেল ৪:৩০ টা",
     "বিকেল ৫:০০ টা", "বিকেল ৫:৩০ টা",
     "সন্ধ্যা ৬:০০ টা", "সন্ধ্যা ৬:৩০ টা",
     "সন্ধ্যা ৭:০০ টা", "সন্ধ্যা ৭:৩০ টা",
     "রাত ৮:০০ টা", "রাত ৮:৩০ টা",
     "রাত ৯:০০ টা"
+  ] : [
+    "4:00 PM", "4:30 PM",
+    "5:00 PM", "5:30 PM",
+    "6:00 PM", "6:30 PM",
+    "7:00 PM", "7:30 PM",
+    "8:00 PM", "8:30 PM",
+    "9:00 PM"
   ]
 
   const handleChange = (e) => {
@@ -303,7 +326,6 @@ export default function Home() {
 
       await fetchBookingsCount()
 
-      // ব্যাকগ্রাউন্ড নোটিফিকেশন ট্রিগার করা
       if ('serviceWorker' in navigator && Notification.permission === 'granted') {
         navigator.serviceWorker.ready.then((registration) => {
           registration.showNotification('নতুন অ্যাপয়েন্টমেন্ট সফল!', {
@@ -313,7 +335,6 @@ export default function Home() {
         })
       }
 
-      // সফল পপ-আপ মডালের জন্য ডেটা সেট করা এবং ফর্ম বন্ধ করা
       setSuccessDetails({
         name: formData.patient_name,
         date: formData.appointment_date,
@@ -609,6 +630,9 @@ export default function Home() {
                     const count = bookedSlotsCount[slotKey] || 0
                     const isFull = count >= 2
 
+                    const fullText = lang === 'bn' ? '(এই সময়ে এপয়েন্টমেন্ট খালি নেই)' : '(Fully Booked)'
+                    const bookedText = lang === 'bn' ? `(বুকড: ${count}/২)` : `(Booked: ${count}/2)`
+
                     return (
                       <option 
                         key={index} 
@@ -616,14 +640,14 @@ export default function Home() {
                         disabled={isFull}
                         style={{ color: isFull ? 'red' : 'inherit' }}
                       >
-                        {time} {isFull ? (lang === 'bn' ? '(এই সময়ে এপয়েন্টমেন্ট খালি নেই)' : '(Fully Booked)') : `(বুকড: ${count}/২)`}
+                        {time} {isFull ? fullText : bookedText}
                       </option>
                     )
                   })}
                 </select>
                 {!formData.appointment_date && (
                   <p className="text-xs text-rose-600 dark:text-rose-400 mt-1 font-medium">
-                    * প্রথমে তারিখ নির্বাচন করুন, এরপর খালি সময় দেখতে পাবেন।
+                    {lang === 'bn' ? '* প্রথমে তারিখ নির্বাচন করুন, এরপর খালি সময় দেখতে পাবেন।' : '* Please select a date first to view available time slots.'}
                   </p>
                 )}
               </div>
@@ -801,9 +825,9 @@ export default function Home() {
             </p>
 
             <div className="bg-sky-50 dark:bg-slate-800 p-4 rounded-2xl border border-sky-100 dark:border-slate-700 text-left space-y-1.5 text-sm">
-              <p className="text-slate-800 dark:text-slate-200"><strong>রোগীর নাম:</strong> {successDetails.name}</p>
-              <p className="text-slate-800 dark:text-slate-200"><strong>তারিখ:</strong> {successDetails.date}</p>
-              <p className="text-slate-800 dark:text-slate-200"><strong>সময়:</strong> {successDetails.time}</p>
+              <p className="text-slate-800 dark:text-slate-200"><strong>{lang === 'bn' ? 'রোগীর নাম:' : 'Patient Name:'}</strong> {successDetails.name}</p>
+              <p className="text-slate-800 dark:text-slate-200"><strong>{lang === 'bn' ? 'তারিখ:' : 'Date:'}</strong> {successDetails.date}</p>
+              <p className="text-slate-800 dark:text-slate-200"><strong>{lang === 'bn' ? 'সময়:' : 'Time:'}</strong> {successDetails.time}</p>
             </div>
 
             <button
