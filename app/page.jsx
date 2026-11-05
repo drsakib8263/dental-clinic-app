@@ -29,7 +29,7 @@ export default function Home() {
     appointment_time: ''
   })
 
-  // পেজ লোড হওয়ার সময় লোকাল স্টোরেজ থেকে ডার্ক মোড সেট করা এবং সামনের ৭ দিনের ড্রপডাউন তৈরি করা
+  // পেজ লোড হওয়ার সময় লোকাল স্টোরেজ থেকে ডার্ক মোড সেট করা এবং বাংলায় তারিখের ড্রপডাউন তৈরি করা
   useEffect(() => {
     const isDark = localStorage.getItem('theme') === 'dark' ||
       (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -41,21 +41,20 @@ export default function Home() {
       document.documentElement.classList.remove('dark')
     }
 
-    // সামনের ৭টি সচল দিন (শুক্রবার বাদে) তৈরি করার লজিক
+    // সামনের ৭টি সচল দিন (শুক্রবার বাদে) বাংলায় তৈরি করার লজিক
     const dates = []
-    const daysMap = {
-      'Sun': 'রবিবার',
-      'Mon': 'সোমবার',
-      'Tue': 'মঙ্গলবার',
-      'Wed': 'বুধবার',
-      'Thu': 'বৃহস্পতিবার',
-      'Fri': 'শুক্রবার',
-      'Sat': 'শনিবার'
-    }
-    const monthsMap = {
-      'Jan': 'জানুয়ারি', 'Feb': 'ফেব্রুয়ারি', 'Mar': 'মার্চ', 'Apr': 'এপ্রিল',
-      'May': 'মে', 'Jun': 'জুন', 'Jul': 'জুলাই', 'Aug': 'আগস্ট',
-      'Sep': 'সেপ্টেম্বর', 'Oct': 'অক্টোবর', 'Nov': 'নভেম্বর', 'Dec': 'ডিসেম্বর'
+    const daysList = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার']
+    const monthsList = [
+      'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 
+      'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
+    ]
+
+    // সংখ্যাগুলোকে বাংলায় রূপান্তর করার ফাংশন
+    const toBengaliNumber = (num) => {
+      const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯']
+      return num.toString().split('').map(digit => {
+        return /\d/.test(digit) ? bnDigits[parseInt(digit, 10)] : digit
+      }).join('')
     }
 
     const today = new Date()
@@ -66,20 +65,19 @@ export default function Home() {
       const d = new Date(today)
       d.setDate(today.getDate() + i)
       
-      const enDay = d.toLocaleDateString('en-US', { weekday: 'short' })
+      const dayOfWeek = d.getDay() // 0 = রবিবার, 5 = শুক্রবার, ইত্যাদি
       
-      // শুক্রবার (Fri) বাদ দিয়ে বাকি দিনগুলো নেওয়া হবে
-      if (enDay !== 'Fri') {
-        const bnDay = daysMap[enDay] || enDay
-        const dayNum = d.getDate()
-        const enMonth = d.toLocaleDateString('en-US', { month: 'short' })
-        const bnMonth = monthsMap[enMonth] || enMonth
-        const year = d.getFullYear()
+      // শুক্রবার (৫ নম্বর দিন) বাদ দিয়ে বাকি দিনগুলো নেওয়া হবে
+      if (dayOfWeek !== 5) {
+        const bnDayName = daysList[dayOfWeek]
+        const dayNum = toBengaliNumber(d.getDate())
+        const bnMonthName = monthsList[d.getMonth()]
+        const yearNum = toBengaliNumber(d.getFullYear())
         
         const value = d.toISOString().split('T')[0]
         const label = (count === 0)
-          ? `আজ (${bnDay}, ${dayNum} ${bnMonth} ${year})`
-          : `${bnDay}, ${dayNum} ${bnMonth} ${year}`
+          ? `আজ (${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum})`
+          : `${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum}`
 
         dates.push({ value, label })
         count++
@@ -523,7 +521,7 @@ export default function Home() {
                 </select>
               </div>
 
-              {/* তারিখ নির্বাচনের জন্য ড্রপডাউন (ক্যালেন্ডারের বদলে সামনের ৭ দিন) */}
+              {/* তারিখ নির্বাচনের জন্য বাংলায় রূপান্তরকৃত ড্রপডাউন */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   {t[lang].dateLabel}
