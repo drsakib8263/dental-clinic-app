@@ -9,8 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default function Home() {
   const [lang, setLang] = useState('bn')
-  const [minDate, setMinDate] = useState('')
-  const [maxDate, setMaxDate] = useState('')
+  const [availableDates, setAvailableDates] = useState([])
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
   const [showTreatments, setShowTreatments] = useState(false)
@@ -30,7 +29,7 @@ export default function Home() {
     appointment_time: ''
   })
 
-  // পেজ লোড হওয়ার সময় লোকাল স্টোরেজ থেকে ডার্ক মোড সেট করা
+  // পেজ লোড হওয়ার সময় লোকাল স্টোরেজ থেকে ডার্ক মোড সেট করা এবং সামনের ৭ দিনের ড্রপডাউন তৈরি করা
   useEffect(() => {
     const isDark = localStorage.getItem('theme') === 'dark' ||
       (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -41,6 +40,53 @@ export default function Home() {
     } else {
       document.documentElement.classList.remove('dark')
     }
+
+    // সামনের ৭টি সচল দিন (শুক্রবার বাদে) তৈরি করার লজিক
+    const dates = []
+    const daysMap = {
+      'Sun': 'রবিবার',
+      'Mon': 'সোমবার',
+      'Tue': 'মঙ্গলবার',
+      'Wed': 'বুধবার',
+      'Thu': 'বৃহস্পতিবার',
+      'Fri': 'শুক্রবার',
+      'Sat': 'শনিবার'
+    }
+    const monthsMap = {
+      'Jan': 'জানুয়ারি', 'Feb': 'ফেব্রুয়ারি', 'Mar': 'মার্চ', 'Apr': 'এপ্রিল',
+      'May': 'মে', 'Jun': 'জুন', 'Jul': 'জুলাই', 'Aug': 'আগস্ট',
+      'Sep': 'সেপ্টেম্বর', 'Oct': 'অক্টোবর', 'Nov': 'নভেম্বর', 'Dec': 'ডিসেম্বর'
+    }
+
+    const today = new Date()
+    let count = 0
+    let i = 0
+
+    while (count < 7 && i < 25) {
+      const d = new Date(today)
+      d.setDate(today.getDate() + i)
+      
+      const enDay = d.toLocaleDateString('en-US', { weekday: 'short' })
+      
+      // শুক্রবার (Fri) বাদ দিয়ে বাকি দিনগুলো নেওয়া হবে
+      if (enDay !== 'Fri') {
+        const bnDay = daysMap[enDay] || enDay
+        const dayNum = d.getDate()
+        const enMonth = d.toLocaleDateString('en-US', { month: 'short' })
+        const bnMonth = monthsMap[enMonth] || enMonth
+        const year = d.getFullYear()
+        
+        const value = d.toISOString().split('T')[0]
+        const label = (count === 0)
+          ? `আজ (${bnDay}, ${dayNum} ${bnMonth} ${year})`
+          : `${bnDay}, ${dayNum} ${bnMonth} ${year}`
+
+        dates.push({ value, label })
+        count++
+      }
+      i++
+    }
+    setAvailableDates(dates)
   }, [])
 
   const toggleTheme = () => {
@@ -77,7 +123,8 @@ export default function Home() {
       service2: 'দাঁতের চিকিৎসা চলমান রয়েছে',
       service3: 'ওষুধ খাওয়ার পরে আমার চিকিৎসা শুরু হবে',
       service4: 'ওষুধ খাওয়ার পরেও ব্যথা কমছে না',
-      dateLabel: 'তারিখ নির্বাচন করুন (শুক্রবার বাদে) *',
+      dateLabel: 'পছন্দের তারিখ (শুক্রবার বাদে) *',
+      dateDefault: 'তারিখ নির্বাচন করুন',
       timeLabel: 'পছন্দের সময় (বিকেল ৪টা - রাত ৯টা) *',
       timeDefault: 'সময় নির্বাচন করুন',
       submitBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
@@ -124,6 +171,7 @@ export default function Home() {
       service3: 'Treatment will start after taking medicine',
       service4: 'Pain persists even after taking medicine',
       dateLabel: 'Select Date (Excluding Friday) *',
+      dateDefault: 'Select Date',
       timeLabel: 'Preferred Time (4 PM - 9 PM) *',
       timeDefault: 'Select time',
       submitBtn: 'Book Appointment',
@@ -150,30 +198,6 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    const today = new Date()
-    const todayStr = today.toISOString().split('T')[0]
-    
-    let validCount = 0
-    let i = 0
-    let maxDateStr = todayStr
-
-    while (validCount < 7 && i < 35) {
-      const d = new Date(today)
-      d.setDate(today.getDate() + i)
-      const dayOfWeek = d.getDay()
-      
-      if (dayOfWeek !== 5) {
-        validCount++
-      }
-      maxDateStr = d.toISOString().split('T')[0]
-      i++
-    }
-
-    setMinDate(todayStr)
-    setMaxDate(maxDateStr)
-  }, [])
-
   const availableTimes = lang === 'bn' ? [
     "বিকেল ৪:০০ টা", "বিকেল ৪:৩০ টা",
     "বিকেল ৫:০০ টা", "বিকেল ৫:৩০ টা",
@@ -192,19 +216,6 @@ export default function Home() {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-
-    if (name === 'appointment_date' && value) {
-      const parts = value.split('-')
-      const selectedDate = new Date(parts[0], parts[1] - 1, parts[2])
-      const dayOfWeek = selectedDate.getDay()
-
-      if (dayOfWeek === 5) {
-        alert(lang === 'bn' ? 'শুক্রবার চেম্বার বন্ধ থাকে। অনুগ্রহ করে অন্য দিন নির্বাচন করুন।' : 'Chamber is closed on Friday. Please select another day.')
-        setFormData((prev) => ({ ...prev, appointment_date: '' }))
-        return
-      }
-    }
-
     setFormData((prev) => ({
       ...prev,
       [name]: value
@@ -216,15 +227,6 @@ export default function Home() {
 
     if (!formData.patient_name || !formData.phone || !formData.service || !formData.appointment_date || !formData.appointment_time) {
       alert(lang === 'bn' ? 'দয়া করে সব ফিল্ড সঠিকভাবে পূরণ করুন।' : 'Please fill in all required fields.')
-      return
-    }
-
-    const parts = formData.appointment_date.split('-')
-    const selectedDateObj = new Date(parts[0], parts[1] - 1, parts[2])
-    const dayOfWeek = selectedDateObj.getDay()
-
-    if (dayOfWeek === 5) {
-      alert(lang === 'bn' ? 'শুক্রবার অ্যাপয়েন্টমেন্ট নেওয়া যাবে না।' : 'Appointments cannot be booked on Fridays.')
       return
     }
 
@@ -521,23 +523,25 @@ export default function Home() {
                 </select>
               </div>
 
+              {/* তারিখ নির্বাচনের জন্য ড্রপডাউন (ক্যালেন্ডারের বদলে সামনের ৭ দিন) */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   {t[lang].dateLabel}
                 </label>
-                <input
-                  type="date"
+                <select
                   name="appointment_date"
                   value={formData.appointment_date}
-                  min={minDate}
-                  max={maxDate}
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
-                />
-                <p className="text-xs text-rose-600 dark:text-rose-400 mt-1.5 font-bold">
-                  * ক্যালেন্ডার থেকে কেবল সামনের ৭টি সচল দিন (শুক্রবার বাদে) সিলেক্ট করা যাবে।
-                </p>
+                >
+                  <option value="">{t[lang].dateDefault}</option>
+                  {availableDates.map((item, index) => (
+                    <option key={index} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div>
