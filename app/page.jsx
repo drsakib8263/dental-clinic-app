@@ -14,8 +14,10 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [showTreatments, setShowTreatments] = useState(false)
 
-  // অ্যাডমিন প্যানেল ও নোটিশ স্টেট
+  // অ্যাডমিন প্যানেল দৃশ্যমান হওয়ার স্টেট (ডিফল্টভাবে হাইড থাকবে)
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false)
   const [showAdminPanel, setShowAdminPanel] = useState(false)
+
   const [chamberNotice, setChamberNotice] = useState({
     isClosed: false,
     titleBn: 'জরুরি নোটিশ: চেম্বার বন্ধ সংক্রান্ত',
@@ -76,6 +78,15 @@ export default function Home() {
     }
 
     fetchBookingsCount()
+
+    // ইউআরএল চেক করা (যদি মোবাইলের অ্যাডমিন অ্যাপে ?admin=true বা সিক্রেট পাথ থাকে তবেই অ্যাডমিন মোড অন হবে)
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.get('admin') === 'true' || localStorage.getItem('isAdminAuth') === 'true') {
+      setIsAdminLoggedIn(true)
+      if (urlParams.get('admin') === 'true') {
+        localStorage.setItem('isAdminAuth', 'true')
+      }
+    }
 
     // লোকালস্টোরেজ থেকে নোটিশ ও নোটিফিকেশন সেটিংস লোড করা
     const savedNotice = localStorage.getItem('chamberNotice')
@@ -359,7 +370,6 @@ export default function Home() {
 
       await fetchBookingsCount()
 
-      // যদি অ্যাডমিন প্যানেল থেকে নোটিফিকেশন অন থাকে তবেই পুশ নোটিফিকেশন পাঠাবে
       if (notificationEnabled && 'serviceWorker' in navigator && Notification.permission === 'granted') {
         navigator.serviceWorker.ready.then((registration) => {
           registration.showNotification('নতুন অ্যাপয়েন্টমেন্ট সফল!', {
@@ -469,15 +479,17 @@ export default function Home() {
       style={{ backgroundImage: `url('/site-bg.jpeg')` }}
     >
       
-      {/* টপ বার: অ্যাডমিন প্যানেল, থিম ও ল্যাঙ্গুয়েজ টগল বাটন */}
+      {/* টপ বার: অ্যাডমিন বাটন কেবল তখনই দেখাবে যখন অ্যাডমিন ডিভাইস/লিঙ্ক থেকে প্রবেশ করা হবে */}
       <div className="max-w-4xl mx-auto flex flex-wrap justify-end gap-3 mb-4 relative z-50">
-        <button
-          type="button"
-          onClick={() => setShowAdminPanel(true)}
-          className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2.5 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
-        >
-          <span>{t[lang].adminPanelBtn}</span>
-        </button>
+        {isAdminLoggedIn && (
+          <button
+            type="button"
+            onClick={() => setShowAdminPanel(true)}
+            className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2.5 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none animate-pulse"
+          >
+            <span>{t[lang].adminPanelBtn}</span>
+          </button>
+        )}
 
         <button
           type="button"
@@ -850,8 +862,8 @@ export default function Home() {
         </section>
       </div>
 
-      {/* অ্যাডমিন কন্ট্রোল প্যানেল মডাল */}
-      {showAdminPanel && (
+      {/* অ্যাডমিন কন্ট্রোল প্যানেল মডাল (শুধুমাত্র অ্যাডমিন ডিভাইসে দেখাবে) */}
+      {isAdminLoggedIn && showAdminPanel && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-300">
           <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-amber-500 max-w-lg w-full space-y-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b pb-3 border-slate-200 dark:border-slate-700">
@@ -867,7 +879,6 @@ export default function Home() {
             </div>
 
             <form onSubmit={handleSaveAdminSettings} className="space-y-4 text-sm">
-              {/* চেম্বার বন্ধ স্ট্যাটাস টগল */}
               <div className="flex items-center justify-between bg-amber-50 dark:bg-slate-800 p-4 rounded-2xl border border-amber-200 dark:border-slate-700">
                 <span className="font-bold text-slate-800 dark:text-slate-200">
                   {lang === 'bn' ? 'চেম্বার বন্ধ রাখুন (Notice Active)' : 'Close Chamber (Notice Active)'}
@@ -880,7 +891,6 @@ export default function Home() {
                 />
               </div>
 
-              {/* নোটিফিকেশন অন/অফ টগল */}
               <div className="flex items-center justify-between bg-sky-50 dark:bg-slate-800 p-4 rounded-2xl border border-sky-200 dark:border-slate-700">
                 <span className="font-bold text-slate-800 dark:text-slate-200">
                   {lang === 'bn' ? 'পুশ নোটিফিকেশন চালু রাখুন (Notifications)' : 'Enable Push Notifications'}
@@ -893,7 +903,6 @@ export default function Home() {
                 />
               </div>
 
-              {/* বাংলা নোটিশ কাস্টমাইজেশন */}
               <div className="space-y-2">
                 <label className="block font-bold text-slate-700 dark:text-slate-300">
                   {lang === 'bn' ? 'বাংলা নোটিশ শিরোনাম:' : 'Notice Title (Bangla):'}
@@ -918,7 +927,6 @@ export default function Home() {
                 ></textarea>
               </div>
 
-              {/* ইংরেজি নোটিশ কাস্টমাইজেশন */}
               <div className="space-y-2">
                 <label className="block font-bold text-slate-700 dark:text-slate-300">
                   {lang === 'bn' ? 'ইংরেজি নোটিশ শিরোনাম:' : 'Notice Title (English):'}
@@ -954,8 +962,8 @@ export default function Home() {
         </div>
       )}
 
-      {/* চেম্বার বন্ধ থাকার পপ-আপ নোটিশ বক্স */}
-      {showChamberClosedModal && chamberNotice.isClosed && (
+      {/* চেম্বার বন্ধ থাকার পপ-আপ নোটিশ বক্স (রোগীদের জন্য) */}
+      {chamberNotice.isClosed && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-300">
           <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-rose-400 dark:border-rose-600 max-w-md w-full text-center space-y-4 scale-105 animate-in zoom-in-95 duration-200">
             <div className="w-16 h-16 bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
