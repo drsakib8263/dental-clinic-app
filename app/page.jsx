@@ -487,7 +487,7 @@ export default function Home() {
           <a href="/about" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">About us</a>
           <a href="/introduction-to-dentistry" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Introduction to Dentistry</a>
           <a href="/services" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Our services</a>
-          <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Gallery</a>
+          <a href="/gallery" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Gallery</a>
           <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Contact us</a>
         </nav>
 
@@ -511,7 +511,7 @@ export default function Home() {
           <a href="/about" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">About us</a>
           <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Introduction to Dentistry</a>
           <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Our services</a>
-          <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Gallery</a>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Gallery</a>
           <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Contact us</a>
         </div>
       )}
