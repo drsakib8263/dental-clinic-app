@@ -4,13 +4,12 @@ import { useState } from 'react'
 
 export default function GalleryPage() {
   const [lang, setLang] = useState('bn')
-  const [activeTab, setActiveTab] = useState('chamber') // 'chamber' অথবা 'patient'
 
   // ২০টি করে ছবির অ্যারে তৈরি করা (chamber-01 থেকে chamber-20 এবং patient-01 থেকে patient-20)
   const chamberImages = Array.from({ length: 20 }, (_, i) => {
     const num = String(i + 1).padStart(2, '0')
     return {
-      src: `/gallery/chamber-${num}.jpeg`, // আপনার লোকাল ফোল্ডারে এই নামে ছবি রাখতে হবে
+      src: `/gallery/chamber-${num}.jpeg`,
       titleBn: `চেম্বার ছবি #${i + 1}`,
       titleEn: `Chamber Photo #${i + 1}`
     }
@@ -24,8 +23,6 @@ export default function GalleryPage() {
       titleEn: `Patient Smile Restoration #${i + 1}`
     }
   })
-
-  const currentList = activeTab === 'chamber' ? chamberImages : patientImages
 
   return (
     <main 
@@ -53,7 +50,7 @@ export default function GalleryPage() {
         </button>
       </div>
 
-      <div className="max-w-6xl mx-auto bg-white/90 dark:bg-[#344246]/95 backdrop-blur-xl p-8 md:p-12 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 relative z-10 space-y-8">
+      <div className="max-w-6xl mx-auto bg-white/90 dark:bg-[#344246]/95 backdrop-blur-xl p-8 md:p-12 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 relative z-10 space-y-12">
         
         {/* হেডার */}
         <div className="border-b border-[#5A181C]/20 pb-6 text-center">
@@ -65,55 +62,35 @@ export default function GalleryPage() {
           </p>
         </div>
 
-        {/* ব্রাঞ্চ সিলেকশন ট্যাব বাটন */}
-        <div className="flex justify-center gap-4">
-          <button
-            onClick={() => setActiveTab('chamber')}
-            className={`px-6 py-3 rounded-2xl font-bold transition shadow-md cursor-pointer ${
-              activeTab === 'chamber'
-                ? 'bg-[#5A181C] text-[#EADCD2]'
-                : 'bg-white/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-[#5A181C]/30'
-            }`}
-          >
-            {lang === 'bn' ? '🏥 আমাদের চেম্বার' : '🏥 Our Chamber'}
-          </button>
-
-          <button
-            onClick={() => setActiveTab('patient')}
-            className={`px-6 py-3 rounded-2xl font-bold transition shadow-md cursor-pointer ${
-              activeTab === 'patient'
-                ? 'bg-[#5A181C] text-[#EADCD2]'
-                : 'bg-white/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-[#5A181C]/30'
-            }`}
-          >
-            {lang === 'bn' ? '😁 রোগীর হাসি ফিরিয়ে আনার প্রচেষ্টা' : '😁 Patient Smile Restoration'}
-          </button>
-        </div>
-
-        {/* স্লাইড শো / হরিজন্টাল স্ক্রোলিং কন্টেইনার */}
+        {/* সেকশন ১: আমাদের চেম্বার */}
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-[#5A181C] dark:text-teal-300">
-            {activeTab === 'chamber' 
-              ? (lang === 'bn' ? 'আমাদের চেম্বারের দৃশ্যসমূহ (২০টি স্লাইড)' : 'Our Chamber Views (20 Slides)')
-              : (lang === 'bn' ? 'রোগীর হাসি ফিরিয়ে আনার প্রচেষ্টা (২০টি স্লাইড)' : 'Smile Restoration Cases (20 Slides)')}
-          </h2>
+          <div className="flex items-center gap-3 border-b border-[#5A181C]/20 pb-3">
+            <span className="text-2xl">🏥</span>
+            <h2 className="text-2xl font-extrabold text-[#5A181C] dark:text-teal-300">
+              {lang === 'bn' ? 'আমাদের চেম্বার' : 'Our Chamber'}
+            </h2>
+          </div>
+          <p className="text-sm text-slate-700 dark:text-slate-300">
+            {lang === 'bn' 
+              ? 'আমাদের চেম্বারের আধুনিক পরিবেশ ও চিকিৎসা সরঞ্জামের দৃশ্যসমূহ (chamber-01 থেকে chamber-20)।' 
+              : 'Views of our modern chamber environment and equipment.'}
+          </p>
 
-          {/* ডানে-বামে স্ক্রোল করার বক্স */}
-          <div className="flex overflow-x-auto gap-6 pb-6 pt-2 snap-x scrollbar-thin scrollbar-thumb-[#5A181C] scrollbar-track-[#EADCD2]">
-            {currentList.map((item, index) => (
+          {/* হরিজন্টাল স্ক্রোলিং স্লাইডশো */}
+          <div className="flex overflow-x-auto gap-6 pb-4 pt-2 snap-x scrollbar-thin">
+            {chamberImages.map((item, index) => (
               <div 
                 key={index} 
                 className="min-w-[280px] md:min-w-[340px] bg-white dark:bg-slate-800 rounded-2xl border border-[#5A181C]/20 shadow-md overflow-hidden snap-center flex-shrink-0 flex flex-col"
               >
                 <div className="w-full h-48 md:h-56 bg-slate-200 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center">
-                  {/* যদি ছবি না থাকে তবে ফলব্যাক টেক্সট দেখাবে, ছবি থাকলে লোড হবে */}
                   <img 
                     src={item.src} 
                     alt={item.titleEn}
                     className="w-full h-full object-cover hover:scale-105 transition duration-300"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23EADCD2' width='300' height='200'/%3E%3Ctext fill='%235A181C' font-family='sans-serif' font-size='14' dy='10.5' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EImage Not Found (Add File)%3C/text%3E%3C/svg%3E";
+                      e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23EADCD2' width='300' height='200'/%3E%3Ctext fill='%235A181C' font-family='sans-serif' font-size='14' dy='10.5' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3Echamber-" + String(index + 1).padStart(2, '0') + ".jpeg%3C/text%3E%3C/svg%3E";
                     }}
                   />
                 </div>
@@ -125,9 +102,48 @@ export default function GalleryPage() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-center text-slate-500 dark:text-slate-400">
-            {lang === 'bn' ? '← ডানে বা বামে স্ক্রোল করে ছবিগুলো দেখুন →' : '← Scroll left or right to view images →'}
+        </div>
+
+        {/* সেকশন ২: রোগীর হাসি ফিরিয়ে আনার প্রচেষ্টা */}
+        <div className="space-y-4 pt-6 border-t-2 border-[#5A181C]/20">
+          <div className="flex items-center gap-3 border-b border-[#5A181C]/20 pb-3">
+            <span className="text-2xl">😁</span>
+            <h2 className="text-2xl font-extrabold text-[#5A181C] dark:text-teal-300">
+              {lang === 'bn' ? 'রোগীর হাসি ফিরিয়ে আনার প্রচেষ্টা' : 'Patient Smile Restoration'}
+            </h2>
+          </div>
+          <p className="text-sm text-slate-700 dark:text-slate-300">
+            {lang === 'bn' 
+              ? 'আমাদের সফল চিকিৎসা ও কসমেটিক ডেন্টিস্ট্রির মাধ্যমে রোগীর হাসির রূপান্তরের দৃশ্যসমূহ (patient-01 থেকে patient-20)।' 
+              : 'Showcasing smile transformations through our dedicated dental treatments.'}
           </p>
+
+          {/* হরিজন্টাল স্ক্রোলিং স্লাইডশো */}
+          <div className="flex overflow-x-auto gap-6 pb-4 pt-2 snap-x scrollbar-thin">
+            {patientImages.map((item, index) => (
+              <div 
+                key={index} 
+                className="min-w-[280px] md:min-w-[340px] bg-white dark:bg-slate-800 rounded-2xl border border-[#5A181C]/20 shadow-md overflow-hidden snap-center flex-shrink-0 flex flex-col"
+              >
+                <div className="w-full h-48 md:h-56 bg-slate-200 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center">
+                  <img 
+                    src={item.src} 
+                    alt={item.titleEn}
+                    className="w-full h-full object-cover hover:scale-105 transition duration-300"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23EADCD2' width='300' height='200'/%3E%3Ctext fill='%235A181C' font-family='sans-serif' font-size='14' dy='10.5' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3Epatient-" + String(index + 1).padStart(2, '0') + ".jpeg%3C/text%3E%3C/svg%3E";
+                    }}
+                  />
+                </div>
+                <div className="p-4 text-center">
+                  <span className="font-bold text-sm text-[#5A181C] dark:text-[#EADCD2]">
+                    {lang === 'bn' ? item.titleBn : item.titleEn}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
       </div>
