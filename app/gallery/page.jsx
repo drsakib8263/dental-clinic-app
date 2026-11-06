@@ -4,8 +4,9 @@ import { useState } from 'react'
 
 export default function GalleryPage() {
   const [lang, setLang] = useState('bn')
+  const [selectedImage, setSelectedImage] = useState(null) // বড় করে দেখানোর জন্য স্টেট
 
-  // ২০টি করে ছবির অ্যারে তৈরি করা (chamber-01 থেকে chamber-20 এবং patient-01 থেকে patient-20)
+  // ২০টি করে ছবির অ্যারে তৈরি করা
   const chamberImages = Array.from({ length: 20 }, (_, i) => {
     const num = String(i + 1).padStart(2, '0')
     return {
@@ -72,16 +73,16 @@ export default function GalleryPage() {
           </div>
           <p className="text-sm text-slate-700 dark:text-slate-300">
             {lang === 'bn' 
-              ? 'আমাদের চেম্বারের আধুনিক পরিবেশ ও চিকিৎসা সরঞ্জামের দৃশ্যসমূহ (chamber-01 থেকে chamber-20)।' 
-              : 'Views of our modern chamber environment and equipment.'}
+              ? 'আমাদের চেম্বারের আধুনিক পরিবেশ ও চিকিৎসা সরঞ্জামের দৃশ্যসমূহ। (ছবিতে ক্লিক করে বড় করুন)' 
+              : 'Views of our modern chamber environment. (Click to enlarge)'}
           </p>
 
-          {/* হরিজন্টাল স্ক্রোলিং স্লাইডশো */}
           <div className="flex overflow-x-auto gap-6 pb-4 pt-2 snap-x scrollbar-thin">
             {chamberImages.map((item, index) => (
               <div 
                 key={index} 
-                className="min-w-[280px] md:min-w-[340px] bg-white dark:bg-slate-800 rounded-2xl border border-[#5A181C]/20 shadow-md overflow-hidden snap-center flex-shrink-0 flex flex-col"
+                onClick={() => setSelectedImage(item)}
+                className="min-w-[280px] md:min-w-[340px] bg-white dark:bg-slate-800 rounded-2xl border border-[#5A181C]/20 shadow-md overflow-hidden snap-center flex-shrink-0 flex flex-col cursor-pointer hover:shadow-xl transition"
               >
                 <div className="w-full h-48 md:h-56 bg-slate-200 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center">
                   <img 
@@ -114,16 +115,16 @@ export default function GalleryPage() {
           </div>
           <p className="text-sm text-slate-700 dark:text-slate-300">
             {lang === 'bn' 
-              ? 'আমাদের সফল চিকিৎসা ও কসমেটিক ডেন্টিস্ট্রির মাধ্যমে রোগীর হাসির রূপান্তরের দৃশ্যসমূহ (patient-01 থেকে patient-20)।' 
-              : 'Showcasing smile transformations through our dedicated dental treatments.'}
+              ? 'আমাদের সফল চিকিৎসা ও কসমেটিক ডেন্টিস্ট্রির মাধ্যমে রোগীর হাসির রূপান্তরের দৃশ্যসমূহ। (ছবিতে ক্লিক করে বড় করুন)' 
+              : 'Showcasing smile transformations. (Click to enlarge)'}
           </p>
 
-          {/* হরিজন্টাল স্ক্রোলিং স্লাইডশো */}
           <div className="flex overflow-x-auto gap-6 pb-4 pt-2 snap-x scrollbar-thin">
             {patientImages.map((item, index) => (
               <div 
                 key={index} 
-                className="min-w-[280px] md:min-w-[340px] bg-white dark:bg-slate-800 rounded-2xl border border-[#5A181C]/20 shadow-md overflow-hidden snap-center flex-shrink-0 flex flex-col"
+                onClick={() => setSelectedImage(item)}
+                className="min-w-[280px] md:min-w-[340px] bg-white dark:bg-slate-800 rounded-2xl border border-[#5A181C]/20 shadow-md overflow-hidden snap-center flex-shrink-0 flex flex-col cursor-pointer hover:shadow-xl transition"
               >
                 <div className="w-full h-48 md:h-56 bg-slate-200 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center">
                   <img 
@@ -147,6 +148,38 @@ export default function GalleryPage() {
         </div>
 
       </div>
+
+      {/* ছবি বড় করে দেখানোর পপ-আপ (Modal) */}
+      {selectedImage && (
+        <div 
+          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()} 
+            className="bg-white dark:bg-slate-900 p-4 rounded-3xl shadow-2xl border-2 border-[#5A181C] max-w-3xl w-full relative flex flex-col items-center space-y-4"
+          >
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 bg-[#5A181C] text-white hover:bg-[#451215] font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition cursor-pointer text-lg"
+            >
+              ✕
+            </button>
+
+            <div className="w-full max-h-[70vh] overflow-hidden rounded-2xl flex items-center justify-center bg-black">
+              <img 
+                src={selectedImage.src} 
+                alt="Enlarged view" 
+                className="max-h-[70vh] object-contain w-auto"
+              />
+            </div>
+
+            <h3 className="text-xl font-extrabold text-[#5A181C] dark:text-white text-center">
+              {lang === 'bn' ? selectedImage.titleBn : selectedImage.titleEn}
+            </h3>
+          </div>
+        </div>
+      )}
     </main>
   )
 }
