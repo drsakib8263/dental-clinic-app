@@ -834,7 +834,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ভিডিও এমবেড সেকশন (৪টি আলাদা ভিডিও বক্স: রুট ক্যানেল, এক্সট্রাকশন, ফিলিং ও ক্যাপ) */}
+        {/* ভিডিও এমবেড সেকশন (এক লাইনে ৪টি ছোট ভিডিও থাম্বনেইল বক্স) */}
         <section className="bg-[#95A5A6]/90 dark:bg-[#344246] backdrop-blur-xl p-6 md:p-10 rounded-3xl shadow-xl border border-slate-500/40 space-y-6">
           <div className="flex items-center gap-3">
             <span className="text-2xl">🎥</span>
@@ -846,10 +846,10 @@ export default function Home() {
             {t[lang].videoSub}
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {videoList.map((video, index) => (
-              <div key={index} className="bg-white/90 dark:bg-slate-800/90 p-4 rounded-2xl shadow-lg border border-[#5A181C]/30 space-y-3">
-                <h3 className="font-bold text-slate-900 dark:text-white text-base">{video.title}</h3>
+              <div key={index} className="bg-white/90 dark:bg-slate-800/90 p-3 rounded-2xl shadow-lg border border-[#5A181C]/30 space-y-2 flex flex-col justify-between">
+                <h3 className="font-bold text-slate-900 dark:text-white text-xs md:text-sm line-clamp-1">{video.title}</h3>
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow bg-black">
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
