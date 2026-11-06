@@ -45,7 +45,7 @@ export default function AboutUs() {
           </p>
         </div>
 
-        {/* প্যারাগ্রাফ সেকশন - এগুলো আপনি পরবর্তীতে নিজের ইচ্ছামতো পরিবর্তন করতে পারবেন */}
+        {/* প্যারাগ্রাফ সেকশন */}
         <div className="space-y-6 text-slate-800 dark:text-slate-200 text-base md:text-lg leading-relaxed">
           
           <h2 className="text-xl md:text-2xl font-bold text-[#5A181C] dark:text-white">
