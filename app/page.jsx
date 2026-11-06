@@ -486,7 +486,7 @@ export default function Home() {
           <a href="/" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Home</a>
           <a href="/about" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">About us</a>
           <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Introduction to Dentistry</a>
-          <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Our services</a>
+          <a href="/services" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Our services</a>
           <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Gallery</a>
           <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Contact us</a>
         </nav>
@@ -510,7 +510,7 @@ export default function Home() {
           <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Home</a>
           <a href="/about" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">About us</a>
           <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Introduction to Dentistry</a>
-          <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Our services</a>
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Our services</a>
           <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Gallery</a>
           <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Contact us</a>
         </div>
@@ -588,7 +588,7 @@ export default function Home() {
 
         {/* অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স */}
         {showBookingBox && (
-          <section className="bg-[#95A5A6]/90 dark:bg-[#344246]/95 p-6 md:p-10 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 max-w-3xl mx-auto relative z-10 animate-in fade-in zoom-in duration-300 backdrop-blur-xl">
+          <section id="booking-section" className="bg-[#95A5A6]/90 dark:bg-[#344246]/95 p-6 md:p-10 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 max-w-3xl mx-auto relative z-10 animate-in fade-in zoom-in duration-300 backdrop-blur-xl">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2 mx-auto">
                 <span className="text-2xl">📅</span>
@@ -834,7 +834,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ভিডিও এমবেড সেকশন (এক লাইনে ৪টি ছোট ভিডিও থাম্বনেইল বক্স) */}
+        {/* ভিডিও এমবেড সেকশন */}
         <section className="bg-[#95A5A6]/90 dark:bg-[#344246] backdrop-blur-xl p-6 md:p-10 rounded-3xl shadow-xl border border-slate-500/40 space-y-6">
           <div className="flex items-center gap-3">
             <span className="text-2xl">🎥</span>
