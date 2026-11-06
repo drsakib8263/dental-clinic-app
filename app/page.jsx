@@ -430,44 +430,35 @@ export default function Home() {
       className="min-h-screen text-slate-900 dark:text-slate-100 relative py-8 px-4 md:px-8 bg-cover bg-center bg-fixed transition-colors duration-200"
       style={{ backgroundImage: `url('/site-bg.jpeg')` }}
     >
-      {/* ব্যাকগ্রাউন্ডের ওপর মানানসই ব্লার ও ওভারলে লেয়ার (একদম সাদা নয়) */}
+      {/* ব্যাকগ্রাউন্ডের ওপর মানানসই ব্লার ও ওভারলে লেয়ার */}
       <div className="absolute inset-0 bg-[#EADCD2]/70 dark:bg-[#2B1618]/80 backdrop-blur-md pointer-events-none z-0"></div>
 
-      {/* পেজের বাম পাশে ফিক্সড তিনটি বক্স (WhatsApp, হটলাইন ও ইমেইল) */}
-      <div className="hidden lg:flex flex-col gap-3 fixed left-6 top-1/3 z-40 w-56">
+      {/* পেজের বাম পাশে ফিক্সড তিনটি আইকন বক্স (মোবাইল ও কম্পিউটার উভয় ডিভাইসে দৃশ্যমান এবং একটার সাথে একটা লাগানো) */}
+      <div className="flex flex-col fixed left-3 md:left-6 top-1/3 z-40 shadow-2xl rounded-2xl overflow-hidden border-2 border-[#5A181C]/40">
         <a
           href="https://wa.me/message/KBZOTSKH66H4P1"
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-[#EADCD2] dark:bg-[#3D2F27] hover:bg-[#D3D8DB] dark:hover:bg-[#4A3B3C] p-3.5 rounded-2xl shadow-xl border-2 border-[#5A181C]/40 flex items-center gap-3 transition-all duration-300 hover:scale-105"
+          className="bg-[#EADCD2] dark:bg-[#3D2F27] hover:bg-[#D3D8DB] dark:hover:bg-[#4A3B3C] p-3 md:p-3.5 flex items-center justify-center text-xl md:text-2xl transition-colors"
+          title="WhatsApp"
         >
-          <span className="text-2xl">💬</span>
-          <div className="overflow-hidden">
-            <p className="text-xs font-bold text-[#5A181C] dark:text-[#EADCD2]">WhatsApp</p>
-            <p className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 truncate">চ্যাট করুন</p>
-          </div>
+          💬
         </a>
 
         <a
           href="tel:+8801816011701"
-          className="bg-[#EADCD2] dark:bg-[#3D2F27] hover:bg-[#D3D8DB] dark:hover:bg-[#4A3B3C] p-3.5 rounded-2xl shadow-xl border-2 border-[#5A181C]/40 flex items-center gap-3 transition-all duration-300 hover:scale-105"
+          className="bg-[#EADCD2] dark:bg-[#3D2F27] hover:bg-[#D3D8DB] dark:hover:bg-[#4A3B3C] p-3 md:p-3.5 flex items-center justify-center text-xl md:text-2xl transition-colors border-t border-b border-[#5A181C]/20"
+          title="Hotline"
         >
-          <span className="text-2xl">📱</span>
-          <div className="overflow-hidden">
-            <p className="text-xs font-bold text-[#5A181C] dark:text-[#EADCD2]">হটলাইন</p>
-            <p className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 truncate">+880 1816 011 701</p>
-          </div>
+          📱
         </a>
 
         <a
           href="mailto:asir.mosaddeque@gmail.com"
-          className="bg-[#EADCD2] dark:bg-[#3D2F27] hover:bg-[#D3D8DB] dark:hover:bg-[#4A3B3C] p-3.5 rounded-2xl shadow-xl border-2 border-[#5A181C]/40 flex items-center gap-3 transition-all duration-300 hover:scale-105"
+          className="bg-[#EADCD2] dark:bg-[#3D2F27] hover:bg-[#D3D8DB] dark:hover:bg-[#4A3B3C] p-3 md:p-3.5 flex items-center justify-center text-xl md:text-2xl transition-colors"
+          title="Email"
         >
-          <span className="text-2xl">✉️</span>
-          <div className="overflow-hidden">
-            <p className="text-xs font-bold text-[#5A181C] dark:text-[#EADCD2]">ইমেল</p>
-            <p className="text-[10px] font-semibold text-slate-700 dark:text-slate-300 truncate">asir.mosaddeque@gmail.com</p>
-          </div>
+          ✉️
         </a>
       </div>
 
