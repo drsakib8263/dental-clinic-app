@@ -14,7 +14,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [showTreatments, setShowTreatments] = useState(false)
 
-  // চেম্বার বন্ধ থাকার নোটিশ পপ-আপ স্টেট (Supabase লাইভ ডেটাবেজ থেকে সিঙ্ক হবে)
+  // চেম্বার বন্ধ থাকার নোটিশ পপ-আপ স্টেট
   const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
   const [chamberNotice, setChamberNotice] = useState({
     isClosed: false,
@@ -62,7 +62,6 @@ export default function Home() {
     }
   }
 
-  // Supabase লাইভ ডেটাবেজ থেকে নোটিশ ও সেটিংস ফেচ করার ফাংশন
   const fetchLiveNotice = async () => {
     try {
       const { data, error } = await supabase
@@ -101,16 +100,6 @@ export default function Home() {
 
     fetchBookingsCount()
     fetchLiveNotice()
-
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then((reg) => console.log('Service Worker Registered:', reg.scope))
-        .catch((err) => console.error('Service Worker Registration failed:', err))
-
-      if ('Notification' in window && Notification.permission !== 'granted') {
-        Notification.requestPermission()
-      }
-    }
   }, [])
 
   useEffect(() => {
@@ -466,16 +455,27 @@ export default function Home() {
 
   return (
     <main 
-      className="min-h-screen text-slate-800 dark:text-slate-100 relative py-8 px-4 md:px-8 bg-cover bg-center bg-fixed transition-colors duration-200"
+      className="min-h-screen text-slate-900 dark:text-slate-100 relative py-8 px-4 md:px-8 bg-cover bg-center bg-fixed transition-colors duration-200"
       style={{ backgroundImage: `url('/site-bg.jpeg')` }}
     >
       
+      {/* ফ্লোটিং হোয়াটসঅ্যাপ বাটন */}
+      <a
+        href="https://wa.me/message/KBZOTSKH66H4P1"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 bg-green-600 hover:bg-green-700 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center text-3xl cursor-pointer"
+        title="Chat on WhatsApp"
+      >
+        💬
+      </a>
+
       {/* টপ বার: থিম ও ল্যাঙ্গুয়েজ টগল বাটন */}
       <div className="max-w-4xl mx-auto flex justify-end gap-3 mb-4 relative z-50">
         <button
           type="button"
           onClick={toggleTheme}
-          className="bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold px-4 py-2.5 rounded-full shadow-lg border-2 border-slate-300 dark:border-slate-600 transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
+          className="bg-[#D3D8DB] dark:bg-[#4A3B3C] hover:bg-[#EAECEE] text-slate-900 dark:text-slate-100 font-bold px-4 py-2.5 rounded-full shadow-lg border border-[#95A5A6] transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none backdrop-blur-md"
         >
           <span>{darkMode ? '☀️ লাইট মোড' : '🌙 ডার্ক মোড'}</span>
         </button>
@@ -483,7 +483,7 @@ export default function Home() {
         <button
           type="button"
           onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-          className="bg-white dark:bg-slate-800 hover:bg-sky-50 dark:hover:bg-slate-700 text-sky-900 dark:text-sky-300 font-extrabold px-5 py-2.5 rounded-full shadow-lg border-2 border-sky-500 transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
+          className="bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-extrabold px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
         >
           <span>🌐</span>
           <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
@@ -493,9 +493,10 @@ export default function Home() {
       <div className="max-w-4xl mx-auto space-y-10 relative z-10">
         
         {/* ডক্টরের প্রোফাইল ও হেডার সেকশন */}
-        <section className="p-6 md:p-8 rounded-3xl shadow-xl border border-gray-200/80 dark:border-slate-700 relative overflow-hidden bg-white/80 dark:bg-slate-900/85 backdrop-blur-md">
+        <section className="p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#5A181C]/30 relative overflow-hidden bg-[#EADCD2]/95 dark:bg-[#2B1618]/95 backdrop-blur-xl">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-[#95A5A6]/20 rounded-full blur-3xl pointer-events-none"></div>
           <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
-            <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden shadow-md border-2 border-sky-600 bg-white shrink-0">
+            <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden shadow-xl border-2 border-[#5A181C] bg-white shrink-0">
               <img 
                 src="/doctor.jpeg" 
                 alt="Doctor Profile" 
@@ -504,11 +505,11 @@ export default function Home() {
             </div>
 
             <div className="space-y-1.5 flex-1">
-              <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              <h1 className="text-3xl md:text-5xl font-extrabold text-[#5A181C] dark:text-[#EADCD2] tracking-tight">
                 {t[lang].title}
               </h1>
               
-              <p className="text-sky-800 dark:text-sky-400 font-extrabold text-xl md:text-2xl pt-1">
+              <p className="text-[#8B6B5E] dark:text-[#A89287] font-extrabold text-xl md:text-2xl pt-1">
                 {t[lang].subtitle}
               </p>
 
@@ -520,7 +521,7 @@ export default function Home() {
                 {t[lang].bmdc}
               </p>
 
-              <p className="text-slate-800 dark:text-slate-200 font-bold text-base md:text-lg pt-2">
+              <p className="text-[#5A181C] dark:text-[#EADCD2] font-bold text-base md:text-lg pt-2">
                 {t[lang].training}
               </p>
             </div>
@@ -532,7 +533,7 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setShowBookingBox(!showBookingBox)}
-            className="bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-lg py-4 px-8 rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border-2 border-sky-400 flex items-center justify-center gap-3 mx-auto"
+            className="bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-extrabold text-lg py-4 px-10 rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border border-[#8B6B5E]/40 flex items-center justify-center gap-3 mx-auto"
           >
             <span>{showBookingBox ? t[lang].bookingCloseBtn : t[lang].bookingMainBtn}</span>
           </button>
@@ -540,7 +541,7 @@ export default function Home() {
 
         {/* অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স */}
         {showBookingBox && (
-          <section className="bg-sky-200 dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-xl border border-sky-300 dark:border-slate-700 max-w-2xl mx-auto relative z-10 animate-in fade-in zoom-in duration-300">
+          <section className="bg-[#95A5A6]/90 dark:bg-[#344246]/95 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 max-w-2xl mx-auto relative z-10 animate-in fade-in zoom-in duration-300 backdrop-blur-xl">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2 mx-auto">
                 <span className="text-2xl">📅</span>
@@ -550,19 +551,19 @@ export default function Home() {
               </div>
               <button 
                 onClick={() => setShowBookingBox(false)}
-                className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white font-bold text-lg p-1"
+                className="text-slate-700 hover:text-slate-900 dark:text-slate-200 font-bold text-lg p-1"
               >
                 ✕
               </button>
             </div>
-            <p className="text-rose-600 dark:text-rose-400 font-semibold text-center mb-6 text-sm">
+            <p className="text-[#5A181C] dark:text-[#EADCD2] font-semibold text-center mb-6 text-sm">
               {t[lang].bookingSub}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
                     {t[lang].patientName}
                   </label>
                   <input
@@ -572,12 +573,12 @@ export default function Home() {
                     onChange={handleChange}
                     required
                     placeholder={t[lang].patientNamePlaceholder}
-                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
+                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-[#D3D8DB] rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white shadow-inner"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
                     {t[lang].ageLabel}
                   </label>
                   <input
@@ -589,13 +590,13 @@ export default function Home() {
                     min="1"
                     max="120"
                     placeholder={t[lang].agePlaceholder}
-                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
+                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-[#D3D8DB] rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white shadow-inner"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
                   {t[lang].phoneLabel}
                 </label>
                 <input
@@ -605,12 +606,12 @@ export default function Home() {
                   onChange={handleChange}
                   required
                   placeholder="017XXXXXXXX"
-                  className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-sky-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition text-slate-900 dark:text-white"
+                  className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-[#D3D8DB] rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white shadow-inner"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
                   {t[lang].serviceLabel}
                 </label>
                 <select
@@ -618,7 +619,7 @@ export default function Home() {
                   value={formData.service}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-[#5A181C]/40 rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer shadow-inner"
                 >
                   <option value="">{t[lang].serviceDefault}</option>
                   <option value={t[lang].service1}>{t[lang].service1}</option>
@@ -629,7 +630,7 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
                   {t[lang].dateLabel}
                 </label>
                 <select
@@ -637,7 +638,7 @@ export default function Home() {
                   value={formData.appointment_date}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-[#5A181C]/40 rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer shadow-inner"
                 >
                   <option value="">{t[lang].dateDefault}</option>
                   {availableDates.map((item, index) => (
@@ -649,7 +650,7 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
                   {t[lang].timeLabel}
                 </label>
                 <select
@@ -657,7 +658,7 @@ export default function Home() {
                   value={formData.appointment_time}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-sky-400 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-[#5A181C]/40 rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer shadow-inner"
                 >
                   <option value="">{t[lang].timeDefault}</option>
                   {rawTimes.map((time, index) => {
@@ -681,7 +682,7 @@ export default function Home() {
                   })}
                 </select>
                 {!formData.appointment_date && (
-                  <p className="text-xs text-rose-600 dark:text-rose-400 mt-1 font-medium">
+                  <p className="text-xs text-[#5A181C] dark:text-[#EADCD2] mt-1 font-medium">
                     {lang === 'bn' ? '* প্রথমে তারিখ নির্বাচন করুন, এরপর খালি সময় দেখতে পাবেন।' : '* Please select a date first to view available time slots.'}
                   </p>
                 )}
@@ -690,7 +691,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-sky-700 hover:bg-sky-800 text-white font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-md disabled:opacity-50 mt-4 cursor-pointer"
+                className="w-full bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg disabled:opacity-50 mt-4 cursor-pointer"
               >
                 {loading ? t[lang].submitting : t[lang].submitBtn}
               </button>
@@ -699,42 +700,42 @@ export default function Home() {
         )}
 
         {/* চেম্বারের চিকিৎসা ও খরচের তালিকা */}
-        <section className="bg-white/95 dark:bg-slate-900 backdrop-blur-md rounded-3xl shadow-xl border-2 border-sky-300 dark:border-slate-700 overflow-hidden">
+        <section className="bg-[#D3D8DB]/95 dark:bg-[#3A4448] backdrop-blur-xl rounded-3xl shadow-xl border-2 border-[#95A5A6] overflow-hidden">
           <div 
             onClick={() => setShowTreatments(!showTreatments)}
-            className="w-full p-5 md:p-6 flex items-center justify-between bg-sky-100 dark:bg-slate-800 hover:bg-sky-200 dark:hover:bg-slate-700 transition cursor-pointer select-none"
+            className="w-full p-5 md:p-6 flex items-center justify-between bg-[#95A5A6]/40 dark:bg-[#2B3438] hover:opacity-90 transition cursor-pointer select-none"
           >
             <div className="flex items-center gap-3">
-              <span className="text-2xl p-2 bg-white dark:bg-slate-700 rounded-2xl shadow-sm border border-sky-200 dark:border-slate-600">💰</span>
-              <h2 className="text-lg md:text-xl font-bold text-sky-950 dark:text-white">
+              <span className="text-2xl p-2 bg-white dark:bg-slate-700 rounded-2xl shadow-sm border border-[#95A5A6]">💰</span>
+              <h2 className="text-lg md:text-xl font-bold text-slate-900 dark:text-white">
                 {t[lang].treatmentToggle}
               </h2>
             </div>
             
             <button 
               type="button"
-              className="bg-sky-700 text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold shadow-md pointer-events-none"
+              className="bg-[#5A181C] text-[#EADCD2] px-4 py-2 rounded-xl text-xs md:text-sm font-bold shadow-md pointer-events-none"
             >
               {showTreatments ? (lang === 'bn' ? 'বন্ধ করুন ▲' : 'Hide ▲') : (lang === 'bn' ? 'দেখুন ▼' : 'View ▼')}
             </button>
           </div>
 
           {showTreatments && (
-            <div className="p-4 md:p-6 border-t border-sky-200 dark:border-slate-800 bg-sky-50 dark:bg-slate-900/50">
-              <div className="overflow-x-auto rounded-2xl border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-inner">
+            <div className="p-4 md:p-6 border-t border-[#95A5A6]/40 dark:bg-slate-900/50">
+              <div className="overflow-x-auto rounded-2xl border border-[#95A5A6] bg-white dark:bg-slate-800 shadow-inner">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-sky-200 dark:border-slate-700 text-sky-950 dark:text-white bg-sky-100 dark:bg-slate-700">
+                    <tr className="border-b border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white bg-[#EADCD2] dark:bg-slate-700">
                       <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].treatmentName}</th>
                       <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].approxCost}</th>
                       <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].approxTime}</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-sky-100 dark:divide-slate-700 text-xs md:text-sm">
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-700 text-xs md:text-sm">
                     {treatmentsList.map((item, index) => (
-                      <tr key={index} className="hover:bg-sky-50/50 dark:hover:bg-slate-700/50 transition">
+                      <tr key={index} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
                         <td className="py-3 px-4 font-semibold text-slate-900 dark:text-slate-100">{item.name}</td>
-                        <td className="py-3 px-4 text-sky-800 dark:text-sky-400 font-bold">{item.price}</td>
+                        <td className="py-3 px-4 text-[#5A181C] dark:text-[#EADCD2] font-bold">{item.price}</td>
                         <td className="py-3 px-4 text-slate-600 dark:text-slate-300">{item.time}</td>
                       </tr>
                     ))}
@@ -746,36 +747,36 @@ export default function Home() {
         </section>
 
         {/* চেম্বারের সময়সূচি সেকশন */}
-        <section className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-sky-200 dark:border-slate-700">
+        <section className="bg-[#B89C8B]/90 dark:bg-[#4E3E34] backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-xl border border-[#8B6B5E]/50">
           <div className="flex items-center gap-3 mb-4">
             <span className="text-2xl">⏰</span>
             <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
               {t[lang].scheduleTitle}
             </h2>
           </div>
-          <div className="space-y-3 text-slate-700 dark:text-slate-300 text-sm md:text-base">
-            <div className="flex justify-between items-center p-3 bg-sky-50 dark:bg-slate-800 rounded-xl border border-sky-100 dark:border-slate-700">
+          <div className="space-y-3 text-slate-900 dark:text-slate-100 text-sm md:text-base">
+            <div className="flex justify-between items-center p-3.5 bg-white/70 dark:bg-slate-800 rounded-2xl border border-[#8B6B5E]/30 shadow-sm">
               <span className="font-bold">{t[lang].scheduleDays}</span>
-              <span className="font-semibold text-sky-700 dark:text-sky-400">{t[lang].scheduleTime}</span>
+              <span className="font-semibold text-[#5A181C] dark:text-[#EADCD2]">{t[lang].scheduleTime}</span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-rose-50 dark:bg-slate-800 rounded-xl border border-rose-100 dark:border-slate-700">
+            <div className="flex justify-between items-center p-3.5 bg-white/70 dark:bg-slate-800 rounded-2xl border border-[#8B6B5E]/30 shadow-sm">
               <span className="font-bold">{t[lang].scheduleFriday}</span>
-              <span className="font-semibold text-rose-600 dark:text-rose-400">{t[lang].scheduleClosed}</span>
+              <span className="font-semibold text-rose-700 dark:text-rose-400">{t[lang].scheduleClosed}</span>
             </div>
           </div>
         </section>
 
         {/* দাঁতের যত্ন ও স্বাস্থ্য টিপস (ব্লগ) সেকশন */}
-        <section className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-sky-200 dark:border-slate-700 space-y-6">
+        <section className="bg-[#EADCD2]/95 dark:bg-[#32201D] backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-xl border border-[#8B6B5E]/40 space-y-6">
           <div className="flex items-center gap-3">
             <span className="text-2xl">📖</span>
-            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
+            <h2 className="text-xl md:text-2xl font-bold text-[#5A181C] dark:text-[#EADCD2]">
               {t[lang].tipsTitle}
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {dentalTips.map((tip, index) => (
-              <div key={index} className="bg-sky-50 dark:bg-slate-800 p-5 rounded-2xl border border-sky-100 dark:border-slate-700 space-y-2 flex flex-col justify-between">
+              <div key={index} className="bg-white/80 dark:bg-slate-800 p-5 rounded-2xl border border-[#B89C8B]/40 shadow-sm space-y-2 flex flex-col justify-between hover:shadow-md transition">
                 <div>
                   <div className="text-3xl mb-2">{tip.icon}</div>
                   <h3 className="font-bold text-slate-900 dark:text-white text-base mb-1">{tip.title}</h3>
@@ -787,17 +788,17 @@ export default function Home() {
         </section>
 
         {/* ভিডিও এমবেড সেকশন */}
-        <section className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-sky-200 dark:border-slate-700 space-y-4">
+        <section className="bg-[#95A5A6]/90 dark:bg-[#344246] backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-xl border border-slate-500/40 space-y-4">
           <div className="flex items-center gap-3">
             <span className="text-2xl">🎥</span>
             <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
               {t[lang].videoTitle}
             </h2>
           </div>
-          <p className="text-slate-600 dark:text-slate-300 text-sm">
+          <p className="text-slate-800 dark:text-slate-200 text-sm">
             {t[lang].videoSub}
           </p>
-          <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg border border-sky-200 dark:border-slate-700 bg-black">
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg border border-[#5A181C]/40 bg-black">
             <iframe
               className="absolute top-0 left-0 w-full h-full"
               src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
@@ -809,36 +810,36 @@ export default function Home() {
         </section>
 
         {/* যোগাযোগ ও কন্টাক্ট সেকশন */}
-        <section className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border-2 border-sky-300 dark:border-slate-700 space-y-6">
-          <div className="flex items-center gap-3 border-b border-sky-100 dark:border-slate-800 pb-4">
-            <span className="text-3xl p-2 bg-sky-100 dark:bg-slate-800 rounded-2xl">📞</span>
+        <section className="bg-[#B89C8B]/95 dark:bg-[#3D2F27] backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-xl border-2 border-[#5A181C]/50 space-y-6">
+          <div className="flex items-center gap-3 border-b border-[#8B6B5E]/40 pb-4">
+            <span className="text-3xl p-2 bg-white/70 dark:bg-slate-800 rounded-2xl">📞</span>
             <div>
               <h2 className="text-xl md:text-2xl font-extrabold text-slate-900 dark:text-white">
                 {t[lang].contactTitle}
               </h2>
-              <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400">
+              <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300">
                 {lang === 'bn' ? 'যেকোনো প্রয়োজনে সরাসরি যোগাযোগ করুন' : 'Feel free to reach out for any queries'}
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base">
-            <div className="p-5 bg-gradient-to-br from-sky-50 to-teal-50 dark:from-slate-800 dark:to-slate-800/80 rounded-2xl border border-sky-200 dark:border-slate-700 shadow-sm space-y-2 hover:shadow-md transition">
-              <div className="flex items-center gap-2 text-sky-800 dark:text-sky-400 font-bold">
+            <div className="p-5 bg-white/80 dark:bg-slate-800 rounded-2xl border border-[#8B6B5E]/40 shadow-sm space-y-2 hover:shadow-md transition">
+              <div className="flex items-center gap-2 text-[#5A181C] dark:text-[#EADCD2] font-bold">
                 <span>📱</span>
                 <span>{t[lang].hotline}</span>
               </div>
-              <a href="tel:+8801816011701" className="text-slate-900 dark:text-white font-black text-lg md:text-xl hover:text-sky-600 dark:hover:text-sky-400 transition block">
+              <a href="tel:+8801816011701" className="text-slate-900 dark:text-white font-black text-lg md:text-xl hover:text-[#5A181C] transition block">
                 +880 1816 011 701
               </a>
             </div>
 
-            <div className="p-5 bg-gradient-to-br from-sky-50 to-teal-50 dark:from-slate-800 dark:to-slate-800/80 rounded-2xl border border-sky-200 dark:border-slate-700 shadow-sm space-y-2 hover:shadow-md transition">
-              <div className="flex items-center gap-2 text-sky-800 dark:text-sky-400 font-bold">
+            <div className="p-5 bg-white/80 dark:bg-slate-800 rounded-2xl border border-[#8B6B5E]/40 shadow-sm space-y-2 hover:shadow-md transition">
+              <div className="flex items-center gap-2 text-[#5A181C] dark:text-[#EADCD2] font-bold">
                 <span>✉️</span>
                 <span>{t[lang].email}</span>
               </div>
-              <a href="mailto:asir.mosaddeque@gmail.com" className="text-slate-900 dark:text-white font-bold text-sm md:text-base hover:text-sky-600 dark:hover:text-sky-400 transition block break-all">
+              <a href="mailto:asir.mosaddeque@gmail.com" className="text-slate-900 dark:text-white font-bold text-sm md:text-base hover:text-[#5A181C] transition block break-all">
                 asir.mosaddeque@gmail.com
               </a>
             </div>
@@ -849,7 +850,7 @@ export default function Home() {
               href="https://maps.app.goo.gl/fk2Y1ujsnXuctkpL9?g_st=ac" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-2xl text-center shadow-lg transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer"
+              className="flex-1 bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-bold py-3.5 px-6 rounded-2xl text-center shadow-lg transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer"
             >
               {t[lang].mapBtn}
             </a>
@@ -857,7 +858,7 @@ export default function Home() {
               href="https://wa.me/message/KBZOTSKH66H4P1" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 px-6 rounded-2xl text-center shadow-lg transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer"
+              className="flex-1 bg-[#4A3B3C] hover:bg-[#32201D] text-[#EADCD2] font-bold py-3.5 px-6 rounded-2xl text-center shadow-lg transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer"
             >
               {t[lang].whatsappBtn}
             </a>
@@ -869,17 +870,17 @@ export default function Home() {
       {/* চেম্বার বন্ধ থাকলে পপ-আপ নোটিশ মডাল */}
       {showChamberClosedModal && chamberNotice.isClosed && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-rose-500 max-w-md w-full space-y-4 text-center">
+          <div className="bg-[#EADCD2] dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#5A181C] max-w-md w-full space-y-4 text-center">
             <div className="text-4xl">📢</div>
-            <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">
+            <h3 className="text-xl font-extrabold text-[#5A181C] dark:text-white">
               {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
             </h3>
-            <p className="text-slate-600 dark:text-slate-300 text-sm whitespace-pre-line leading-relaxed">
+            <p className="text-slate-700 dark:text-slate-300 text-sm whitespace-pre-line leading-relaxed">
               {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
             </p>
             <button
               onClick={() => setShowChamberClosedModal(false)}
-              className="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 px-6 rounded-xl transition duration-200 shadow cursor-pointer mt-2"
+              className="w-full bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-bold py-3 px-6 rounded-xl transition duration-200 shadow cursor-pointer mt-2"
             >
               {t[lang].closeModalBtn}
             </button>
@@ -890,22 +891,22 @@ export default function Home() {
       {/* সফল বুকিং পপ-আপ মডাল */}
       {showSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-teal-500 max-w-md w-full space-y-4 text-center">
+          <div className="bg-[#EADCD2] dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#5A181C] max-w-md w-full space-y-4 text-center">
             <div className="text-4xl">🎉</div>
-            <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">
+            <h3 className="text-xl font-extrabold text-[#5A181C] dark:text-white">
               {t[lang].successTitle}
             </h3>
-            <div className="bg-teal-50 dark:bg-slate-800 p-4 rounded-2xl text-left space-y-2 border border-teal-200 dark:border-slate-700 text-sm">
-              <p className="font-semibold text-slate-800 dark:text-slate-200">রোগী: <span className="font-bold text-teal-800 dark:text-teal-400">{successDetails.name}</span></p>
-              <p className="font-semibold text-slate-800 dark:text-slate-200">তারিখ: <span className="font-bold text-teal-800 dark:text-teal-400">{successDetails.date}</span></p>
-              <p className="font-semibold text-slate-800 dark:text-slate-200">সময়: <span className="font-bold text-teal-800 dark:text-teal-400">{successDetails.time}</span></p>
+            <div className="bg-white/80 dark:bg-slate-800 p-4 rounded-2xl text-left space-y-2 border border-[#95A5A6] text-sm">
+              <p className="font-semibold text-slate-800 dark:text-slate-200">রোগী: <span className="font-bold text-[#5A181C] dark:text-teal-400">{successDetails.name}</span></p>
+              <p className="font-semibold text-slate-800 dark:text-slate-200">তারিখ: <span className="font-bold text-[#5A181C] dark:text-teal-400">{successDetails.date}</span></p>
+              <p className="font-semibold text-slate-800 dark:text-slate-200">সময়: <span className="font-bold text-[#5A181C] dark:text-teal-400">{successDetails.time}</span></p>
             </div>
-            <p className="text-slate-600 dark:text-slate-300 text-xs">
+            <p className="text-slate-700 dark:text-slate-300 text-xs">
               {t[lang].successMsg}
             </p>
             <button
               onClick={() => setShowSuccessModal(false)}
-              className="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-3 px-6 rounded-xl transition duration-200 shadow cursor-pointer mt-2"
+              className="w-full bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-bold py-3 px-6 rounded-xl transition duration-200 shadow cursor-pointer mt-2"
             >
               {t[lang].closeModalBtn}
             </button>
