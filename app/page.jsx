@@ -218,8 +218,8 @@ export default function Home() {
       mapBtn: '📍 গুগল ম্যাপ লোকেশন',
       whatsappBtn: '💬 হোয়াটসঅ্যাপে চ্যাট করুন',
       tipsTitle: 'দাঁতের যত্ন ও স্বাস্থ্য টিপস',
-      videoTitle: 'দাঁতের যত্ন বিষয়ক সচেতনতামূলক ভিডিও',
-      videoSub: 'নিচে আমাদের সচেতনতামূলক ভিডিওটি দেখে দাঁতের সঠিক সুরক্ষা সম্পর্কে আরও বিস্তারিত জেনে নিন।'
+      videoTitle: 'দাঁতের যত্ন ও চিকিৎসা বিষয়ক সচেতনতামূলক ভিডিও',
+      videoSub: 'দাঁতের বিভিন্ন চিকিৎসা (রুট ক্যানেল, এক্সট্রাকশন, ফিলিং ও ক্যাপ) সম্পর্কে বিস্তারিত জানতে নিচের ভিডিওগুলো দেখুন।'
     },
     en: {
       title: 'Dr. Asir Mosaddeque Sakib',
@@ -266,8 +266,8 @@ export default function Home() {
       mapBtn: '📍 Google Map Location',
       whatsappBtn: '💬 Chat on WhatsApp',
       tipsTitle: 'Dental Care & Health Tips',
-      videoTitle: 'Dental Care Awareness Video',
-      videoSub: 'Watch our awareness video below to learn more about proper dental protection.'
+      videoTitle: 'Dental Care & Treatment Awareness Videos',
+      videoSub: 'Watch the videos below to learn more about various dental treatments (Root Canal, Extraction, Filling, and Crowns/Caps).'
     }
   }
 
@@ -426,9 +426,21 @@ export default function Home() {
     }
   ]
 
+  const videoList = lang === 'bn' ? [
+    { title: '১. রুট ক্যানাল ট্রিটমেন্ট প্রক্রিয়া', id: 'YOUR_ROOT_CANAL_VIDEO_ID' },
+    { title: '২. দাঁত এক্সট্রাকশন (দাঁত তোলা)', id: 'YOUR_EXTRACTION_VIDEO_ID' },
+    { title: '৩. দাঁতের ফিলিং পদ্ধতি', id: 'YOUR_FILLING_VIDEO_ID' },
+    { title: '৪. দাঁতের ক্যাপ ও ক্রাউন সংক্রান্ত', id: 'YOUR_CROWN_VIDEO_ID' }
+  ] : [
+    { title: '1. Root Canal Treatment Procedure', id: 'YOUR_ROOT_CANAL_VIDEO_ID' },
+    { title: '2. Tooth Extraction Process', id: 'YOUR_EXTRACTION_VIDEO_ID' },
+    { title: '3. Dental Filling Method', id: 'YOUR_FILLING_VIDEO_ID' },
+    { title: '4. Dental Crowns & Caps Overview', id: 'YOUR_CROWN_VIDEO_ID' }
+  ]
+
   return (
     <main 
-      className="min-h-screen text-slate-900 dark:text-slate-100 relative py-8 px-4 md:px-8 bg-cover bg-center bg-fixed transition-colors duration-200"
+      className="min-h-screen text-slate-900 dark:text-slate-100 relative py-8 px-4 md:px-12 bg-cover bg-center bg-fixed transition-colors duration-200"
       style={{ backgroundImage: `url('/site-bg.jpeg')` }}
     >
       {/* ব্যাকগ্রাউন্ড ব্লার ও ওভারলে লেয়ার */}
@@ -463,14 +475,14 @@ export default function Home() {
         </a>
       </div>
 
-      {/* ন্যাভিগেশন বার (কম্পিউটারে হরাইজন্টাল এবং মোবাইলে ওপরের বামে তিন দাগের হ্যামবার্গার মেনু) */}
-      <header className="max-w-4xl mx-auto mb-6 relative z-50 bg-[#EADCD2]/90 dark:bg-[#2B1618]/90 p-4 rounded-2xl shadow-xl border border-[#5A181C]/30 backdrop-blur-md flex items-center justify-between">
-        <div className="font-extrabold text-[#5A181C] dark:text-[#EADCD2] text-lg tracking-tight">
+      {/* ন্যাভিগেশন বার */}
+      <header className="max-w-7xl mx-auto mb-6 relative z-50 bg-[#EADCD2]/90 dark:bg-[#2B1618]/90 p-4 md:px-8 rounded-2xl shadow-xl border border-[#5A181C]/30 backdrop-blur-md flex items-center justify-between">
+        <div className="font-extrabold text-[#5A181C] dark:text-[#EADCD2] text-lg md:text-xl tracking-tight">
           Dental Care
         </div>
 
         {/* কম্পিউটার ভার্সন: হরাইজন্টাল মেনু */}
-        <nav className="hidden md:flex items-center gap-6 font-bold text-sm text-slate-800 dark:text-slate-200">
+        <nav className="hidden md:flex items-center gap-8 font-bold text-sm md:text-base text-slate-800 dark:text-slate-200">
           <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Home</a>
           <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">About us</a>
           <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Introduction to Dentistry</a>
@@ -479,7 +491,7 @@ export default function Home() {
           <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Contact us</a>
         </nav>
 
-        {/* মোবাইল ভার্সন: তিন দাগের মেনু বাটন (ওপেন/ক্লোজ টগল) */}
+        {/* মোবাইল ভার্সন: তিন দাগের মেনু বাটন */}
         <div className="flex md:hidden items-center">
           <button 
             type="button"
@@ -494,7 +506,7 @@ export default function Home() {
 
       {/* মোবাইল ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
-        <div className="max-w-4xl mx-auto mb-6 md:hidden relative z-50 bg-[#EADCD2] dark:bg-[#2B1618] p-4 rounded-2xl shadow-2xl border border-[#5A181C]/40 space-y-3 font-bold text-sm text-slate-900 dark:text-white animate-in fade-in duration-200">
+        <div className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 bg-[#EADCD2] dark:bg-[#2B1618] p-4 rounded-2xl shadow-2xl border border-[#5A181C]/40 space-y-3 font-bold text-sm text-slate-900 dark:text-white animate-in fade-in duration-200">
           <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Home</a>
           <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">About us</a>
           <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Introduction to Dentistry</a>
@@ -505,7 +517,7 @@ export default function Home() {
       )}
 
       {/* টপ বার: থিম ও ল্যাঙ্গুয়েজ টগল বাটন */}
-      <div className="max-w-4xl mx-auto flex justify-end gap-3 mb-4 relative z-50">
+      <div className="max-w-7xl mx-auto flex justify-end gap-3 mb-6 relative z-50">
         <button
           type="button"
           onClick={toggleTheme}
@@ -524,13 +536,14 @@ export default function Home() {
         </button>
       </div>
 
-      <div className="max-w-4xl mx-auto space-y-10 relative z-10">
+      {/* মূল কন্টেন্ট কনটেইনার */}
+      <div className="max-w-7xl mx-auto space-y-10 relative z-10">
         
         {/* ডক্টরের প্রোফাইল ও হেডার সেকশন */}
-        <section className="p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#5A181C]/30 relative overflow-hidden bg-[#EADCD2]/95 dark:bg-[#2B1618]/95 backdrop-blur-xl">
+        <section className="p-6 md:p-10 rounded-3xl shadow-2xl border-2 border-[#5A181C]/30 relative overflow-hidden bg-[#EADCD2]/95 dark:bg-[#2B1618]/95 backdrop-blur-xl">
           <div className="absolute top-0 right-0 w-48 h-48 bg-[#95A5A6]/20 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
-            <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden shadow-xl border-2 border-[#5A181C] bg-white shrink-0">
+          <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8 text-center md:text-left">
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden shadow-xl border-2 border-[#5A181C] bg-white shrink-0">
               <img 
                 src="/doctor.jpeg" 
                 alt="Doctor Profile" 
@@ -538,7 +551,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="space-y-1.5 flex-1">
+            <div className="space-y-2 flex-1">
               <h1 className="text-3xl md:text-5xl font-extrabold text-[#5A181C] dark:text-[#EADCD2] tracking-tight">
                 {t[lang].title}
               </h1>
@@ -575,7 +588,7 @@ export default function Home() {
 
         {/* অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স */}
         {showBookingBox && (
-          <section className="bg-[#95A5A6]/90 dark:bg-[#344246]/95 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 max-w-2xl mx-auto relative z-10 animate-in fade-in zoom-in duration-300 backdrop-blur-xl">
+          <section className="bg-[#95A5A6]/90 dark:bg-[#344246]/95 p-6 md:p-10 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 max-w-3xl mx-auto relative z-10 animate-in fade-in zoom-in duration-300 backdrop-blur-xl">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2 mx-auto">
                 <span className="text-2xl">📅</span>
@@ -808,9 +821,9 @@ export default function Home() {
               {t[lang].tipsTitle}
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {dentalTips.map((tip, index) => (
-              <div key={index} className="bg-white/80 dark:bg-slate-800 p-5 rounded-2xl border border-[#B89C8B]/40 shadow-sm space-y-2 flex flex-col justify-between hover:shadow-md transition">
+              <div key={index} className="bg-white/80 dark:bg-slate-800 p-6 rounded-2xl border border-[#B89C8B]/40 shadow-sm space-y-2 flex flex-col justify-between hover:shadow-md transition">
                 <div>
                   <div className="text-3xl mb-2">{tip.icon}</div>
                   <h3 className="font-bold text-slate-900 dark:text-white text-base mb-1">{tip.title}</h3>
@@ -821,8 +834,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ভিডিও এমবেড সেকশন */}
-        <section className="bg-[#95A5A6]/90 dark:bg-[#344246] backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-xl border border-slate-500/40 space-y-4">
+        {/* ভিডিও এমবেড সেকশন (৪টি আলাদা ভিডিও বক্স: রুট ক্যানেল, এক্সট্রাকশন, ফিলিং ও ক্যাপ) */}
+        <section className="bg-[#95A5A6]/90 dark:bg-[#344246] backdrop-blur-xl p-6 md:p-10 rounded-3xl shadow-xl border border-slate-500/40 space-y-6">
           <div className="flex items-center gap-3">
             <span className="text-2xl">🎥</span>
             <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
@@ -832,19 +845,27 @@ export default function Home() {
           <p className="text-slate-800 dark:text-slate-200 text-sm">
             {t[lang].videoSub}
           </p>
-          <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg border border-[#5A181C]/40 bg-black">
-            <iframe
-              className="absolute top-0 left-0 w-full h-full"
-              src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-              title="Dental Care Awareness Video"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {videoList.map((video, index) => (
+              <div key={index} className="bg-white/90 dark:bg-slate-800/90 p-4 rounded-2xl shadow-lg border border-[#5A181C]/30 space-y-3">
+                <h3 className="font-bold text-slate-900 dark:text-white text-base">{video.title}</h3>
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow bg-black">
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full"
+                    src={`https://www.youtube.com/embed/${video.id}`}
+                    title={video.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
         {/* যোগাযোগ ও কন্টাক্ট সেকশন */}
-        <section className="bg-[#B89C8B]/95 dark:bg-[#3D2F27] backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-xl border-2 border-[#5A181C]/50 space-y-6">
+        <section className="bg-[#B89C8B]/95 dark:bg-[#3D2F27] backdrop-blur-xl p-6 md:p-10 rounded-3xl shadow-xl border-2 border-[#5A181C]/50 space-y-6">
           <div className="flex items-center gap-3 border-b border-[#8B6B5E]/40 pb-4">
             <span className="text-3xl p-2 bg-white/70 dark:bg-slate-800 rounded-2xl">📞</span>
             <div>
@@ -857,7 +878,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm md:text-base">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm md:text-base">
             <div className="p-5 bg-white/80 dark:bg-slate-800 rounded-2xl border border-[#8B6B5E]/40 shadow-sm space-y-2 hover:shadow-md transition">
               <div className="flex items-center gap-2 text-[#5A181C] dark:text-[#EADCD2] font-bold">
                 <span>📱</span>
@@ -879,7 +900,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-3 pt-2">
+          <div className="flex flex-col md:flex-row gap-4 pt-2">
             <a 
               href="https://maps.app.goo.gl/fk2Y1ujsnXuctkpL9?g_st=ac" 
               target="_blank" 
