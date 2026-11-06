@@ -482,10 +482,10 @@ export default function Home() {
         </div>
 
         {/* কম্পিউটার ভার্সন: হরাইজন্টাল মেনু */}
-        <nav className="hidden md:flex items-center gap-8 font-bold text-sm md:text-base text-slate-800 dark:text-slate-200">
+        <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base text-slate-800 dark:text-slate-200">
           <a href="/" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Home</a>
           <a href="/about" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">About us</a>
-          <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Introduction to Dentistry</a>
+          <a href="/introduction-to-dentistry" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Introduction to Dentistry</a>
           <a href="/services" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Our services</a>
           <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Gallery</a>
           <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Contact us</a>
@@ -509,7 +509,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 bg-[#EADCD2] dark:bg-[#2B1618] p-4 rounded-2xl shadow-2xl border border-[#5A181C]/40 space-y-3 font-bold text-sm text-slate-900 dark:text-white animate-in fade-in duration-200">
           <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Home</a>
           <a href="/about" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">About us</a>
-          <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Introduction to Dentistry</a>
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Introduction to Dentistry</a>
           <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Our services</a>
           <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Gallery</a>
           <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Contact us</a>
