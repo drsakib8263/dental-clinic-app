@@ -13,6 +13,7 @@ export default function Home() {
   const [bookedSlotsCount, setBookedSlotsCount] = useState({})
   const [loading, setLoading] = useState(false)
   const [showTreatments, setShowTreatments] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // চেম্বার বন্ধ থাকার নোটিশ পপ-আপ স্টেট
   const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
@@ -430,10 +431,10 @@ export default function Home() {
       className="min-h-screen text-slate-900 dark:text-slate-100 relative py-8 px-4 md:px-8 bg-cover bg-center bg-fixed transition-colors duration-200"
       style={{ backgroundImage: `url('/site-bg.jpeg')` }}
     >
-      {/* ব্যাকগ্রাউন্ডের ওপর মানানসই ব্লার ও ওভারলে লেয়ার */}
+      {/* ব্যাকগ্রাউন্ড ব্লার ও ওভারলে লেয়ার */}
       <div className="absolute inset-0 bg-[#EADCD2]/70 dark:bg-[#2B1618]/80 backdrop-blur-md pointer-events-none z-0"></div>
 
-      {/* পেজের বাম পাশে ফিক্সড তিনটি আইকন বক্স (মোবাইল ও কম্পিউটার উভয় ডিভাইসে দৃশ্যমান এবং একটার সাথে একটা লাগানো) */}
+      {/* পেজের বাম পাশে ফিক্সড তিনটি আইকন বক্স */}
       <div className="flex flex-col fixed left-3 md:left-6 top-1/3 z-40 shadow-2xl rounded-2xl overflow-hidden border-2 border-[#5A181C]/40">
         <a
           href="https://wa.me/message/KBZOTSKH66H4P1"
@@ -461,6 +462,47 @@ export default function Home() {
           ✉️
         </a>
       </div>
+
+      {/* ন্যাভিগেশন বার (কম্পিউটারে হরাইজন্টাল এবং মোবাইলে ওপরের বামে তিন দাগের হ্যামবার্গার মেনু) */}
+      <header className="max-w-4xl mx-auto mb-6 relative z-50 bg-[#EADCD2]/90 dark:bg-[#2B1618]/90 p-4 rounded-2xl shadow-xl border border-[#5A181C]/30 backdrop-blur-md flex items-center justify-between">
+        <div className="font-extrabold text-[#5A181C] dark:text-[#EADCD2] text-lg tracking-tight">
+          Dental Care
+        </div>
+
+        {/* কম্পিউটার ভার্সন: হরাইজন্টাল মেনু */}
+        <nav className="hidden md:flex items-center gap-6 font-bold text-sm text-slate-800 dark:text-slate-200">
+          <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Home</a>
+          <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">About us</a>
+          <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Introduction to Dentistry</a>
+          <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Our services</a>
+          <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Gallery</a>
+          <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Contact us</a>
+        </nav>
+
+        {/* মোবাইল ভার্সন: তিন দাগের মেনু বাটন (ওপেন/ক্লোজ টগল) */}
+        <div className="flex md:hidden items-center">
+          <button 
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="text-2xl p-2 text-[#5A181C] dark:text-[#EADCD2] focus:outline-none"
+            aria-label="Toggle Menu"
+          >
+            ☰
+          </button>
+        </div>
+      </header>
+
+      {/* মোবাইল ড্রপডাউন মেনু */}
+      {mobileMenuOpen && (
+        <div className="max-w-4xl mx-auto mb-6 md:hidden relative z-50 bg-[#EADCD2] dark:bg-[#2B1618] p-4 rounded-2xl shadow-2xl border border-[#5A181C]/40 space-y-3 font-bold text-sm text-slate-900 dark:text-white animate-in fade-in duration-200">
+          <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Home</a>
+          <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">About us</a>
+          <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Introduction to Dentistry</a>
+          <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Our services</a>
+          <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Gallery</a>
+          <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Contact us</a>
+        </div>
+      )}
 
       {/* টপ বার: থিম ও ল্যাঙ্গুয়েজ টগল বাটন */}
       <div className="max-w-4xl mx-auto flex justify-end gap-3 mb-4 relative z-50">
