@@ -379,18 +379,18 @@ export default function Home() {
 
   return (
     <main 
-      className="min-h-screen text-slate-100 relative py-6 px-4 md:px-12 transition-colors duration-200 scroll-smooth"
-      style={{ backgroundColor: '#1a1a1a' }}
+      className="min-h-screen text-slate-900 relative py-6 px-4 md:px-12 transition-colors duration-200 scroll-smooth"
+      style={{ backgroundColor: '#d9dee3' }}
     >
       
       {/* ১. টপ নোটিশ বা ব্যানার */}
       <div 
-        className="max-w-7xl mx-auto mb-6 text-slate-100 py-2.5 px-4 rounded-2xl text-center text-xs md:text-sm font-medium tracking-wide shadow-md flex items-center justify-center gap-2 border"
-        style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+        className="max-w-7xl mx-auto mb-6 text-slate-900 py-2.5 px-4 rounded-2xl text-center text-xs md:text-sm font-medium tracking-wide shadow-md flex items-center justify-center gap-2 border"
+        style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
       >
         <span 
-          className="text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"
-          style={{ backgroundColor: '#9fb2c6' }}
+          className="text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"
+          style={{ backgroundColor: '#1a1a1a' }}
         >
           Notice
         </span>
@@ -404,30 +404,30 @@ export default function Home() {
       {/* ২. ন্যাভিগেশন বার */}
       <header 
         className="max-w-7xl mx-auto mb-6 sticky top-4 z-50 p-4 md:px-8 rounded-2xl shadow-xl backdrop-blur-md flex items-center justify-between border"
-        style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+        style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
       >
         <div className="flex items-center gap-3">
           <div 
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-900 text-xl font-black shadow-md"
-            style={{ backgroundColor: '#9fb2c6' }}
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-xl font-black shadow-md"
+            style={{ backgroundColor: '#1a1a1a' }}
           >
             🦷
           </div>
           <span 
             className="font-extrabold text-lg md:text-xl tracking-tight"
-            style={{ color: '#d9dee3' }}
+            style={{ color: '#1a1a1a' }}
           >
             Dr. Sakib Dental Care
           </span>
         </div>
 
-        <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base" style={{ color: '#d9dee3' }}>
-          <a href="/" className="transition hover:text-white">Home</a>
-          <a href="#about-section" className="transition hover:text-white">About us</a>
-          <a href="/introduction-to-dentistry" className="transition hover:text-white">Introduction to Dentistry</a>
-          <a href="/services" className="transition hover:text-white">Our services</a>
-          <a href="/gallery" className="transition hover:text-white">Gallery</a>
-          <a href="#contact-section" className="transition hover:text-white">Contact us</a>
+        <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base" style={{ color: '#1a1a1a' }}>
+          <a href="/" className="transition hover:text-slate-600">Home</a>
+          <a href="#about-section" className="transition hover:text-slate-600">About us</a>
+          <a href="/introduction-to-dentistry" className="transition hover:text-slate-600">Introduction to Dentistry</a>
+          <a href="/services" className="transition hover:text-slate-600">Our services</a>
+          <a href="/gallery" className="transition hover:text-slate-600">Gallery</a>
+          <a href="#contact-section" className="transition hover:text-slate-600">Contact us</a>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -435,7 +435,7 @@ export default function Home() {
             type="button"
             onClick={toggleTheme}
             className="font-bold px-3.5 py-2 rounded-xl shadow-sm border transition flex items-center gap-1.5 text-xs cursor-pointer select-none"
-            style={{ backgroundColor: '#d9dee3', color: '#1a1a1a', borderColor: '#9fb2c6' }}
+            style={{ backgroundColor: '#1a1a1a', color: '#d9dee3', borderColor: '#9fb2c6' }}
           >
             <span>{darkMode ? '☀️' : '🌙'}</span>
           </button>
@@ -443,8 +443,8 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-            className="font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-1.5 text-xs md:text-sm cursor-pointer select-none text-slate-900"
-            style={{ backgroundColor: '#9fb2c6' }}
+            className="font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-1.5 text-xs md:text-sm cursor-pointer select-none text-white"
+            style={{ backgroundColor: '#1a1a1a' }}
           >
             <span>🌐</span>
             <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
@@ -454,7 +454,7 @@ export default function Home() {
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden text-2xl p-2 focus:outline-none"
-            style={{ color: '#d9dee3' }}
+            style={{ color: '#1a1a1a' }}
             aria-label="Toggle Menu"
           >
             ☰
@@ -466,14 +466,14 @@ export default function Home() {
       {mobileMenuOpen && (
         <div 
           className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 p-4 rounded-2xl shadow-2xl border space-y-3 font-bold text-sm"
-          style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6', color: '#d9dee3' }}
+          style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6', color: '#1a1a1a' }}
         >
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg" style={{ backgroundColor: '#d9dee3', color: '#1a1a1a' }}>Home</a>
-          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-800">About us</a>
-          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-800">Introduction to Dentistry</a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-800">Our services</a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-800">Gallery</a>
-          <a href="#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-800">Contact us</a>
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg" style={{ backgroundColor: '#1a1a1a', color: '#d9dee3' }}>Home</a>
+          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-300">About us</a>
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-300">Introduction to Dentistry</a>
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-300">Our services</a>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-300">Gallery</a>
+          <a href="#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-300">Contact us</a>
         </div>
       )}
 
@@ -484,57 +484,57 @@ export default function Home() {
           {/* বাম কলাম */}
           <div 
             className="p-6 md:p-10 rounded-3xl border shadow-sm flex flex-col justify-between space-y-6"
-            style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+            style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
           >
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
                 <div 
                   className="w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden shadow-lg border-2 shrink-0"
-                  style={{ borderColor: '#9fb2c6', backgroundColor: '#d9dee3' }}
+                  style={{ borderColor: '#9fb2c6', backgroundColor: '#1a1a1a' }}
                 >
                   <img src="/doctor.jpeg" alt="Doctor Profile" className="w-full h-full object-cover" />
                 </div>
                 <div className="space-y-1.5">
                   <span 
-                    className="text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider inline-block mb-1 text-slate-900"
-                    style={{ backgroundColor: '#9fb2c6' }}
+                    className="text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider inline-block mb-1 text-white"
+                    style={{ backgroundColor: '#1a1a1a' }}
                   >
                     {lang === 'bn' ? 'ওরাল এন্ড ডেন্টাল সার্জন' : 'Oral & Dental Surgeon'}
                   </span>
                   <h1 
                     className="text-2xl md:text-3xl font-black tracking-tight"
-                    style={{ color: '#d9dee3' }}
+                    style={{ color: '#1a1a1a' }}
                   >
                     {t[lang].title}
                   </h1>
-                  <p className="text-xs md:text-sm font-bold" style={{ color: '#9fb2c6' }}>
+                  <p className="text-xs md:text-sm font-bold" style={{ color: '#0E3A5D' }}>
                     {t[lang].degree}
                   </p>
-                  <p className="text-xs font-semibold text-slate-400">
+                  <p className="text-xs font-semibold text-slate-700">
                     {t[lang].bmdc}
                   </p>
                 </div>
               </div>
 
-              <div className="pt-4 border-t space-y-3 text-sm text-slate-300" style={{ borderColor: '#9fb2c6' }}>
+              <div className="pt-4 border-t space-y-3 text-sm text-slate-800" style={{ borderColor: '#9fb2c6' }}>
                 <div className="flex items-start gap-3">
                   <span className="text-lg shrink-0">📍</span>
                   <p className="font-medium leading-relaxed">{t[lang].addressText}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-lg shrink-0">📞</span>
-                  <a href="tel:+8801816011701" className="font-bold hover:underline" style={{ color: '#9fb2c6' }}>+880 1816 011 701</a>
+                  <a href="tel:+8801816011701" className="font-bold hover:underline" style={{ color: '#1a1a1a' }}>+880 1816 011 701</a>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-lg shrink-0">✉️</span>
-                  <a href="mailto:asir.mosaddeque@gmail.com" className="font-medium hover:underline text-slate-300">asir.mosaddeque@gmail.com</a>
+                  <a href="mailto:asir.mosaddeque@gmail.com" className="font-medium hover:underline text-slate-800">asir.mosaddeque@gmail.com</a>
                 </div>
               </div>
             </div>
 
             {/* সোশ্যাল মিডিয়া লোগো ইমেজ সেকশন (public ফোল্ডার থেকে) */}
             <div className="pt-4 border-t flex items-center justify-between" style={{ borderColor: '#9fb2c6' }}>
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-widest">
                 {lang === 'bn' ? 'সোশ্যাল লিংক:' : 'Connect:'}
               </span>
               <div className="flex items-center gap-3">
@@ -544,10 +544,10 @@ export default function Home() {
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="w-10 h-10 rounded-xl flex items-center justify-center transition shadow-sm hover:opacity-90 overflow-hidden p-2" 
-                  style={{ backgroundColor: '#9fb2c6' }} 
+                  style={{ backgroundColor: '#1a1a1a' }} 
                   title="Facebook"
                 >
-                  <img src="/facebook.png" alt="Facebook" className="w-full h-full object-contain" />
+                  <img src="/facebook.png" alt="Facebook" className="w-full h-full object-contain filter invert" />
                 </a>
                 
                 {/* ইনস্টাগ্রাম */}
@@ -556,10 +556,10 @@ export default function Home() {
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="w-10 h-10 rounded-xl flex items-center justify-center transition shadow-sm hover:opacity-90 overflow-hidden p-2" 
-                  style={{ backgroundColor: '#9fb2c6' }} 
+                  style={{ backgroundColor: '#1a1a1a' }} 
                   title="Instagram"
                 >
-                  <img src="/instagram.png" alt="Instagram" className="w-full h-full object-contain" />
+                  <img src="/instagram.png" alt="Instagram" className="w-full h-full object-contain filter invert" />
                 </a>
                 
                 {/* হোয়াটসঅ্যাপ */}
@@ -568,10 +568,10 @@ export default function Home() {
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="w-10 h-10 rounded-xl flex items-center justify-center transition shadow-sm hover:opacity-90 overflow-hidden p-2" 
-                  style={{ backgroundColor: '#9fb2c6' }} 
+                  style={{ backgroundColor: '#1a1a1a' }} 
                   title="WhatsApp"
                 >
-                  <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-contain" />
+                  <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-contain filter invert" />
                 </a>
               </div>
             </div>
@@ -580,26 +580,26 @@ export default function Home() {
           {/* ডান কলাম (চেম্বার শিডিউল) */}
           <div 
             className="p-6 md:p-10 rounded-3xl shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden border"
-            style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+            style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
           >
             <div className="space-y-4 relative z-10">
               <span 
-                className="text-slate-900 text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider"
-                style={{ backgroundColor: '#9fb2c6' }}
+                className="text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider"
+                style={{ backgroundColor: '#1a1a1a' }}
               >
                 {lang === 'bn' ? 'সময়সূচি' : 'Office Hours'}
               </span>
-              <h3 className="text-xl md:text-2xl font-black text-white">
+              <h3 className="text-xl md:text-2xl font-black text-slate-900">
                 {lang === 'bn' ? 'রোগী দেখার সময়' : 'Chamber Schedule'}
               </h3>
-              <div className="p-4 rounded-2xl border space-y-2 text-sm" style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6', color: '#1a1a1a' }}>
+              <div className="p-4 rounded-2xl border space-y-2 text-sm shadow-sm" style={{ backgroundColor: '#ffffff', borderColor: '#9fb2c6', color: '#1a1a1a' }}>
                 <div className="flex justify-between items-center py-1 border-b" style={{ borderColor: '#9fb2c6' }}>
                   <span className="font-semibold">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার' : 'Sat - Thu'}</span>
                   <span className="font-bold">৪:৩০ PM - ৯:০০ PM</span>
                 </div>
                 <div className="flex justify-between items-center py-1">
                   <span className="font-semibold">{lang === 'bn' ? 'শুক্রবার' : 'Friday'}</span>
-                  <span className="font-bold text-red-700">{lang === 'bn' ? 'বন্ধ' : 'Closed'}</span>
+                  <span className="font-bold text-red-600">{lang === 'bn' ? 'বন্ধ' : 'Closed'}</span>
                 </div>
               </div>
             </div>
@@ -608,8 +608,8 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setShowBookingBox(!showBookingBox)}
-                className="w-full block text-center font-extrabold py-3.5 px-6 rounded-2xl shadow-lg transition duration-200 text-sm md:text-base cursor-pointer text-slate-900"
-                style={{ backgroundColor: '#9fb2c6' }}
+                className="w-full block text-center font-extrabold py-3.5 px-6 rounded-2xl shadow-lg transition duration-200 text-sm md:text-base cursor-pointer text-white"
+                style={{ backgroundColor: '#1a1a1a' }}
               >
                 {showBookingBox ? t[lang].bookingCloseBtn : t[lang].bookingMainBtn}
               </button>
@@ -624,24 +624,24 @@ export default function Home() {
         <section 
           id="booking-section" 
           className="max-w-3xl mx-auto mb-10 p-6 md:p-10 rounded-3xl shadow-2xl border relative z-10"
-          style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+          style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl md:text-2xl font-bold text-white text-center flex items-center gap-2 mx-auto">
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 text-center flex items-center gap-2 mx-auto">
               <span>📅</span> {t[lang].bookingTitle}
             </h2>
-            <button onClick={() => setShowBookingBox(false)} className="text-slate-400 hover:text-white font-bold text-lg p-1">
+            <button onClick={() => setShowBookingBox(false)} className="text-slate-700 hover:text-slate-900 font-bold text-lg p-1">
               ✕
             </button>
           </div>
-          <p className="font-semibold text-center mb-6 text-xs md:text-sm" style={{ color: '#9fb2c6' }}>
+          <p className="font-semibold text-center mb-6 text-xs md:text-sm text-slate-700">
             {t[lang].bookingSub}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].patientName}</label>
+                <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].patientName}</label>
                 <input 
                   type="text" 
                   name="patient_name" 
@@ -649,12 +649,11 @@ export default function Home() {
                   onChange={handleChange} 
                   required 
                   placeholder={t[lang].patientNamePlaceholder} 
-                  className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900" 
-                  style={{ backgroundColor: '#d9dee3' }}
+                  className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900 bg-white border border-slate-300" 
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].ageLabel}</label>
+                <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].ageLabel}</label>
                 <input 
                   type="number" 
                   name="age" 
@@ -664,14 +663,13 @@ export default function Home() {
                   min="1" 
                   max="120" 
                   placeholder={t[lang].agePlaceholder} 
-                  className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900" 
-                  style={{ backgroundColor: '#d9dee3' }}
+                  className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900 bg-white border border-slate-300" 
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].phoneLabel}</label>
+              <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].phoneLabel}</label>
               <input 
                 type="tel" 
                 name="phone" 
@@ -679,20 +677,18 @@ export default function Home() {
                 onChange={handleChange} 
                 required 
                 placeholder="017XXXXXXXX" 
-                className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900" 
-                style={{ backgroundColor: '#d9dee3' }}
+                className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900 bg-white border border-slate-300" 
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].serviceLabel}</label>
+              <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].serviceLabel}</label>
               <select 
                 name="service" 
                 value={formData.service} 
                 onChange={handleChange} 
                 required 
-                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer" 
-                style={{ backgroundColor: '#d9dee3' }}
+                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer bg-white border border-slate-300" 
               >
                 <option value="">{t[lang].serviceDefault}</option>
                 <option value={t[lang].service1}>{t[lang].service1}</option>
@@ -703,14 +699,13 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].dateLabel}</label>
+              <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].dateLabel}</label>
               <select 
                 name="appointment_date" 
                 value={formData.appointment_date} 
                 onChange={handleChange} 
                 required 
-                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer" 
-                style={{ backgroundColor: '#d9dee3' }}
+                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer bg-white border border-slate-300" 
               >
                 <option value="">{t[lang].dateDefault}</option>
                 {availableDates.map((item, index) => (
@@ -720,14 +715,13 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].timeLabel}</label>
+              <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].timeLabel}</label>
               <select 
                 name="appointment_time" 
                 value={formData.appointment_time} 
                 onChange={handleChange} 
                 required 
-                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer" 
-                style={{ backgroundColor: '#d9dee3' }}
+                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer bg-white border border-slate-300" 
               >
                 <option value="">{t[lang].timeDefault}</option>
                 {rawTimes.map((time, index) => {
@@ -748,8 +742,8 @@ export default function Home() {
             <button 
               type="submit" 
               disabled={loading} 
-              className="w-full font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer text-slate-900"
-              style={{ backgroundColor: '#9fb2c6' }}
+              className="w-full font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer text-white"
+              style={{ backgroundColor: '#1a1a1a' }}
             >
               {loading ? t[lang].submitting : t[lang].submitBtn}
             </button>
@@ -761,12 +755,12 @@ export default function Home() {
       <section 
         id="about-section" 
         className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4"
-        style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+        style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
       >
-        <h2 className="text-2xl md:text-3xl font-extrabold text-white">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
           {lang === 'bn' ? 'আমাদের সম্পর্কে (About Us)' : 'About Us'}
         </h2>
-        <div className="space-y-3 text-slate-300 text-sm md:text-base leading-relaxed">
+        <div className="space-y-3 text-slate-800 text-sm md:text-base leading-relaxed">
           <p>
             {lang === 'bn'
               ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আপনাকে স্বাগতম। আমরা আধুনিক প্রযুক্তির সাহায্যে রোগীদের সর্বাধুনিক ও নিরাপদ ডেন্টাল সেবা প্রদান করে থাকি। আমাদের চেম্বারে রুট ক্যানাল ট্রিটমেন্ট, জিরকনিয়া ও মেটাল-সিরামিক ক্রাউন, স্কেলিং, দাঁত তোলা এবং কসমেটিক ডেন্টিস্ট্রির আধুনিক চিকিৎসা নিশ্চিত করা হয়।'
@@ -779,7 +773,7 @@ export default function Home() {
       {/* ৬. দাঁতের যত্ন ও স্বাস্থ্য টিপস */}
       <section className="max-w-7xl mx-auto mb-10">
         <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
             {t[lang].tipsTitle}
           </h2>
         </div>
@@ -788,11 +782,11 @@ export default function Home() {
             <div 
               key={index} 
               className="p-6 rounded-3xl border shadow-sm space-y-3"
-              style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+              style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
             >
               <span className="text-3xl block">{tip.icon}</span>
-              <h3 className="text-lg font-bold" style={{ color: '#9fb2c6' }}>{tip.title}</h3>
-              <p className="text-xs md:text-sm text-slate-300 leading-relaxed">{tip.description}</p>
+              <h3 className="text-lg font-bold text-slate-900">{tip.title}</h3>
+              <p className="text-xs md:text-sm text-slate-700 leading-relaxed">{tip.description}</p>
             </div>
           ))}
         </div>
@@ -802,13 +796,13 @@ export default function Home() {
       <section 
         id="contact-section"
         className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6"
-        style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+        style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
       >
         <div className="text-center space-y-2">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
             {t[lang].videoTitle}
           </h2>
-          <p className="text-xs md:text-sm text-slate-300 max-w-2xl mx-auto">
+          <p className="text-xs md:text-sm text-slate-700 max-w-2xl mx-auto">
             {t[lang].videoSub}
           </p>
         </div>
@@ -817,11 +811,11 @@ export default function Home() {
           {videoList.map((vid, index) => (
             <div 
               key={index} 
-              className="p-4 rounded-2xl border flex flex-col justify-between space-y-3"
-              style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6', color: '#1a1a1a' }}
+              className="p-4 rounded-2xl border flex flex-col justify-between space-y-3 bg-white shadow-sm"
+              style={{ borderColor: '#9fb2c6', color: '#1a1a1a' }}
             >
-              <h4 className="font-bold text-sm">{vid.title}</h4>
-              <div className="w-full h-32 rounded-xl flex items-center justify-center text-xs font-medium bg-slate-200 text-slate-700">
+              <h4 className="font-bold text-sm text-slate-900">{vid.title}</h4>
+              <div className="w-full h-32 rounded-xl flex items-center justify-center text-xs font-medium bg-slate-100 text-slate-700">
                 🎬 {lang === 'bn' ? 'ভিডিও শীঘ্রই আসছে' : 'Video Coming Soon'}
               </div>
             </div>
@@ -831,18 +825,18 @@ export default function Home() {
 
       {/* সফল বুকিং মোডাল */}
       {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div 
-            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border text-slate-100"
-            style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border text-slate-900 bg-white"
+            style={{ borderColor: '#9fb2c6' }}
           >
-            <div className="w-16 h-16 text-slate-900 text-3xl rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: '#9fb2c6' }}>✓</div>
-            <h3 className="text-2xl font-black" style={{ color: '#9fb2c6' }}>{t[lang].successTitle}</h3>
-            <p className="text-sm text-slate-300 leading-relaxed">{t[lang].successMsg}</p>
+            <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: '#1a1a1a' }}>✓</div>
+            <h3 className="text-2xl font-black text-slate-900">{t[lang].successTitle}</h3>
+            <p className="text-sm text-slate-700 leading-relaxed">{t[lang].successMsg}</p>
             <button 
               onClick={() => setShowSuccessModal(false)} 
-              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-slate-900"
-              style={{ backgroundColor: '#9fb2c6' }}
+              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white"
+              style={{ backgroundColor: '#1a1a1a' }}
             >
               {t[lang].closeModalBtn}
             </button>
@@ -852,22 +846,22 @@ export default function Home() {
 
       {/* চেম্বার বন্ধ থাকার নোটিশ মোডাল */}
       {showChamberClosedModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div 
-            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border text-slate-100"
-            style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border text-slate-900 bg-white"
+            style={{ borderColor: '#9fb2c6' }}
           >
-            <div className="w-16 h-16 text-slate-900 text-3xl rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: '#9fb2c6' }}>🔔</div>
-            <h3 className="text-2xl font-black text-amber-400">
+            <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: '#1a1a1a' }}>🔔</div>
+            <h3 className="text-2xl font-black text-amber-600">
               {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
             </h3>
-            <p className="text-sm text-slate-300 leading-relaxed">
+            <p className="text-sm text-slate-700 leading-relaxed">
               {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
             </p>
             <button 
               onClick={() => setShowChamberClosedModal(false)} 
-              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-slate-900"
-              style={{ backgroundColor: '#9fb2c6' }}
+              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white"
+              style={{ backgroundColor: '#1a1a1a' }}
             >
               {t[lang].closeModalBtn}
             </button>
