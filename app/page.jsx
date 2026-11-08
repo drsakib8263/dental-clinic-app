@@ -211,7 +211,7 @@ export default function Home() {
       degree: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)',
       bmdc: 'বিএমডিসি রেজি. ৮২৬৩',
       training: 'স্পেশাল ট্রেইনড ইন ইমপ্ল্যান্ট এন্ড কসমেটিক ডেন্টিস্ট্রি',
-      addressText: 'আলম মেডিকেল হল, পটিয়া সরকারি কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
+      addressText: 'আলম মেডিকেল হল, পটিয়া কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ ফর্ম বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
@@ -460,29 +460,53 @@ export default function Home() {
       style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
     >
 
-      {/* ১. টপ নোটিশ ও ইনফরমেশন বার (ডিম পার্পল/ব্লু থিম) */}
+      {/* ১. টপ নোটিশ ও ইনফরমেশন বার (ডান কোণায় বড় সোশ্যাল আইকনসহ: ফেসবুক, ইনস্টাগ্রাম ও হোয়াটসঅ্যাপ) */}
       <div className="bg-[#0c1e3e] text-white text-xs md:text-sm py-2.5 px-4 md:px-12 flex flex-wrap justify-between items-center gap-3 border-b border-blue-900/50">
         <div className="flex items-center gap-2">
           <span>📍</span>
           <span className="truncate max-w-xs md:max-w-none">{t[lang].addressText}</span>
         </div>
-        <div className="flex items-center gap-4 ml-auto md:ml-0">
-          <div className="flex items-center gap-2">
+        
+        <div className="flex items-center gap-6 ml-auto">
+          <div className="hidden sm:flex items-center gap-2">
             <span>🕒</span>
             <span>Sat - Thu: 4:30 PM - 9:00 PM</span>
           </div>
-          <div className="hidden sm:flex items-center gap-3 border-l border-blue-800 pl-4">
-            <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80">
-              <img src="/facebook.png" alt="FB" className="w-4 h-4 filter invert" />
+
+          {/* ডান কোণার বড় করা সোশ্যাল বাটনগুলো (ফেসবুক, ইনস্টাগ্রাম, হোয়াটসঅ্যাপ) */}
+          <div className="flex items-center gap-3 border-l border-blue-800 pl-4">
+            <a 
+              href="https://www.facebook.com/share/1ZfF826KUs/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1.5"
+              title="Facebook"
+            >
+              <img src="/facebook.png" alt="FB" className="w-full h-full object-contain filter invert" />
             </a>
-            <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="hover:opacity-80">
-              <img src="/instagram.png" alt="IG" className="w-4 h-4 filter invert" />
+            <a 
+              href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1.5"
+              title="Instagram"
+            >
+              <img src="/instagram.png" alt="IG" className="w-full h-full object-contain filter invert" />
+            </a>
+            <a 
+              href="https://wa.me/message/KBZOTSKH66H4P1" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1.5"
+              title="WhatsApp"
+            >
+              <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-contain filter invert" />
             </a>
           </div>
         </div>
       </div>
 
-      {/* ২. ন্যাভিগেশন বার (সাদা ও ক্লিন লুক) */}
+      {/* ২. ন্যাভিগেশন বার */}
       <header 
         className="sticky top-0 z-50 px-4 md:px-12 py-4 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
         style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
@@ -551,10 +575,9 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ৩. হিরো সেকশন (আপনার রেফারেন্স পিকচারের স্টাইলে সায়ান ও নীল ব্যাকগ্রাউন্ডের সমন্বয়ে) */}
+      {/* ৩. হিরো সেকশন */}
       <section className="relative overflow-hidden bg-gradient-to-r from-[#0d2857] via-[#0b3c85] to-[#0077b6] text-white py-12 lg:py-20 px-4 md:px-12">
         
-        {/* রিয়েলটাইম চেম্বার স্ট্যাটাস স্ট্রিপ */}
         <div className="max-w-7xl mx-auto mb-8">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs md:text-sm font-semibold">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -564,7 +587,6 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          {/* বাম পাশে ডাক্তারের ছবি সেকশন (রেফারেন্স ডিজাইনের মতো পোর্ট্রেট কার্ড) */}
           <div className="lg:col-span-5 flex justify-center lg:justify-start order-2 lg:order-1">
             <div className="relative w-72 h-80 md:w-80 md:h-96 lg:w-96 lg:h-[420px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 bg-[#071630]">
               <img 
@@ -581,7 +603,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ডান পাশে হেডলাইন, টেক্সট এবং একশন বাটন (রেফারেন্স লেআউট) */}
           <div className="lg:col-span-7 space-y-6 order-1 lg:order-2 text-center lg:text-left">
             <span className="text-xs font-bold uppercase tracking-widest text-cyan-300 bg-cyan-900/40 px-3.5 py-1.5 rounded-full border border-cyan-500/30">
               {t[lang].subtitle}
@@ -608,7 +629,6 @@ export default function Home() {
               </a>
             </div>
 
-            {/* ছোট ইনফো স্ট্রিপ */}
             <div className="pt-6 border-t border-white/10 flex items-center justify-center lg:justify-start gap-3 text-xs text-cyan-200">
               <span className="w-7 h-7 rounded-full bg-cyan-500/20 flex items-center justify-center font-bold">✓</span>
               <span>Say goodbye to dental issues with our painless treatments.</span>
