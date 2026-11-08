@@ -7,6 +7,31 @@ export default function ServicesPage() {
 
   const servicesList = lang === 'bn' ? [
     {
+      name: 'সিস্ট ইনিউক্লিয়েশন (Cyst Enucleation)',
+      desc: 'মুখগহ্বর বা চোয়ালের ভেতরে তৈরি হওয়া তরলপূর্ণ সিস্ট বা থলি সফলভাবে অপারেশনের মাধ্যমে সম্পূর্ণ অপসারণের চিকিৎসা।',
+      time: '৪৫-৬০ মিনিট'
+    },
+    {
+      name: 'দীর্ঘস্থায়ী ঘা ও প্রি-ক্যান্সারাস লেশনের চিকিৎসা',
+      desc: 'মুখে দীর্ঘদিনের না ভালো হওয়া ঘা, সাদা বা লাল প্যাচ এবং প্রি-ক্যান্সারাস অবস্থা নির্ণয় ও যথাযথ চিকিৎসা প্রদান।',
+      time: '৩০-৪৫ মিনিট'
+    },
+    {
+      name: 'পেশেন্ট কাউন্সেলিং (Patient Counseling)',
+      desc: 'রোগীর যেকোনো জটিল ডেন্টাল সমস্যা ও ভীতি দূর করতে এবং সঠিক মৌখিক স্বাস্থ্যবিধি বজায় রাখতে বিস্তারিত পরামর্শ প্রদান।',
+      time: '১৫-২০ মিনিট'
+    },
+    {
+      name: 'বাঁকা দাঁতের অর্থোডন্টিক কারেকশন (Orthodontic Correction)',
+      desc: 'ব্রেসেস বা আধুনিক অ্যালাইনারের সাহায্যে আঁকাবাঁকা ও ফাঁকা দাঁত সোজা করে হাসির সৌন্দর্য ও কামড় ঠিক করা।',
+      time: '৩০ মিনিট (প্রতি ভিজিট)'
+    },
+    {
+      name: 'ইম্পল্যান্ট (Dental Implant)',
+      desc: 'হারিয়ে যাওয়া দাঁতের শেকড়ের জায়গায় টাইটানিয়াম ফিক্সড কৃত্রিম দাঁত প্রতিস্থাপনের সর্বাধুনিক ও স্থায়ী সমাধান।',
+      time: '৪৫-৯০ মিনিট'
+    },
+    {
       name: 'রুট ক্যানাল ট্রিটমেন্ট (Root Canal Treatment)',
       desc: 'সংক্রমিত বা ক্ষতিগ্রস্থ দাঁতের ভেতরের নার্ভ ও রক্তনালী পরিষ্কার করে দাঁত বাঁচানোর আধুনিক চিকিৎসা।',
       time: '১৫-২০ মিনিট'
@@ -72,6 +97,31 @@ export default function ServicesPage() {
       time: '১৫ মিনিট (প্রতি ভিজিট)'
     }
   ] : [
+    {
+      name: 'Cyst Enucleation',
+      desc: 'Surgical removal of fluid-filled cysts or lesions developing within the jaws or oral cavity.',
+      time: '45-60 mins'
+    },
+    {
+      name: 'Long-standing Sores & Pre-cancerous Lesions Treatment',
+      desc: 'Diagnosis and clinical management of chronic oral ulcers, white/red patches, and pre-cancerous conditions.',
+      time: '30-45 mins'
+    },
+    {
+      name: 'Patient Counseling',
+      desc: 'Detailed consultation and guidance to alleviate patient anxiety and maintain optimal oral hygiene.',
+      time: '15-20 mins'
+    },
+    {
+      name: 'Orthodontic Correction (Braces)',
+      desc: 'Realignment of crooked or spaced teeth using braces or aligners for ideal occlusion and aesthetics.',
+      time: '30 mins (Per Visit)'
+    },
+    {
+      name: 'Dental Implant',
+      desc: 'Advanced permanent tooth replacement using titanium fixtures embedded into the jawbone.',
+      time: '45-90 mins'
+    },
     {
       name: 'Root Canal Treatment',
       desc: 'Modern treatment to save a damaged tooth by cleaning infected pulp and nerves inside.',
