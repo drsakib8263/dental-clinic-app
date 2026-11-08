@@ -14,7 +14,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  // রিয়েল-টাইম চেম্বার স্ট্যাটাস স্টেট (বিল্ড এরর এড়াতে)
+  // রিয়েল-টাইম চেম্বার স্ট্যাটাস স্টেট
   const [chamberStatusText, setChamberStatusText] = useState('')
 
   // চেম্বার বন্ধ থাকার নোটিশ পপ-আপ স্টেট
@@ -90,7 +90,6 @@ export default function Home() {
     }
   }
 
-  // ক্লায়েন্ট সাইডে সময় চেক করার জন্য useEffect
   useEffect(() => {
     const checkChamberStatus = () => {
       const now = new Date()
@@ -99,7 +98,6 @@ export default function Home() {
       const minutes = now.getMinutes()
       const currentTimeInMinutes = hours * 60 + minutes
 
-      // বিকেল ৪:০০ টা = 960 মিনিট, রাত ৯:৩০ টা = 1290 মিনিট
       const isOpenTime = day !== 5 && currentTimeInMinutes >= 960 && currentTimeInMinutes <= 1290
 
       if (lang === 'bn') {
@@ -110,17 +108,11 @@ export default function Home() {
     }
 
     checkChamberStatus()
-    const interval = setInterval(checkChamberStatus, 60000) // প্রতি ১ মিনিটে আপডেট হবে
+    const interval = setInterval(checkChamberStatus, 60000)
 
-    const isDark = localStorage.getItem('theme') === 'dark' ||
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-     
+    const savedTheme = localStorage.getItem('theme')
+    const isDark = savedTheme === 'dark'
     setDarkMode(isDark)
-    if (isDark) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
 
     fetchBookingsCount()
     fetchLiveNotice()
@@ -186,15 +178,28 @@ export default function Home() {
   }, [lang])
 
   const toggleTheme = () => {
-    if (darkMode) {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-      setDarkMode(false)
-    } else {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-      setDarkMode(true)
-    }
+    const nextMode = !darkMode
+    setDarkMode(nextMode)
+    localStorage.setItem('theme', nextMode ? 'dark' : 'light')
+  }
+
+  // থিম অনুযায়ী কালার প্যালেট
+  const themeStyles = darkMode ? {
+    bgMain: '#1a1a1a',
+    cardBg: '#262626',
+    textColor: '#ffffff',
+    subTextColor: '#cbd5e1',
+    borderColor: '#9fb2c6',
+    inputBg: '#333333',
+    inputText: '#ffffff'
+  } : {
+    bgMain: '#d9dee3',
+    cardBg: '#ffffff',
+    textColor: '#1a1a1a',
+    subTextColor: '#334155',
+    borderColor: '#9fb2c6',
+    inputBg: '#f1f5f9',
+    inputText: '#1a1a1a'
   }
 
   const t = {
@@ -441,14 +446,14 @@ export default function Home() {
 
   return (
     <main 
-      className="min-h-screen text-slate-900 relative py-6 px-4 md:px-12 transition-colors duration-200 scroll-smooth"
-      style={{ backgroundColor: '#d9dee3' }}
+      className="min-h-screen relative py-6 px-4 md:px-12 transition-all duration-300 scroll-smooth"
+      style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
     >
       
       {/* ১. টপ নোটিশ বা ব্যানার */}
       <div 
-        className="max-w-7xl mx-auto mb-6 text-slate-900 py-3 px-4 rounded-2xl text-center text-xs md:text-sm font-bold tracking-wide shadow-md flex items-center justify-center gap-2 border"
-        style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
+        className="max-w-7xl mx-auto mb-6 py-3 px-4 rounded-2xl text-center text-xs md:text-sm font-bold tracking-wide shadow-md flex items-center justify-center gap-2 border transition-all duration-300"
+        style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
       >
         <span 
           className="text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm"
@@ -456,7 +461,7 @@ export default function Home() {
         >
           Status
         </span>
-        <span className="text-slate-900 font-extrabold">
+        <span className="font-extrabold" style={{ color: themeStyles.textColor }}>
           {chamberNotice.isClosed 
             ? (lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn)
             : chamberStatusText}
@@ -465,8 +470,8 @@ export default function Home() {
 
       {/* ২. ন্যাভিগেশন বার */}
       <header 
-        className="max-w-7xl mx-auto mb-6 sticky top-4 z-50 p-4 md:px-8 rounded-2xl shadow-xl backdrop-blur-md flex items-center justify-between border"
-        style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
+        className="max-w-7xl mx-auto mb-6 sticky top-4 z-50 p-4 md:px-8 rounded-2xl shadow-xl backdrop-blur-md flex items-center justify-between border transition-all duration-300"
+        style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
       >
         <div className="flex items-center gap-3">
           <div 
@@ -477,29 +482,34 @@ export default function Home() {
           </div>
           <span 
             className="font-extrabold text-lg md:text-xl tracking-tight"
-            style={{ color: '#1a1a1a' }}
+            style={{ color: themeStyles.textColor }}
           >
             Dr. Sakib Dental Care
           </span>
         </div>
 
-        <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base" style={{ color: '#1a1a1a' }}>
-          <a href="/" className="transition hover:text-slate-600">Home</a>
-          <a href="#about-section" className="transition hover:text-slate-600">About us</a>
-          <a href="/introduction-to-dentistry" className="transition hover:text-slate-600">Introduction to Dentistry</a>
-          <a href="/services" className="transition hover:text-slate-600">Our services</a>
-          <a href="/gallery" className="transition hover:text-slate-600">Gallery</a>
-          <a href="#contact-section" className="transition hover:text-slate-600">Contact us</a>
+        <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base" style={{ color: themeStyles.textColor }}>
+          <a href="/" className="transition hover:opacity-70">Home</a>
+          <a href="#about-section" className="transition hover:opacity-70">About us</a>
+          <a href="/introduction-to-dentistry" className="transition hover:opacity-70">Introduction to Dentistry</a>
+          <a href="/services" className="transition hover:opacity-70">Our services</a>
+          <a href="/gallery" className="transition hover:opacity-70">Gallery</a>
+          <a href="#contact-section" className="transition hover:opacity-70">Contact us</a>
         </nav>
 
         <div className="flex items-center gap-3">
+          {/* লাইট / ডার্ক মোড সুইচার বাটন */}
           <button
             type="button"
             onClick={toggleTheme}
-            className="font-bold px-4 py-2 rounded-xl shadow-md border transition flex items-center gap-2 text-xs md:text-sm cursor-pointer select-none"
-            style={{ backgroundColor: '#1a1a1a', color: '#d9dee3', borderColor: '#9fb2c6' }}
+            className="font-bold px-4 py-2 rounded-xl shadow-md border transition-all duration-300 flex items-center gap-2 text-xs md:text-sm cursor-pointer select-none"
+            style={{ 
+              backgroundColor: darkMode ? '#ffffff' : '#1a1a1a', 
+              color: darkMode ? '#1a1a1a' : '#ffffff', 
+              borderColor: themeStyles.borderColor 
+            }}
           >
-            <span>{darkMode ? '☀️ Light' : '🌙 Dark'}</span>
+            <span>{darkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}</span>
           </button>
 
           <button
@@ -516,7 +526,7 @@ export default function Home() {
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden text-2xl p-2 focus:outline-none"
-            style={{ color: '#1a1a1a' }}
+            style={{ color: themeStyles.textColor }}
             aria-label="Toggle Menu"
           >
             ☰
@@ -528,14 +538,14 @@ export default function Home() {
       {mobileMenuOpen && (
         <div 
           className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 p-4 rounded-2xl shadow-2xl border space-y-3 font-bold text-sm"
-          style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6', color: '#1a1a1a' }}
+          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
         >
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg" style={{ backgroundColor: '#1a1a1a', color: '#d9dee3' }}>Home</a>
-          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-300">About us</a>
-          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-300">Introduction to Dentistry</a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-300">Our services</a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-300">Gallery</a>
-          <a href="#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-300">Contact us</a>
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg" style={{ backgroundColor: '#1a1a1a', color: '#ffffff' }}>Home</a>
+          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">About us</a>
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Introduction to Dentistry</a>
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Our services</a>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Gallery</a>
+          <a href="#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Contact us</a>
         </div>
       )}
 
@@ -545,14 +555,14 @@ export default function Home() {
           
           {/* বাম কলাম */}
           <div 
-            className="p-6 md:p-10 rounded-3xl border shadow-sm flex flex-col justify-between space-y-6"
-            style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
+            className="p-6 md:p-10 rounded-3xl border shadow-sm flex flex-col justify-between space-y-6 transition-all duration-300"
+            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
           >
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
                 <div 
                   className="w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden shadow-lg border-2 shrink-0"
-                  style={{ borderColor: '#9fb2c6', backgroundColor: '#1a1a1a' }}
+                  style={{ borderColor: themeStyles.borderColor, backgroundColor: '#1a1a1a' }}
                 >
                   <img src="/doctor.jpeg" alt="Doctor Profile" className="w-full h-full object-cover" />
                 </div>
@@ -565,38 +575,38 @@ export default function Home() {
                   </span>
                   <h1 
                     className="text-2xl md:text-3xl font-black tracking-tight"
-                    style={{ color: '#1a1a1a' }}
+                    style={{ color: themeStyles.textColor }}
                   >
                     {t[lang].title}
                   </h1>
-                  <p className="text-xs md:text-sm font-bold" style={{ color: '#0E3A5D' }}>
+                  <p className="text-xs md:text-sm font-bold" style={{ color: '#9fb2c6' }}>
                     {t[lang].degree}
                   </p>
-                  <p className="text-xs font-semibold text-slate-700">
+                  <p className="text-xs font-semibold" style={{ color: themeStyles.subTextColor }}>
                     {t[lang].bmdc}
                   </p>
                 </div>
               </div>
 
-              <div className="pt-4 border-t space-y-3 text-sm text-slate-800" style={{ borderColor: '#9fb2c6' }}>
+              <div className="pt-4 border-t space-y-3 text-sm" style={{ borderColor: themeStyles.borderColor, color: themeStyles.subTextColor }}>
                 <div className="flex items-start gap-3">
                   <span className="text-lg shrink-0">📍</span>
                   <p className="font-medium leading-relaxed">{t[lang].addressText}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-lg shrink-0">📞</span>
-                  <a href="tel:+8801816011701" className="font-bold hover:underline" style={{ color: '#1a1a1a' }}>+880 1816 011 701</a>
+                  <a href="tel:+8801816011701" className="font-bold hover:underline" style={{ color: themeStyles.textColor }}>+880 1816 011 701</a>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-lg shrink-0">✉️</span>
-                  <a href="mailto:asir.mosaddeque@gmail.com" className="font-medium hover:underline text-slate-800">asir.mosaddeque@gmail.com</a>
+                  <a href="mailto:asir.mosaddeque@gmail.com" className="font-medium hover:underline" style={{ color: themeStyles.subTextColor }}>asir.mosaddeque@gmail.com</a>
                 </div>
               </div>
             </div>
 
             {/* সোশ্যাল মিডিয়া লোগো ইমেজ সেকশন */}
-            <div className="pt-4 border-t flex items-center justify-between" style={{ borderColor: '#9fb2c6' }}>
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-widest">
+            <div className="pt-4 border-t flex items-center justify-between" style={{ borderColor: themeStyles.borderColor }}>
+              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: themeStyles.subTextColor }}>
                 {lang === 'bn' ? 'সোশ্যাল লিংক:' : 'Connect:'}
               </span>
               <div className="flex items-center gap-3">
@@ -638,8 +648,8 @@ export default function Home() {
 
           {/* ডান কলাম (চেম্বার শিডিউল) */}
           <div 
-            className="p-6 md:p-10 rounded-3xl shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden border"
-            style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
+            className="p-6 md:p-10 rounded-3xl shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden border transition-all duration-300"
+            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
           >
             <div className="space-y-4 relative z-10">
               <span 
@@ -648,11 +658,11 @@ export default function Home() {
               >
                 {lang === 'bn' ? 'সময়সূচি' : 'Office Hours'}
               </span>
-              <h3 className="text-xl md:text-2xl font-black text-slate-900">
+              <h3 className="text-xl md:text-2xl font-black" style={{ color: themeStyles.textColor }}>
                 {lang === 'bn' ? 'রোগী দেখার সময়' : 'Chamber Schedule'}
               </h3>
-              <div className="p-4 rounded-2xl border space-y-2 text-sm shadow-sm" style={{ backgroundColor: '#ffffff', borderColor: '#9fb2c6', color: '#1a1a1a' }}>
-                <div className="flex justify-between items-center py-1 border-b" style={{ borderColor: '#9fb2c6' }}>
+              <div className="p-4 rounded-2xl border space-y-2 text-sm shadow-sm" style={{ backgroundColor: themeStyles.bgMain, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
+                <div className="flex justify-between items-center py-1 border-b" style={{ borderColor: themeStyles.borderColor }}>
                   <span className="font-semibold">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার' : 'Sat - Thu'}</span>
                   <span className="font-bold">৪:৩০ PM - ৯:০০ PM</span>
                 </div>
@@ -682,25 +692,25 @@ export default function Home() {
       {showBookingBox && (
         <section 
           id="booking-section" 
-          className="max-w-3xl mx-auto mb-10 p-6 md:p-10 rounded-3xl shadow-2xl border relative z-10"
-          style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
+          className="max-w-3xl mx-auto mb-10 p-6 md:p-10 rounded-3xl shadow-2xl border relative z-10 transition-all duration-300"
+          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl md:text-2xl font-bold text-slate-900 text-center flex items-center gap-2 mx-auto">
+            <h2 className="text-xl md:text-2xl font-bold text-center flex items-center gap-2 mx-auto" style={{ color: themeStyles.textColor }}>
               <span>📅</span> {t[lang].bookingTitle}
             </h2>
-            <button onClick={() => setShowBookingBox(false)} className="text-slate-700 hover:text-slate-900 font-bold text-lg p-1">
+            <button onClick={() => setShowBookingBox(false)} className="font-bold text-lg p-1 opacity-70 hover:opacity-100" style={{ color: themeStyles.textColor }}>
               ✕
             </button>
           </div>
-          <p className="font-semibold text-center mb-6 text-xs md:text-sm text-slate-700">
+          <p className="font-semibold text-center mb-6 text-xs md:text-sm" style={{ color: themeStyles.subTextColor }}>
             {t[lang].bookingSub}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].patientName}</label>
+                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].patientName}</label>
                 <input 
                   type="text" 
                   name="patient_name" 
@@ -708,11 +718,12 @@ export default function Home() {
                   onChange={handleChange} 
                   required 
                   placeholder={t[lang].patientNamePlaceholder} 
-                  className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900 bg-white border border-slate-300" 
+                  className="w-full px-4 py-2.5 rounded-xl outline-none border" 
+                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].ageLabel}</label>
+                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].ageLabel}</label>
                 <input 
                   type="number" 
                   name="age" 
@@ -722,13 +733,14 @@ export default function Home() {
                   min="1" 
                   max="120" 
                   placeholder={t[lang].agePlaceholder} 
-                  className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900 bg-white border border-slate-300" 
+                  className="w-full px-4 py-2.5 rounded-xl outline-none border" 
+                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].phoneLabel}</label>
+              <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].phoneLabel}</label>
               <input 
                 type="tel" 
                 name="phone" 
@@ -736,18 +748,20 @@ export default function Home() {
                 onChange={handleChange} 
                 required 
                 placeholder="017XXXXXXXX" 
-                className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900 bg-white border border-slate-300" 
+                className="w-full px-4 py-2.5 rounded-xl outline-none border" 
+                style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].serviceLabel}</label>
+              <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].serviceLabel}</label>
               <select 
                 name="service" 
                 value={formData.service} 
                 onChange={handleChange} 
                 required 
-                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer bg-white border border-slate-300" 
+                className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
+                style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
               >
                 <option value="">{t[lang].serviceDefault}</option>
                 <option value={t[lang].service1}>{t[lang].service1}</option>
@@ -758,13 +772,14 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].dateLabel}</label>
+              <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].dateLabel}</label>
               <select 
                 name="appointment_date" 
                 value={formData.appointment_date} 
                 onChange={handleChange} 
                 required 
-                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer bg-white border border-slate-300" 
+                className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
+                style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
               >
                 <option value="">{t[lang].dateDefault}</option>
                 {availableDates.map((item, index) => (
@@ -774,13 +789,14 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1">{t[lang].timeLabel}</label>
+              <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].timeLabel}</label>
               <select 
                 name="appointment_time" 
                 value={formData.appointment_time} 
                 onChange={handleChange} 
                 required 
-                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer bg-white border border-slate-300" 
+                className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
+                style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
               >
                 <option value="">{t[lang].timeDefault}</option>
                 {rawTimes.map((time, index) => {
@@ -813,13 +829,13 @@ export default function Home() {
       {/* ৫. স্থায়ী About Us সেকশন */}
       <section 
         id="about-section" 
-        className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4"
-        style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
+        className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4 transition-all duration-300"
+        style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
       >
-        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
+        <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
           {lang === 'bn' ? 'আমাদের সম্পর্কে (About Us)' : 'About Us'}
         </h2>
-        <div className="space-y-3 text-slate-800 text-sm md:text-base leading-relaxed">
+        <div className="space-y-3 text-sm md:text-base leading-relaxed" style={{ color: themeStyles.subTextColor }}>
           <p>
             {lang === 'bn'
               ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আপনাকে স্বাগতম। আমরা আধুনিক প্রযুক্তির সাহায্যে রোগীদের সর্বাধুনিক ও নিরাপদ ডেন্টাল সেবা প্রদান করে থাকি। আমাদের চেম্বারে রুট ক্যানাল ট্রিটমেন্ট, জিরকনিয়া ও মেটাল-সিরামিক ক্রাউন, স্কেলিং, দাঁত তোলা এবং কসমেটিক ডেন্টিস্ট্রির আধুনিক চিকিৎসা নিশ্চিত করা হয়।'
@@ -832,7 +848,7 @@ export default function Home() {
       {/* ৬. দাঁতের যত্ন ও স্বাস্থ্য টিপস */}
       <section className="max-w-7xl mx-auto mb-10">
         <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
+          <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
             {t[lang].tipsTitle}
           </h2>
         </div>
@@ -840,12 +856,12 @@ export default function Home() {
           {dentalTips.map((tip, index) => (
             <div 
               key={index} 
-              className="p-6 rounded-3xl border shadow-sm space-y-3"
-              style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
+              className="p-6 rounded-3xl border shadow-sm space-y-3 transition-all duration-300"
+              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
             >
               <span className="text-3xl block">{tip.icon}</span>
-              <h3 className="text-lg font-bold text-slate-900">{tip.title}</h3>
-              <p className="text-xs md:text-sm text-slate-700 leading-relaxed">{tip.description}</p>
+              <h3 className="text-lg font-bold" style={{ color: themeStyles.textColor }}>{tip.title}</h3>
+              <p className="text-xs md:text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{tip.description}</p>
             </div>
           ))}
         </div>
@@ -854,7 +870,7 @@ export default function Home() {
       {/* ৭. "কেন আপনার জন্য আমরাই?" - বর্ডারহীন সংযুক্ত ৩টি কালারের গ্রেডিয়েন্ট সমৃদ্ধ বক্স সেকশন */}
       <section className="max-w-7xl mx-auto mb-10">
         <div className="text-center mb-6">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
+          <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
             {t[lang].whyUsTitle}
           </h2>
         </div>
@@ -884,14 +900,14 @@ export default function Home() {
       {/* ৮. সচেতনতামূলক ভিডিও সেকশন */}
       <section 
         id="contact-section"
-        className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6"
-        style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
+        className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6 transition-all duration-300"
+        style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
       >
         <div className="text-center space-y-2">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
+          <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
             {t[lang].videoTitle}
           </h2>
-          <p className="text-xs md:text-sm text-slate-700 max-w-2xl mx-auto">
+          <p className="text-xs md:text-sm max-w-2xl mx-auto" style={{ color: themeStyles.subTextColor }}>
             {t[lang].videoSub}
           </p>
         </div>
@@ -900,11 +916,11 @@ export default function Home() {
           {videoList.map((vid, index) => (
             <div 
               key={index} 
-              className="p-4 rounded-2xl border flex flex-col justify-between space-y-3 bg-white shadow-sm"
-              style={{ borderColor: '#9fb2c6', color: '#1a1a1a' }}
+              className="p-4 rounded-2xl border flex flex-col justify-between space-y-3 shadow-sm"
+              style={{ backgroundColor: themeStyles.bgMain, borderColor: themeStyles.borderColor }}
             >
-              <h4 className="font-bold text-sm text-slate-900">{vid.title}</h4>
-              <div className="w-full h-32 rounded-xl flex items-center justify-center text-xs font-medium bg-slate-100 text-slate-700">
+              <h4 className="font-bold text-sm" style={{ color: themeStyles.textColor }}>{vid.title}</h4>
+              <div className="w-full h-32 rounded-xl flex items-center justify-center text-xs font-medium opacity-80" style={{ backgroundColor: themeStyles.cardBg }}>
                 🎬 {lang === 'bn' ? 'ভিডিও শীঘ্রই আসছে' : 'Video Coming Soon'}
               </div>
             </div>
@@ -916,12 +932,12 @@ export default function Home() {
       {showSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div 
-            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border text-slate-900 bg-white"
-            style={{ borderColor: '#9fb2c6' }}
+            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border"
+            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
           >
             <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: '#1a1a1a' }}>✓</div>
-            <h3 className="text-2xl font-black text-slate-900">{t[lang].successTitle}</h3>
-            <p className="text-sm text-slate-700 leading-relaxed">{t[lang].successMsg}</p>
+            <h3 className="text-2xl font-black">{t[lang].successTitle}</h3>
+            <p className="text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{t[lang].successMsg}</p>
             <button 
               onClick={() => setShowSuccessModal(false)} 
               className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white"
@@ -937,14 +953,14 @@ export default function Home() {
       {showChamberClosedModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div 
-            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border text-slate-900 bg-white"
-            style={{ borderColor: '#9fb2c6' }}
+            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border"
+            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
           >
             <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: '#1a1a1a' }}>🔔</div>
-            <h3 className="text-2xl font-black text-amber-600">
+            <h3 className="text-2xl font-black text-amber-500">
               {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
             </h3>
-            <p className="text-sm text-slate-700 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>
               {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
             </p>
             <button 
