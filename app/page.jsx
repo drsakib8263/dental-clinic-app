@@ -213,7 +213,7 @@ export default function Home() {
       bookingMainBtn: '📅 অনলাইন অ্যাপয়েন্টমেন্ট বুকিং করুন',
       bookingCloseBtn: '✕ ফর্ম বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
-      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা),শুক্রবার বন্ধ',
+      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
       patientName: 'রোগীর নাম *',
       patientNamePlaceholder: 'আপনার নাম লিখুন',
       ageLabel: 'বয়স *',
@@ -398,7 +398,6 @@ export default function Home() {
     }
   ]
 
-  // why-01.jpeg, why-02.jpeg, why-03.jpeg (সিঁড়ির মতো স্যাগারড বিন্যাসের জন্য offset মার্জিন)
   const featureBoxes = lang === 'bn' ? [
     {
       title: 'আধুনিক ডেন্টাল কেয়ার',
@@ -457,10 +456,13 @@ export default function Home() {
       style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
     >
       
-      {/* ১. টপ নোটিশ বা ব্যানার */}
+      {/* ১. টপ নোটিশ বা ব্যানার (গ্লাস ব্লার ইফেক্ট সহ) */}
       <div 
-        className="max-w-7xl mx-auto mb-6 py-3 px-4 rounded-2xl text-center text-xs md:text-sm font-bold tracking-wide shadow-md flex items-center justify-center gap-2 border transition-all duration-300"
-        style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+        className="max-w-7xl mx-auto mb-6 py-3 px-4 rounded-2xl text-center text-xs md:text-sm font-bold tracking-wide shadow-md flex items-center justify-center gap-2 border backdrop-blur-md transition-all duration-300"
+        style={{ 
+          backgroundColor: darkMode ? 'rgba(38, 38, 38, 0.7)' : 'rgba(217, 222, 227, 0.7)', 
+          borderColor: themeStyles.borderColor 
+        }}
       >
         <span 
           className="text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm"
@@ -543,7 +545,7 @@ export default function Home() {
       {/* মোবাইল ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
         <div 
-          className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 p-4 rounded-2xl shadow-2xl border space-y-3 font-bold text-sm"
+          className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 p-4 rounded-2xl shadow-2xl border space-y-3 font-bold text-sm backdrop-blur-md"
           style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
         >
           <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg" style={{ backgroundColor: '#1a1a1a', color: '#ffffff' }}>Home</a>
@@ -652,10 +654,13 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ডান কলাম (চেম্বার শিডিউল) */}
+          {/* ডান কলাম (চেম্বার শিডিউল - গ্লাস ব্লার ইফেক্ট সহ) */}
           <div 
-            className="p-6 md:p-10 rounded-3xl shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden border transition-all duration-300"
-            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+            className="p-6 md:p-10 rounded-3xl shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden border backdrop-blur-md transition-all duration-300"
+            style={{ 
+              backgroundColor: darkMode ? 'rgba(38, 38, 38, 0.75)' : 'rgba(255, 255, 255, 0.75)', 
+              borderColor: themeStyles.borderColor 
+            }}
           >
             <div className="space-y-4 relative z-10">
               <span 
@@ -667,7 +672,7 @@ export default function Home() {
               <h3 className="text-xl md:text-2xl font-black" style={{ color: themeStyles.textColor }}>
                 {lang === 'bn' ? 'রোগী দেখার সময়' : 'Chamber Schedule'}
               </h3>
-              <div className="p-4 rounded-2xl border space-y-2 text-sm shadow-sm" style={{ backgroundColor: themeStyles.bgMain, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
+              <div className="p-4 rounded-2xl border space-y-2 text-sm shadow-sm backdrop-blur-sm" style={{ backgroundColor: darkMode ? 'rgba(26, 26, 26, 0.5)' : 'rgba(217, 222, 227, 0.5)', borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
                 <div className="flex justify-between items-center py-1 border-b" style={{ borderColor: themeStyles.borderColor }}>
                   <span className="font-semibold">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার' : 'Sat - Thu'}</span>
                   <span className="font-bold">৪:৩০ PM - ৯:০০ PM</span>
@@ -881,7 +886,6 @@ export default function Home() {
           </h2>
         </div>
 
-        {/* সিঁড়ির মতো ধাপযুক্ত স্ট্যাকড লেআউট */}
         <div className="space-y-8 md:space-y-10">
           {featureBoxes.map((box, index) => (
             <div 
@@ -894,10 +898,8 @@ export default function Home() {
                   backgroundImage: `url(${box.bgImage})`,
                 }}
               >
-                {/* ডার্ক ওভারলে */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
                 
-                {/* রেক্ট্যাঙ্গেল শেপে সরাসরি পিকচারের ওপর পরিচ্ছন্ন টেক্সট */}
                 <div className="relative z-10 space-y-3 text-white">
                   <span className="text-xs font-bold tracking-widest uppercase text-[#9fb2c6] bg-black/60 px-3 py-1 inline-block">
                     0{index + 1}
