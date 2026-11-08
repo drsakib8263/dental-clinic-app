@@ -5,12 +5,13 @@ import { useState, useEffect } from 'react'
 export default function ServicesPage() {
   const [lang, setLang] = useState('bn')
   const [darkMode, setDarkMode] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [currentYear, setCurrentYear] = useState('2026')
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme')
     const isDark = savedTheme === 'dark'
     setDarkMode(isDark)
+    setCurrentYear(new Date().getFullYear().toString())
   }, [])
 
   const toggleTheme = () => {
@@ -167,13 +168,12 @@ export default function ServicesPage() {
         </div>
       </header>
 
-      {/* হিরো ও হেডার সেকশন (ছবিটির মিন্ট-গ্রিন ও প্যাস্টেল ডিজাইনের আদলে তৈরি) */}
+      {/* হিরো ও হেডার সেকশন */}
       <section className="max-w-7xl mx-auto px-4 md:px-12 pt-12 pb-16">
         <div 
           className="rounded-3xl p-8 md:p-16 border shadow-sm relative overflow-hidden transition-all duration-300"
           style={{ backgroundColor: themeStyles.accentBg, borderColor: themeStyles.borderColor }}
         >
-          {/* ব্যাকগ্রাউন্ড ডেকোরেটিভ এলিমেন্ট */}
           <div className="absolute right-[-20px] bottom-[-20px] opacity-10 text-9xl pointer-events-none">
             🦷
           </div>
@@ -192,7 +192,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* সার্ভিস কার্ড সেকশন (ছবিটির লেআউটের মতো আধুনিক গ্রিড) */}
+      {/* সার্ভিস কার্ড সেকশন */}
       <section className="max-w-7xl mx-auto px-4 md:px-12 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {t.servicesList.map((service, index) => (
@@ -228,7 +228,7 @@ export default function ServicesPage() {
 
       {/* ফুটার */}
       <footer className="py-8 text-center border-t text-xs font-medium" style={{ borderColor: themeStyles.borderColor, color: themeStyles.subTextColor }}>
-        <p>© {new Date().getFullYear()} Dr. Asir Mosaddeque Sakib Dental Care. All rights reserved.</p>
+        <p>© {currentYear} Dr. Asir Mosaddeque Sakib Dental Care. All rights reserved.</p>
       </footer>
     </main>
   )
