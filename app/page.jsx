@@ -440,7 +440,7 @@ export default function Home() {
 
   return (
     <main 
-      className="min-h-screen text-slate-900 dark:text-slate-100 relative py-8 px-4 md:px-12 bg-cover bg-center bg-fixed transition-colors duration-200"
+      className="min-h-screen text-slate-900 dark:text-slate-100 relative py-8 px-4 md:px-12 bg-cover bg-center bg-fixed transition-colors duration-200 scroll-smooth"
       style={{ backgroundImage: `url('/site-bg.jpeg')` }}
     >
       {/* ব্যাকগ্রাউন্ড ব্লার ও ওভারলে লেয়ার */}
@@ -484,7 +484,7 @@ export default function Home() {
         {/* কম্পিউটার ভার্সন: হরাইজন্টাল মেনু */}
         <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base text-slate-800 dark:text-slate-200">
           <a href="/" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Home</a>
-          <a href="/about" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">About us</a>
+          <a href="#about-section" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">About us</a>
           <a href="/introduction-to-dentistry" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Introduction to Dentistry</a>
           <a href="/services" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Our services</a>
           <a href="/gallery" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Gallery</a>
@@ -508,7 +508,7 @@ export default function Home() {
       {mobileMenuOpen && (
         <div className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 bg-[#EADCD2] dark:bg-[#2B1618] p-4 rounded-2xl shadow-2xl border border-[#5A181C]/40 space-y-3 font-bold text-sm text-slate-900 dark:text-white animate-in fade-in duration-200">
           <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Home</a>
-          <a href="/about" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">About us</a>
+          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">About us</a>
           <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Introduction to Dentistry</a>
           <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Our services</a>
           <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Gallery</a>
@@ -572,6 +572,33 @@ export default function Home() {
                 {t[lang].training}
               </p>
             </div>
+          </div>
+        </section>
+
+        {/* স্থায়ী About Us সেকশন (সাদা ব্যাকগ্রাউন্ডে সবসময় দৃশ্যমান) */}
+        <section id="about-section" className="bg-white dark:bg-[#344246] p-6 md:p-10 rounded-3xl shadow-2xl border-2 border-[#5A181C]/30 space-y-6">
+          <div className="border-b border-[#5A181C]/20 pb-4">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[#5A181C] dark:text-[#EADCD2]">
+              {lang === 'bn' ? 'আমাদের সম্পর্কে (About Us)' : 'About Us'}
+            </h2>
+            <p className="text-sm text-[#8B6B5E] dark:text-[#A89287] font-bold mt-1">
+              {lang === 'bn' ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ার' : 'Dr. Asir Mosaddeque Sakib Dental Care'}
+            </p>
+          </div>
+
+          <div className="space-y-4 text-slate-800 dark:text-slate-200 text-base leading-relaxed">
+            <p>
+              {lang === 'bn'
+                ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আপনাকে স্বাগতম। আমরা আধুনিক প্রযুক্তির সাহায্যে রোগীদের সর্বাধুনিক ও নিরাপদ ডেন্টাল সেবা প্রদান করে থাকি। আমাদের চেম্বারে রুট ক্যানাল ট্রিটমেন্ট, জিরকনিয়া ও মেটাল-সিরামিক ক্রাউন, স্কেলিং, দাঁত তোলা এবং কসমেটিক ডেন্টিস্ট্রির আধুনিক চিকিৎসা নিশ্চিত করা হয়।'
+                : 'Welcome to Dr. Asir Mosaddeque Sakib Dental Care. We provide advanced and safe dental services using modern technology. Our chamber ensures state-of-the-art treatments including Root Canal Therapy, Zirconia & PFM Crowns, Scaling, Extractions, and Cosmetic Dentistry.'
+              }
+            </p>
+            <p>
+              {lang === 'bn'
+                ? 'প্রতিটি রোগীর সমস্যা যত্নসহকারে শুনে নিখুঁত ও পেইনলেস চিকিৎসা প্রদানই আমাদের মূল লক্ষ্য। আপনার সুস্থ ও সুন্দর হাসিই আমাদের বড় অর্জন।'
+                : 'Our primary goal is to carefully listen to each patient’s dental concerns and provide precise, painless treatments. Your healthy and beautiful smile is our greatest achievement.'
+              }
+            </p>
           </div>
         </section>
 
