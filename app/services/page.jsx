@@ -82,9 +82,9 @@ export default function ServicesPage() {
       time: '২০-২৫ মিনিট'
     },
     {
-      name: 'পোস্ট-কোর বিল্ডাপ (Post-Core Buildup)',
-      desc: 'ভাঙা বা অত্যন্ত দুর্বল দাঁতের শিকড়ে ফাইবার পোস্ট স্থাপন করে ক্যাপ পরার উপযোগী করা।',
-      time: '১৫ মিনিট'
+      name: 'ফাইবার রি-ইনফোর্সড কম্পোজিট ব্রিজ (Fiber-Reinforced Composite Bridge)',
+      desc: 'হারিয়ে যাওয়া দাঁতের দুই পাশের দাঁতের সাহায্যে বিশেষ ফাইবার ও কম্পোজিট রজন ব্যবহার করে এক ভিজিটে ফিক্সড কৃত্রিম দাঁত সংযোজন।',
+      time: '৩০-৪৫ মিনিট'
     },
     {
       name: 'ফ্লেক্সিবল ও হিট কিউর ডেঞ্চার',
@@ -173,9 +173,9 @@ export default function ServicesPage() {
       time: '20-25 mins'
     },
     {
-      name: 'Post-Core Buildup',
-      desc: 'Fiber post placement in weakened teeth to support crowns securely.',
-      time: '15 mins'
+      name: 'Fiber-Reinforced Composite Bridge',
+      desc: 'Single-visit fixed tooth replacement using high-strength fiber and composite resin supported by adjacent teeth.',
+      time: '30-45 mins'
     },
     {
       name: 'Flexible & Heat Cure Dentures',
