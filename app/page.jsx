@@ -828,7 +828,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ফুটার সেকশন (কন্টাক্ট ইনফরমেশন ও গুগল ম্যাপ লোকেশন) */}
+      {/* ৮. ফুটার সেকশন (কন্টাক্ট ইনফরমেশন ও গুগল ম্যাপ লোকেশন) */}
       <footer 
         id="contact-section"
         className="max-w-7xl mx-auto mt-16 p-6 md:p-10 rounded-3xl border shadow-xl space-y-8"
