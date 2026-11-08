@@ -800,6 +800,7 @@ export default function Home() {
 
       {/* ৭. সচেতনতামূলক ভিডিও সেকশন */}
       <section 
+        id="contact-section"
         className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6"
         style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
       >
@@ -827,63 +828,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      {/* ফুটার সেকশন (কন্টাক্ট ইনফরমেশন ও গুগল ম্যাপ লোকেশন) */}
-      <footer 
-        id="contact-section"
-        className="max-w-7xl mx-auto mt-16 p-6 md:p-10 rounded-3xl border shadow-xl space-y-8"
-        style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          
-          {/* কন্টাক্ট ইনফরমেশন */}
-          <div className="space-y-4">
-            <h3 className="text-xl md:text-2xl font-black text-white">
-              {lang === 'bn' ? 'যোগাযোগ ও তথ্য' : 'Contact & Information'}
-            </h3>
-            <div className="space-y-3 text-sm text-slate-300">
-              <div className="flex items-start gap-3">
-                <span className="text-lg">📍</span>
-                <p className="font-medium leading-relaxed">
-                  {lang === 'bn' 
-                    ? 'আলম মেডিকেল হল, পটিয়া সরকারি কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।' 
-                    : 'Alam Medical Hall, Beside Patiya Govt. College, Anwara Bypass Road, Bus Station, Patiya, Chattogram.'}
-                </p>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-lg">📞</span>
-                <a href="tel:+8801816011701" className="font-bold hover:underline" style={{ color: '#9fb2c6' }}>
-                  +880 1816 011 701
-                </a>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-lg">✉️</span>
-                <a href="mailto:asir.mosaddeque@gmail.com" className="font-medium hover:underline text-slate-300">
-                  asir.mosaddeque@gmail.com
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* গুগল ম্যাপ লোকেশন এমবেড */}
-          <div className="w-full h-64 rounded-2xl overflow-hidden border" style={{ borderColor: '#9fb2c6' }}>
-            <iframe 
-              title="Patiya Chamber Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.545!2d91.975!3d22.295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sMjLCsDE3JzQyLjAiTiA5McKwNTgnMzAuMCJF!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0 }} 
-              allowFullScreen="" 
-              loading="lazy"
-            ></iframe>
-          </div>
-
-        </div>
-
-        <div className="pt-6 border-t text-center text-xs text-slate-400" style={{ borderColor: '#9fb2c6' }}>
-          <p>© {new Date().getFullYear()} Dr. Sakib Dental Care. All rights reserved.</p>
-        </div>
-      </footer>
 
       {/* সফল বুকিং মোডাল */}
       {showSuccessModal && (
