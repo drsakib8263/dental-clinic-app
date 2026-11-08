@@ -183,37 +183,39 @@ export default function Home() {
     localStorage.setItem('theme', nextMode ? 'dark' : 'light')
   }
 
-  // থিম অনুযায়ী কালার প্যালেট
+  // থিম কালার
   const themeStyles = darkMode ? {
-    bgMain: '#1a1a1a',
-    cardBg: '#262626',
-    textColor: '#ffffff',
-    subTextColor: '#cbd5e1',
-    borderColor: '#9fb2c6',
-    inputBg: '#333333',
+    bgMain: '#0f172a',
+    cardBg: '#1e293b',
+    textColor: '#f8fafc',
+    subTextColor: '#94a3b8',
+    borderColor: '#334155',
+    inputBg: '#334155',
     inputText: '#ffffff'
   } : {
-    bgMain: '#d9dee3',
+    bgMain: '#f8fafc',
     cardBg: '#ffffff',
-    textColor: '#1a1a1a',
-    subTextColor: '#334155',
-    borderColor: '#9fb2c6',
+    textColor: '#0f172a',
+    subTextColor: '#475569',
+    borderColor: '#e2e8f0',
     inputBg: '#f1f5f9',
-    inputText: '#1a1a1a'
+    inputText: '#0f172a'
   }
 
   const t = {
     bn: {
+      heroTitle: 'বিশ্বস্ত ডেন্টাল সেবা ও সুন্দর হাসির নিশ্চয়তা',
+      heroSub: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সর্বাধুনিক ডেন্টাল কেয়ার।',
       title: 'ডাঃ আসির মোসাদ্দেক সাকিব',
       subtitle: 'ওরাল এন্ড ডেন্টাল সার্জন',
       degree: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)',
       bmdc: 'বিএমডিসি রেজি. ৮২৬৩',
       training: 'স্পেশাল ট্রেইনড ইন ইমপ্ল্যান্ট এন্ড কসমেটিক ডেন্টিস্ট্রি',
       addressText: 'আলম মেডিকেল হল, পটিয়া সরকারি কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
-      bookingMainBtn: '📅 অনলাইন অ্যাপয়েন্টমেন্ট বুকিং করুন',
+      bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ ফর্ম বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
-      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
+      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:৩০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
       patientName: 'রোগীর নাম *',
       patientNamePlaceholder: 'আপনার নাম লিখুন',
       ageLabel: 'বয়স *',
@@ -229,7 +231,7 @@ export default function Home() {
       dateDefault: 'তারিখ নির্বাচন করুন',
       timeLabel: 'পছন্দের সময় (প্রতি স্লটে সর্বোচ্চ ২ জন) *',
       timeDefault: 'সময় নির্বাচন করুন',
-      submitBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
+      submitBtn: 'অ্যাপয়েন্টমেন্ট সাবমিট করুন',
       submitting: 'জমা দেওয়া হচ্ছে...',
       successTitle: 'অভিনন্দন! বুকিং সফল হয়েছে',
       successMsg: 'আপনার অ্যাপয়েন্টমেন্ট আবেদনটি সফলভাবে জমা হয়েছে! শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।',
@@ -238,16 +240,18 @@ export default function Home() {
       tipsTitle: 'দাঁতের যত্ন ও স্বাস্থ্য টিপস',
       whyUsTitle: 'কেন আপনার জন্য আমরাই?',
       videoTitle: 'দাঁতের যত্ন ও চিকিৎসা বিষয়ক সচেতনতামূলক ভিডিও',
-      videoSub: 'দাঁতের বিভিন্ন চিকিৎসা (রুট ক্যানেল, এক্সট্রাকশন, ফিলিং ও ক্যাপ) সম্পর্কে বিস্তারিত জানতে নিচের ভিডিওগুলো দেখুন।'
+      videoSub: 'দাঁতের বিভিন্ন চিকিৎসা সম্পর্কে বিস্তারিত জানতে নিচের ভিডিওগুলো দেখুন।'
     },
     en: {
+      heroTitle: 'Trustworthy Dental Services for a Healthy Smile',
+      heroSub: 'Advanced dental treatment under the expert care of Chattogram Medical College surgeon.',
       title: 'Dr. Asir Mosaddeque Sakib',
       subtitle: 'Oral & Dental Surgeon',
       degree: 'BDS (Chattagong Medical College)',
       bmdc: 'BMDC Reg. 8263',
       training: 'Special Trained in Implant & Cosmetic Dentistry',
       addressText: 'Alam Medical Hall, Beside Patiya Govt. College, Anwara Bypass Road, Bus Station, Patiya, Chattogram.',
-      bookingMainBtn: '📅 Book Online Appointment',
+      bookingMainBtn: 'Book an Appointment',
       bookingCloseBtn: '✕ Close Form',
       bookingTitle: 'Online Appointment Booking',
       bookingSub: 'Saturday to Thursday (4:30 PM - 9:00 PM), Friday Closed',
@@ -275,7 +279,7 @@ export default function Home() {
       tipsTitle: 'Dental Care & Health Tips',
       whyUsTitle: 'Why Choose Us?',
       videoTitle: 'Dental Care & Treatment Awareness Videos',
-      videoSub: 'Watch the videos below to learn more about various dental treatments (Root Canal, Extraction, Filling, and Crowns/Caps).'
+      videoSub: 'Watch the videos below to learn more about various dental treatments.'
     }
   }
 
@@ -368,33 +372,33 @@ export default function Home() {
     {
       icon: '🦷',
       title: 'দিনে দুবার ব্রাশ করার সঠিক নিয়ম',
-      description: 'সকালে নাস্তার পর এবং রাতে ঘুমাতে যাওয়ার আগে অন্তত ২ মিনিট ধরে ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে দাঁত ব্রাশ করুন। এটি দাঁতের ক্ষয় ও ক্যাভিটি রোধ করতে সবচেয়ে কার্যকরী।'
+      description: 'সকালে নাস্তার পর এবং রাতে ঘুমাতে যাওয়ার আগে অন্তত ২ মিনিট ধরে ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে দাঁত ব্রাশ করুন।'
     },
     {
       icon: '🧵',
       title: 'মাড়ির সুস্থতা ও ডেন্টাল ফ্লস',
-      description: 'শুধু ব্রাশ করলেই মুখের সম্পূর্ণ hygiene রক্ষা হয় না। প্রতিদিন অন্তত একবার ডেন্টাল ফ্লস ব্যবহার করে দাঁতের মধ্যবর্তী জমে থাকা খাবারের কণা ও প্লাক পরিষ্কার করুন।'
+      description: 'প্রতিদিন অন্তত একবার ডেন্টাল ফ্লস ব্যবহার করে দাঁতের মধ্যবর্তী জমে থাকা খাবারের কণা ও প্লাক পরিষ্কার করুন।'
     },
     {
       icon: '🩺',
       title: 'কবে ডেন্টাল সার্জনের কাছে যাবেন?',
-      description: 'দাঁতে সামান্য ব্যথা, মাড়ি দিয়ে রক্ত পড়া বা ঠান্ডা-গরম লাগার সমস্যা দেখা দিলেই অবহেলা না করে দ্রুত ডেন্টাল সার্জনের পরামর্শ নিন। নিয়মিত চেকআপ বড় জটিলতা থেকে রক্ষা করে।'
+      description: 'দাঁতে সামান্য ব্যথা, মাড়ি দিয়ে রক্ত পড়া বা ঠান্ডা-গরম লাগার সমস্যা দেখা দিলেই অবহেলা না করে সার্জনের পরামর্শ নিন।'
     }
   ] : [
     {
       icon: '🦷',
-      title: 'Proper Brushing Technique Twice Daily',
-      description: 'Brush your teeth with fluoride toothpaste for at least 2 minutes after breakfast and before going to bed at night. This is most effective in preventing tooth decay and cavities.'
+      title: 'Proper Brushing Technique',
+      description: 'Brush your teeth with fluoride toothpaste for at least 2 minutes twice a day.'
     },
     {
       icon: '🧵',
       title: 'Gum Health and Dental Floss',
-      description: 'Brushing alone does not maintain complete oral hygiene. Use dental floss at least once a day to clean food particles and plaque trapped between your teeth.'
+      description: 'Use dental floss at least once a day to clean food particles trapped between your teeth.'
     },
     {
       icon: '🩺',
-      title: 'When to Visit a Dental Surgeon?',
-      description: 'Do not neglect minor tooth pain, bleeding gums, or sensitivity. Consult a dental surgeon promptly. Regular checkups protect against major complications.'
+      title: 'When to Visit a Surgeon?',
+      description: 'Consult a dental surgeon immediately if you experience tooth pain, bleeding, or sensitivity.'
     }
   ]
 
@@ -432,7 +436,7 @@ export default function Home() {
     },
     {
       title: 'Expert Consultation',
-      description: 'Accurate diagnosis under the close supervision of an experienced Chattogram Medical College surgeon.',
+      description: 'Accurate diagnosis under the close supervision of an experienced surgeon.',
       bgImage: '/why-03.jpeg',
       stepClass: 'md:ml-24 lg:ml-36'
     }
@@ -452,264 +456,173 @@ export default function Home() {
 
   return (
     <main 
-      className="min-h-screen relative py-6 px-4 md:px-12 transition-all duration-300 scroll-smooth"
+      className="min-h-screen transition-all duration-300 font-sans"
       style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
     >
-      
-      {/* ১. টপ নোটিশ বা ব্যানার (ফ্রস্টেড গ্লাস টেক্সচার ব্যাকগ্রাউন্ড সহ) */}
-      <div 
-        className="max-w-7xl mx-auto mb-6 py-3 px-4 rounded-2xl text-center text-xs md:text-sm font-bold tracking-wide shadow-lg flex items-center justify-center gap-2 border backdrop-blur-md transition-all duration-300 bg-cover bg-center relative overflow-hidden"
-        style={{ 
-          backgroundImage: `url('/frosted-glass.jpg')`,
-          borderColor: themeStyles.borderColor 
-        }}
-      >
-        <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]"></div>
-        <div className="relative z-10 flex items-center justify-center gap-2">
-          <span 
-            className="text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm"
-            style={{ backgroundColor: '#1a1a1a' }}
-          >
-            Status
-          </span>
-          <span className="font-extrabold text-white drop-shadow-sm">
-            {chamberNotice.isClosed 
-              ? (lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn)
-              : chamberStatusText}
-          </span>
+
+      {/* ১. টপ নোটিশ ও ইনফরমেশন বার (ডিম পার্পল/ব্লু থিম) */}
+      <div className="bg-[#0c1e3e] text-white text-xs md:text-sm py-2.5 px-4 md:px-12 flex flex-wrap justify-between items-center gap-3 border-b border-blue-900/50">
+        <div className="flex items-center gap-2">
+          <span>📍</span>
+          <span className="truncate max-w-xs md:max-w-none">{t[lang].addressText}</span>
+        </div>
+        <div className="flex items-center gap-4 ml-auto md:ml-0">
+          <div className="flex items-center gap-2">
+            <span>🕒</span>
+            <span>Sat - Thu: 4:30 PM - 9:00 PM</span>
+          </div>
+          <div className="hidden sm:flex items-center gap-3 border-l border-blue-800 pl-4">
+            <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80">
+              <img src="/facebook.png" alt="FB" className="w-4 h-4 filter invert" />
+            </a>
+            <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="hover:opacity-80">
+              <img src="/instagram.png" alt="IG" className="w-4 h-4 filter invert" />
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* ২. ন্যাভিগেশন বার */}
+      {/* ২. ন্যাভিগেশন বার (সাদা ও ক্লিন লুক) */}
       <header 
-        className="max-w-7xl mx-auto mb-6 sticky top-4 z-50 p-4 md:px-8 rounded-2xl shadow-xl backdrop-blur-md flex items-center justify-between border transition-all duration-300"
-        style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+        className="sticky top-0 z-50 px-4 md:px-12 py-4 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
+        style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
       >
         <div className="flex items-center gap-3">
-          <div 
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-xl font-black shadow-md"
-            style={{ backgroundColor: '#1a1a1a' }}
-          >
+          <div className="w-10 h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-xl font-bold shadow-md">
             🦷
           </div>
-          <span 
-            className="font-extrabold text-lg md:text-xl tracking-tight"
-            style={{ color: themeStyles.textColor }}
-          >
-            Dr. Sakib Dental Care
-          </span>
+          <div className="flex flex-col">
+            <span className="font-black text-lg md:text-xl tracking-tight" style={{ color: themeStyles.textColor }}>
+              Dr. Sakib Dental Care
+            </span>
+            <span className="text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider">
+              {t[lang].subtitle}
+            </span>
+          </div>
         </div>
 
-        <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base" style={{ color: themeStyles.textColor }}>
-          <a href="/" className="transition hover:opacity-70">Home</a>
-          <a href="#about-section" className="transition hover:opacity-70">About us</a>
-          <a href="/introduction-to-dentistry" className="transition hover:opacity-70">Introduction to Dentistry</a>
-          <a href="/services" className="transition hover:opacity-70">Our services</a>
-          <a href="/gallery" className="transition hover:opacity-70">Gallery</a>
-          <a href="#contact-section" className="transition hover:opacity-70">Contact us</a>
+        <nav className="hidden lg:flex items-center gap-8 font-bold text-sm" style={{ color: themeStyles.textColor }}>
+          <a href="/" className="text-[#00a8e8] transition">Home</a>
+          <a href="#about-section" className="hover:text-[#00a8e8] transition">About Us</a>
+          <a href="/services" className="hover:text-[#00a8e8] transition">Services</a>
+          <a href="/gallery" className="hover:text-[#00a8e8] transition">Gallery</a>
+          <a href="#contact-section" className="hover:text-[#00a8e8] transition">Contact Us</a>
         </nav>
 
         <div className="flex items-center gap-3">
+          <a href="tel:+8801816011701" className="hidden sm:flex items-center gap-2 font-bold text-sm text-[#00a8e8]">
+            <span className="w-8 h-8 rounded-full bg-[#00a8e8]/10 flex items-center justify-center text-base">📞</span>
+            <span>+880 1816 011 701</span>
+          </a>
+
           <button
             type="button"
-            onClick={toggleTheme}
-            className="font-bold px-4 py-2 rounded-xl shadow-md border transition-all duration-300 flex items-center gap-2 text-xs md:text-sm cursor-pointer select-none"
-            style={{ 
-              backgroundColor: darkMode ? '#ffffff' : '#1a1a1a', 
-              color: darkMode ? '#1a1a1a' : '#ffffff', 
-              borderColor: themeStyles.borderColor 
-            }}
+            onClick={() => setShowBookingBox(true)}
+            className="font-bold px-5 py-2.5 rounded-full bg-[#00a8e8] hover:bg-[#0092cd] text-white text-xs md:text-sm shadow-md transition cursor-pointer"
           >
-            <span>{darkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}</span>
+            {t[lang].bookingMainBtn}
           </button>
 
           <button
             type="button"
             onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-            className="font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-1.5 text-xs md:text-sm cursor-pointer select-none text-white"
-            style={{ backgroundColor: '#1a1a1a' }}
+            className="font-bold px-3 py-2 rounded-lg border text-xs cursor-pointer"
+            style={{ borderColor: themeStyles.borderColor }}
           >
-            <span>🌐</span>
-            <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
+            {lang === 'bn' ? 'English' : 'বাংলা'}
+          </button>
+
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="p-2 rounded-lg border text-xs cursor-pointer"
+            style={{ borderColor: themeStyles.borderColor }}
+          >
+            {darkMode ? '☀️' : '🌙'}
           </button>
 
           <button 
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-2xl p-2 focus:outline-none"
-            style={{ color: themeStyles.textColor }}
-            aria-label="Toggle Menu"
+            className="lg:hidden text-2xl p-1"
           >
             ☰
           </button>
         </div>
       </header>
 
-      {/* মোবাইল ড্রপডাউন মেনু */}
-      {mobileMenuOpen && (
-        <div 
-          className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 p-4 rounded-2xl shadow-2xl border space-y-3 font-bold text-sm backdrop-blur-md"
-          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-        >
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg" style={{ backgroundColor: '#1a1a1a', color: '#ffffff' }}>Home</a>
-          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">About us</a>
-          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Introduction to Dentistry</a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Our services</a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Gallery</a>
-          <a href="#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Contact us</a>
+      {/* ৩. হিরো সেকশন (আপনার রেফারেন্স পিকচারের স্টাইলে সায়ান ও নীল ব্যাকগ্রাউন্ডের সমন্বয়ে) */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#0d2857] via-[#0b3c85] to-[#0077b6] text-white py-12 lg:py-20 px-4 md:px-12">
+        
+        {/* রিয়েলটাইম চেম্বার স্ট্যাটাস স্ট্রিপ */}
+        <div className="max-w-7xl mx-auto mb-8">
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs md:text-sm font-semibold">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>{chamberNotice.isClosed ? (lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn) : chamberStatusText}</span>
+          </div>
         </div>
-      )}
 
-      {/* ৩. স্প্লিট হিরো সেকশন */}
-      <section className="max-w-7xl mx-auto mb-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          {/* বাম কলাম */}
-          <div 
-            className="p-6 md:p-10 rounded-3xl border shadow-sm flex flex-col justify-between space-y-6 transition-all duration-300"
-            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-          >
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
-                <div 
-                  className="w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden shadow-lg border-2 shrink-0"
-                  style={{ borderColor: themeStyles.borderColor, backgroundColor: '#1a1a1a' }}
-                >
-                  <img src="/doctor.jpeg" alt="Doctor Profile" className="w-full h-full object-cover" />
-                </div>
-                <div className="space-y-1.5">
-                  <span 
-                    className="text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider inline-block mb-1 text-white"
-                    style={{ backgroundColor: '#1a1a1a' }}
-                  >
-                    {lang === 'bn' ? 'ওরাল এন্ড ডেন্টাল সার্জন' : 'Oral & Dental Surgeon'}
-                  </span>
-                  <h1 
-                    className="text-2xl md:text-3xl font-black tracking-tight"
-                    style={{ color: themeStyles.textColor }}
-                  >
-                    {t[lang].title}
-                  </h1>
-                  <p className="text-xs md:text-sm font-bold" style={{ color: '#9fb2c6' }}>
-                    {t[lang].degree}
-                  </p>
-                  <p className="text-xs font-semibold" style={{ color: themeStyles.subTextColor }}>
-                    {t[lang].bmdc}
-                  </p>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t space-y-3 text-sm" style={{ borderColor: themeStyles.borderColor, color: themeStyles.subTextColor }}>
-                <div className="flex items-start gap-3">
-                  <span className="text-lg shrink-0">📍</span>
-                  <p className="font-medium leading-relaxed">{t[lang].addressText}</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-lg shrink-0">📞</span>
-                  <a href="tel:+8801816011701" className="font-bold hover:underline" style={{ color: themeStyles.textColor }}>+880 1816 011 701</a>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-lg shrink-0">✉️</span>
-                  <a href="mailto:asir.mosaddeque@gmail.com" className="font-medium hover:underline" style={{ color: themeStyles.subTextColor }}>asir.mosaddeque@gmail.com</a>
-                </div>
-              </div>
-            </div>
-
-            {/* সোশ্যাল মিডিয়া লোগো ইমেজ সেকশন */}
-            <div className="pt-4 border-t flex items-center justify-between" style={{ borderColor: themeStyles.borderColor }}>
-              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: themeStyles.subTextColor }}>
-                {lang === 'bn' ? 'সোশ্যাল লিংক:' : 'Connect:'}
-              </span>
-              <div className="flex items-center gap-3">
-                <a 
-                  href="https://www.facebook.com/share/1ZfF826KUs/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="w-10 h-10 rounded-xl flex items-center justify-center transition shadow-sm hover:opacity-90 overflow-hidden p-2" 
-                  style={{ backgroundColor: '#1a1a1a' }} 
-                  title="Facebook"
-                >
-                  <img src="/facebook.png" alt="Facebook" className="w-full h-full object-contain filter invert" />
-                </a>
-                
-                <a 
-                  href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="w-10 h-10 rounded-xl flex items-center justify-center transition shadow-sm hover:opacity-90 overflow-hidden p-2" 
-                  style={{ backgroundColor: '#1a1a1a' }} 
-                  title="Instagram"
-                >
-                  <img src="/instagram.png" alt="Instagram" className="w-full h-full object-contain filter invert" />
-                </a>
-                
-                <a 
-                  href="https://wa.me/message/KBZOTSKH66H4P1" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="w-10 h-10 rounded-xl flex items-center justify-center transition shadow-sm hover:opacity-90 overflow-hidden p-2" 
-                  style={{ backgroundColor: '#1a1a1a' }} 
-                  title="WhatsApp"
-                >
-                  <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-contain filter invert" />
-                </a>
+          {/* বাম পাশে ডাক্তারের ছবি সেকশন (রেফারেন্স ডিজাইনের মতো পোর্ট্রেট কার্ড) */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-start order-2 lg:order-1">
+            <div className="relative w-72 h-80 md:w-80 md:h-96 lg:w-96 lg:h-[420px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 bg-[#071630]">
+              <img 
+                src="/doctor.jpeg" 
+                alt="Dr. Sakib" 
+                className="w-full h-full object-cover object-top"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#071630] via-transparent to-transparent opacity-80"></div>
+              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
+                <h3 className="font-bold text-lg text-white">{t[lang].title}</h3>
+                <p className="text-xs text-cyan-300 font-medium">{t[lang].degree}</p>
+                <p className="text-[11px] text-slate-300">{t[lang].bmdc}</p>
               </div>
             </div>
           </div>
 
-          {/* ডান কলাম (চেম্বার শিডিউল - ফ্রস্টেড গ্লাস টেক্সচার ব্যাকগ্রাউন্ড সহ) */}
-          <div 
-            className="p-6 md:p-10 rounded-3xl shadow-2xl flex flex-col justify-between space-y-6 relative overflow-hidden border backdrop-blur-md transition-all duration-300 bg-cover bg-center"
-            style={{ 
-              backgroundImage: `url('/frosted-glass.jpg')`,
-              borderColor: themeStyles.borderColor 
-            }}
-          >
-            {/* ডার্ক বা লাইট ওভারলে যাতে লেখা স্পষ্ট বোঝা যায় */}
-            <div className="absolute inset-0 bg-black/30 backdrop-blur-[3px]"></div>
-
-            <div className="space-y-4 relative z-10 text-white">
-              <span 
-                className="text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider inline-block shadow-sm"
-                style={{ backgroundColor: '#1a1a1a' }}
+          {/* ডান পাশে হেডলাইন, টেক্সট এবং একশন বাটন (রেফারেন্স লেআউট) */}
+          <div className="lg:col-span-7 space-y-6 order-1 lg:order-2 text-center lg:text-left">
+            <span className="text-xs font-bold uppercase tracking-widest text-cyan-300 bg-cyan-900/40 px-3.5 py-1.5 rounded-full border border-cyan-500/30">
+              {t[lang].subtitle}
+            </span>
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight drop-shadow-md">
+              {t[lang].heroTitle}
+            </h1>
+            <p className="text-base md:text-lg text-cyan-100/90 font-medium max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              {t[lang].heroSub}
+            </p>
+            
+            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+              <button
+                onClick={() => setShowBookingBox(true)}
+                className="px-8 py-4 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white font-extrabold shadow-lg shadow-cyan-900/40 transition transform hover:-translate-y-0.5 cursor-pointer text-sm md:text-base"
               >
-                {lang === 'bn' ? 'সময়সূচি' : 'Office Hours'}
-              </span>
-              <h3 className="text-xl md:text-2xl font-black drop-shadow-md text-white">
-                {lang === 'bn' ? 'রোগী দেখার সময়' : 'Chamber Schedule'}
-              </h3>
-              <div className="p-4 rounded-2xl border space-y-2 text-sm shadow-sm backdrop-blur-md bg-black/40 border-white/20 text-white">
-                <div className="flex justify-between items-center py-1 border-b border-white/20">
-                  <span className="font-semibold">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার' : 'Sat - Thu'}</span>
-                  <span className="font-bold">৪:৩০ PM - ৯:০০ PM</span>
-                </div>
-                <div className="flex justify-between items-center py-1">
-                  <span className="font-semibold">{lang === 'bn' ? 'শুক্রবার' : 'Friday'}</span>
-                  <span className="font-bold text-red-400">{lang === 'bn' ? 'বন্ধ' : 'Closed'}</span>
-                </div>
-              </div>
+                {t[lang].bookingMainBtn}
+              </button>
+              <a
+                href="#about-section"
+                className="px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold border border-white/30 backdrop-blur-md transition text-sm md:text-base"
+              >
+                Learn More
+              </a>
             </div>
 
-            <div className="relative z-10 pt-4 space-y-3">
-              <button
-                type="button"
-                onClick={() => setShowBookingBox(!showBookingBox)}
-                className="w-full block text-center font-extrabold py-3.5 px-6 rounded-2xl shadow-lg transition duration-200 text-sm md:text-base cursor-pointer text-white"
-                style={{ backgroundColor: '#1a1a1a' }}
-              >
-                {showBookingBox ? t[lang].bookingCloseBtn : t[lang].bookingMainBtn}
-              </button>
+            {/* ছোট ইনফো স্ট্রিপ */}
+            <div className="pt-6 border-t border-white/10 flex items-center justify-center lg:justify-start gap-3 text-xs text-cyan-200">
+              <span className="w-7 h-7 rounded-full bg-cyan-500/20 flex items-center justify-center font-bold">✓</span>
+              <span>Say goodbye to dental issues with our painless treatments.</span>
             </div>
           </div>
 
         </div>
       </section>
 
-      {/* ৪. অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স */}
+      {/* ৪. অ্যাপয়েন্টমেন্ট বুকিং ফর্ম মোডাল / বক্স */}
       {showBookingBox && (
         <section 
           id="booking-section" 
-          className="max-w-3xl mx-auto mb-10 p-6 md:p-10 rounded-3xl shadow-2xl border relative z-10 transition-all duration-300"
+          className="max-w-3xl mx-auto my-10 p-6 md:p-10 rounded-3xl shadow-2xl border relative z-10 transition-all duration-300"
           style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
         >
           <div className="flex items-center justify-between mb-4">
@@ -834,8 +747,7 @@ export default function Home() {
             <button 
               type="submit" 
               disabled={loading} 
-              className="w-full font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer text-white"
-              style={{ backgroundColor: '#1a1a1a' }}
+              className="w-full font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer text-white bg-[#00a8e8] hover:bg-[#008fca]"
             >
               {loading ? t[lang].submitting : t[lang].submitBtn}
             </button>
@@ -846,7 +758,7 @@ export default function Home() {
       {/* ৫. স্থায়ী About Us সেকশন */}
       <section 
         id="about-section" 
-        className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4 transition-all duration-300"
+        className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4 transition-all duration-300"
         style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
       >
         <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
@@ -863,7 +775,7 @@ export default function Home() {
       </section>
 
       {/* ৬. দাঁতের যত্ন ও স্বাস্থ্য টিপস */}
-      <section className="max-w-7xl mx-auto mb-10">
+      <section className="max-w-7xl mx-auto my-12 px-4 md:px-0">
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
             {t[lang].tipsTitle}
@@ -884,8 +796,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৭. "কেন আপনার জন্য আমরাই?" - রেক্ট্যাঙ্গেল, বড় পিকচার ও সিঁড়ির মতো স্ট্যাগার্ড প্যাটার্ন সেকশন */}
-      <section className="max-w-7xl mx-auto mb-16">
+      {/* ৭. "কেন আপনার জন্য আমরাই?" - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
+      <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
             {t[lang].whyUsTitle}
@@ -896,18 +808,16 @@ export default function Home() {
           {featureBoxes.map((box, index) => (
             <div 
               key={index} 
-              className={`p-1 shadow-2xl bg-gradient-to-r from-[#1a1a1a] via-[#9fb2c6] to-[#d9dee3] transition-all duration-300 ${box.stepClass}`}
+              className={`p-1 shadow-2xl bg-gradient-to-r from-[#0c1e3e] via-[#0077b6] to-[#00a8e8] transition-all duration-300 ${box.stepClass}`}
             >
               <div 
                 className="relative p-8 md:p-14 min-h-[380px] md:min-h-[440px] flex flex-col justify-end bg-cover bg-center overflow-hidden"
-                style={{ 
-                  backgroundImage: `url(${box.bgImage})`,
-                }}
+                style={{ backgroundImage: `url(${box.bgImage})` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
                 
                 <div className="relative z-10 space-y-3 text-white">
-                  <span className="text-xs font-bold tracking-widest uppercase text-[#9fb2c6] bg-black/60 px-3 py-1 inline-block">
+                  <span className="text-xs font-bold tracking-widest uppercase text-cyan-300 bg-black/60 px-3 py-1 inline-block">
                     0{index + 1}
                   </span>
                   <h3 className="text-2xl md:text-4xl font-black drop-shadow-md">{box.title}</h3>
@@ -924,7 +834,7 @@ export default function Home() {
       {/* ৮. সচেতনতামূলক ভিডিও সেকশন */}
       <section 
         id="contact-section"
-        className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6 transition-all duration-300"
+        className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6 transition-all duration-300"
         style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
       >
         <div className="text-center space-y-2">
@@ -959,13 +869,12 @@ export default function Home() {
             className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border"
             style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
           >
-            <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: '#1a1a1a' }}>✓</div>
+            <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto bg-emerald-500">✓</div>
             <h3 className="text-2xl font-black">{t[lang].successTitle}</h3>
             <p className="text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{t[lang].successMsg}</p>
             <button 
               onClick={() => setShowSuccessModal(false)} 
-              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white"
-              style={{ backgroundColor: '#1a1a1a' }}
+              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white bg-[#00a8e8]"
             >
               {t[lang].closeModalBtn}
             </button>
@@ -980,7 +889,7 @@ export default function Home() {
             className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border"
             style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
           >
-            <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: '#1a1a1a' }}>🔔</div>
+            <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto bg-amber-500">🔔</div>
             <h3 className="text-2xl font-black text-amber-500">
               {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
             </h3>
@@ -989,8 +898,7 @@ export default function Home() {
             </p>
             <button 
               onClick={() => setShowChamberClosedModal(false)} 
-              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white"
-              style={{ backgroundColor: '#1a1a1a' }}
+              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white bg-[#00a8e8]"
             >
               {t[lang].closeModalBtn}
             </button>
