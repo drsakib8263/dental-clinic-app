@@ -7,7 +7,7 @@ export default function ServicesPage() {
 
   const servicesList = [
     {
-      id: 'regular-checkup',
+      id: 'ser-01',
       nameBn: 'নিয়মিত দাঁতের চেকাপ (Regular Dental Checkup)',
       nameEn: 'Regular Dental Checkup',
       descBn: 'দাঁত ও মাড়ির যেকোনো সমস্যা প্রাথমিক অবস্থায় শনাক্ত করতে এবং সুস্থ মুখগহ্বর বজায় রাখতে নিয়মিত রুটিন চেকআপ।',
@@ -16,7 +16,7 @@ export default function ServicesPage() {
       timeEn: '10-15 mins'
     },
     {
-      id: 'patient-counseling',
+      id: 'ser-02',
       nameBn: 'পেশেন্ট কাউন্সেলিং (Patient Counseling)',
       nameEn: 'Patient Counseling',
       descBn: 'রোগীর যেকোনো জটিল ডেন্টাল সমস্যা ও ভীতি দূর করতে এবং সঠিক মৌখিক স্বাস্থ্যবিধি বজায় রাখতে বিস্তারিত পরামর্শ প্রদান।',
@@ -25,7 +25,7 @@ export default function ServicesPage() {
       timeEn: '15-20 mins'
     },
     {
-      id: 'root-canal',
+      id: 'ser-03',
       nameBn: 'রুট ক্যানাল ট্রিটমেন্ট (Root Canal Treatment)',
       nameEn: 'Root Canal Treatment',
       descBn: 'সংক্রমিত বা ক্ষতিগ্রস্থ দাঁতের ভেতরের নার্ভ ও রক্তনালী পরিষ্কার করে দাঁত বাঁচানোর আধুনিক চিকিৎসা।',
@@ -34,7 +34,7 @@ export default function ServicesPage() {
       timeEn: '15-20 mins'
     },
     {
-      id: 'zirconia-crown',
+      id: 'ser-04',
       nameBn: 'জিরকনিয়া ক্রাউন/ক্যাপ (Zirconia Crown)',
       nameEn: 'Zirconia Crown/Cap',
       descBn: 'সর্বাধুনিক প্রযুক্তির অত্যন্ত শক্তিশালী ও দেখতে একদম প্রাকৃতিক দাঁতের মতো প্রিমিয়াম ক্রাউন।',
@@ -43,7 +43,7 @@ export default function ServicesPage() {
       timeEn: '15 mins (Per Visit)'
     },
     {
-      id: 'pfm-crown',
+      id: 'ser-05',
       nameBn: 'মেটাল-সিরামিক (PFM) ক্রাউন/ক্যাপ',
       nameEn: 'Metal-Ceramic (PFM) Crown/Cap',
       descBn: 'রুট ক্যানাল বা দুর্বল দাঁতের সুরক্ষায় এবং স্থায়িত্ব বাড়াতে টেকসই মেটাল ও সিরামিকের সংমিশ্রণে তৈরি ক্যাপ।',
@@ -52,7 +52,7 @@ export default function ServicesPage() {
       timeEn: '15 mins (Per Visit)'
     },
     {
-      id: 'composite-filling',
+      id: 'ser-06',
       nameBn: 'কম্পোজিট ফিলিং (Composite Filling)',
       nameEn: 'Composite Filling',
       descBn: 'দাঁতের ক্যাভিটি বা ক্ষয় রোধে দাঁতের রঙের সাথে মিলিয়ে নিখুঁতভাবে ফিলিং করা।',
@@ -61,7 +61,7 @@ export default function ServicesPage() {
       timeEn: '15-20 mins'
     },
     {
-      id: 'gi-filling',
+      id: 'ser-07',
       nameBn: 'জি.আই ফিলিং (G.I. Filling)',
       nameEn: 'G.I. Filling',
       descBn: 'দাঁতের চিকিৎসায় ব্যবহৃত গ্লাস আয়োনোমার সিমেন্ট ফিলিং, যা দাঁতের সুরক্ষায় অত্যন্ত কার্যকর।',
@@ -70,7 +70,7 @@ export default function ServicesPage() {
       timeEn: '20 mins'
     },
     {
-      id: 'composite-bridge',
+      id: 'ser-08',
       nameBn: 'ফাইবার রি-ইনফোর্সড কম্পোজিট ব্রিজ (Fiber-Reinforced Composite Bridge)',
       nameEn: 'Fiber-Reinforced Composite Bridge',
       descBn: 'হারিয়ে যাওয়া দাঁতের দুই পাশের দাঁতের সাহায্যে বিশেষ ফাইবার ও কম্পোজিট রজন ব্যবহার করে এক ভিজিটে ফিক্সড কৃত্রিম দাঁত সংযোজন।',
@@ -79,7 +79,7 @@ export default function ServicesPage() {
       timeEn: '30-45 mins'
     },
     {
-      id: 'dental-implant',
+      id: 'ser-09',
       nameBn: 'ইমপ্ল্যান্ট (Dental Implant)',
       nameEn: 'Dental Implant',
       descBn: 'হারিয়ে যাওয়া দাঁতের শেকড়ের জায়গায় টাইটানিয়াম ফিক্সড কৃত্রিম দাঁত প্রতিস্থাপনের সর্বাধুনিক ও স্থায়ী সমাধান।',
@@ -88,7 +88,7 @@ export default function ServicesPage() {
       timeEn: '45-90 mins'
     },
     {
-      id: 'orthodontic',
+      id: 'ser-10',
       nameBn: 'বাঁকা দাঁতের অর্থোডন্টিক কারেকশন (Orthodontic Correction)',
       nameEn: 'Orthodontic Correction (Braces)',
       descBn: 'ব্রেসেস বা আধুনিক অ্যালাইনারের সাহায্যে আঁকাবাঁকা ও ফাঁকা দাঁত সোজা করে হাসির সৌন্দর্য ও কামড় ঠিক করা।',
@@ -97,7 +97,7 @@ export default function ServicesPage() {
       timeEn: '30 mins (Per Visit)'
     },
     {
-      id: 'diastema-closure',
+      id: 'ser-11',
       nameBn: 'মিড-ডায়াস্টেমা ক্লোজ (Front Tooth Gap Closing)',
       nameEn: 'Mid-Diastema Closure',
       descBn: 'সামনের দুই দাঁতের মাঝখানের ফাঁকা জায়গা সুন্দরভাবে বন্ধ করার চিকিৎসা।',
@@ -106,7 +106,7 @@ export default function ServicesPage() {
       timeEn: '30 mins'
     },
     {
-      id: 'normal-extraction',
+      id: 'ser-12',
       nameBn: 'নরমাল এক্সট্রাকশন (Normal Tooth Extraction)',
       nameEn: 'Normal Tooth Extraction',
       descBn: 'অতিরিক্ত ক্ষতিগ্রস্থ বা নড়বড়ে দাঁত নিরাপদে ও পেইনলেসভাবে অপসারণ করা।',
@@ -115,7 +115,7 @@ export default function ServicesPage() {
       timeEn: '15 mins'
     },
     {
-      id: 'wisdom-extraction',
+      id: 'ser-13',
       nameBn: 'সার্জিক্যাল এক্সট্রাকশন (Wisdom Tooth Surgery)',
       nameEn: 'Surgical Extraction (Wisdom Tooth)',
       descBn: 'আঁকাবাঁকা বা মাড়ির ভেতরে আটকে থাকা আককেল দাঁত বা জটিল দাঁত অপারেশনের মাধ্যমে অপসারণ।',
@@ -124,7 +124,7 @@ export default function ServicesPage() {
       timeEn: '30-60 mins'
     },
     {
-      id: 'pediatric-dental',
+      id: 'ser-14',
       nameBn: 'বাচ্চাদের ফিলিং ও দাঁত তোলা (Pediatric Dentistry)',
       nameEn: 'Pediatric Dental Care',
       descBn: 'ছোটদের দুধ দাঁতের সমস্যা সমাধান এবং শিশুদের উপযোগী কোমল ডেন্টাল কেয়ার।',
@@ -133,7 +133,7 @@ export default function ServicesPage() {
       timeEn: '10-20 mins'
     },
     {
-      id: 'scaling-polishing',
+      id: 'ser-15',
       nameBn: 'স্কেলিং ও পলিশিং (Scaling & Polishing)',
       nameEn: 'Scaling & Polishing',
       descBn: 'দাঁতে জমে থাকা টাটার, প্লাক ও দাগ দূর করে মাড়ি সুস্থ ও মুখগহ্বর সতেজ রাখা।',
@@ -142,7 +142,7 @@ export default function ServicesPage() {
       timeEn: '20-25 mins'
     },
     {
-      id: 'dentures',
+      id: 'ser-16',
       nameBn: 'ফ্লেক্সিবল ও হিট কিউর ডেঞ্চার',
       nameEn: 'Flexible & Heat Cure Dentures',
       descBn: 'হারিয়ে যাওয়া দাঁতের পরিবর্তে আরামদায়ক ও নমনীয় কৃত্রিম আর্টিফিশিয়াল দাঁতের সেট বা ডেনচার।',
@@ -151,7 +151,7 @@ export default function ServicesPage() {
       timeEn: '15 mins (Per Visit)'
     },
     {
-      id: 'night-guard',
+      id: 'ser-17',
       nameBn: 'নাইট গার্ড (Night Guard)',
       nameEn: 'Night Guard',
       descBn: 'ঘুমের সময় দাঁত কিড়মিড় করার অভ্যাস (Bruxism) থেকে দাঁতকে সুরক্ষার বিশেষ ট্রের ব্যবস্থা।',
@@ -160,7 +160,7 @@ export default function ServicesPage() {
       timeEn: '15 mins (Per Visit)'
     },
     {
-      id: 'tooth-whitening',
+      id: 'ser-18',
       nameBn: 'টুথ হোয়াইটেনিং (Tooth Whitening)',
       nameEn: 'Tooth Whitening (Bleaching)',
       descBn: 'আধুনিক ও নিরাপদ প্রযুক্তির সাহায্যে হলুদ বা দাগযুক্ত দাঁত উজ্জ্বল, সাদা ও আকর্ষণীয় করে তোলার কসমেটিক সেবা।',
@@ -169,7 +169,7 @@ export default function ServicesPage() {
       timeEn: '30-45 mins'
     },
     {
-      id: 'digital-xray',
+      id: 'ser-19',
       nameBn: 'ডিজিটাল ডেন্টাল এক্স-রে (RVG)',
       nameEn: 'Digital Dental X-Ray (RVG)',
       descBn: 'কম রেডিয়েশনের অত্যন্ত নিখুঁত ও আধুনিক রেডিওগ্রাফি প্রযুক্তি, যার মাধ্যমে দাঁতের ভেতরের অবস্থা তাৎক্ষণিকভাবে স্ক্রিনে দেখা যায়।',
@@ -178,7 +178,7 @@ export default function ServicesPage() {
       timeEn: '5-10 mins'
     },
     {
-      id: 'cyst-enucleation',
+      id: 'ser-20',
       nameBn: 'সিস্ট ইনিউক্লিয়েশন (Cyst Enucleation)',
       nameEn: 'Cyst Enucleation',
       descBn: 'মুখগহ্বর বা চোয়ালের ভেতরে তৈরি হওয়া তরলপূর্ণ সিস্ট বা থলি সফলভাবে অপারেশনের মাধ্যমে সম্পূর্ণ অপসারণের চিকিৎসা।',
@@ -187,7 +187,7 @@ export default function ServicesPage() {
       timeEn: '45-60 mins'
     },
     {
-      id: 'lesion-treatment',
+      id: 'ser-21',
       nameBn: 'দীর্ঘস্থায়ী ঘা ও প্রি-ক্যান্সারাস লেশনের চিকিৎসা',
       nameEn: 'Long-standing Sores & Pre-cancerous Lesions Treatment',
       descBn: 'মুখে দীর্ঘদিনের না ভালো হওয়া ঘা, সাদা বা লাল প্যাচ এবং প্রি-ক্যান্সারাস অবস্থা নির্ণয় ও যথাযথ চিকিৎসা প্রদান।',
