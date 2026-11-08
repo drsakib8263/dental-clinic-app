@@ -12,7 +12,6 @@ export default function Home() {
   const [availableDates, setAvailableDates] = useState([])
   const [bookedSlotsCount, setBookedSlotsCount] = useState({})
   const [loading, setLoading] = useState(false)
-  const [showTreatments, setShowTreatments] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // চেম্বার বন্ধ থাকার নোটিশ পপ-আপ স্টেট
@@ -203,10 +202,6 @@ export default function Home() {
       successTitle: 'অভিনন্দন! বুকিং সফল হয়েছে',
       successMsg: 'আপনার অ্যাপয়েন্টমেন্ট আবেদনটি সফলভাবে জমা হয়েছে! শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।',
       closeModalBtn: 'ঠিক আছে',
-      treatmentToggle: 'চিকিৎসার খরচ ও আনুমানিক সময়সূচি দেখুন',
-      treatmentName: 'চিকিৎসার নাম',
-      approxCost: 'আনুমানিক খরচ',
-      approxTime: 'সময়',
       scheduleTitle: 'চেম্বারের সময়সূচি',
       scheduleDays: 'শনিবার - বৃহস্পতিবার:',
       scheduleTime: 'বিকেল ৪:০০ টা - রাত ৯:০০ টা',
@@ -251,10 +246,6 @@ export default function Home() {
       successTitle: 'Congratulations! Booking Successful',
       successMsg: 'Your appointment request has been successfully submitted! We will contact you soon.',
       closeModalBtn: 'OK',
-      treatmentToggle: 'View Treatment Costs & Estimated Schedule',
-      treatmentName: 'Treatment Name',
-      approxCost: 'Estimated Cost',
-      approxTime: 'Time',
       scheduleTitle: 'Chamber Schedule',
       scheduleDays: 'Saturday - Thursday:',
       scheduleTime: '4:00 PM - 9:00 PM',
@@ -355,42 +346,6 @@ export default function Home() {
       setLoading(false)
     }
   }
-
-  const treatmentsList = lang === 'bn' ? [
-    { name: 'রুট ক্যানাল ট্রিটমেন্ট', price: '৪০০০ টাকা (প্রতি দাঁত)', time: '১৫-২০ মিনিট' },
-    { name: 'মেটাল-সিরামিক (PFM) ক্রাউন/ক্যাপ', price: '৪০০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট (প্রতি ভিজিট)' },
-    { name: 'জিরকনিয়া ক্রাউন/ক্যাপ', price: '১০০০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট (প্রতি ভিজিট)' },
-    { name: 'কম্পোজিট ফিলিং', price: '১৫০০ টাকা (প্রতি দাঁত)', time: '১৫-২০ মিনিট' },
-    { name: 'মিড-ডায়াস্টেমা ক্লোজ (সামনের দাঁতের ফাঁকা বন্ধ করা)', price: '৪০০০ টাকা', time: '৩০ মিনিট' },
-    { name: 'জি.আই ফিলিং', price: '৮০০ টাকা (প্রতি দাঁত)', time: '২০ মিনিট' },
-    { name: 'নরমাল এক্সট্রাকশন (দাঁত তোলা)', price: '১০০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট' },
-    { name: 'সার্জিক্যাল এক্সট্রাকশন (আক্কেল দাঁত অপারেশন)', price: '৬০০০ টাকা (প্রতি দাঁত)', time: '৩০-৬০ মিনিট' },
-    { name: 'বাচ্চাদের ফিলিং', price: '৫০০ টাকা (প্রতি দাঁত)', time: '১৫-২০ মিনিট' },
-    { name: 'বাচ্চাদের দাঁত তোলা', price: '৪০০ টাকা (প্রতি দাঁত)', time: '১০ মিনিট' },
-    { name: 'স্কেলিং ও পলিশিং', price: '২০০০ টাকা', time: '২০-২৫ মিনিট' },
-    { name: 'পোস্ট-কোর বিল্ডাপ (ফাইবার ও ফিলিং দ্বারা)', price: '১৫০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট' },
-    { name: 'ফ্লেক্সিবল ডেঞ্চার', price: '৪০০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট (প্রতি ভিজিট)' },
-    { name: 'হিট কিউর ডেঞ্চার', price: '২৫০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট (প্রতি ভিজিট)' },
-    { name: 'সেলফ কিউর ডেঞ্চার', price: '১০০০ টাকা (প্রতি দাঁত)', time: '১৫ মিনিট (প্রতি ভিজিট)' },
-    { name: 'নাইট গার্ড', price: '৭০০০ টাকা (প্রতি চোয়ালের জন্য)', time: '১৫ মিনিট (প্রতি ভিজিট)' }
-  ] : [
-    { name: 'Root Canal Treatment', price: '4000 BDT (Per Tooth)', time: '15-20 mins' },
-    { name: 'Metal-Ceramic (PFM) Crown/Cap', price: '4000 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
-    { name: 'Zirconia Crown/Cap', price: '10000 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
-    { name: 'Composite Filling', price: '1500 BDT (Per Tooth)', time: '15-20 mins' },
-    { name: 'Mid-Diastema Closure (Front tooth gap filling)', price: '4000 BDT', time: '30 mins' },
-    { name: 'G.I. Filling', price: '800 BDT (Per Tooth)', time: '20 mins' },
-    { name: 'Normal Extraction (Tooth Removal)', price: '1000 BDT (Per Tooth)', time: '15 mins' },
-    { name: 'Surgical Extraction (Wisdom Tooth)', price: '6000 BDT (Per Tooth)', time: '30-60 mins' },
-    { name: 'Pediatric Filling', price: '500 BDT (Per Tooth)', time: '15-20 mins' },
-    { name: 'Pediatric Tooth Extraction', price: '400 BDT (Per Tooth)', time: '10 mins' },
-    { name: 'Scaling & Polishing', price: '2000 BDT', time: '20-25 mins' },
-    { name: 'Post-Core Buildup (Fiber & Filling)', price: '1500 BDT (Per Tooth)', time: '15 mins' },
-    { name: 'Flexible Denture', price: '4000 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
-    { name: 'Heat Cure Denture', price: '2500 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
-    { name: 'Self Cure Denture', price: '1000 BDT (Per Tooth)', time: '15 mins (Per Visit)' },
-    { name: 'Night Guard', price: '7000 BDT (Per Arch)', time: '15 mins (Per Visit)' }
-  ]
 
   const dentalTips = lang === 'bn' ? [
     {
@@ -575,7 +530,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* স্থায়ী About Us সেকশন (সাদা ব্যাকগ্রাউন্ডে সবসময় দৃশ্যমান) */}
+        {/* স্থায়ী About Us সেকশন */}
         <section id="about-section" className="bg-white dark:bg-[#344246] p-6 md:p-10 rounded-3xl shadow-2xl border-2 border-[#5A181C]/30 space-y-6">
           <div className="border-b border-[#5A181C]/20 pb-4">
             <h2 className="text-2xl md:text-3xl font-extrabold text-[#5A181C] dark:text-[#EADCD2]">
@@ -773,53 +728,6 @@ export default function Home() {
           </section>
         )}
 
-        {/* চেম্বারের চিকিৎসা ও খরচের তালিকা */}
-        <section className="bg-[#D3D8DB]/95 dark:bg-[#3A4448] backdrop-blur-xl rounded-3xl shadow-xl border-2 border-[#95A5A6] overflow-hidden">
-          <div 
-            onClick={() => setShowTreatments(!showTreatments)}
-            className="w-full p-5 md:p-6 flex items-center justify-between bg-[#95A5A6]/40 dark:bg-[#2B3438] hover:opacity-90 transition cursor-pointer select-none"
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-2xl p-2 bg-white dark:bg-slate-700 rounded-2xl shadow-sm border border-[#95A5A6]">💰</span>
-              <h2 className="text-lg md:text-xl font-bold text-slate-900 dark:text-white">
-                {t[lang].treatmentToggle}
-              </h2>
-            </div>
-            
-            <button 
-              type="button"
-              className="bg-[#5A181C] text-[#EADCD2] px-4 py-2 rounded-xl text-xs md:text-sm font-bold shadow-md pointer-events-none"
-            >
-              {showTreatments ? (lang === 'bn' ? 'বন্ধ করুন ▲' : 'Hide ▲') : (lang === 'bn' ? 'দেখুন ▼' : 'View ▼')}
-            </button>
-          </div>
-
-          {showTreatments && (
-            <div className="p-4 md:p-6 border-t border-[#95A5A6]/40 dark:bg-slate-900/50">
-              <div className="overflow-x-auto rounded-2xl border border-[#95A5A6] bg-white dark:bg-slate-800 shadow-inner">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="border-b border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white bg-[#EADCD2] dark:bg-slate-700">
-                      <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].treatmentName}</th>
-                      <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].approxCost}</th>
-                      <th className="py-3.5 px-4 font-bold text-xs md:text-sm">{t[lang].approxTime}</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-slate-700 text-xs md:text-sm">
-                    {treatmentsList.map((item, index) => (
-                      <tr key={index} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
-                        <td className="py-3 px-4 font-semibold text-slate-900 dark:text-slate-100">{item.name}</td>
-                        <td className="py-3 px-4 text-[#5A181C] dark:text-[#EADCD2] font-bold">{item.price}</td>
-                        <td className="py-3 px-4 text-slate-600 dark:text-slate-300">{item.time}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-        </section>
-
         {/* চেম্বারের সময়সূচি সেকশন */}
         <section className="bg-[#B89C8B]/90 dark:bg-[#4E3E34] backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-xl border border-[#8B6B5E]/50">
           <div className="flex items-center gap-3 mb-4">
@@ -948,53 +856,6 @@ export default function Home() {
         </section>
 
       </div>
-
-      {/* চেম্বার বন্ধ থাকলে পপ-আপ নোটিশ মডাল */}
-      {showChamberClosedModal && chamberNotice.isClosed && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-[#EADCD2] dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#5A181C] max-w-md w-full space-y-4 text-center">
-            <div className="text-4xl">📢</div>
-            <h3 className="text-xl font-extrabold text-[#5A181C] dark:text-white">
-              {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
-            </h3>
-            <p className="text-slate-700 dark:text-slate-300 text-sm whitespace-pre-line leading-relaxed">
-              {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
-            </p>
-            <button
-              onClick={() => setShowChamberClosedModal(false)}
-              className="w-full bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-bold py-3 px-6 rounded-xl transition duration-200 shadow cursor-pointer mt-2"
-            >
-              {t[lang].closeModalBtn}
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* সফল বুকিং পপ-আপ মডাল */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-[#EADCD2] dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#5A181C] max-w-md w-full space-y-4 text-center">
-            <div className="text-4xl">🎉</div>
-            <h3 className="text-xl font-extrabold text-[#5A181C] dark:text-white">
-              {t[lang].successTitle}
-            </h3>
-            <div className="bg-white/80 dark:bg-slate-800 p-4 rounded-2xl text-left space-y-2 border border-[#95A5A6] text-sm">
-              <p className="font-semibold text-slate-800 dark:text-slate-200">রোগী: <span className="font-bold text-[#5A181C] dark:text-teal-400">{successDetails.name}</span></p>
-              <p className="font-semibold text-slate-800 dark:text-slate-200">তারিখ: <span className="font-bold text-[#5A181C] dark:text-teal-400">{successDetails.date}</span></p>
-              <p className="font-semibold text-slate-800 dark:text-slate-200">সময়: <span className="font-bold text-[#5A181C] dark:text-teal-400">{successDetails.time}</span></p>
-            </div>
-            <p className="text-slate-700 dark:text-slate-300 text-xs">
-              {t[lang].successMsg}
-            </p>
-            <button
-              onClick={() => setShowSuccessModal(false)}
-              className="w-full bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-bold py-3 px-6 rounded-xl transition duration-200 shadow cursor-pointer mt-2"
-            >
-              {t[lang].closeModalBtn}
-            </button>
-          </div>
-        </div>
-      )}
 
     </main>
   )
