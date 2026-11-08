@@ -29,9 +29,10 @@ export default function Home() {
 
   // সফল বুকিং পপ-আপ স্টেট
   const [showSuccessModal, setShowSuccessModal] = useState(false)
-  const [successDetails, setSuccessDetails] = useState({ name: '', date: '', time: '' })
 
-  const [showBookingBox, setShowBookingBox] = useState(false)
+  // পপ-আপ বুকিং ফর্মের স্টেট (শুধু বাটন প্রেস করলেই আসবে)
+  const [showPopupBooking, setShowPopupBooking] = useState(false)
+
   const [darkMode, setDarkMode] = useState(false)
 
   const [formData, setFormData] = useState({
@@ -213,7 +214,7 @@ export default function Home() {
       training: 'স্পেশাল ট্রেইনড ইন ইমপ্ল্যান্ট এন্ড কসমেটিক ডেন্টিস্ট্রি',
       addressText: 'আলম মেডিকেল হল, পটিয়া কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
-      bookingCloseBtn: '✕ ফর্ম বন্ধ করুন',
+      bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
       bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:৩০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
       patientName: 'রোগীর নাম *',
@@ -252,7 +253,7 @@ export default function Home() {
       training: 'Special Trained in Implant & Cosmetic Dentistry',
       addressText: 'Alam Medical Hall, Beside Patiya Govt. College, Anwara Bypass Road, Bus Station, Patiya, Chattogram.',
       bookingMainBtn: 'Book an Appointment',
-      bookingCloseBtn: '✕ Close Form',
+      bookingCloseBtn: '✕ Close',
       bookingTitle: 'Online Appointment Booking',
       bookingSub: 'Saturday to Thursday (4:30 PM - 9:00 PM), Friday Closed',
       patientName: 'Patient Name *',
@@ -345,13 +346,8 @@ export default function Home() {
 
       await fetchBookingsCount()
 
-      setSuccessDetails({
-        name: formData.patient_name,
-        date: formData.appointment_date,
-        time: formData.appointment_time
-      })
       setShowSuccessModal(true)
-      setShowBookingBox(false)
+      setShowPopupBooking(false)
 
       setFormData({
         patient_name: '',
@@ -460,7 +456,7 @@ export default function Home() {
       style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
     >
 
-      {/* ১. টপ নোটিশ ও ইনফরমেশন বার (ডান কোণায় বড় সোশ্যাল আইকনসহ: ফেসবুক, ইনস্টাগ্রাম ও হোয়াটসঅ্যাপ) */}
+      {/* ১. টপ নোটিশ ও ইনফরমেশন বার */}
       <div className="bg-[#0c1e3e] text-white text-xs md:text-sm py-2.5 px-4 md:px-12 flex flex-wrap justify-between items-center gap-3 border-b border-blue-900/50">
         <div className="flex items-center gap-2">
           <span>📍</span>
@@ -473,7 +469,6 @@ export default function Home() {
             <span>Sat - Thu: 4:30 PM - 9:00 PM</span>
           </div>
 
-          {/* ডান কোণার বড় করা সোশ্যাল বাটনগুলো (ফেসবুক, ইনস্টাগ্রাম, হোয়াটসঅ্যাপ) */}
           <div className="flex items-center gap-3 border-l border-blue-800 pl-4">
             <a 
               href="https://www.facebook.com/share/1ZfF826KUs/" 
@@ -539,9 +534,10 @@ export default function Home() {
             <span>+880 1816 011 701</span>
           </a>
 
+          {/* এখানে ক্লিক করলে পপ-আপ ফর্ম আসবে */}
           <button
             type="button"
-            onClick={() => setShowBookingBox(true)}
+            onClick={() => setShowPopupBooking(true)}
             className="font-bold px-5 py-2.5 rounded-full bg-[#00a8e8] hover:bg-[#0092cd] text-white text-xs md:text-sm shadow-md transition cursor-pointer"
           >
             {t[lang].bookingMainBtn}
@@ -616,7 +612,7 @@ export default function Home() {
             
             <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <button
-                onClick={() => setShowBookingBox(true)}
+                onClick={() => setShowPopupBooking(true)}
                 className="px-8 py-4 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white font-extrabold shadow-lg shadow-cyan-900/40 transition transform hover:-translate-y-0.5 cursor-pointer text-sm md:text-base"
               >
                 {t[lang].bookingMainBtn}
@@ -638,141 +634,142 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৪. অ্যাপয়েন্টমেন্ট বুকিং ফর্ম মোডাল / বক্স */}
-      {showBookingBox && (
-        <section 
-          id="booking-section" 
-          className="max-w-3xl mx-auto my-10 p-6 md:p-10 rounded-3xl shadow-2xl border relative z-10 transition-all duration-300"
-          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl md:text-2xl font-bold text-center flex items-center gap-2 mx-auto" style={{ color: themeStyles.textColor }}>
-              <span>📅</span> {t[lang].bookingTitle}
-            </h2>
-            <button onClick={() => setShowBookingBox(false)} className="font-bold text-lg p-1 opacity-70 hover:opacity-100" style={{ color: themeStyles.textColor }}>
-              ✕
-            </button>
-          </div>
-          <p className="font-semibold text-center mb-6 text-xs md:text-sm" style={{ color: themeStyles.subTextColor }}>
-            {t[lang].bookingSub}
-          </p>
+      {/* ৪. পপ-আপ বুকিং ফর্ম (কেবলমাত্র বাটন প্রেস করলেই স্ক্রিনের মাঝখানে ভাসমান উইন্ডো হিসেবে আসবে) */}
+      {showPopupBooking && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
+          <div 
+            className="max-w-xl w-full p-6 md:p-8 rounded-3xl shadow-2xl border relative my-8"
+            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2" style={{ color: themeStyles.textColor }}>
+                <span>📅</span> {t[lang].bookingTitle}
+              </h2>
+              <button onClick={() => setShowPopupBooking(false)} className="font-bold text-lg p-2 rounded-full opacity-70 hover:opacity-100" style={{ color: themeStyles.textColor }}>
+                ✕
+              </button>
+            </div>
+            <p className="font-semibold mb-6 text-xs md:text-sm" style={{ color: themeStyles.subTextColor }}>
+              {t[lang].bookingSub}
+            </p>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="md:col-span-2">
-                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].patientName}</label>
-                <input 
-                  type="text" 
-                  name="patient_name" 
-                  value={formData.patient_name} 
-                  onChange={handleChange} 
-                  required 
-                  placeholder={t[lang].patientNamePlaceholder} 
-                  className="w-full px-4 py-2.5 rounded-xl outline-none border" 
-                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
-                />
+            <form onSubmit={handleSubmit} className="space-y-4 max-h-[75vh] overflow-y-auto pr-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].patientName}</label>
+                  <input 
+                    type="text" 
+                    name="patient_name" 
+                    value={formData.patient_name} 
+                    onChange={handleChange} 
+                    required 
+                    placeholder={t[lang].patientNamePlaceholder} 
+                    className="w-full px-4 py-2.5 rounded-xl outline-none border" 
+                    style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].ageLabel}</label>
+                  <input 
+                    type="number" 
+                    name="age" 
+                    value={formData.age} 
+                    onChange={handleChange} 
+                    required 
+                    min="1" 
+                    max="120" 
+                    placeholder={t[lang].agePlaceholder} 
+                    className="w-full px-4 py-2.5 rounded-xl outline-none border" 
+                    style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                  />
+                </div>
               </div>
+
               <div>
-                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].ageLabel}</label>
+                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].phoneLabel}</label>
                 <input 
-                  type="number" 
-                  name="age" 
-                  value={formData.age} 
+                  type="tel" 
+                  name="phone" 
+                  value={formData.phone} 
                   onChange={handleChange} 
                   required 
-                  min="1" 
-                  max="120" 
-                  placeholder={t[lang].agePlaceholder} 
+                  placeholder="017XXXXXXXX" 
                   className="w-full px-4 py-2.5 rounded-xl outline-none border" 
                   style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
                 />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].phoneLabel}</label>
-              <input 
-                type="tel" 
-                name="phone" 
-                value={formData.phone} 
-                onChange={handleChange} 
-                required 
-                placeholder="017XXXXXXXX" 
-                className="w-full px-4 py-2.5 rounded-xl outline-none border" 
-                style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
-              />
-            </div>
+              <div>
+                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].serviceLabel}</label>
+                <select 
+                  name="service" 
+                  value={formData.service} 
+                  onChange={handleChange} 
+                  required 
+                  className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
+                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                >
+                  <option value="">{t[lang].serviceDefault}</option>
+                  <option value={t[lang].service1}>{t[lang].service1}</option>
+                  <option value={t[lang].service2}>{t[lang].service2}</option>
+                  <option value={t[lang].service3}>{t[lang].service3}</option>
+                  <option value={t[lang].service4}>{t[lang].service4}</option>
+                </select>
+              </div>
 
-            <div>
-              <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].serviceLabel}</label>
-              <select 
-                name="service" 
-                value={formData.service} 
-                onChange={handleChange} 
-                required 
-                className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
-                style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+              <div>
+                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].dateLabel}</label>
+                <select 
+                  name="appointment_date" 
+                  value={formData.appointment_date} 
+                  onChange={handleChange} 
+                  required 
+                  className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
+                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                >
+                  <option value="">{t[lang].dateDefault}</option>
+                  {availableDates.map((item, index) => (
+                    <option key={index} value={item.value}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].timeLabel}</label>
+                <select 
+                  name="appointment_time" 
+                  value={formData.appointment_time} 
+                  onChange={handleChange} 
+                  required 
+                  className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
+                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                >
+                  <option value="">{t[lang].timeDefault}</option>
+                  {rawTimes.map((time, index) => {
+                    const slotKey = `${formData.appointment_date}|${time}`
+                    const count = bookedSlotsCount[slotKey] || 0
+                    const isFull = count >= 2
+                    const fullText = lang === 'bn' ? '(এই সময়ে এপয়েন্টমেন্ট খালি নেই)' : '(Fully Booked)'
+                    const bookedText = lang === 'bn' ? `(বুকড: ${count}/২)` : `(Booked: ${count}/2)`
+                    return (
+                      <option key={index} value={time} disabled={isFull} style={{ color: isFull ? 'red' : 'inherit' }}>
+                        {time} {isFull ? fullText : bookedText}
+                      </option>
+                    )
+                  })}
+                </select>
+              </div>
+
+              <button 
+                type="submit" 
+                disabled={loading} 
+                className="w-full font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer text-white bg-[#00a8e8] hover:bg-[#008fca]"
               >
-                <option value="">{t[lang].serviceDefault}</option>
-                <option value={t[lang].service1}>{t[lang].service1}</option>
-                <option value={t[lang].service2}>{t[lang].service2}</option>
-                <option value={t[lang].service3}>{t[lang].service3}</option>
-                <option value={t[lang].service4}>{t[lang].service4}</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].dateLabel}</label>
-              <select 
-                name="appointment_date" 
-                value={formData.appointment_date} 
-                onChange={handleChange} 
-                required 
-                className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
-                style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
-              >
-                <option value="">{t[lang].dateDefault}</option>
-                {availableDates.map((item, index) => (
-                  <option key={index} value={item.value}>{item.label}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].timeLabel}</label>
-              <select 
-                name="appointment_time" 
-                value={formData.appointment_time} 
-                onChange={handleChange} 
-                required 
-                className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
-                style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
-              >
-                <option value="">{t[lang].timeDefault}</option>
-                {rawTimes.map((time, index) => {
-                  const slotKey = `${formData.appointment_date}|${time}`
-                  const count = bookedSlotsCount[slotKey] || 0
-                  const isFull = count >= 2
-                  const fullText = lang === 'bn' ? '(এই সময়ে এপয়েন্টমেন্ট খালি নেই)' : '(Fully Booked)'
-                  const bookedText = lang === 'bn' ? `(বুকড: ${count}/২)` : `(Booked: ${count}/2)`
-                  return (
-                    <option key={index} value={time} disabled={isFull} style={{ color: isFull ? 'red' : 'inherit' }}>
-                      {time} {isFull ? fullText : bookedText}
-                    </option>
-                  )
-                })}
-              </select>
-            </div>
-
-            <button 
-              type="submit" 
-              disabled={loading} 
-              className="w-full font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer text-white bg-[#00a8e8] hover:bg-[#008fca]"
-            >
-              {loading ? t[lang].submitting : t[lang].submitBtn}
-            </button>
-          </form>
-        </section>
+                {loading ? t[lang].submitting : t[lang].submitBtn}
+              </button>
+            </form>
+          </div>
+        </div>
       )}
 
       {/* ৫. স্থায়ী About Us সেকশন */}
