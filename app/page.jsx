@@ -213,7 +213,7 @@ export default function Home() {
       bookingMainBtn: '📅 অনলাইন অ্যাপয়েন্টমেন্ট বুকিং করুন',
       bookingCloseBtn: '✕ ফর্ম বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
-      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
+      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা),শুক্রবার বন্ধ',
       patientName: 'রোগীর নাম *',
       patientNamePlaceholder: 'আপনার নাম লিখুন',
       ageLabel: 'বয়স *',
@@ -398,38 +398,44 @@ export default function Home() {
     }
   ]
 
-  // why-01.jpeg, why-02.jpeg, why-03.jpeg (আইকন ছাড়া সরাসরি ছবির ওপর লেখার জন্য)
+  // why-01.jpeg, why-02.jpeg, why-03.jpeg (সিঁড়ির মতো স্যাগারড বিন্যাসের জন্য offset মার্জিন)
   const featureBoxes = lang === 'bn' ? [
     {
       title: 'আধুনিক ডেন্টাল কেয়ার',
       description: 'সর্বাধুনিক যন্ত্রপাতি ও নিরাপদ উপায়ে পেইনলেস ডেন্টাল ট্রিটমেন্ট নিশ্চিত করা হয়।',
-      bgImage: '/why-01.jpeg'
+      bgImage: '/why-01.jpeg',
+      stepClass: 'md:mr-24 lg:mr-36'
     },
     {
       title: 'জীবাণুমুক্ত পরিবেশ',
       description: 'অটোক্লেভ ও উন্নত স্টেরিলাইজেশন প্রযুক্তির মাধ্যমে শতভাগ সংক্রমণমুক্ত পরিবেশ।',
-      bgImage: '/why-02.jpeg'
+      bgImage: '/why-02.jpeg',
+      stepClass: 'md:mx-12 lg:mx-20'
     },
     {
       title: 'অভিজ্ঞ কনসালটেশন',
       description: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সঠিক রোগ নির্ণয়।',
-      bgImage: '/why-03.jpeg'
+      bgImage: '/why-03.jpeg',
+      stepClass: 'md:ml-24 lg:ml-36'
     }
   ] : [
     {
       title: 'Modern Dental Care',
       description: 'Ensuring painless dental treatment using advanced equipment and safe procedures.',
-      bgImage: '/why-01.jpeg'
+      bgImage: '/why-01.jpeg',
+      stepClass: 'md:mr-24 lg:mr-36'
     },
     {
       title: 'Sterilized Environment',
       description: '100% infection-free environment through autoclave and advanced sterilization technology.',
-      bgImage: '/why-02.jpeg'
+      bgImage: '/why-02.jpeg',
+      stepClass: 'md:mx-12 lg:mx-20'
     },
     {
       title: 'Expert Consultation',
       description: 'Accurate diagnosis under the close supervision of an experienced Chattogram Medical College surgeon.',
-      bgImage: '/why-03.jpeg'
+      bgImage: '/why-03.jpeg',
+      stepClass: 'md:ml-24 lg:ml-36'
     }
   ]
 
@@ -867,38 +873,43 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৭. "কেন আপনার জন্য আমরাই?" - বর্ডারহীন সংযুক্ত ৩টি বক্স (সরাসরি ছবির ওপর ব্যাকগ্রাউন্ড ছাড়া লেখা ও আইকন বিহীন) */}
-      <section className="max-w-7xl mx-auto mb-10">
-        <div className="text-center mb-6">
+      {/* ৭. "কেন আপনার জন্য আমরাই?" - রেক্ট্যাঙ্গেল, বড় পিকচার ও সিঁড়ির মতো স্ট্যাগার্ড প্যাটার্ন সেকশন */}
+      <section className="max-w-7xl mx-auto mb-16">
+        <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
             {t[lang].whyUsTitle}
           </h2>
         </div>
 
-        {/* গ্রেডিয়েন্ট বর্ডার মোড়ক */}
-        <div className="p-1 rounded-[2.5xl] shadow-xl bg-gradient-to-r from-[#1a1a1a] via-[#9fb2c6] to-[#d9dee3]">
-          <div className="grid grid-cols-1 md:grid-cols-3 rounded-[2.3rem] overflow-hidden">
-            {featureBoxes.map((box, index) => (
+        {/* সিঁড়ির মতো ধাপযুক্ত স্ট্যাকড লেআউট */}
+        <div className="space-y-8 md:space-y-10">
+          {featureBoxes.map((box, index) => (
+            <div 
+              key={index} 
+              className={`p-1 shadow-2xl bg-gradient-to-r from-[#1a1a1a] via-[#9fb2c6] to-[#d9dee3] transition-all duration-300 ${box.stepClass}`}
+            >
               <div 
-                key={index} 
-                className="relative p-8 md:p-10 flex flex-col justify-end min-h-[280px] bg-cover bg-center overflow-hidden"
+                className="relative p-8 md:p-14 min-h-[380px] md:min-h-[440px] flex flex-col justify-end bg-cover bg-center overflow-hidden"
                 style={{ 
                   backgroundImage: `url(${box.bgImage})`,
                 }}
               >
-                {/* ছবির ওপর ডার্ক ওভারলে যাতে লেখা পরিষ্কারভাবে ফুটে ওঠে */}
-                <div className="absolute inset-0 bg-black/40"></div>
+                {/* ডার্ক ওভারলে */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
                 
-                {/* সরাসরি ছবির ওপর লেখা (কোনো সাদা বক্স বা আইকন নেই) */}
-                <div className="relative z-10 space-y-2 text-white">
-                  <h3 className="text-xl md:text-2xl font-black drop-shadow-md">{box.title}</h3>
-                  <p className="text-xs md:text-sm leading-relaxed text-slate-100 font-medium drop-shadow-sm">
+                {/* রেক্ট্যাঙ্গেল শেপে সরাসরি পিকচারের ওপর পরিচ্ছন্ন টেক্সট */}
+                <div className="relative z-10 space-y-3 text-white">
+                  <span className="text-xs font-bold tracking-widest uppercase text-[#9fb2c6] bg-black/60 px-3 py-1 inline-block">
+                    0{index + 1}
+                  </span>
+                  <h3 className="text-2xl md:text-4xl font-black drop-shadow-md">{box.title}</h3>
+                  <p className="text-sm md:text-base leading-relaxed text-slate-200 font-medium max-w-2xl drop-shadow-sm">
                     {box.description}
                   </p>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
