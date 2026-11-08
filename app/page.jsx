@@ -456,25 +456,28 @@ export default function Home() {
       style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
     >
       
-      {/* ১. টপ নোটিশ বা ব্যানার (গ্লাস ব্লার ইফেক্ট সহ) */}
+      {/* ১. টপ নোটিশ বা ব্যানার (ফ্রস্টেড গ্লাস টেক্সচার ব্যাকগ্রাউন্ড সহ) */}
       <div 
-        className="max-w-7xl mx-auto mb-6 py-3 px-4 rounded-2xl text-center text-xs md:text-sm font-bold tracking-wide shadow-md flex items-center justify-center gap-2 border backdrop-blur-md transition-all duration-300"
+        className="max-w-7xl mx-auto mb-6 py-3 px-4 rounded-2xl text-center text-xs md:text-sm font-bold tracking-wide shadow-lg flex items-center justify-center gap-2 border backdrop-blur-md transition-all duration-300 bg-cover bg-center relative overflow-hidden"
         style={{ 
-          backgroundColor: darkMode ? 'rgba(38, 38, 38, 0.7)' : 'rgba(217, 222, 227, 0.7)', 
+          backgroundImage: `url('/frosted-glass.jpg')`,
           borderColor: themeStyles.borderColor 
         }}
       >
-        <span 
-          className="text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm"
-          style={{ backgroundColor: '#1a1a1a' }}
-        >
-          Status
-        </span>
-        <span className="font-extrabold" style={{ color: themeStyles.textColor }}>
-          {chamberNotice.isClosed 
-            ? (lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn)
-            : chamberStatusText}
-        </span>
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]"></div>
+        <div className="relative z-10 flex items-center justify-center gap-2">
+          <span 
+            className="text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm"
+            style={{ backgroundColor: '#1a1a1a' }}
+          >
+            Status
+          </span>
+          <span className="font-extrabold text-white drop-shadow-sm">
+            {chamberNotice.isClosed 
+              ? (lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn)
+              : chamberStatusText}
+          </span>
+        </div>
       </div>
 
       {/* ২. ন্যাভিগেশন বার */}
@@ -654,32 +657,35 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ডান কলাম (চেম্বার শিডিউল - গ্লাস ব্লার ইফেক্ট সহ) */}
+          {/* ডান কলাম (চেম্বার শিডিউল - ফ্রস্টেড গ্লাস টেক্সচার ব্যাকগ্রাউন্ড সহ) */}
           <div 
-            className="p-6 md:p-10 rounded-3xl shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden border backdrop-blur-md transition-all duration-300"
+            className="p-6 md:p-10 rounded-3xl shadow-2xl flex flex-col justify-between space-y-6 relative overflow-hidden border backdrop-blur-md transition-all duration-300 bg-cover bg-center"
             style={{ 
-              backgroundColor: darkMode ? 'rgba(38, 38, 38, 0.75)' : 'rgba(255, 255, 255, 0.75)', 
+              backgroundImage: `url('/frosted-glass.jpg')`,
               borderColor: themeStyles.borderColor 
             }}
           >
-            <div className="space-y-4 relative z-10">
+            {/* ডার্ক বা লাইট ওভারলে যাতে লেখা স্পষ্ট বোঝা যায় */}
+            <div className="absolute inset-0 bg-black/30 backdrop-blur-[3px]"></div>
+
+            <div className="space-y-4 relative z-10 text-white">
               <span 
-                className="text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider"
+                className="text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider inline-block shadow-sm"
                 style={{ backgroundColor: '#1a1a1a' }}
               >
                 {lang === 'bn' ? 'সময়সূচি' : 'Office Hours'}
               </span>
-              <h3 className="text-xl md:text-2xl font-black" style={{ color: themeStyles.textColor }}>
+              <h3 className="text-xl md:text-2xl font-black drop-shadow-md text-white">
                 {lang === 'bn' ? 'রোগী দেখার সময়' : 'Chamber Schedule'}
               </h3>
-              <div className="p-4 rounded-2xl border space-y-2 text-sm shadow-sm backdrop-blur-sm" style={{ backgroundColor: darkMode ? 'rgba(26, 26, 26, 0.5)' : 'rgba(217, 222, 227, 0.5)', borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
-                <div className="flex justify-between items-center py-1 border-b" style={{ borderColor: themeStyles.borderColor }}>
+              <div className="p-4 rounded-2xl border space-y-2 text-sm shadow-sm backdrop-blur-md bg-black/40 border-white/20 text-white">
+                <div className="flex justify-between items-center py-1 border-b border-white/20">
                   <span className="font-semibold">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার' : 'Sat - Thu'}</span>
                   <span className="font-bold">৪:৩০ PM - ৯:০০ PM</span>
                 </div>
                 <div className="flex justify-between items-center py-1">
                   <span className="font-semibold">{lang === 'bn' ? 'শুক্রবার' : 'Friday'}</span>
-                  <span className="font-bold text-red-600">{lang === 'bn' ? 'বন্ধ' : 'Closed'}</span>
+                  <span className="font-bold text-red-400">{lang === 'bn' ? 'বন্ধ' : 'Closed'}</span>
                 </div>
               </div>
             </div>
