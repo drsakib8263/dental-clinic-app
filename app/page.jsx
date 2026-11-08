@@ -828,7 +828,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৮. ফুটার সেকশন (কন্টাক্ট ইনফরমেশন ও গুগল ম্যাপ লোকেশন) */}
+      {/* ফুটার সেকশন (কন্টাক্ট ইনফরমেশন ও গুগল ম্যাপ লোকেশন) */}
       <footer 
         id="contact-section"
         className="max-w-7xl mx-auto mt-16 p-6 md:p-10 rounded-3xl border shadow-xl space-y-8"
@@ -844,7 +844,11 @@ export default function Home() {
             <div className="space-y-3 text-sm text-slate-300">
               <div className="flex items-start gap-3">
                 <span className="text-lg">📍</span>
-                <p className="font-medium leading-relaxed">{t[lang].addressText}</p>
+                <p className="font-medium leading-relaxed">
+                  {lang === 'bn' 
+                    ? 'আলম মেডিকেল হল, পটিয়া সরকারি কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।' 
+                    : 'Alam Medical Hall, Beside Patiya Govt. College, Anwara Bypass Road, Bus Station, Patiya, Chattogram.'}
+                </p>
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-lg">📞</span>
@@ -865,7 +869,7 @@ export default function Home() {
           <div className="w-full h-64 rounded-2xl overflow-hidden border" style={{ borderColor: '#9fb2c6' }}>
             <iframe 
               title="Patiya Chamber Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.545!2d91.975!3d22.295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjLCsDE3JzQyLjAiTiA5McKwNTgnMzAuMCJF!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd" 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.545!2d91.975!3d22.295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sMjLCsDE3JzQyLjAiTiA5McKwNTgnMzAuMCJF!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd" 
               width="100%" 
               height="100%" 
               style={{ border: 0 }} 
