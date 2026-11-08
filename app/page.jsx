@@ -204,15 +204,6 @@ export default function Home() {
       successMsg: 'আপনার অ্যাপয়েন্টমেন্ট আবেদনটি সফলভাবে জমা হয়েছে! শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।',
       closeModalBtn: 'ঠিক আছে',
       scheduleTitle: 'চেম্বারের সময়সূচি',
-      scheduleDays: 'শনিবার - বৃহস্পতিবার:',
-      scheduleTime: 'বিকেল ৪:৩০ টা - রাত ৯:০০ টা',
-      scheduleFriday: 'শুক্রবার:',
-      scheduleClosed: 'বন্ধ (সাপ্তাহিক ছুটি)',
-      contactTitle: 'যোগাযোগ ও সোশ্যাল লিংক',
-      hotline: 'হটলাইন:',
-      email: 'ইমেল:',
-      mapBtn: '📍 গুগল ম্যাপ লোকেশন',
-      whatsappBtn: '💬 হোয়াটসঅ্যাপে চ্যাট করুন',
       tipsTitle: 'দাঁতের যত্ন ও স্বাস্থ্য টিপস',
       videoTitle: 'দাঁতের যত্ন ও চিকিৎসা বিষয়ক সচেতনতামূলক ভিডিও',
       videoSub: 'দাঁতের বিভিন্ন চিকিৎসা (রুট ক্যানেল, এক্সট্রাকশন, ফিলিং ও ক্যাপ) সম্পর্কে বিস্তারিত জানতে নিচের ভিডিওগুলো দেখুন।'
@@ -249,15 +240,6 @@ export default function Home() {
       successMsg: 'Your appointment request has been successfully submitted! We will contact you soon.',
       closeModalBtn: 'OK',
       scheduleTitle: 'Chamber Schedule',
-      scheduleDays: 'Saturday - Thursday:',
-      scheduleTime: '4:30 PM - 9:00 PM',
-      scheduleFriday: 'Friday:',
-      scheduleClosed: 'Closed (Weekly Holiday)',
-      contactTitle: 'Contact & Social Links',
-      hotline: 'Hotline:',
-      email: 'Email:',
-      mapBtn: '📍 Google Map Location',
-      whatsappBtn: '💬 Chat on WhatsApp',
       tipsTitle: 'Dental Care & Health Tips',
       videoTitle: 'Dental Care & Treatment Awareness Videos',
       videoSub: 'Watch the videos below to learn more about various dental treatments (Root Canal, Extraction, Filling, and Crowns/Caps).'
@@ -396,11 +378,22 @@ export default function Home() {
   ]
 
   return (
-    <main className="min-h-screen bg-[#F4F9F9] dark:bg-[#081C24] text-slate-800 dark:text-slate-100 relative py-6 px-4 md:px-12 transition-colors duration-200 scroll-smooth">
+    <main 
+      className="min-h-screen text-slate-100 relative py-6 px-4 md:px-12 transition-colors duration-200 scroll-smooth"
+      style={{ backgroundColor: '#1a1a1a' }}
+    >
       
       {/* ১. টপ নোটিশ বা ব্যানার */}
-      <div className="max-w-7xl mx-auto mb-6 bg-[#0E3A5D] text-white py-2.5 px-4 rounded-2xl text-center text-xs md:text-sm font-medium tracking-wide shadow-md flex items-center justify-center gap-2">
-        <span className="bg-[#00A896] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Notice</span>
+      <div 
+        className="max-w-7xl mx-auto mb-6 text-slate-100 py-2.5 px-4 rounded-2xl text-center text-xs md:text-sm font-medium tracking-wide shadow-md flex items-center justify-center gap-2 border"
+        style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+      >
+        <span 
+          className="text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"
+          style={{ backgroundColor: '#9fb2c6' }}
+        >
+          Notice
+        </span>
         <span>
           {lang === 'bn' 
             ? 'এবারে চেম্বার বন্ধের নোটিশ সিঙ্ক্রোনাইজেশন ঠিক হয়েছে। জরুরি ডেন্টাল সেবার জন্য যোগাযোগ করুন।' 
@@ -409,30 +402,40 @@ export default function Home() {
       </div>
 
       {/* ২. ন্যাভিগেশন বার */}
-      <header className="max-w-7xl mx-auto mb-6 sticky top-4 z-50 bg-white/90 dark:bg-[#081C24]/90 p-4 md:px-8 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 backdrop-blur-md flex items-center justify-between">
+      <header 
+        className="max-w-7xl mx-auto mb-6 sticky top-4 z-50 p-4 md:px-8 rounded-2xl shadow-xl backdrop-blur-md flex items-center justify-between border"
+        style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+      >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#0E3A5D] flex items-center justify-center text-white text-xl font-black shadow-md">
+          <div 
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-900 text-xl font-black shadow-md"
+            style={{ backgroundColor: '#9fb2c6' }}
+          >
             🦷
           </div>
-          <span className="font-extrabold text-[#0E3A5D] dark:text-[#00A896] text-lg md:text-xl tracking-tight">
+          <span 
+            className="font-extrabold text-lg md:text-xl tracking-tight"
+            style={{ color: '#d9dee3' }}
+          >
             Dr. Sakib Dental Care
           </span>
         </div>
 
-        <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base text-slate-800 dark:text-slate-200">
-          <a href="/" className="hover:text-[#00A896] transition">Home</a>
-          <a href="#about-section" className="hover:text-[#00A896] transition">About us</a>
-          <a href="/introduction-to-dentistry" className="hover:text-[#00A896] transition">Introduction to Dentistry</a>
-          <a href="/services" className="hover:text-[#00A896] transition">Our services</a>
-          <a href="/gallery" className="hover:text-[#00A896] transition">Gallery</a>
-          <a href="#contact-section" className="hover:text-[#00A896] transition">Contact us</a>
+        <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base" style={{ color: '#d9dee3' }}>
+          <a href="/" className="transition hover:text-white">Home</a>
+          <a href="#about-section" className="transition hover:text-white">About us</a>
+          <a href="/introduction-to-dentistry" className="transition hover:text-white">Introduction to Dentistry</a>
+          <a href="/services" className="transition hover:text-white">Our services</a>
+          <a href="/gallery" className="transition hover:text-white">Gallery</a>
+          <a href="#contact-section" className="transition hover:text-white">Contact us</a>
         </nav>
 
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={toggleTheme}
-            className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-900 dark:text-slate-100 font-bold px-3.5 py-2 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition flex items-center gap-1.5 text-xs cursor-pointer select-none"
+            className="font-bold px-3.5 py-2 rounded-xl shadow-sm border transition flex items-center gap-1.5 text-xs cursor-pointer select-none"
+            style={{ backgroundColor: '#d9dee3', color: '#1a1a1a', borderColor: '#9fb2c6' }}
           >
             <span>{darkMode ? '☀️' : '🌙'}</span>
           </button>
@@ -440,7 +443,8 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-            className="bg-[#0E3A5D] hover:bg-[#0B2545] text-white font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-1.5 text-xs md:text-sm cursor-pointer select-none"
+            className="font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-1.5 text-xs md:text-sm cursor-pointer select-none text-slate-900"
+            style={{ backgroundColor: '#9fb2c6' }}
           >
             <span>🌐</span>
             <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
@@ -449,7 +453,8 @@ export default function Home() {
           <button 
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-2xl p-2 text-[#0E3A5D] dark:text-white focus:outline-none"
+            className="md:hidden text-2xl p-2 focus:outline-none"
+            style={{ color: '#d9dee3' }}
             aria-label="Toggle Menu"
           >
             ☰
@@ -459,13 +464,16 @@ export default function Home() {
 
       {/* মোবাইল ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
-        <div className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 bg-white dark:bg-[#102A36] p-4 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 space-y-3 font-bold text-sm text-slate-900 dark:text-white">
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Home</a>
-          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">About us</a>
-          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Introduction to Dentistry</a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Our services</a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Gallery</a>
-          <a href="#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Contact us</a>
+        <div 
+          className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 p-4 rounded-2xl shadow-2xl border space-y-3 font-bold text-sm"
+          style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6', color: '#d9dee3' }}
+        >
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg" style={{ backgroundColor: '#d9dee3', color: '#1a1a1a' }}>Home</a>
+          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-800">About us</a>
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-800">Introduction to Dentistry</a>
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-800">Our services</a>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-800">Gallery</a>
+          <a href="#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg hover:bg-slate-800">Contact us</a>
         </div>
       )}
 
@@ -473,73 +481,125 @@ export default function Home() {
       <section className="max-w-7xl mx-auto mb-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
           
-          <div className="bg-white dark:bg-[#102A36] p-6 md:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-6">
+          {/* বাম কলাম */}
+          <div 
+            className="p-6 md:p-10 rounded-3xl border shadow-sm flex flex-col justify-between space-y-6"
+            style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+          >
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
-                <div className="w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden shadow-lg border-2 border-[#0E3A5D] bg-slate-100 shrink-0">
+                <div 
+                  className="w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden shadow-lg border-2 shrink-0"
+                  style={{ borderColor: '#9fb2c6', backgroundColor: '#d9dee3' }}
+                >
                   <img src="/doctor.jpeg" alt="Doctor Profile" className="w-full h-full object-cover" />
                 </div>
                 <div className="space-y-1.5">
-                  <span className="bg-[#00A896]/10 text-[#00A896] text-[11px] font-bold px-3 py-0.5 rounded-full border border-[#00A896]/30 uppercase tracking-wider inline-block mb-1">
+                  <span 
+                    className="text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider inline-block mb-1 text-slate-900"
+                    style={{ backgroundColor: '#9fb2c6' }}
+                  >
                     {lang === 'bn' ? 'ওরাল এন্ড ডেন্টাল সার্জন' : 'Oral & Dental Surgeon'}
                   </span>
-                  <h1 className="text-2xl md:text-3xl font-black text-[#0E3A5D] dark:text-white tracking-tight">
+                  <h1 
+                    className="text-2xl md:text-3xl font-black tracking-tight"
+                    style={{ color: '#d9dee3' }}
+                  >
                     {t[lang].title}
                   </h1>
-                  <p className="text-xs md:text-sm font-bold text-slate-600 dark:text-slate-300">
+                  <p className="text-xs md:text-sm font-bold" style={{ color: '#9fb2c6' }}>
                     {t[lang].degree}
                   </p>
-                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                  <p className="text-xs font-semibold text-slate-400">
                     {t[lang].bmdc}
                   </p>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3 text-sm text-slate-700 dark:text-slate-300">
+              <div className="pt-4 border-t space-y-3 text-sm text-slate-300" style={{ borderColor: '#9fb2c6' }}>
                 <div className="flex items-start gap-3">
                   <span className="text-lg shrink-0">📍</span>
                   <p className="font-medium leading-relaxed">{t[lang].addressText}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-lg shrink-0">📞</span>
-                  <a href="tel:+8801816011701" className="font-bold text-[#0E3A5D] dark:text-teal-300 hover:underline">+880 1816 011 701</a>
+                  <a href="tel:+8801816011701" className="font-bold hover:underline" style={{ color: '#9fb2c6' }}>+880 1816 011 701</a>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-lg shrink-0">✉️</span>
-                  <a href="mailto:asir.mosaddeque@gmail.com" className="font-medium text-slate-600 dark:text-slate-300 hover:underline">asir.mosaddeque@gmail.com</a>
+                  <a href="mailto:asir.mosaddeque@gmail.com" className="font-medium hover:underline text-slate-300">asir.mosaddeque@gmail.com</a>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+            {/* সোশ্যাল মিডিয়া লোগো ইমেজ সেকশন (public ফোল্ডার থেকে) */}
+            <div className="pt-4 border-t flex items-center justify-between" style={{ borderColor: '#9fb2c6' }}>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
                 {lang === 'bn' ? 'সোশ্যাল লিংক:' : 'Connect:'}
               </span>
               <div className="flex items-center gap-3">
-                <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-[#0E3A5D]/10 hover:bg-[#0E3A5D] text-[#0E3A5D] hover:text-white flex items-center justify-center transition shadow-sm font-bold text-sm" title="Facebook">📘 FB</a>
-                <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-[#00A896]/10 hover:bg-[#00A896] text-[#00A896] hover:text-white flex items-center justify-center transition shadow-sm font-bold text-sm" title="Instagram">📷 IG</a>
-                <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-emerald-500/10 hover:bg-emerald-500 text-emerald-600 hover:text-white flex items-center justify-center transition shadow-sm font-bold text-sm" title="WhatsApp">💬 WA</a>
+                {/* ফেসবুক */}
+                <a 
+                  href="https://www.facebook.com/share/1ZfF826KUs/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-10 h-10 rounded-xl flex items-center justify-center transition shadow-sm hover:opacity-90 overflow-hidden p-2" 
+                  style={{ backgroundColor: '#9fb2c6' }} 
+                  title="Facebook"
+                >
+                  <img src="/facebook.png" alt="Facebook" className="w-full h-full object-contain" />
+                </a>
+                
+                {/* ইনস্টাগ্রাম */}
+                <a 
+                  href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-10 h-10 rounded-xl flex items-center justify-center transition shadow-sm hover:opacity-90 overflow-hidden p-2" 
+                  style={{ backgroundColor: '#9fb2c6' }} 
+                  title="Instagram"
+                >
+                  <img src="/instagram.png" alt="Instagram" className="w-full h-full object-contain" />
+                </a>
+                
+                {/* হোয়াটসঅ্যাপ */}
+                <a 
+                  href="https://wa.me/message/KBZOTSKH66H4P1" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-10 h-10 rounded-xl flex items-center justify-center transition shadow-sm hover:opacity-90 overflow-hidden p-2" 
+                  style={{ backgroundColor: '#9fb2c6' }} 
+                  title="WhatsApp"
+                >
+                  <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-contain" />
+                </a>
               </div>
             </div>
           </div>
 
-          <div className="bg-[#0E3A5D] text-white p-6 md:p-10 rounded-3xl shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden">
-            <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-[#00A896]/20 rounded-full blur-2xl pointer-events-none"></div>
+          {/* ডান কলাম (চেম্বার শিডিউল) */}
+          <div 
+            className="p-6 md:p-10 rounded-3xl shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden border"
+            style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+          >
             <div className="space-y-4 relative z-10">
-              <span className="bg-[#00A896] text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider">
+              <span 
+                className="text-slate-900 text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider"
+                style={{ backgroundColor: '#9fb2c6' }}
+              >
                 {lang === 'bn' ? 'সময়সূচি' : 'Office Hours'}
               </span>
-              <h3 className="text-xl md:text-2xl font-black">
+              <h3 className="text-xl md:text-2xl font-black text-white">
                 {lang === 'bn' ? 'রোগী দেখার সময়' : 'Chamber Schedule'}
               </h3>
-              <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 space-y-2 text-sm">
-                <div className="flex justify-between items-center py-1 border-b border-white/10">
-                  <span className="font-medium text-slate-200">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার' : 'Sat - Thu'}</span>
-                  <span className="font-bold text-teal-300">৪:৩০ PM - ৯:০০ PM</span>
+              <div className="p-4 rounded-2xl border space-y-2 text-sm" style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6', color: '#1a1a1a' }}>
+                <div className="flex justify-between items-center py-1 border-b" style={{ borderColor: '#9fb2c6' }}>
+                  <span className="font-semibold">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার' : 'Sat - Thu'}</span>
+                  <span className="font-bold">৪:৩০ PM - ৯:০০ PM</span>
                 </div>
                 <div className="flex justify-between items-center py-1">
-                  <span className="font-medium text-slate-200">{lang === 'bn' ? 'শুক্রবার' : 'Friday'}</span>
-                  <span className="font-bold text-amber-300">{lang === 'bn' ? 'বন্ধ' : 'Closed'}</span>
+                  <span className="font-semibold">{lang === 'bn' ? 'শুক্রবার' : 'Friday'}</span>
+                  <span className="font-bold text-red-700">{lang === 'bn' ? 'বন্ধ' : 'Closed'}</span>
                 </div>
               </div>
             </div>
@@ -548,7 +608,8 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setShowBookingBox(!showBookingBox)}
-                className="w-full block text-center bg-[#00A896] hover:bg-[#02C39A] text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-lg transition duration-200 text-sm md:text-base cursor-pointer"
+                className="w-full block text-center font-extrabold py-3.5 px-6 rounded-2xl shadow-lg transition duration-200 text-sm md:text-base cursor-pointer text-slate-900"
+                style={{ backgroundColor: '#9fb2c6' }}
               >
                 {showBookingBox ? t[lang].bookingCloseBtn : t[lang].bookingMainBtn}
               </button>
@@ -560,39 +621,79 @@ export default function Home() {
 
       {/* ৪. অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স */}
       {showBookingBox && (
-        <section id="booking-section" className="max-w-3xl mx-auto mb-10 bg-white dark:bg-[#102A36] p-6 md:p-10 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 relative z-10">
+        <section 
+          id="booking-section" 
+          className="max-w-3xl mx-auto mb-10 p-6 md:p-10 rounded-3xl shadow-2xl border relative z-10"
+          style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+        >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl md:text-2xl font-bold text-[#0E3A5D] dark:text-white text-center flex items-center gap-2 mx-auto">
+            <h2 className="text-xl md:text-2xl font-bold text-white text-center flex items-center gap-2 mx-auto">
               <span>📅</span> {t[lang].bookingTitle}
             </h2>
-            <button onClick={() => setShowBookingBox(false)} className="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white font-bold text-lg p-1">
+            <button onClick={() => setShowBookingBox(false)} className="text-slate-400 hover:text-white font-bold text-lg p-1">
               ✕
             </button>
           </div>
-          <p className="text-[#00A896] font-semibold text-center mb-6 text-xs md:text-sm">
+          <p className="font-semibold text-center mb-6 text-xs md:text-sm" style={{ color: '#9fb2c6' }}>
             {t[lang].bookingSub}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">{t[lang].patientName}</label>
-                <input type="text" name="patient_name" value={formData.patient_name} onChange={handleChange} required placeholder={t[lang].patientNamePlaceholder} className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none text-slate-900 dark:text-white" />
+                <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].patientName}</label>
+                <input 
+                  type="text" 
+                  name="patient_name" 
+                  value={formData.patient_name} 
+                  onChange={handleChange} 
+                  required 
+                  placeholder={t[lang].patientNamePlaceholder} 
+                  className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900" 
+                  style={{ backgroundColor: '#d9dee3' }}
+                />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">{t[lang].ageLabel}</label>
-                <input type="number" name="age" value={formData.age} onChange={handleChange} required min="1" max="120" placeholder={t[lang].agePlaceholder} className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none text-slate-900 dark:text-white" />
+                <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].ageLabel}</label>
+                <input 
+                  type="number" 
+                  name="age" 
+                  value={formData.age} 
+                  onChange={handleChange} 
+                  required 
+                  min="1" 
+                  max="120" 
+                  placeholder={t[lang].agePlaceholder} 
+                  className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900" 
+                  style={{ backgroundColor: '#d9dee3' }}
+                />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">{t[lang].phoneLabel}</label>
-              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="017XXXXXXXX" className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none text-slate-900 dark:text-white" />
+              <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].phoneLabel}</label>
+              <input 
+                type="tel" 
+                name="phone" 
+                value={formData.phone} 
+                onChange={handleChange} 
+                required 
+                placeholder="017XXXXXXXX" 
+                className="w-full px-4 py-2.5 rounded-xl outline-none text-slate-900" 
+                style={{ backgroundColor: '#d9dee3' }}
+              />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">{t[lang].serviceLabel}</label>
-              <select name="service" value={formData.service} onChange={handleChange} required className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none text-slate-900 dark:text-white font-medium cursor-pointer">
+              <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].serviceLabel}</label>
+              <select 
+                name="service" 
+                value={formData.service} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer" 
+                style={{ backgroundColor: '#d9dee3' }}
+              >
                 <option value="">{t[lang].serviceDefault}</option>
                 <option value={t[lang].service1}>{t[lang].service1}</option>
                 <option value={t[lang].service2}>{t[lang].service2}</option>
@@ -602,8 +703,15 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">{t[lang].dateLabel}</label>
-              <select name="appointment_date" value={formData.appointment_date} onChange={handleChange} required className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none text-slate-900 dark:text-white font-medium cursor-pointer">
+              <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].dateLabel}</label>
+              <select 
+                name="appointment_date" 
+                value={formData.appointment_date} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer" 
+                style={{ backgroundColor: '#d9dee3' }}
+              >
                 <option value="">{t[lang].dateDefault}</option>
                 {availableDates.map((item, index) => (
                   <option key={index} value={item.value}>{item.label}</option>
@@ -612,8 +720,15 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">{t[lang].timeLabel}</label>
-              <select name="appointment_time" value={formData.appointment_time} onChange={handleChange} required className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none text-slate-900 dark:text-white font-medium cursor-pointer">
+              <label className="block text-sm font-semibold text-slate-300 mb-1">{t[lang].timeLabel}</label>
+              <select 
+                name="appointment_time" 
+                value={formData.appointment_time} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-4 py-3 rounded-xl outline-none text-slate-900 font-medium cursor-pointer" 
+                style={{ backgroundColor: '#d9dee3' }}
+              >
                 <option value="">{t[lang].timeDefault}</option>
                 {rawTimes.map((time, index) => {
                   const slotKey = `${formData.appointment_date}|${time}`
@@ -630,7 +745,12 @@ export default function Home() {
               </select>
             </div>
 
-            <button type="submit" disabled={loading} className="w-full bg-[#00A896] hover:bg-[#02C39A] text-white font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer">
+            <button 
+              type="submit" 
+              disabled={loading} 
+              className="w-full font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer text-slate-900"
+              style={{ backgroundColor: '#9fb2c6' }}
+            >
               {loading ? t[lang].submitting : t[lang].submitBtn}
             </button>
           </form>
@@ -638,21 +758,19 @@ export default function Home() {
       )}
 
       {/* ৫. স্থায়ী About Us সেকশন */}
-      <section id="about-section" className="max-w-7xl mx-auto mb-10 bg-white dark:bg-[#102A36] p-6 md:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-[#0E3A5D] dark:text-white">
+      <section 
+        id="about-section" 
+        className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4"
+        style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+      >
+        <h2 className="text-2xl md:text-3xl font-extrabold text-white">
           {lang === 'bn' ? 'আমাদের সম্পর্কে (About Us)' : 'About Us'}
         </h2>
-        <div className="space-y-3 text-slate-600 dark:text-slate-300 text-sm md:text-base leading-relaxed">
+        <div className="space-y-3 text-slate-300 text-sm md:text-base leading-relaxed">
           <p>
             {lang === 'bn'
               ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আপনাকে স্বাগতম। আমরা আধুনিক প্রযুক্তির সাহায্যে রোগীদের সর্বাধুনিক ও নিরাপদ ডেন্টাল সেবা প্রদান করে থাকি। আমাদের চেম্বারে রুট ক্যানাল ট্রিটমেন্ট, জিরকনিয়া ও মেটাল-সিরামিক ক্রাউন, স্কেলিং, দাঁত তোলা এবং কসমেটিক ডেন্টিস্ট্রির আধুনিক চিকিৎসা নিশ্চিত করা হয়।'
               : 'Welcome to Dr. Asir Mosaddeque Sakib Dental Care. We provide advanced and safe dental services using modern technology. Our chamber ensures state-of-the-art treatments including Root Canal Therapy, Zirconia & PFM Crowns, Scaling, Extractions, and Cosmetic Dentistry.'
-            }
-          </p>
-          <p>
-            {lang === 'bn'
-              ? 'প্রতিটি রোগীর সমস্যা যত্নসহকারে শুনে নিখুঁত ও পেইনলেস চিকিৎসা প্রদানই আমাদের মূল লক্ষ্য। আপনার সুস্থ ও সুন্দর হাসিই আমাদের বড় অর্জন।'
-              : 'Our primary goal is to carefully listen to each patient’s dental concerns and provide precise, painless treatments. Your healthy and beautiful smile is our greatest achievement.'
             }
           </p>
         </div>
@@ -661,37 +779,48 @@ export default function Home() {
       {/* ৬. দাঁতের যত্ন ও স্বাস্থ্য টিপস */}
       <section className="max-w-7xl mx-auto mb-10">
         <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-[#0E3A5D] dark:text-white">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-white">
             {t[lang].tipsTitle}
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {dentalTips.map((tip, index) => (
-            <div key={index} className="bg-white dark:bg-[#102A36] p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+            <div 
+              key={index} 
+              className="p-6 rounded-3xl border shadow-sm space-y-3"
+              style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+            >
               <span className="text-3xl block">{tip.icon}</span>
-              <h3 className="text-lg font-bold text-[#0E3A5D] dark:text-teal-300">{tip.title}</h3>
-              <p className="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{tip.description}</p>
+              <h3 className="text-lg font-bold" style={{ color: '#9fb2c6' }}>{tip.title}</h3>
+              <p className="text-xs md:text-sm text-slate-300 leading-relaxed">{tip.description}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ৭. সচেতনতামূলক ভিডিও সেকশন */}
-      <section id="contact-section" className="max-w-7xl mx-auto mb-10 bg-white dark:bg-[#102A36] p-6 md:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6">
+      <section 
+        className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6"
+        style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+      >
         <div className="text-center space-y-2">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-[#0E3A5D] dark:text-white">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-white">
             {t[lang].videoTitle}
           </h2>
-          <p className="text-xs md:text-sm text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+          <p className="text-xs md:text-sm text-slate-300 max-w-2xl mx-auto">
             {t[lang].videoSub}
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {videoList.map((vid, index) => (
-            <div key={index} className="bg-slate-100 dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between space-y-3">
-              <h4 className="font-bold text-sm text-[#0E3A5D] dark:text-teal-300">{vid.title}</h4>
-              <div className="w-full h-32 bg-slate-200 dark:bg-slate-900 rounded-xl flex items-center justify-center text-xs text-slate-500 font-medium">
+            <div 
+              key={index} 
+              className="p-4 rounded-2xl border flex flex-col justify-between space-y-3"
+              style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6', color: '#1a1a1a' }}
+            >
+              <h4 className="font-bold text-sm">{vid.title}</h4>
+              <div className="w-full h-32 rounded-xl flex items-center justify-center text-xs font-medium bg-slate-200 text-slate-700">
                 🎬 {lang === 'bn' ? 'ভিডিও শীঘ্রই আসছে' : 'Video Coming Soon'}
               </div>
             </div>
@@ -699,14 +828,74 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ৮. ফুটার সেকশন (কন্টাক্ট ইনফরমেশন ও গুগল ম্যাপ লোকেশন) */}
+      <footer 
+        id="contact-section"
+        className="max-w-7xl mx-auto mt-16 p-6 md:p-10 rounded-3xl border shadow-xl space-y-8"
+        style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          
+          {/* কন্টাক্ট ইনফরমেশন */}
+          <div className="space-y-4">
+            <h3 className="text-xl md:text-2xl font-black text-white">
+              {lang === 'bn' ? 'যোগাযোগ ও তথ্য' : 'Contact & Information'}
+            </h3>
+            <div className="space-y-3 text-sm text-slate-300">
+              <div className="flex items-start gap-3">
+                <span className="text-lg">📍</span>
+                <p className="font-medium leading-relaxed">{t[lang].addressText}</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-lg">📞</span>
+                <a href="tel:+8801816011701" className="font-bold hover:underline" style={{ color: '#9fb2c6' }}>
+                  +880 1816 011 701
+                </a>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-lg">✉️</span>
+                <a href="mailto:asir.mosaddeque@gmail.com" className="font-medium hover:underline text-slate-300">
+                  asir.mosaddeque@gmail.com
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* গুগল ম্যাপ লোকেশন এমবেড */}
+          <div className="w-full h-64 rounded-2xl overflow-hidden border" style={{ borderColor: '#9fb2c6' }}>
+            <iframe 
+              title="Patiya Chamber Location"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.545!2d91.975!3d22.295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjLCsDE3JzQyLjAiTiA5McKwNTgnMzAuMCJF!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen="" 
+              loading="lazy"
+            ></iframe>
+          </div>
+
+        </div>
+
+        <div className="pt-6 border-t text-center text-xs text-slate-400" style={{ borderColor: '#9fb2c6' }}>
+          <p>© {new Date().getFullYear()} Dr. Sakib Dental Care. All rights reserved.</p>
+        </div>
+      </footer>
+
       {/* সফল বুকিং মোডাল */}
       {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white dark:bg-[#102A36] text-slate-900 dark:text-white p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border border-slate-200 dark:border-slate-700">
-            <div className="w-16 h-16 bg-[#00A896]/10 text-[#00A896] text-3xl rounded-full flex items-center justify-center mx-auto">✓</div>
-            <h3 className="text-2xl font-black text-[#0E3A5D] dark:text-teal-300">{t[lang].successTitle}</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{t[lang].successMsg}</p>
-            <button onClick={() => setShowSuccessModal(false)} className="w-full bg-[#00A896] hover:bg-[#02C39A] text-white font-bold py-3 rounded-xl transition cursor-pointer">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <div 
+            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border text-slate-100"
+            style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+          >
+            <div className="w-16 h-16 text-slate-900 text-3xl rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: '#9fb2c6' }}>✓</div>
+            <h3 className="text-2xl font-black" style={{ color: '#9fb2c6' }}>{t[lang].successTitle}</h3>
+            <p className="text-sm text-slate-300 leading-relaxed">{t[lang].successMsg}</p>
+            <button 
+              onClick={() => setShowSuccessModal(false)} 
+              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-slate-900"
+              style={{ backgroundColor: '#9fb2c6' }}
+            >
               {t[lang].closeModalBtn}
             </button>
           </div>
@@ -715,16 +904,23 @@ export default function Home() {
 
       {/* চেম্বার বন্ধ থাকার নোটিশ মোডাল */}
       {showChamberClosedModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white dark:bg-[#102A36] text-slate-900 dark:text-white p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border border-amber-500/30">
-            <div className="w-16 h-16 bg-amber-500/10 text-amber-500 text-3xl rounded-full flex items-center justify-center mx-auto">🔔</div>
-            <h3 className="text-2xl font-black text-amber-600 dark:text-amber-400">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <div 
+            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border text-slate-100"
+            style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6' }}
+          >
+            <div className="w-16 h-16 text-slate-900 text-3xl rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: '#9fb2c6' }}>🔔</div>
+            <h3 className="text-2xl font-black text-amber-400">
               {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
             </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            <p className="text-sm text-slate-300 leading-relaxed">
               {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
             </p>
-            <button onClick={() => setShowChamberClosedModal(false)} className="w-full bg-[#0E3A5D] hover:bg-[#0B2545] text-white font-bold py-3 rounded-xl transition cursor-pointer">
+            <button 
+              onClick={() => setShowChamberClosedModal(false)} 
+              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-slate-900"
+              style={{ backgroundColor: '#9fb2c6' }}
+            >
               {t[lang].closeModalBtn}
             </button>
           </div>
