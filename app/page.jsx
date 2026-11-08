@@ -178,6 +178,7 @@ export default function Home() {
       degree: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)',
       bmdc: 'বিএমডিসি রেজি. ৮২৬৩',
       training: 'স্পেশাল ট্রেইনড ইন ইমপ্ল্যান্ট এন্ড কসমেটিক ডেন্টিস্ট্রি',
+      addressText: 'আলম মেডিকেল হল, পটিয়া সরকারি কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: '📅 অনলাইন অ্যাপয়েন্টমেন্ট বুকিং করুন',
       bookingCloseBtn: '✕ ফর্ম বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
@@ -204,10 +205,10 @@ export default function Home() {
       closeModalBtn: 'ঠিক আছে',
       scheduleTitle: 'চেম্বারের সময়সূচি',
       scheduleDays: 'শনিবার - বৃহস্পতিবার:',
-      scheduleTime: 'বিকেল ৪:০০ টা - রাত ৯:০০ টা',
+      scheduleTime: 'বিকেল ৪:৩০ টা - রাত ৯:০০ টা',
       scheduleFriday: 'শুক্রবার:',
       scheduleClosed: 'বন্ধ (সাপ্তাহিক ছুটি)',
-      contactTitle: 'যোগাযোগ ও কন্টাক্ট',
+      contactTitle: 'যোগাযোগ ও সোশ্যাল লিংক',
       hotline: 'হটলাইন:',
       email: 'ইমেল:',
       mapBtn: '📍 গুগল ম্যাপ লোকেশন',
@@ -222,10 +223,11 @@ export default function Home() {
       degree: 'BDS (Chattagong Medical College)',
       bmdc: 'BMDC Reg. 8263',
       training: 'Special Trained in Implant & Cosmetic Dentistry',
+      addressText: 'Alam Medical Hall, Beside Patiya Govt. College, Anwara Bypass Road, Bus Station, Patiya, Chattogram.',
       bookingMainBtn: '📅 Book Online Appointment',
       bookingCloseBtn: '✕ Close Form',
       bookingTitle: 'Online Appointment Booking',
-      bookingSub: 'Saturday to Thursday (4:00 PM - 9:00 PM), Friday Closed',
+      bookingSub: 'Saturday to Thursday (4:30 PM - 9:00 PM), Friday Closed',
       patientName: 'Patient Name *',
       patientNamePlaceholder: 'Enter your name',
       ageLabel: 'Age *',
@@ -248,10 +250,10 @@ export default function Home() {
       closeModalBtn: 'OK',
       scheduleTitle: 'Chamber Schedule',
       scheduleDays: 'Saturday - Thursday:',
-      scheduleTime: '4:00 PM - 9:00 PM',
+      scheduleTime: '4:30 PM - 9:00 PM',
       scheduleFriday: 'Friday:',
       scheduleClosed: 'Closed (Weekly Holiday)',
-      contactTitle: 'Contact & Communication',
+      contactTitle: 'Contact & Social Links',
       hotline: 'Hotline:',
       email: 'Email:',
       mapBtn: '📍 Google Map Location',
@@ -263,14 +265,14 @@ export default function Home() {
   }
 
   const rawTimes = lang === 'bn' ? [
-    "বিকেল ৪:০০ টা", "বিকেল ৪:৩০ টা",
+    "বিকেল ৪:৩০ টা",
     "বিকেল ৫:০০ টা", "বিকেল ৫:৩০ টা",
     "সন্ধ্যা ৬:০০ টা", "সন্ধ্যা ৬:৩০ টা",
     "সন্ধ্যা ৭:০০ টা", "সন্ধ্যা ৭:৩০ টা",
     "রাত ৮:০০ টা", "রাত ৮:৩০ টা",
     "রাত ৯:০০ টা"
   ] : [
-    "4:00 PM", "4:30 PM",
+    "4:30 PM",
     "5:00 PM", "5:30 PM",
     "6:00 PM", "6:30 PM",
     "7:00 PM", "7:30 PM",
@@ -395,63 +397,62 @@ export default function Home() {
 
   return (
     <main 
-      className="min-h-screen text-slate-900 dark:text-slate-100 relative py-8 px-4 md:px-12 bg-cover bg-center bg-fixed transition-colors duration-200 scroll-smooth"
-      style={{ backgroundImage: `url('/site-bg.jpeg')` }}
+      className="min-h-screen bg-[#F4F9F9] dark:bg-[#081C24] text-slate-800 dark:text-slate-100 relative py-6 px-4 md:px-12 transition-colors duration-200 scroll-smooth"
     >
-      {/* ব্যাকগ্রাউন্ড ব্লার ও ওভারলে লেয়ার */}
-      <div className="absolute inset-0 bg-[#EADCD2]/70 dark:bg-[#2B1618]/80 backdrop-blur-md pointer-events-none z-0"></div>
-
-      {/* পেজের বাম পাশে ফিক্সড তিনটি আইকন বক্স */}
-      <div className="flex flex-col fixed left-3 md:left-6 top-1/3 z-40 shadow-2xl rounded-2xl overflow-hidden border-2 border-[#5A181C]/40">
-        <a
-          href="https://wa.me/message/KBZOTSKH66H4P1"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-[#EADCD2] dark:bg-[#3D2F27] hover:bg-[#D3D8DB] dark:hover:bg-[#4A3B3C] p-3 md:p-3.5 flex items-center justify-center text-xl md:text-2xl transition-colors"
-          title="WhatsApp"
-        >
-          💬
-        </a>
-
-        <a
-          href="tel:+8801816011701"
-          className="bg-[#EADCD2] dark:bg-[#3D2F27] hover:bg-[#D3D8DB] dark:hover:bg-[#4A3B3C] p-3 md:p-3.5 flex items-center justify-center text-xl md:text-2xl transition-colors border-t border-b border-[#5A181C]/20"
-          title="Hotline"
-        >
-          📱
-        </a>
-
-        <a
-          href="mailto:asir.mosaddeque@gmail.com"
-          className="bg-[#EADCD2] dark:bg-[#3D2F27] hover:bg-[#D3D8DB] dark:hover:bg-[#4A3B3C] p-3 md:p-3.5 flex items-center justify-center text-xl md:text-2xl transition-colors"
-          title="Email"
-        >
-          ✉️
-        </a>
+      {/* ১. টপ নোটিশ বা ব্যানার */}
+      <div className="max-w-7xl mx-auto mb-6 bg-[#0E3A5D] text-white py-2.5 px-4 rounded-2xl text-center text-xs md:text-sm font-medium tracking-wide shadow-md flex items-center justify-center gap-2">
+        <span className="bg-[#00A896] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Notice</span>
+        <span>
+          {lang === 'bn' 
+            ? 'এবারে চেম্বার বন্ধের নোটিশ সিঙ্ক্রোনাইজেশন ঠিক হয়েছে। জরুরি ডেন্টাল সেবার জন্য যোগাযোগ করুন।' 
+            : 'Chamber closing notice synchronization has been fixed. Contact us for emergency dental care.'}
+        </span>
       </div>
 
-      {/* ন্যাভিগেশন বার */}
-      <header className="max-w-7xl mx-auto mb-6 relative z-50 bg-[#EADCD2]/90 dark:bg-[#2B1618]/90 p-4 md:px-8 rounded-2xl shadow-xl border border-[#5A181C]/30 backdrop-blur-md flex items-center justify-between">
-        <div className="font-extrabold text-[#5A181C] dark:text-[#EADCD2] text-lg md:text-xl tracking-tight">
-          Dental Care
+      {/* ২. ন্যাভিগেশন বার */}
+      <header className="max-w-7xl mx-auto mb-6 sticky top-4 z-50 bg-white/90 dark:bg-[#081C24]/90 p-4 md:px-8 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 backdrop-blur-md flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-[#0E3A5D] flex items-center justify-center text-white text-xl font-black shadow-md">
+            🦷
+          </div>
+          <span className="font-extrabold text-[#0E3A5D] dark:text-[#00A896] text-lg md:text-xl tracking-tight">
+            Dr. Sakib Dental Care
+          </span>
         </div>
 
         {/* কম্পিউটার ভার্সন: হরাইজন্টাল মেনু */}
         <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base text-slate-800 dark:text-slate-200">
-          <a href="/" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Home</a>
-          <a href="#about-section" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">About us</a>
-          <a href="/introduction-to-dentistry" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Introduction to Dentistry</a>
-          <a href="/services" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Our services</a>
-          <a href="/gallery" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Gallery</a>
-          <a href="#" className="hover:text-[#5A181C] dark:hover:text-teal-400 transition">Contact us</a>
+          <a href="/" className="hover:text-[#00A896] transition">Home</a>
+          <a href="#about-section" className="hover:text-[#00A896] transition">About us</a>
+          <a href="/introduction-to-dentistry" className="hover:text-[#00A896] transition">Introduction to Dentistry</a>
+          <a href="/services" className="hover:text-[#00A896] transition">Our services</a>
+          <a href="/gallery" className="hover:text-[#00A896] transition">Gallery</a>
+          <a href="#contact-section" className="hover:text-[#00A896] transition">Contact us</a>
         </nav>
 
-        {/* মোবাইল ভার্সন: তিন দাগের মেনু বাটন */}
-        <div className="flex md:hidden items-center">
+        {/* টগল ও মোবাইল মেনু বাটন */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-900 dark:text-slate-100 font-bold px-3.5 py-2 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition flex items-center gap-1.5 text-xs cursor-pointer select-none"
+          >
+            <span>{darkMode ? '☀️' : '🌙'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
+            className="bg-[#0E3A5D] hover:bg-[#0B2545] text-white font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-1.5 text-xs md:text-sm cursor-pointer select-none"
+          >
+            <span>🌐</span>
+            <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
+          </button>
+
           <button 
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-2xl p-2 text-[#5A181C] dark:text-[#EADCD2] focus:outline-none"
+            className="md:hidden text-2xl p-2 text-[#0E3A5D] dark:text-white focus:outline-none"
             aria-label="Toggle Menu"
           >
             ☰
@@ -461,401 +462,383 @@ export default function Home() {
 
       {/* মোবাইল ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
-        <div className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 bg-[#EADCD2] dark:bg-[#2B1618] p-4 rounded-2xl shadow-2xl border border-[#5A181C]/40 space-y-3 font-bold text-sm text-slate-900 dark:text-white animate-in fade-in duration-200">
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Home</a>
-          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">About us</a>
-          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Introduction to Dentistry</a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Our services</a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Gallery</a>
-          <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-1 px-2 hover:bg-[#95A5A6]/20 rounded-lg">Contact us</a>
+        <div className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 bg-white dark:bg-[#102A36] p-4 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 space-y-3 font-bold text-sm text-slate-900 dark:text-white animate-in fade-in duration-200">
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Home</a>
+          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">About us</a>
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Introduction to Dentistry</a>
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Our services</a>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Gallery</a>
+          <a href="#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Contact us</a>
         </div>
       )}
 
-      {/* টপ বার: থিম ও ল্যাঙ্গুয়েজ টগল বাটন */}
-      <div className="max-w-7xl mx-auto flex justify-end gap-3 mb-6 relative z-50">
-        <button
-          type="button"
-          onClick={toggleTheme}
-          className="bg-[#D3D8DB] dark:bg-[#4A3B3C] hover:bg-[#EAECEE] text-slate-900 dark:text-slate-100 font-bold px-4 py-2.5 rounded-full shadow-lg border border-[#95A5A6] transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none backdrop-blur-md"
-        >
-          <span>{darkMode ? '☀️ লাইট মোড' : '🌙 ডার্ক মোড'}</span>
-        </button>
+      {/* ৩. স্প্লিট হিরো সেকশন (Bethesda & Dentiva Inspired Layout) */}
+      <section className="max-w-7xl mx-auto mb-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+          
+          {/* বাম কলাম: ডক্টর ইনফো, ছবি, ঠিকানা ও সোশ্যাল লিংক */}
+          <div className="bg-white dark:bg-[#102A36] p-6 md:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-6">
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
+                <div className="w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden shadow-lg border-2 border-[#0E3A5D] bg-slate-100 shrink-0">
+                  <img 
+                    src="/doctor.jpeg" 
+                    alt="Doctor Profile" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
-        <button
-          type="button"
-          onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-          className="bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-extrabold px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
-        >
-          <span>🌐</span>
-          <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
-        </button>
-      </div>
-
-      {/* মূল কন্টেন্ট কনটেইনার */}
-      <div className="max-w-7xl mx-auto space-y-10 relative z-10">
-        
-        {/* ডক্টরের প্রোফাইল ও হেডার সেকশন */}
-        <section className="p-6 md:p-10 rounded-3xl shadow-2xl border-2 border-[#5A181C]/30 relative overflow-hidden bg-[#EADCD2]/95 dark:bg-[#2B1618]/95 backdrop-blur-xl">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-[#95A5A6]/20 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8 text-center md:text-left">
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden shadow-xl border-2 border-[#5A181C] bg-white shrink-0">
-              <img 
-                src="/doctor.jpeg" 
-                alt="Doctor Profile" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            <div className="space-y-2 flex-1">
-              <h1 className="text-3xl md:text-5xl font-extrabold text-[#5A181C] dark:text-[#EADCD2] tracking-tight">
-                {t[lang].title}
-              </h1>
-              
-              <p className="text-[#8B6B5E] dark:text-[#A89287] font-extrabold text-xl md:text-2xl pt-1">
-                {t[lang].subtitle}
-              </p>
-
-              <p className="text-slate-800 dark:text-slate-200 font-bold text-base md:text-lg">
-                {t[lang].degree}
-              </p>
-
-              <p className="text-slate-700 dark:text-slate-300 font-bold text-sm md:text-base">
-                {t[lang].bmdc}
-              </p>
-
-              <p className="text-[#5A181C] dark:text-[#EADCD2] font-bold text-base md:text-lg pt-2">
-                {t[lang].training}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* স্থায়ী About Us সেকশন */}
-        <section id="about-section" className="bg-white dark:bg-[#344246] p-6 md:p-10 rounded-3xl shadow-2xl border-2 border-[#5A181C]/30 space-y-6">
-          <div className="border-b border-[#5A181C]/20 pb-4">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-[#5A181C] dark:text-[#EADCD2]">
-              {lang === 'bn' ? 'আমাদের সম্পর্কে (About Us)' : 'About Us'}
-            </h2>
-            <p className="text-sm text-[#8B6B5E] dark:text-[#A89287] font-bold mt-1">
-              {lang === 'bn' ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ার' : 'Dr. Asir Mosaddeque Sakib Dental Care'}
-            </p>
-          </div>
-
-          <div className="space-y-4 text-slate-800 dark:text-slate-200 text-base leading-relaxed">
-            <p>
-              {lang === 'bn'
-                ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আপনাকে স্বাগতম। আমরা আধুনিক প্রযুক্তির সাহায্যে রোগীদের সর্বাধুনিক ও নিরাপদ ডেন্টাল সেবা প্রদান করে থাকি। আমাদের চেম্বারে রুট ক্যানাল ট্রিটমেন্ট, জিরকনিয়া ও মেটাল-সিরামিক ক্রাউন, স্কেলিং, দাঁত তোলা এবং কসমেটিক ডেন্টিস্ট্রির আধুনিক চিকিৎসা নিশ্চিত করা হয়।'
-                : 'Welcome to Dr. Asir Mosaddeque Sakib Dental Care. We provide advanced and safe dental services using modern technology. Our chamber ensures state-of-the-art treatments including Root Canal Therapy, Zirconia & PFM Crowns, Scaling, Extractions, and Cosmetic Dentistry.'
-              }
-            </p>
-            <p>
-              {lang === 'bn'
-                ? 'প্রতিটি রোগীর সমস্যা যত্নসহকারে শুনে নিখুঁত ও পেইনলেস চিকিৎসা প্রদানই আমাদের মূল লক্ষ্য। আপনার সুস্থ ও সুন্দর হাসিই আমাদের বড় অর্জন।'
-                : 'Our primary goal is to carefully listen to each patient’s dental concerns and provide precise, painless treatments. Your healthy and beautiful smile is our greatest achievement.'
-              }
-            </p>
-          </div>
-        </section>
-
-        {/* অ্যাপয়েন্টমেন্ট বুকিং টগল বাটন */}
-        <div className="text-center">
-          <button
-            type="button"
-            onClick={() => setShowBookingBox(!showBookingBox)}
-            className="bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-extrabold text-lg py-4 px-10 rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer border border-[#8B6B5E]/40 flex items-center justify-center gap-3 mx-auto"
-          >
-            <span>{showBookingBox ? t[lang].bookingCloseBtn : t[lang].bookingMainBtn}</span>
-          </button>
-        </div>
-
-        {/* অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স */}
-        {showBookingBox && (
-          <section id="booking-section" className="bg-[#95A5A6]/90 dark:bg-[#344246]/95 p-6 md:p-10 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 max-w-3xl mx-auto relative z-10 animate-in fade-in zoom-in duration-300 backdrop-blur-xl">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2 mx-auto">
-                <span className="text-2xl">📅</span>
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white text-center">
-                  {t[lang].bookingTitle}
-                </h2>
+                <div className="space-y-1.5">
+                  <span className="bg-[#00A896]/10 text-[#00A896] text-[11px] font-bold px-3 py-0.5 rounded-full border border-[#00A896]/30 uppercase tracking-wider inline-block mb-1">
+                    {lang === 'bn' ? 'ওরাল এন্ড ডেন্টাল সার্জন' : 'Oral & Dental Surgeon'}
+                  </span>
+                  <h1 className="text-2xl md:text-3xl font-black text-[#0E3A5D] dark:text-white tracking-tight">
+                    {t[lang].title}
+                  </h1>
+                  <p className="text-xs md:text-sm font-bold text-slate-600 dark:text-slate-300">
+                    {t[lang].degree}
+                  </p>
+                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                    {t[lang].bmdc}
+                  </p>
+                </div>
               </div>
-              <button 
-                onClick={() => setShowBookingBox(false)}
-                className="text-slate-700 hover:text-slate-900 dark:text-slate-200 font-bold text-lg p-1"
+
+              {/* চেম্বারের ঠিকানা ও যোগাযোগ */}
+              <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3 text-sm text-slate-700 dark:text-slate-300">
+                <div className="flex items-start gap-3">
+                  <span className="text-lg shrink-0">📍</span>
+                  <p className="font-medium leading-relaxed">
+                    {t[lang].addressText}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className="text-lg shrink-0">📞</span>
+                  <a href="tel:+8801816011701" className="font-bold text-[#0E3A5D] dark:text-teal-300 hover:underline">
+                    +880 1816 011 701
+                  </a>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className="text-lg shrink-0">✉️</span>
+                  <a href="mailto:asir.mosaddeque@gmail.com" className="font-medium text-slate-600 dark:text-slate-300 hover:underline">
+                    asir.mosaddeque@gmail.com
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* সোশ্যাল মিডিয়া আইকন ও লিংক */}
+            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                {lang === 'bn' ? 'সোশ্যাল লিংক:' : 'Connect:'}
+              </span>
+              <div className="flex items-center gap-3">
+                {/* ফেসবুক */}
+                <a 
+                  href="https://www.facebook.com/share/1ZfF826KUs/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-[#0E3A5D]/10 hover:bg-[#0E3A5D] text-[#0E3A5D] hover:text-white flex items-center justify-center transition shadow-sm font-bold text-sm"
+                  title="Facebook"
+                >
+                  📘 FB
+                </a>
+                {/* ইনস্টাগ্রাম */}
+                <a 
+                  href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-[#00A896]/10 hover:bg-[#00A896] text-[#00A896] hover:text-white flex items-center justify-center transition shadow-sm font-bold text-sm"
+                  title="Instagram"
+                >
+                  📷 IG
+                </a>
+                {/* হোয়াটসঅ্যাপ */}
+                <a 
+                  href="https://wa.me/message/KBZOTSKH66H4P1" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-emerald-500/10 hover:bg-emerald-500 text-emerald-600 hover:text-white flex items-center justify-center transition shadow-sm font-bold text-sm"
+                  title="WhatsApp"
+                >
+                  💬 WA
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* ডান কলাম: চেম্বার আওয়ার্স এবং বুকিং কল-টু-অ্যাকশন */}
+          <div className="bg-[#0E3A5D] text-white p-6 md:p-10 rounded-3xl shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden">
+            <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-[#00A896]/20 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div className="space-y-4 relative z-10">
+              <span className="bg-[#00A896] text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider">
+                {lang === 'bn' ? 'সময়সূচি' : 'Office Hours'}
+              </span>
+
+              <h3 className="text-xl md:text-2xl font-black">
+                {lang === 'bn' ? 'রোগী দেখার সময়' : 'Chamber Schedule'}
+              </h3>
+
+              <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 space-y-2 text-sm">
+                <div className="flex justify-between items-center py-1 border-b border-white/10">
+                  <span className="font-medium text-slate-200">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার' : 'Sat - Thu'}</span>
+                  <span className="font-bold text-teal-300">৪:৩০ PM - ৯:০০ PM</span>
+                </div>
+                <div className="flex justify-between items-center py-1">
+                  <span className="font-medium text-slate-200">{lang === 'bn' ? 'শুক্রবার' : 'Friday'}</span>
+                  <span className="font-bold text-amber-300">{lang === 'bn' ? 'বন্ধ' : 'Closed'}</span>
+                </div>
+              </div>
+
+              <p className="text-xs text-slate-300 leading-relaxed pt-2">
+                {lang === 'bn' 
+                  ? 'সিরিয়াল নিশ্চিত করতে বা জরুরি প্রয়োজনে অনুগ্রহ করে প্রদত্ত নম্বরে যোগাযোগ করুন।' 
+                  : 'Please call ahead to confirm your serial or for any emergency dental support.'}
+              </p>
+            </div>
+
+            <div className="relative z-10 pt-4 space-y-3">
+              <button
+                type="button"
+                onClick={() => setShowBookingBox(!showBookingBox)}
+                className="w-full block text-center bg-[#00A896] hover:bg-[#02C39A] text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-lg transition duration-200 text-sm md:text-base cursor-pointer"
               >
-                ✕
+                {showBookingBox ? t[lang].bookingCloseBtn : t[lang].bookingMainBtn}
               </button>
             </div>
-            <p className="text-[#5A181C] dark:text-[#EADCD2] font-semibold text-center mb-6 text-sm">
-              {t[lang].bookingSub}
-            </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
-                    {t[lang].patientName}
-                  </label>
-                  <input
-                    type="text"
-                    name="patient_name"
-                    value={formData.patient_name}
-                    onChange={handleChange}
-                    required
-                    placeholder={t[lang].patientNamePlaceholder}
-                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-[#D3D8DB] rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white shadow-inner"
-                  />
-                </div>
+          </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
-                    {t[lang].ageLabel}
-                  </label>
-                  <input
-                    type="number"
-                    name="age"
-                    value={formData.age}
-                    onChange={handleChange}
-                    required
-                    min="1"
-                    max="120"
-                    placeholder={t[lang].agePlaceholder}
-                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-[#D3D8DB] rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white shadow-inner"
-                  />
-                </div>
-              </div>
+        </div>
+      </section>
 
-              <div>
-                <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
-                  {t[lang].phoneLabel}
+      {/* ৪. অনলাইন অ্যাপয়েন্টমেন্ট বুকিং বক্স */}
+      {showBookingBox && (
+        <section id="booking-section" className="max-w-3xl mx-auto mb-10 bg-white dark:bg-[#102A36] p-6 md:p-10 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 relative z-10 animate-in fade-in zoom-in duration-300">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl md:text-2xl font-bold text-[#0E3A5D] dark:text-white text-center flex items-center gap-2 mx-auto">
+              <span>📅</span> {t[lang].bookingTitle}
+            </h2>
+            <button 
+              onClick={() => setShowBookingBox(false)}
+              className="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white font-bold text-lg p-1"
+            >
+              ✕
+            </button>
+          </div>
+          <p className="text-[#00A896] font-semibold text-center mb-6 text-xs md:text-sm">
+            {t[lang].bookingSub}
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  {t[lang].patientName}
                 </label>
                 <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
+                  type="text"
+                  name="patient_name"
+                  value={formData.patient_name}
                   onChange={handleChange}
                   required
-                  placeholder="017XXXXXXXX"
-                  className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-[#D3D8DB] rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white shadow-inner"
+                  placeholder={t[lang].patientNamePlaceholder}
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none transition text-slate-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
-                  {t[lang].serviceLabel}
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  {t[lang].ageLabel}
                 </label>
-                <select
-                  name="service"
-                  value={formData.service}
+                <input
+                  type="number"
+                  name="age"
+                  value={formData.age}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-[#5A181C]/40 rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer shadow-inner"
-                >
-                  <option value="">{t[lang].serviceDefault}</option>
-                  <option value={t[lang].service1}>{t[lang].service1}</option>
-                  <option value={t[lang].service2}>{t[lang].service2}</option>
-                  <option value={t[lang].service3}>{t[lang].service3}</option>
-                  <option value={t[lang].service4}>{t[lang].service4}</option>
-                </select>
+                  min="1"
+                  max="120"
+                  placeholder={t[lang].agePlaceholder}
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none transition text-slate-900 dark:text-white"
+                />
               </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
-                  {t[lang].dateLabel}
-                </label>
-                <select
-                  name="appointment_date"
-                  value={formData.appointment_date}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-[#5A181C]/40 rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer shadow-inner"
-                >
-                  <option value="">{t[lang].dateDefault}</option>
-                  {availableDates.map((item, index) => (
-                    <option key={index} value={item.value}>
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">
-                  {t[lang].timeLabel}
-                </label>
-                <select
-                  name="appointment_time"
-                  value={formData.appointment_time}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-[#5A181C]/40 rounded-xl focus:ring-2 focus:ring-[#5A181C] outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer shadow-inner"
-                >
-                  <option value="">{t[lang].timeDefault}</option>
-                  {rawTimes.map((time, index) => {
-                    const slotKey = `${formData.appointment_date}|${time}`
-                    const count = bookedSlotsCount[slotKey] || 0
-                    const isFull = count >= 2
-
-                    const fullText = lang === 'bn' ? '(এই সময়ে এপয়েন্টমেন্ট খালি নেই)' : '(Fully Booked)'
-                    const bookedText = lang === 'bn' ? `(বুকড: ${count}/২)` : `(Booked: ${count}/2)`
-
-                    return (
-                      <option 
-                        key={index} 
-                        value={time}
-                        disabled={isFull}
-                        style={{ color: isFull ? 'red' : 'inherit' }}
-                      >
-                        {time} {isFull ? fullText : bookedText}
-                      </option>
-                    )
-                  })}
-                </select>
-                {!formData.appointment_date && (
-                  <p className="text-xs text-[#5A181C] dark:text-[#EADCD2] mt-1 font-medium">
-                    {lang === 'bn' ? '* প্রথমে তারিখ নির্বাচন করুন, এরপর খালি সময় দেখতে পাবেন।' : '* Please select a date first to view available time slots.'}
-                  </p>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg disabled:opacity-50 mt-4 cursor-pointer"
-              >
-                {loading ? t[lang].submitting : t[lang].submitBtn}
-              </button>
-            </form>
-          </section>
-        )}
-
-        {/* চেম্বারের সময়সূচি সেকশন */}
-        <section className="bg-[#B89C8B]/90 dark:bg-[#4E3E34] backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-xl border border-[#8B6B5E]/50">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">⏰</span>
-            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
-              {t[lang].scheduleTitle}
-            </h2>
-          </div>
-          <div className="space-y-3 text-slate-900 dark:text-slate-100 text-sm md:text-base">
-            <div className="flex justify-between items-center p-3.5 bg-white/70 dark:bg-slate-800 rounded-2xl border border-[#8B6B5E]/30 shadow-sm">
-              <span className="font-bold">{t[lang].scheduleDays}</span>
-              <span className="font-semibold text-[#5A181C] dark:text-[#EADCD2]">{t[lang].scheduleTime}</span>
             </div>
-            <div className="flex justify-between items-center p-3.5 bg-white/70 dark:bg-slate-800 rounded-2xl border border-[#8B6B5E]/30 shadow-sm">
-              <span className="font-bold">{t[lang].scheduleFriday}</span>
-              <span className="font-semibold text-rose-700 dark:text-rose-400">{t[lang].scheduleClosed}</span>
-            </div>
-          </div>
-        </section>
 
-        {/* দাঁতের যত্ন ও স্বাস্থ্য টিপস (ব্লগ) সেকশন */}
-        <section className="bg-[#EADCD2]/95 dark:bg-[#32201D] backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-xl border border-[#8B6B5E]/40 space-y-6">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">📖</span>
-            <h2 className="text-xl md:text-2xl font-bold text-[#5A181C] dark:text-[#EADCD2]">
-              {t[lang].tipsTitle}
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {dentalTips.map((tip, index) => (
-              <div key={index} className="bg-white/80 dark:bg-slate-800 p-6 rounded-2xl border border-[#B89C8B]/40 shadow-sm space-y-2 flex flex-col justify-between hover:shadow-md transition">
-                <div>
-                  <div className="text-3xl mb-2">{tip.icon}</div>
-                  <h3 className="font-bold text-slate-900 dark:text-white text-base mb-1">{tip.title}</h3>
-                  <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">{tip.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ভিডিও এমবেড সেকশন */}
-        <section className="bg-[#95A5A6]/90 dark:bg-[#344246] backdrop-blur-xl p-6 md:p-10 rounded-3xl shadow-xl border border-slate-500/40 space-y-6">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🎥</span>
-            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
-              {t[lang].videoTitle}
-            </h2>
-          </div>
-          <p className="text-slate-800 dark:text-slate-200 text-sm">
-            {t[lang].videoSub}
-          </p>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {videoList.map((video, index) => (
-              <div key={index} className="bg-white/90 dark:bg-slate-800/90 p-3 rounded-2xl shadow-lg border border-[#5A181C]/30 space-y-2 flex flex-col justify-between">
-                <h3 className="font-bold text-slate-900 dark:text-white text-xs md:text-sm line-clamp-1">{video.title}</h3>
-                <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow bg-black">
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full"
-                    src={`https://www.youtube.com/embed/${video.id}`}
-                    title={video.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* যোগাযোগ ও কন্টাক্ট সেকশন */}
-        <section className="bg-[#B89C8B]/95 dark:bg-[#3D2F27] backdrop-blur-xl p-6 md:p-10 rounded-3xl shadow-xl border-2 border-[#5A181C]/50 space-y-6">
-          <div className="flex items-center gap-3 border-b border-[#8B6B5E]/40 pb-4">
-            <span className="text-3xl p-2 bg-white/70 dark:bg-slate-800 rounded-2xl">📞</span>
             <div>
-              <h2 className="text-xl md:text-2xl font-extrabold text-slate-900 dark:text-white">
-                {t[lang].contactTitle}
-              </h2>
-              <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300">
-                {lang === 'bn' ? 'যেকোনো প্রয়োজনে সরাসরি যোগাযোগ করুন' : 'Feel free to reach out for any queries'}
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm md:text-base">
-            <div className="p-5 bg-white/80 dark:bg-slate-800 rounded-2xl border border-[#8B6B5E]/40 shadow-sm space-y-2 hover:shadow-md transition">
-              <div className="flex items-center gap-2 text-[#5A181C] dark:text-[#EADCD2] font-bold">
-                <span>📱</span>
-                <span>{t[lang].hotline}</span>
-              </div>
-              <a href="tel:+8801816011701" className="text-slate-900 dark:text-white font-black text-lg md:text-xl hover:text-[#5A181C] transition block">
-                +880 1816 011 701
-              </a>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                {t[lang].phoneLabel}
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                placeholder="017XXXXXXXX"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none transition text-slate-900 dark:text-white"
+              />
             </div>
 
-            <div className="p-5 bg-white/80 dark:bg-slate-800 rounded-2xl border border-[#8B6B5E]/40 shadow-sm space-y-2 hover:shadow-md transition">
-              <div className="flex items-center gap-2 text-[#5A181C] dark:text-[#EADCD2] font-bold">
-                <span>✉️</span>
-                <span>{t[lang].email}</span>
-              </div>
-              <a href="mailto:asir.mosaddeque@gmail.com" className="text-slate-900 dark:text-white font-bold text-sm md:text-base hover:text-[#5A181C] transition block break-all">
-                asir.mosaddeque@gmail.com
-              </a>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                {t[lang].serviceLabel}
+              </label>
+              <select
+                name="service"
+                value={formData.service}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+              >
+                <option value="">{t[lang].serviceDefault}</option>
+                <option value={t[lang].service1}>{t[lang].service1}</option>
+                <option value={t[lang].service2}>{t[lang].service2}</option>
+                <option value={t[lang].service3}>{t[lang].service3}</option>
+                <option value={t[lang].service4}>{t[lang].service4}</option>
+              </select>
             </div>
-          </div>
 
-          <div className="flex flex-col md:flex-row gap-4 pt-2">
-            <a 
-              href="https://maps.app.goo.gl/fk2Y1ujsnXuctkpL9?g_st=ac" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex-1 bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-bold py-3.5 px-6 rounded-2xl text-center shadow-lg transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer"
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                {t[lang].dateLabel}
+              </label>
+              <select
+                name="appointment_date"
+                value={formData.appointment_date}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+              >
+                <option value="">{t[lang].dateDefault}</option>
+                {availableDates.map((item, index) => (
+                  <option key={index} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                {t[lang].timeLabel}
+              </label>
+              <select
+                name="appointment_time"
+                value={formData.appointment_time}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#00A896] outline-none transition text-slate-900 dark:text-white font-medium cursor-pointer"
+              >
+                <option value="">{t[lang].timeDefault}</option>
+                {rawTimes.map((time, index) => {
+                  const slotKey = `${formData.appointment_date}|${time}`
+                  const count = bookedSlotsCount[slotKey] || 0
+                  const isFull = count >= 2
+
+                  const fullText = lang === 'bn' ? '(এই সময়ে এপয়েন্টমেন্ট খালি নেই)' : '(Fully Booked)'
+                  const bookedText = lang === 'bn' ? `(বুকড: ${count}/২)` : `(Booked: ${count}/2)`
+
+                  return (
+                    <option 
+                      key={index} 
+                      value={time}
+                      disabled={isFull}
+                      style={{ color: isFull ? 'red' : 'inherit' }}
+                    >
+                      {time} {isFull ? fullText : bookedText}
+                    </option>
+                  )
+                })}
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#00A896] hover:bg-[#02C39A] text-white font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer"
             >
-              {t[lang].mapBtn}
-            </a>
-            <a 
-              href="https://wa.me/message/KBZOTSKH66H4P1" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex-1 bg-[#4A3B3C] hover:bg-[#32201D] text-[#EADCD2] font-bold py-3.5 px-6 rounded-2xl text-center shadow-lg transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer"
-            >
-              {t[lang].whatsappBtn}
-            </a>
-          </div>
+              {loading ? t[lang].submitting : t[lang].submitBtn}
+            </button>
+          </form>
         </section>
+      )}
 
+      {/* ৫. স্থায়ী About Us সেকশন */}
+      <section id="about-section" className="max-w-7xl mx-auto mb-10 bg-white dark:bg-[#102A36] p-6 md:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-[#0E3A5D] dark:text-white">
+          {lang === 'bn' ? 'আমাদের সম্পর্কে (About Us)' : 'About Us'}
+        </h2>
+        <div className="space-y-3 text-slate-600 dark:text-slate-300 text-sm md:text-base leading-relaxed">
+          <p>
+            {lang === 'bn'
+              ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আপনাকে স্বাগতম। আমরা আধুনিক প্রযুক্তির সাহায্যে রোগীদের সর্বাধুনিক ও নিরাপদ ডেন্টাল সেবা প্রদান করে থাকি। আমাদের চেম্বারে রুট ক্যানাল ট্রিটমেন্ট, জিরকনিয়া ও মেটাল-সিরামিক ক্রাউন, স্কেলিং, দাঁত তোলা এবং কসমেটিক ডেন্টিস্ট্রির আধুনিক চিকিৎসা নিশ্চিত করা হয়।'
+              : 'Welcome to Dr. Asir Mosaddeque Sakib Dental Care. We provide advanced and safe dental services using modern technology. Our chamber ensures state-of-the-art treatments including Root Canal Therapy, Zirconia & PFM Crowns, Scaling, Extractions, and Cosmetic Dentistry.'
+            }
+          </p>
+          <p>
+            {lang === 'bn'
+              ? 'প্রতিটি রোগীর সমস্যা যত্নসহকারে শুনে নিখুঁত ও পেইনলেস চিকিৎসা প্রদানই আমাদের মূল লক্ষ্য। আপনার সুস্থ ও সুন্দর হাসিই আমাদের বড় অর্জন।'
+              : 'Our primary goal is to carefully listen to each patient’s dental concerns and provide precise, painless treatments. Your healthy and beautiful smile is our greatest achievement.'
+            }
+          </p>
+        </div>
+      </section>
+
+      {/* সফল বুকিং পপ-আপ মোডাল */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#102A36] text-slate-900 dark:text-white p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border border-slate-200 dark:border-slate-700">
+            <div className="w-16 h-16 bg-[#00A896]/10 text-[#00A896] text-3xl rounded-full flex items-center justify-center mx-auto">
+              ✓
+            </div>
+            <h3 className="text-2xl font-black text-[#0E3A5D] dark:text-teal-300">
+              {t[lang].successTitle}
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              {t[lang].successMsg}
+            </p>
+            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-2xl text-left text-xs space-y-1.5 border border-slate-200 dark:border-slate-700">
+              <p><strong>{lang === 'bn' ? 'রোগীর নাম:' : 'Patient:'}</strong> {successDetails.name}</p>
+              <p><strong>{lang === 'bn' ? 'তারিখ:' : 'Date:'}</strong> {successDetails.date}</p>
+              <p><strong>{lang === 'bn' ? 'সময়:' : 'Time:'}</strong> {successDetails.time}</p>
+            </div>
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="w-full bg-[#00A896] hover:bg-[#02C39A] text-white font-bold py-3 rounded-xl transition duration-200 shadow-md cursor-pointer"
+            >
+              {t[lang].closeModalBtn}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* চেম্বার বন্ধ থাকার নোটিশ মোডাল */}
+      {showChamberClosedModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#102A36] text-slate-900 dark:text-white p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border border-amber-500/30">
+            <div className="w-16 h-16 bg-amber-500/10 text-amber-500 text-3xl rounded-full flex items-center justify-center mx-auto">
+              🔔
+            </div>
+            <h3 className="text-2xl font-black text-amber-600 dark:text-amber-400">
+              {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
+            </p>
+            <button
+              onClick={() => setShowChamberClosedModal(false)}
+              className="w-full bg-[#0E3A5D] hover:bg-[#0B2545] text-white font-bold py-3 rounded-xl transition duration-200 shadow-md cursor-pointer"
+            >
+              {t[lang].closeModalBtn}
+            </button>
+          </div>
+        </div>
       </div>
+      )}
 
     </main>
   )
