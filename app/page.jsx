@@ -792,7 +792,56 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৭. সচেতনতামূলক ভিডিও সেকশন */}
+      {/* ৭. ৩টি ভিন্ন কালারের বক্স সেকশন */}
+      <section className="max-w-7xl mx-auto mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          {/* বক্স ১: ব্যাকগ্রাউন্ড #1a1a1a (ডার্ক) */}
+          <div 
+            className="p-6 rounded-3xl shadow-xl border flex flex-col justify-between space-y-4"
+            style={{ backgroundColor: '#1a1a1a', borderColor: '#9fb2c6', color: '#d9dee3' }}
+          >
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold" style={{ backgroundColor: '#9fb2c6', color: '#1a1a1a' }}>
+              🦷
+            </div>
+            <h3 className="text-xl font-bold" style={{ color: '#d9dee3' }}>প্রথম বক্স (ডার্ক থিম)</h3>
+            <p className="text-sm leading-relaxed text-slate-300">
+              এটি `#1a1a1a` ব্যাকগ্রাউন্ড কালার দিয়ে তৈরি করা হয়েছে, যা ওয়েবসাইটের মূল ডার্ক লুক ফুটিয়ে তোলে।
+            </p>
+          </div>
+
+          {/* বক্স ২: ব্যাকগ্রাউন্ড #9fb2c6 (অ্যাকসেন্ট) */}
+          <div 
+            className="p-6 rounded-3xl shadow-xl border flex flex-col justify-between space-y-4"
+            style={{ backgroundColor: '#9fb2c6', borderColor: '#1a1a1a', color: '#1a1a1a' }}
+          >
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white" style={{ backgroundColor: '#1a1a1a' }}>
+              ⭐
+            </div>
+            <h3 className="text-xl font-bold" style={{ color: '#1a1a1a' }}>দ্বিতীয় বক্স (অ্যাকসেন্ট থিম)</h3>
+            <p className="text-sm leading-relaxed text-slate-900">
+              এটি `#9fb2c6` ব্যাকগ্রাউন্ড কালার দিয়ে তৈরি করা হয়েছে, যা প্রধান ফোকাস হিসেবে কাজ করবে।
+            </p>
+          </div>
+
+          {/* বক্স ৩: ব্যাকগ্রাউন্ড #d9dee3 (লাইট কনট্রাস্ট) */}
+          <div 
+            className="p-6 rounded-3xl shadow-xl border flex flex-col justify-between space-y-4"
+            style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6', color: '#1a1a1a' }}
+          >
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white" style={{ backgroundColor: '#1a1a1a' }}>
+              💡
+            </div>
+            <h3 className="text-xl font-bold" style={{ color: '#1a1a1a' }}>তৃতীয় বক্স (লাইট থিম)</h3>
+            <p className="text-sm leading-relaxed text-slate-800">
+              এটি `#d9dee3` ব্যাকগ্রাউন্ড কালার দিয়ে তৈরি করা হয়েছে, যা নরম এবং সুন্দর লুক বজায় রাখে।
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ৮. সচেতনতামূলক ভিডিও সেকশন */}
       <section 
         id="contact-section"
         className="max-w-7xl mx-auto mb-10 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6"
