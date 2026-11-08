@@ -16,42 +16,6 @@ export default function ServicesPage() {
       timeEn: '10-15 mins'
     },
     {
-      id: 'tooth-whitening',
-      nameBn: 'টুথ হোয়াইটেনিং (Tooth Whitening)',
-      nameEn: 'Tooth Whitening (Bleaching)',
-      descBn: 'আধুনিক ও নিরাপদ প্রযুক্তির সাহায্যে হলুদ বা দাগযুক্ত দাঁত উজ্জ্বল, সাদা ও আকর্ষণীয় করে তোলার কসমেটিক সেবা।',
-      descEn: 'Professional whitening treatment to remove stains and brighten your smile safely.',
-      timeBn: '৩০-৪৫ মিনিট',
-      timeEn: '30-45 mins'
-    },
-    {
-      id: 'digital-xray',
-      nameBn: 'ডিজিটাল ডেন্টাল এক্স-রে (RVG)',
-      nameEn: 'Digital Dental X-Ray (RVG)',
-      descBn: 'কম রেডিয়েশনের অত্যন্ত নিখুঁত ও আধুনিক রেডিওগ্রাফি প্রযুক্তি, যার মাধ্যমে দাঁতের ভেতরের অবস্থা তাৎক্ষণিকভাবে স্ক্রিনে দেখা যায়।',
-      descEn: 'Low-radiation advanced digital RVG imaging for accurate and instant dental diagnosis.',
-      timeBn: '৫-১০ মিনিট',
-      timeEn: '5-10 mins'
-    },
-    {
-      id: 'cyst-enucleation',
-      nameBn: 'সিস্ট ইনিউক্লিয়েশন (Cyst Enucleation)',
-      nameEn: 'Cyst Enucleation',
-      descBn: 'মুখগহ্বর বা চোয়ালের ভেতরে তৈরি হওয়া তরলপূর্ণ সিস্ট বা থলি সফলভাবে অপারেশনের মাধ্যমে সম্পূর্ণ অপসারণের চিকিৎসা।',
-      descEn: 'Surgical removal of fluid-filled cysts or lesions developing within the jaws or oral cavity.',
-      timeBn: '৪৫-৬০ মিনিট',
-      timeEn: '45-60 mins'
-    },
-    {
-      id: 'lesion-treatment',
-      nameBn: 'দীর্ঘস্থায়ী ঘা ও প্রি-ক্যান্সারাস লেশনের চিকিৎসা',
-      nameEn: 'Long-standing Sores & Pre-cancerous Lesions Treatment',
-      descBn: 'মুখে দীর্ঘদিনের না ভালো হওয়া ঘা, সাদা বা লাল প্যাচ এবং প্রি-ক্যান্সারাস অবস্থা নির্ণয় ও যথাযথ চিকিৎসা প্রদান।',
-      descEn: 'Diagnosis and clinical management of chronic oral ulcers, white/red patches, and pre-cancerous conditions.',
-      timeBn: '৩০-৪৫ মিনিট',
-      timeEn: '30-45 mins'
-    },
-    {
       id: 'patient-counseling',
       nameBn: 'পেশেন্ট কাউন্সেলিং (Patient Counseling)',
       nameEn: 'Patient Counseling',
@@ -59,24 +23,6 @@ export default function ServicesPage() {
       descEn: 'Detailed consultation and guidance to alleviate patient anxiety and maintain optimal oral hygiene.',
       timeBn: '১৫-২০ মিনিট',
       timeEn: '15-20 mins'
-    },
-    {
-      id: 'orthodontic',
-      nameBn: 'বাঁকা দাঁতের অর্থোডন্টিক কারেকশন (Orthodontic Correction)',
-      nameEn: 'Orthodontic Correction (Braces)',
-      descBn: 'ব্রেসেস বা আধুনিক অ্যালাইনারের সাহায্যে আঁকাবাঁকা ও ফাঁকা দাঁত সোজা করে হাসির সৌন্দর্য ও কামড় ঠিক করা।',
-      descEn: 'Realignment of crooked or spaced teeth using braces or aligners for ideal occlusion and aesthetics.',
-      timeBn: '৩০ মিনিট (প্রতি ভিজিট)',
-      timeEn: '30 mins (Per Visit)'
-    },
-    {
-      id: 'dental-implant',
-      nameBn: 'ইমপ্ল্যান্ট (Dental Implant)',
-      nameEn: 'Dental Implant',
-      descBn: 'হারিয়ে যাওয়া দাঁতের শেকড়ের জায়গায় টাইটানিয়াম ফিক্সড কৃত্রিম দাঁত প্রতিস্থাপনের সর্বাধুনিক ও স্থায়ী সমাধান।',
-      descEn: 'Advanced permanent tooth replacement using titanium fixtures embedded into the jawbone.',
-      timeBn: '৪৫-৯০ মিনিট',
-      timeEn: '45-90 mins'
     },
     {
       id: 'root-canal',
@@ -88,20 +34,20 @@ export default function ServicesPage() {
       timeEn: '15-20 mins'
     },
     {
-      id: 'pfm-crown',
-      nameBn: 'মেটাল-সিরামিক (PFM) ক্রাউন/ক্যাপ',
-      nameEn: 'Metal-Ceramic (PFM) Crown/Cap',
-      descBn: 'রুট ক্যানাল বা দুর্বল দাঁতের সুরক্ষায় এবং স্থায়িত্ব বাড়াতে টেকসই মেটাল ও সিরামিকের সংমিশ্রণে তৈরি ক্যাপ।',
-      descEn: 'Durable metal and ceramic combination cap for protection after root canal or weak teeth.',
-      timeBn: '১৫ মিনিট (প্রতি ভিজিট)',
-      timeEn: '15 mins (Per Visit)'
-    },
-    {
       id: 'zirconia-crown',
       nameBn: 'জিরকনিয়া ক্রাউন/ক্যাপ (Zirconia Crown)',
       nameEn: 'Zirconia Crown/Cap',
       descBn: 'সর্বাধুনিক প্রযুক্তির অত্যন্ত শক্তিশালী ও দেখতে একদম প্রাকৃতিক দাঁতের মতো প্রিমিয়াম ক্রাউন।',
       descEn: 'State-of-the-art, highly durable, and natural-looking premium ceramic crown.',
+      timeBn: '১৫ মিনিট (প্রতি ভিজিট)',
+      timeEn: '15 mins (Per Visit)'
+    },
+    {
+      id: 'pfm-crown',
+      nameBn: 'মেটাল-সিরামিক (PFM) ক্রাউন/ক্যাপ',
+      nameEn: 'Metal-Ceramic (PFM) Crown/Cap',
+      descBn: 'রুট ক্যানাল বা দুর্বল দাঁতের সুরক্ষায় এবং স্থায়িত্ব বাড়াতে টেকসই মেটাল ও সিরামিকের সংমিশ্রণে তৈরি ক্যাপ।',
+      descEn: 'Durable metal and ceramic combination cap for protection after root canal or weak teeth.',
       timeBn: '১৫ মিনিট (প্রতি ভিজিট)',
       timeEn: '15 mins (Per Visit)'
     },
@@ -115,15 +61,6 @@ export default function ServicesPage() {
       timeEn: '15-20 mins'
     },
     {
-      id: 'diastema-closure',
-      nameBn: 'মিড-ডায়াস্টেমা ক্লোজ (Front Tooth Gap Closing)',
-      nameEn: 'Mid-Diastema Closure',
-      descBn: 'সামনের দুই দাঁতের মাঝখানের ফাঁকা জায়গা সুন্দরভাবে বন্ধ করার চিকিৎসা।',
-      descEn: 'Aesthetic cosmetic procedure to close gaps between front teeth.',
-      timeBn: '৩০ মিনিট',
-      timeEn: '30 mins'
-    },
-    {
       id: 'gi-filling',
       nameBn: 'জি.আই ফিলিং (G.I. Filling)',
       nameEn: 'G.I. Filling',
@@ -131,6 +68,42 @@ export default function ServicesPage() {
       descEn: 'Glass Ionomer cement filling used for standard cavity protection.',
       timeBn: '২০ মিনিট',
       timeEn: '20 mins'
+    },
+    {
+      id: 'composite-bridge',
+      nameBn: 'ফাইবার রি-ইনফোর্সড কম্পোজিট ব্রিজ (Fiber-Reinforced Composite Bridge)',
+      nameEn: 'Fiber-Reinforced Composite Bridge',
+      descBn: 'হারিয়ে যাওয়া দাঁতের দুই পাশের দাঁতের সাহায্যে বিশেষ ফাইবার ও কম্পোজিট রজন ব্যবহার করে এক ভিজিটে ফিক্সড কৃত্রিম দাঁত সংযোজন।',
+      descEn: 'Single-visit fixed tooth replacement using high-strength fiber and composite resin supported by adjacent teeth.',
+      timeBn: '৩০-৪৫ মিনিট',
+      timeEn: '30-45 mins'
+    },
+    {
+      id: 'dental-implant',
+      nameBn: 'ইমপ্ল্যান্ট (Dental Implant)',
+      nameEn: 'Dental Implant',
+      descBn: 'হারিয়ে যাওয়া দাঁতের শেকড়ের জায়গায় টাইটানিয়াম ফিক্সড কৃত্রিম দাঁত প্রতিস্থাপনের সর্বাধুনিক ও স্থায়ী সমাধান।',
+      descEn: 'Advanced permanent tooth replacement using titanium fixtures embedded into the jawbone.',
+      timeBn: '৪৫-৯০ মিনিট',
+      timeEn: '45-90 mins'
+    },
+    {
+      id: 'orthodontic',
+      nameBn: 'বাঁকা দাঁতের অর্থোডন্টিক কারেকশন (Orthodontic Correction)',
+      nameEn: 'Orthodontic Correction (Braces)',
+      descBn: 'ব্রেসেস বা আধুনিক অ্যালাইনারের সাহায্যে আঁকাবাঁকা ও ফাঁকা দাঁত সোজা করে হাসির সৌন্দর্য ও কামড় ঠিক করা।',
+      descEn: 'Realignment of crooked or spaced teeth using braces or aligners for ideal occlusion and aesthetics.',
+      timeBn: '৩০ মিনিট (প্রতি ভিজিট)',
+      timeEn: '30 mins (Per Visit)'
+    },
+    {
+      id: 'diastema-closure',
+      nameBn: 'মিড-ডায়াস্টেমা ক্লোজ (Front Tooth Gap Closing)',
+      nameEn: 'Mid-Diastema Closure',
+      descBn: 'সামনের দুই দাঁতের মাঝখানের ফাঁকা জায়গা সুন্দরভাবে বন্ধ করার চিকিৎসা।',
+      descEn: 'Aesthetic cosmetic procedure to close gaps between front teeth.',
+      timeBn: '৩০ মিনিট',
+      timeEn: '30 mins'
     },
     {
       id: 'normal-extraction',
@@ -169,15 +142,6 @@ export default function ServicesPage() {
       timeEn: '20-25 mins'
     },
     {
-      id: 'composite-bridge',
-      nameBn: 'ফাইবার রি-ইনফোর্সড কম্পোজিট ব্রিজ (Fiber-Reinforced Composite Bridge)',
-      nameEn: 'Fiber-Reinforced Composite Bridge',
-      descBn: 'হারিয়ে যাওয়া দাঁতের দুই পাশের দাঁতের সাহায্যে বিশেষ ফাইবার ও কম্পোজিট রজন ব্যবহার করে এক ভিজিটে ফিক্সড কৃত্রিম দাঁত সংযোজন।',
-      descEn: 'Single-visit fixed tooth replacement using high-strength fiber and composite resin supported by adjacent teeth.',
-      timeBn: '৩০-৪৫ মিনিট',
-      timeEn: '30-45 mins'
-    },
-    {
       id: 'dentures',
       nameBn: 'ফ্লেক্সিবল ও হিট কিউর ডেঞ্চার',
       nameEn: 'Flexible & Heat Cure Dentures',
@@ -194,6 +158,42 @@ export default function ServicesPage() {
       descEn: 'Custom protective appliance to prevent tooth damage from nighttime teeth grinding.',
       timeBn: '১৫ মিনিট (প্রতি ভিজিট)',
       timeEn: '15 mins (Per Visit)'
+    },
+    {
+      id: 'tooth-whitening',
+      nameBn: 'টুথ হোয়াইটেনিং (Tooth Whitening)',
+      nameEn: 'Tooth Whitening (Bleaching)',
+      descBn: 'আধুনিক ও নিরাপদ প্রযুক্তির সাহায্যে হলুদ বা দাগযুক্ত দাঁত উজ্জ্বল, সাদা ও আকর্ষণীয় করে তোলার কসমেটিক সেবা।',
+      descEn: 'Professional whitening treatment to remove stains and brighten your smile safely.',
+      timeBn: '৩০-৪৫ মিনিট',
+      timeEn: '30-45 mins'
+    },
+    {
+      id: 'digital-xray',
+      nameBn: 'ডিজিটাল ডেন্টাল এক্স-রে (RVG)',
+      nameEn: 'Digital Dental X-Ray (RVG)',
+      descBn: 'কম রেডিয়েশনের অত্যন্ত নিখুঁত ও আধুনিক রেডিওগ্রাফি প্রযুক্তি, যার মাধ্যমে দাঁতের ভেতরের অবস্থা তাৎক্ষণিকভাবে স্ক্রিনে দেখা যায়।',
+      descEn: 'Low-radiation advanced digital RVG imaging for accurate and instant dental diagnosis.',
+      timeBn: '৫-১০ মিনিট',
+      timeEn: '5-10 mins'
+    },
+    {
+      id: 'cyst-enucleation',
+      nameBn: 'সিস্ট ইনিউক্লিয়েশন (Cyst Enucleation)',
+      nameEn: 'Cyst Enucleation',
+      descBn: 'মুখগহ্বর বা চোয়ালের ভেতরে তৈরি হওয়া তরলপূর্ণ সিস্ট বা থলি সফলভাবে অপারেশনের মাধ্যমে সম্পূর্ণ অপসারণের চিকিৎসা।',
+      descEn: 'Surgical removal of fluid-filled cysts or lesions developing within the jaws or oral cavity.',
+      timeBn: '৪৫-৬০ মিনিট',
+      timeEn: '45-60 mins'
+    },
+    {
+      id: 'lesion-treatment',
+      nameBn: 'দীর্ঘস্থায়ী ঘা ও প্রি-ক্যান্সারাস লেশনের চিকিৎসা',
+      nameEn: 'Long-standing Sores & Pre-cancerous Lesions Treatment',
+      descBn: 'মুখে দীর্ঘদিনের না ভালো হওয়া ঘা, সাদা বা লাল প্যাচ এবং প্রি-ক্যান্সারাস অবস্থা নির্ণয় ও যথাযথ চিকিৎসা প্রদান।',
+      descEn: 'Diagnosis and clinical management of chronic oral ulcers, white/red patches, and pre-cancerous conditions.',
+      timeBn: '৩০-৪৫ মিনিট',
+      timeEn: '30-45 mins'
     }
   ]
 
