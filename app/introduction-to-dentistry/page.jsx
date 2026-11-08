@@ -1,165 +1,236 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function IntroductionToDentistry() {
   const [lang, setLang] = useState('bn')
+  const [darkMode, setDarkMode] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  const branches = lang === 'bn' ? [
-    {
-      title: '১. অর্থোডন্টিক্স (Orthodontics)',
-      desc: 'আঁকাবাঁকা দাঁত সোজা করা, চোয়ালের গঠনগত ত্রুটি এবং কামড়ের অসঙ্গতি ঠিক করার চিকিৎসা।'
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme')
+    const isDark = savedTheme === 'dark'
+    setDarkMode(isDark)
+  }, [])
+
+  const toggleTheme = () => {
+    const nextMode = !darkMode
+    setDarkMode(nextMode)
+    localStorage.setItem('theme', nextMode ? 'dark' : 'light')
+  }
+
+  // থিম অনুযায়ী কালার প্যালেট (Services পেজের সাথে মিল রেখে)
+  const themeStyles = darkMode ? {
+    bgMain: '#1a1a1a',
+    cardBg: '#262626',
+    textColor: '#ffffff',
+    subTextColor: '#cbd5e1',
+    borderColor: '#9fb2c6'
+  } : {
+    bgMain: '#d9dee3',
+    cardBg: '#ffffff',
+    textColor: '#1a1a1a',
+    subTextColor: '#334155',
+    borderColor: '#9fb2c6'
+  }
+
+  const content = {
+    bn: {
+      title: 'ডেন্টিস্ট্রি পরিচিতি',
+      subtitle: 'মুখের স্বাস্থ্য, ডেন্টাল কেয়ার ও আধুনিক চিকিৎসার মূলভিত্তি',
+      introTitle: 'আধুনিক ডেন্টিস্ট্রি ও ওরাল হেলথ',
+      introDesc: 'মুখের স্বাস্থ্য কেবল সুন্দর হাসির সাথেই যুক্ত নয়, এটি আপনার সামগ্রিক শারীরিক সুস্বাস্থ্যের একটি বড় চাবিকাঠি। নিয়মিত ডেন্টাল চেকআপ এবং সঠিক সময়ে সঠিক চিকিৎসা গ্রহণের মাধ্যমে বড় ধরনের অনেক শারীরিক জটিলতা এড়ানো সম্ভব।',
+      pointsTitle: 'কেন ডেন্টাল সচেতনতা জরুরি?',
+      point1Title: '১. ক্যাভিটি ও দাঁতের ক্ষয় রোধ',
+      point1Desc: 'নিয়মিত ব্রাশ ও ফ্লসিংয়ের মাধ্যমে দাঁতে প্লাক জমা হওয়া রোধ করা যায়, যা ক্যাভিটি সৃষ্টিতে বাধা দেয়।',
+      point2Title: '২. মাড়ির রোগ প্রতিরোধ',
+      point2Desc: 'জিঞ্জিভাইটিস বা পিরিয়ডন্টাইটিসের মতো মাড়ির ইনফেকশন এড়াতে প্রাথমিক সচেতনতা অত্যন্ত কার্যকর।',
+      point3Title: '৩. সামগ্রিক স্বাস্থ্যের সুরক্ষা',
+      point3Desc: 'মুখের ভেতরের ব্যাকটেরিয়া রক্তনালীর মাধ্যমে হৃদরোগ বা ডায়াবেটিসের মতো জটিলতা বাড়াতে পারে, তাই ওরাল হাইজিন অত্যন্ত জরুরি।'
     },
-    {
-      title: '২. এন্ডোডন্টিক্স (Endodontics)',
-      desc: 'দাঁতের মূল বা পাল্প (Pulp) এর ইনফেকশন এবং রুট ক্যানাল ট্রিটমেন্ট (RCT) সংক্রান্ত চিকিৎসা।'
-    },
-    {
-      title: '৩. ওরাল অ্যান্ড ম্যাক্সোফেসিয়াল সার্জারি (Oral & Maxillofacial Surgery)',
-      desc: 'মুখ, চোয়াল ও মুখের ভেতরের জটিল সার্জারি, যেমন- আককেল দাঁত অপারেশন ও ফেসিয়াল ট্রমা চিকিৎসা।'
-    },
-    {
-      title: '৪. পিরিওডন্টিক্স (Periodontics)',
-      desc: 'মাড়ির রোগ, মাড়ি থেকে রক্ত পড়া এবং দাঁতের চারপাশের টিস্যুর সুস্বাস্থ্য ও সুরক্ষা নিশ্চিতকরণ।'
-    },
-    {
-      title: '৫. প্রোস্থোডন্টিক্স (Prosthodontics)',
-      desc: 'হারিয়ে যাওয়া দাঁতের স্থলে কৃত্রিম দাঁত, ডেনচার, ক্রাউন ও ব্রিজ সংযোজনের মাধ্যমে হাসির সৌন্দর্য ও চর্বণ ক্ষমতা ফিরিয়ে আনা।'
+    en: {
+      title: 'Introduction to Dentistry',
+      subtitle: 'The Foundation of Oral Health, Dental Care & Modern Treatments',
+      introTitle: 'Modern Dentistry & Oral Health',
+      introDesc: 'Oral health is not just about a beautiful smile; it is a major key to your overall physical well-being. Regular dental checks and timely interventions can prevent major health complications.',
+      pointsTitle: 'Why Dental Awareness Matters?',
+      point1Title: '1. Preventing Cavities & Decay',
+      point1Desc: 'Regular brushing and flossing prevent plaque buildup, which stops cavities from forming.',
+      point2Title: '2. Gum Disease Prevention',
+      point2Desc: 'Early awareness is extremely effective in avoiding gum infections like gingivitis or periodontitis.',
+      point3Title: '3. Protecting Overall Health',
+      point3Desc: 'Oral bacteria can enter the bloodstream and worsen conditions like heart disease or diabetes, making oral hygiene crucial.'
     }
-  ] : [
-    {
-      title: '1. Orthodontics',
-      desc: 'Correction of crooked teeth, malocclusions, and improper jaw alignment.'
-    },
-    {
-      title: '2. Endodontics',
-      desc: 'Treatment of dental pulp infections, root canal therapy, and internal tooth care.'
-    },
-    {
-      title: '3. Oral & Maxillofacial Surgery',
-      desc: 'Surgical treatments involving the mouth, jaw, and facial structures, including wisdom teeth removal.'
-    },
-    {
-      title: '4. Periodontics',
-      desc: 'Prevention, diagnosis, and treatment of periodontal (gum) diseases.'
-    },
-    {
-      title: '5. Prosthodontics',
-      desc: 'Restoration and replacement of missing teeth with dentures, crowns, bridges, and implants.'
-    }
-  ]
+  }
 
   return (
     <main 
-      className="min-h-screen text-slate-900 dark:text-slate-100 relative py-12 px-4 md:px-16 bg-cover bg-center bg-fixed transition-colors duration-200"
-      style={{ backgroundImage: `url('/site-bg.jpeg')` }}
+      className="min-h-screen relative py-6 px-4 md:px-12 transition-all duration-300 scroll-smooth"
+      style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
     >
-      <div className="absolute inset-0 bg-[#EADCD2]/80 dark:bg-[#2B1618]/90 backdrop-blur-md pointer-events-none z-0"></div>
+      
+      {/* ন্যাভিগেশন বার */}
+      <header 
+        className="max-w-7xl mx-auto mb-8 sticky top-4 z-50 p-4 md:px-8 rounded-2xl shadow-xl backdrop-blur-md flex items-center justify-between border transition-all duration-300"
+        style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+      >
+        <div className="flex items-center gap-3">
+          <div 
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-xl font-black shadow-md"
+            style={{ backgroundColor: '#1a1a1a' }}
+          >
+            🦷
+          </div>
+          <span 
+            className="font-extrabold text-lg md:text-xl tracking-tight"
+            style={{ color: themeStyles.textColor }}
+          >
+            Dr. Sakib Dental Care
+          </span>
+        </div>
 
-      <div className="max-w-4xl mx-auto flex justify-between items-center mb-8 relative z-50">
-        <a 
-          href="/"
-          className="bg-[#5A181C] text-[#EADCD2] font-bold px-5 py-2.5 rounded-full shadow-lg transition hover:bg-[#451215]"
+        <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base" style={{ color: themeStyles.textColor }}>
+          <a href="/" className="transition hover:opacity-70">Home</a>
+          <a href="/#about-section" className="transition hover:opacity-70">About us</a>
+          <a href="/introduction-to-dentistry" className="transition hover:opacity-70 border-b-2 pb-0.5" style={{ borderColor: '#9fb2c6' }}>Introduction to Dentistry</a>
+          <a href="/services" className="transition hover:opacity-70">Our services</a>
+          <a href="/gallery" className="transition hover:opacity-70">Gallery</a>
+          <a href="/#contact-section" className="transition hover:opacity-70">Contact us</a>
+        </nav>
+
+        <div className="flex items-center gap-3">
+          {/* লাইট / ডার্ক মোড টগল বাটন */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="font-bold px-4 py-2 rounded-xl shadow-md border transition-all duration-300 flex items-center gap-2 text-xs md:text-sm cursor-pointer select-none"
+            style={{ 
+              backgroundColor: darkMode ? '#ffffff' : '#1a1a1a', 
+              color: darkMode ? '#1a1a1a' : '#ffffff', 
+              borderColor: themeStyles.borderColor 
+            }}
+          >
+            <span>{darkMode ? '☀️ Light' : '🌙 Dark'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
+            className="font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-1.5 text-xs md:text-sm cursor-pointer select-none text-white"
+            style={{ backgroundColor: '#1a1a1a' }}
+          >
+            <span>🌐</span>
+            <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
+          </button>
+
+          <button 
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-2xl p-2 focus:outline-none"
+            style={{ color: themeStyles.textColor }}
+            aria-label="Toggle Menu"
+          >
+            ☰
+          </button>
+        </div>
+      </header>
+
+      {/* মোবাইল ড্রপডাউন মেনু */}
+      {mobileMenuOpen && (
+        <div 
+          className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 p-4 rounded-2xl shadow-2xl border space-y-3 font-bold text-sm"
+          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
         >
-          {lang === 'bn' ? '← হোম পেজে ফিরে যান' : '← Back to Home'}
-        </a>
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg" style={{ backgroundColor: '#1a1a1a', color: '#ffffff' }}>Home</a>
+          <a href="/#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">About us</a>
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Introduction to Dentistry</a>
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Our services</a>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Gallery</a>
+          <a href="/#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Contact us</a>
+        </div>
+      )}
 
-        <button
-          type="button"
-          onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-          className="bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-extrabold px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
-        >
-          <span>🌐</span>
-          <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
-        </button>
-      </div>
-
-      <div className="max-w-4xl mx-auto bg-white/90 dark:bg-[#344246]/95 backdrop-blur-xl p-8 md:p-12 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 relative z-10 space-y-8">
+      {/* মূল কন্টেন্ট সেকশন */}
+      <section className="max-w-7xl mx-auto space-y-8 mb-16">
         
-        <div className="border-b border-[#5A181C]/20 pb-6 text-center md:text-left">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-[#5A181C] dark:text-[#EADCD2] tracking-tight">
-            {lang === 'bn' ? 'ডেন্টিস্ট্রি পরিচিতি' : 'Introduction to Dentistry'}
+        {/* হেডার ব্যানার */}
+        <div 
+          className="p-8 md:p-12 rounded-3xl border shadow-lg text-center space-y-4"
+          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+        >
+          <span 
+            className="text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider inline-block"
+            style={{ backgroundColor: '#1a1a1a' }}
+          >
+            Overview
+          </span>
+          <h1 className="text-3xl md:text-5xl font-black tracking-tight" style={{ color: themeStyles.textColor }}>
+            {content[lang].title}
           </h1>
-          <p className="text-[#8B6B5E] dark:text-[#A89287] font-bold text-lg mt-2">
-            {lang === 'bn' ? 'মৌলিক ধারণা, বিশেষায়িত শাখা এবং বাংলাদেশে ডেন্টাল প্র্যাকটিসের মানদণ্ড' : 'Core concepts, specialized branches, and standards of dental practice in Bangladesh'}
+          <p className="text-sm md:text-base max-w-2xl mx-auto font-medium" style={{ color: themeStyles.subTextColor }}>
+            {content[lang].subtitle}
           </p>
         </div>
 
-        <div className="space-y-6 text-slate-800 dark:text-slate-200 text-base md:text-lg leading-relaxed">
-          
-          <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-[#5A181C] dark:text-teal-300">
-              {lang === 'bn' ? 'ডেন্টিস্ট্রি (Dentistry) কী?' : 'What is Dentistry?'}
-            </h2>
-            <p>
-              {lang === 'bn'
-                ? 'ডেন্টিস্ট্রি হলো চিকিৎসা বিজ্ঞানের একটি বিশেষ শাখা যা মুখগহ্বর (Oral cavity), দাঁত, মাড়ি এবং চোয়ালের বিভিন্ন রোগ নির্ণয়, প্রতিরোধ ও চিকিৎসার সাথে যুক্ত। এটি কেবল সুন্দর হাসির সুরক্ষাই করে না, বরং মানুষের সামগ্রিক শারীরিক সুস্থতা ও পুষ্টি নিশ্চিত করতে প্রধান ভূমিকা পালন করে।'
-                : 'Dentistry is the branch of medicine focused on the diagnosis, prevention, and treatment of diseases and conditions of the oral cavity, teeth, gums, and jaw structures. It plays a vital role in maintaining overall health and well-being.'
-              }
-            </p>
-          </section>
+        {/* প্রধান বিবরণ */}
+        <div 
+          className="p-6 md:p-10 rounded-3xl border shadow-sm space-y-4"
+          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+        >
+          <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
+            {content[lang].introTitle}
+          </h2>
+          <p className="text-sm md:text-base leading-relaxed" style={{ color: themeStyles.subTextColor }}>
+            {content[lang].introDesc}
+          </p>
+        </div>
 
-          <section className="space-y-4 pt-4">
-            <h2 className="text-2xl font-bold text-[#5A181C] dark:text-teal-300">
-              {lang === 'bn' ? 'ডেন্টিস্ট্রির ৫টি প্রধান শাখা ও তাদের কার্যপরিধি' : '5 Major Branches of Dentistry'}
-            </h2>
-            <div className="grid grid-cols-1 gap-4">
-              {branches.map((b, idx) => (
-                <div key={idx} className="bg-[#EADCD2]/50 dark:bg-slate-800/80 p-4 rounded-2xl border border-[#5A181C]/20 shadow-sm">
-                  <h3 className="font-bold text-lg text-[#5A181C] dark:text-amber-200 mb-1">{b.title}</h3>
-                  <p className="text-sm text-slate-700 dark:text-slate-300">{b.desc}</p>
-                </div>
-              ))}
+        {/* পয়েন্টসমূহ (গ্রেডিয়েন্ট বর্ডার সহ বা ফিচার কার্ড স্টাইলে) */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-extrabold text-center" style={{ color: themeStyles.textColor }}>
+            {content[lang].pointsTitle}
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div 
+              className="p-6 rounded-3xl border shadow-sm space-y-3"
+              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+            >
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-md" style={{ backgroundColor: '#1a1a1a' }}>
+                🦷
+              </div>
+              <h3 className="text-lg font-bold" style={{ color: themeStyles.textColor }}>{content[lang].point1Title}</h3>
+              <p className="text-xs md:text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{content[lang].point1Desc}</p>
             </div>
-          </section>
 
-          <section className="space-y-3 pt-4">
-            <h2 className="text-2xl font-bold text-[#5A181C] dark:text-teal-300">
-              {lang === 'bn' ? 'বাংলাদেশে দাঁতের ডাক্তারের ডিগ্রি' : 'Dental Degrees in Bangladesh'}
-            </h2>
-            <p>
-              {lang === 'bn'
-                ? 'বাংলাদেশে সরকারি বা বেসরকারি মেডিকেল ও ডেন্টাল কলেজ থেকে ৫ বছর মেয়াদী ব্যাচেলর অব ডেন্টাল সার্জারি (BDS) ডিগ্রি অর্জন করতে হয়। এরপর ১ বছরের বাধ্যতামূলক ইন্টার্নশিপ সম্পন্ন করার পর ডেন্টাল সার্জন হিসেবে প্র্যাকটিস করার যোগ্যতা অর্জিত হয়। উচ্চশিক্ষার জন্য এফসিপিএস (FCPS), এমএস (MS) ও বিভিন্ন ফেলোশিপ ডিগ্রি রয়েছে।'
-                : 'In Bangladesh, the primary professional degree is Bachelor of Dental Surgery (BDS), which is a 5-year undergraduate program followed by a mandatory 1-year internship. Higher education includes FCPS, MS, and specialized master\'s degrees.'
-              }
-            </p>
-          </section>
+            <div 
+              className="p-6 rounded-3xl border shadow-sm space-y-3"
+              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+            >
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-md" style={{ backgroundColor: '#1a1a1a' }}>
+                🛡️
+              </div>
+              <h3 className="text-lg font-bold" style={{ color: themeStyles.textColor }}>{content[lang].point2Title}</h3>
+              <p className="text-xs md:text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{content[lang].point2Desc}</p>
+            </div>
 
-          <section className="space-y-3 pt-4">
-            <h2 className="text-2xl font-bold text-[#5A181C] dark:text-teal-300">
-              {lang === 'bn' ? 'বিএমডিসি (BMDC) রেজিস্ট্রেশন নম্বর কেন প্রয়োজন?' : 'Why is BMDC Registration Number Necessary?'}
-            </h2>
-            <p>
-              {lang === 'bn'
-                ? 'বাংলাদেশ মেডিকেল অ্যান্ড ডেন্টাল কাউন্সিল (BMDC) হলো দেশের চিকিৎসকদের একমাত্র লাইসেন্সিং অথরিটি। বিএমডিসি রেজিস্ট্রেশন নম্বর থাকা বাধ্যতামূলক কারণ:'
-                : 'Bangladesh Medical and Dental Council (BMDC) is the licensing authority for medical and dental practitioners. A BMDC registration number is necessary because:'
-              }
-            </p>
-            <ul className="list-disc pl-6 space-y-2 text-sm md:text-base">
-              <li>
-                {lang === 'bn' ? 'এটি চিকিৎসকের যোগ্যতার আইনি স্বীকৃতি প্রদান করে।' : 'It provides legal recognition of the doctor\'s qualification.'}
-              </li>
-              <li>
-                {lang === 'bn' ? 'রোগীদের সঠিক ও নিরাপদ চিকিৎসা সেবা প্রাপ্তি নিশ্চিত করে।' : 'It ensures patient safety and prevents malpractice by quacks.'}
-              </li>
-              <li>
-                {lang === 'bn' ? 'সরকারিভাবে বা স্বাধীনভাবে লিগ্যাল প্রেসক্রিপশন লেখার বৈধতা দেয়।' : 'It grants legal authorization to prescribe medications and treatments.'}
-              </li>
-            </ul>
-          </section>
+            <div 
+              className="p-6 rounded-3xl border shadow-sm space-y-3"
+              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+            >
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-md" style={{ backgroundColor: '#1a1a1a' }}>
+                ⭐
+              </div>
+              <h3 className="text-lg font-bold" style={{ color: themeStyles.textColor }}>{content[lang].point3Title}</h3>
+              <p className="text-xs md:text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{content[lang].point3Desc}</p>
+            </div>
 
+          </div>
         </div>
 
-        <div className="pt-6 border-t border-[#5A181C]/20 text-center">
-          <a 
-            href="/#booking-section"
-            className="inline-block bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-bold px-8 py-3.5 rounded-xl shadow-lg transition text-sm"
-          >
-            {lang === 'bn' ? '📅 অ্যাপয়েন্টমেন্ট বুক করুন' : '📅 Book Appointment'}
-          </a>
-        </div>
+      </section>
 
-      </div>
     </main>
   )
 }
