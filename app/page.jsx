@@ -398,37 +398,44 @@ export default function Home() {
     }
   ]
 
+  // why-01.jpeg, why-02.jpeg, why-03.jpeg ফাইলের নামগুলো এখানে সংযুক্ত করা হয়েছে
   const featureBoxes = lang === 'bn' ? [
     {
       icon: '✨',
       title: 'আধুনিক ডেন্টাল কেয়ার',
-      description: 'সর্বাধুনিক যন্ত্রপাতি ও নিরাপদ উপায়ে পেইনলেস ডেন্টাল ট্রিটমেন্ট নিশ্চিত করা হয়।'
+      description: 'সর্বাধুনিক যন্ত্রপাতি ও নিরাপদ উপায়ে পেইনলেস ডেন্টাল ট্রিটমেন্ট নিশ্চিত করা হয়।',
+      bgImage: '/why-01.jpeg'
     },
     {
       icon: '🛡️',
       title: 'জীবাণুমুক্ত পরিবেশ',
-      description: 'অটোক্লেভ ও উন্নত স্টেরিলাইজেশন প্রযুক্তির মাধ্যমে শতভাগ সংক্রমণমুক্ত পরিবেশ।'
+      description: 'অটোক্লেভ ও উন্নত স্টেরিলাইজেশন প্রযুক্তির মাধ্যমে শতভাগ সংক্রমণমুক্ত পরিবেশ।',
+      bgImage: '/why-02.jpeg'
     },
     {
       icon: '⭐',
       title: 'অভিজ্ঞ কনসালটেশন',
-      description: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সঠিক রোগ নির্ণয়।'
+      description: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সঠিক রোগ নির্ণয়।',
+      bgImage: '/why-03.jpeg'
     }
   ] : [
     {
       icon: '✨',
       title: 'Modern Dental Care',
-      description: 'Ensuring painless dental treatment using advanced equipment and safe procedures.'
+      description: 'Ensuring painless dental treatment using advanced equipment and safe procedures.',
+      bgImage: '/why-01.jpeg'
     },
     {
       icon: '🛡️',
       title: 'Sterilized Environment',
-      description: '100% infection-free environment through autoclave and advanced sterilization technology.'
+      description: '100% infection-free environment through autoclave and advanced sterilization technology.',
+      bgImage: '/why-02.jpeg'
     },
     {
       icon: '⭐',
       title: 'Expert Consultation',
-      description: 'Accurate diagnosis under the close supervision of an experienced Chattogram Medical College surgeon.'
+      description: 'Accurate diagnosis under the close supervision of an experienced Chattogram Medical College surgeon.',
+      bgImage: '/why-03.jpeg'
     }
   ]
 
@@ -498,7 +505,6 @@ export default function Home() {
         </nav>
 
         <div className="flex items-center gap-3">
-          {/* লাইট / ডার্ক মোড সুইচার বাটন */}
           <button
             type="button"
             onClick={toggleTheme}
@@ -867,7 +873,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৭. "কেন আপনার জন্য আমরাই?" - বর্ডারহীন সংযুক্ত ৩টি কালারের গ্রেডিয়েন্ট সমৃদ্ধ বক্স সেকশন */}
+      {/* ৭. "কেন আপনার জন্য আমরাই?" - বর্ডারহীন সংযুক্ত ৩টি বক্স (ব্যাকগ্রাউন্ড ছবি ও সাদা বক্স সহ) */}
       <section className="max-w-7xl mx-auto mb-10">
         <div className="text-center mb-6">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
@@ -875,22 +881,31 @@ export default function Home() {
           </h2>
         </div>
 
+        {/* গ্রেডিয়েন্ট বর্ডার মোড়ক */}
         <div className="p-1 rounded-[2.5xl] shadow-xl bg-gradient-to-r from-[#1a1a1a] via-[#9fb2c6] to-[#d9dee3]">
-          <div className="grid grid-cols-1 md:grid-cols-3 rounded-[2.3rem] overflow-hidden bg-[#9fb2c6]">
+          <div className="grid grid-cols-1 md:grid-cols-3 rounded-[2.3rem] overflow-hidden">
             {featureBoxes.map((box, index) => (
               <div 
                 key={index} 
-                className={`p-6 md:p-8 flex flex-col justify-between space-y-4 ${
-                  index !== featureBoxes.length - 1 ? 'border-b md:border-b-0 md:border-r border-[#1a1a1a]/20' : ''
-                }`}
+                className="relative p-6 md:p-8 flex flex-col justify-between space-y-4 bg-cover bg-center overflow-hidden"
+                style={{ 
+                  backgroundImage: `url(${box.bgImage})`,
+                }}
               >
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-md" style={{ backgroundColor: '#1a1a1a' }}>
-                  {box.icon}
+                {/* ছবির ওপর হালকা ওভারলে এবং ভেতরের মূল বক্সটি সাদা (#ffffff) ব্যাকগ্রাউন্ড */}
+                <div className="absolute inset-0 bg-black/10"></div>
+                
+                <div className="relative z-10 bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-md border border-slate-200 flex flex-col justify-between space-y-4 h-full">
+                  <div>
+                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-md mb-4" style={{ backgroundColor: '#1a1a1a' }}>
+                      {box.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">{box.title}</h3>
+                    <p className="text-sm leading-relaxed text-slate-700">
+                      {box.description}
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-slate-900">{box.title}</h3>
-                <p className="text-sm leading-relaxed text-slate-800">
-                  {box.description}
-                </p>
               </div>
             ))}
           </div>
