@@ -14,6 +14,9 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  // রিয়েল-টাইম চেম্বার স্ট্যাটাস স্টেট (বিল্ড এরর এড়াতে)
+  const [chamberStatusText, setChamberStatusText] = useState('')
+
   // চেম্বার বন্ধ থাকার নোটিশ পপ-আপ স্টেট
   const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
   const [chamberNotice, setChamberNotice] = useState({
@@ -87,7 +90,28 @@ export default function Home() {
     }
   }
 
+  // ক্লায়েন্ট সাইডে সময় চেক করার জন্য useEffect
   useEffect(() => {
+    const checkChamberStatus = () => {
+      const now = new Date()
+      const day = now.getDay() // 5 হলো শুক্রবার
+      const hours = now.getHours()
+      const minutes = now.getMinutes()
+      const currentTimeInMinutes = hours * 60 + minutes
+
+      // বিকেল ৪:০০ টা = 960 মিনিট, রাত ৯:৩০ টা = 1290 মিনিট
+      const isOpenTime = day !== 5 && currentTimeInMinutes >= 960 && currentTimeInMinutes <= 1290
+
+      if (lang === 'bn') {
+        setChamberStatusText(isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে')
+      } else {
+        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🔴 Chamber is currently CLOSED')
+      }
+    }
+
+    checkChamberStatus()
+    const interval = setInterval(checkChamberStatus, 60000) // প্রতি ১ মিনিটে আপডেট হবে
+
     const isDark = localStorage.getItem('theme') === 'dark' ||
       (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
      
@@ -100,7 +124,9 @@ export default function Home() {
 
     fetchBookingsCount()
     fetchLiveNotice()
-  }, [])
+
+    return () => clearInterval(interval)
+  }, [lang])
 
   useEffect(() => {
     const dates = []
@@ -158,25 +184,6 @@ export default function Home() {
     }
     setAvailableDates(dates)
   }, [lang])
-
-  // রিয়েল-টাইম চেম্বার খোলা/বন্ধ স্ট্যাটাস নির্ধারণ (শুক্রবার বাদে বিকেল ৪টা থেকে রাত ৯:৩০ টা)
-  const getDynamicChamberStatus = () => {
-    const now = new Date()
-    const day = now.getDay() // 5 হলো শুক্রবার
-    const hours = now.getHours()
-    const minutes = now.getMinutes()
-    const currentTimeInMinutes = hours * 60 + minutes
-
-    // বিকেল ৪:০০ টা = 16 * 60 = 960 মিনিট
-    // রাত ৯:৩০ টা = 21 * 60 + 30 = 1290 মিনিট
-    const isOpenTime = day !== 5 && currentTimeInMinutes >= 960 && currentTimeInMinutes <= 1290
-
-    if (lang === 'bn') {
-      return isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে';
-    } else {
-      return isOpenTime ? '🟢 Chamber is currently OPEN' : '🔴 Chamber is currently CLOSED';
-    }
-  }
 
   const toggleTheme = () => {
     if (darkMode) {
@@ -386,7 +393,6 @@ export default function Home() {
     }
   ]
 
-  // দ্বিতীয় বক্সের কালার (#9fb2c6) দিয়ে তৈরি বর্ডারহীন সংযুক্ত ফিচার বক্সগুলো
   const featureBoxes = lang === 'bn' ? [
     {
       icon: '✨',
@@ -439,7 +445,7 @@ export default function Home() {
       style={{ backgroundColor: '#d9dee3' }}
     >
       
-      {/* ১. টপ নোটিশ বা ব্যানার (এডমিন নোটিশ থাকলে সেটি দেখাবে, না থাকলে রিয়েল-টাইম চেম্বার স্ট্যাটাস দেখাবে) */}
+      {/* ১. টপ নোটিশ বা ব্যানার */}
       <div 
         className="max-w-7xl mx-auto mb-6 text-slate-900 py-3 px-4 rounded-2xl text-center text-xs md:text-sm font-bold tracking-wide shadow-md flex items-center justify-center gap-2 border"
         style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
@@ -453,7 +459,7 @@ export default function Home() {
         <span className="text-slate-900 font-extrabold">
           {chamberNotice.isClosed 
             ? (lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn)
-            : getDynamicChamberStatus()}
+            : chamberStatusText}
         </span>
       </div>
 
@@ -487,7 +493,6 @@ export default function Home() {
         </nav>
 
         <div className="flex items-center gap-3">
-          {/* স্পষ্ট ও দৃশ্যমান লাইট/ডার্ক মোড টগল বাটন */}
           <button
             type="button"
             onClick={toggleTheme}
@@ -854,7 +859,6 @@ export default function Home() {
           </h2>
         </div>
 
-        {/* কাছাকাছি ৩টি কালারের গ্রেডিয়েন্ট বর্ডার মোড়ক */}
         <div className="p-1 rounded-[2.5xl] shadow-xl bg-gradient-to-r from-[#1a1a1a] via-[#9fb2c6] to-[#d9dee3]">
           <div className="grid grid-cols-1 md:grid-cols-3 rounded-[2.3rem] overflow-hidden bg-[#9fb2c6]">
             {featureBoxes.map((box, index) => (
