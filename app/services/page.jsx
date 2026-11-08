@@ -1,235 +1,383 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 export default function ServicesPage() {
   const [lang, setLang] = useState('bn')
-  const [darkMode, setDarkMode] = useState(false)
-  const [currentYear, setCurrentYear] = useState('2026')
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme')
-    const isDark = savedTheme === 'dark'
-    setDarkMode(isDark)
-    setCurrentYear(new Date().getFullYear().toString())
-  }, [])
-
-  const toggleTheme = () => {
-    const nextMode = !darkMode
-    setDarkMode(nextMode)
-    localStorage.setItem('theme', nextMode ? 'dark' : 'light')
-  }
-
-  // থিম কালার (ছবিটির পেস্টেল মিন্ট ও ক্লিন থিম থেকে অনুপ্রাণিত)
-  const themeStyles = darkMode ? {
-    bgMain: '#0f172a',
-    cardBg: '#1e293b',
-    textColor: '#f8fafc',
-    subTextColor: '#94a3b8',
-    borderColor: '#334155',
-    accentBg: '#0f2942'
-  } : {
-    bgMain: '#f4f9f6',
-    cardBg: '#ffffff',
-    textColor: '#0f2922',
-    subTextColor: '#4a6b5d',
-    borderColor: '#d0e5d8',
-    accentBg: '#e2f0e8'
-  }
-
-  const content = {
-    bn: {
-      badge: 'প্রিমিয়াম ডেন্টাল সেবা',
-      title: 'আমাদের ডেন্টাল সার্ভিসসমূহ',
-      subtitle: 'সর্বাধুনিক প্রযুক্তি এবং শতভাগ জীবাণুমুক্ত পরিবেশে আপনার দাঁতের সুস্বাস্থ্য ও সুন্দর হাসি নিশ্চিত করতে আমরা প্রতিজ্ঞাবদ্ধ।',
-      backHome: '← হোম পেজে ফিরে যান',
-      servicesList: [
-        {
-          title: 'রুট ক্যানাল ট্রিটমেন্ট (RCT)',
-          desc: 'সংক্রমিত বা ক্ষতিগ্রস্থ দাঁতের ভেতরের নার্ভ ও রক্তনালী নিরাপদে পরিষ্কার করে দাঁত রক্ষা করার সর্বাধুনিক চিকিৎসা।',
-          icon: '🦷'
-        },
-        {
-          title: 'স্কেলিং ও মাড়ির চিকিৎসা',
-          desc: 'দাঁতের জমে থাকা টারটার, প্লাক ও দাগ দূর করে মাড়ি সুস্থ ও রক্তপড়া বন্ধ রাখার পেশাদার যত্ন।',
-          icon: '✨'
-        },
-        {
-          title: 'দাঁত ফিলিং ও রেস্টোরেশন',
-          desc: 'ক্ষয় হওয়া বা গর্ত হওয়া দাঁতে লাইট কিউর ফিলিংয়ের মাধ্যমে স্বাভাবিক রূপ ও কার্যক্ষমতা ফিরিয়ে আনা।',
-          icon: '💎'
-        },
-        {
-          title: 'ক্রাউন এবং ব্রিজ (Crown & Bridge)',
-          desc: 'ভাঙা বা রুট ক্যানাল করা দাঁতের সুরক্ষায় টেকসই জিরকোনিয়া ও মেটাল-সিরামিক ক্রাউন সংযোজন।',
-          icon: '🛡️'
-        },
-        {
-          title: 'দাঁত তোলা (Extraction)',
-          desc: 'অতিরিক্ত ক্ষতিগ্রস্থ বা আক্কেল দাঁত (Wisdom tooth) সম্পূর্ণ পেইনলেস ও নিরাপদ উপায়ে অপসারণ।',
-          icon: '🩺'
-        },
-        {
-          title: 'কসমেটিক ডেন্টিস্ট্রি',
-          desc: 'হলদে দাঁত হোয়াইটিং এবং সুন্দর স্মাইল ডিজাইনিংয়ের মাধ্যমে আকর্ষণীয় হাসি নিশ্চিতকরণ।',
-          icon: '😁'
-        }
-      ]
+  const servicesList = [
+    {
+      id: 'ser-01',
+      badgeBn: 'প্রাথমিক সেবা',
+      badgeEn: 'Primary Care',
+      nameBn: 'নিয়মিত দাঁতের চেকাপ (Regular Dental Checkup)',
+      nameEn: 'Regular Dental Checkup',
+      descBn: 'দাঁত ও মাড়ির যেকোনো সমস্যা প্রাথমিক অবস্থায় শনাক্ত করতে এবং সুস্থ মুখগহ্বর বজায় রাখতে নিয়মিত রুটিন চেকআপ।',
+      descEn: 'Routine dental checkup to detect early signs of dental issues and maintain optimal oral health.',
+      timeBn: '১০-১৫ মিনিট',
+      timeEn: '10-15 mins'
     },
-    en: {
-      badge: 'PREMIUM DENTAL SERVICES',
-      title: 'Our Dental Services',
-      subtitle: 'We are committed to ensuring your dental health and a beautiful smile with cutting-edge technology and a 100% sterile environment.',
-      backHome: '← Back to Home',
-      servicesList: [
-        {
-          title: 'Root Canal Treatment (RCT)',
-          desc: 'Advanced treatment to safely clean infected nerves and blood vessels inside damaged teeth.',
-          icon: '🦷'
-        },
-        {
-          title: 'Scaling & Gum Treatment',
-          desc: 'Professional care to remove tartar, plaque, and stains, keeping gums healthy and stopping bleeding.',
-          icon: '✨'
-        },
-        {
-          title: 'Tooth Filling & Restoration',
-          desc: 'Restoring decayed or cavity teeth to their natural shape and function using light-cure filling.',
-          icon: '💎'
-        },
-        {
-          title: 'Crown & Bridge',
-          desc: 'Durable Zirconia and PFM crowns to protect broken or root-canaled teeth.',
-          icon: '🛡️'
-        },
-        {
-          title: 'Tooth Extraction',
-          desc: 'Painless and safe removal of severely damaged or wisdom teeth.',
-          icon: '🩺'
-        },
-        {
-          title: 'Cosmetic Dentistry',
-          desc: 'Ensuring an attractive smile through teeth whitening and smile designing.',
-          icon: '😁'
-        }
-      ]
+    {
+      id: 'ser-02',
+      badgeBn: 'পরামর্শ সেবা',
+      badgeEn: 'Consultation',
+      nameBn: 'পেশেন্ট কাউন্সেলিং (Patient Counseling)',
+      nameEn: 'Patient Counseling',
+      descBn: 'রোগীর যেকোনো জটিল ডেন্টাল সমস্যা ও ভীতি দূর করতে এবং সঠিক মৌখিক স্বাস্থ্যবিধি বজায় রাখতে বিস্তারিত পরামর্শ প্রদান।',
+      descEn: 'Detailed consultation and guidance to alleviate patient anxiety and maintain optimal oral hygiene.',
+      timeBn: '১৫-২০ মিনিট',
+      timeEn: '15-20 mins'
+    },
+    {
+      id: 'ser-03',
+      badgeBn: 'পপুলার ট্রিটমেন্ট',
+      badgeEn: 'Popular Treatment',
+      nameBn: 'রুট ক্যানাল ট্রিটমেন্ট (Root Canal Treatment)',
+      nameEn: 'Root Canal Treatment',
+      descBn: 'সংক্রমিত বা ক্ষতিগ্রস্থ দাঁতের ভেতরের নার্ভ ও রক্তনালী পরিষ্কার করে দাঁত বাঁচানোর আধুনিক চিকিৎসা।',
+      descEn: 'Modern treatment to save a damaged tooth by cleaning infected pulp and nerves inside.',
+      timeBn: '১৫-২০ মিনিট',
+      timeEn: '15-20 mins'
+    },
+    {
+      id: 'ser-04',
+      badgeBn: 'প্রিমিয়াম ক্যাটাগরি',
+      badgeEn: 'Premium Choice',
+      nameBn: 'জিরকনিয়া ক্রাউন/ক্যাপ (Zirconia Crown)',
+      nameEn: 'Zirconia Crown/Cap',
+      descBn: 'সর্বাধুনিক প্রযুক্তির অত্যন্ত শক্তিশালী ও দেখতে একদম প্রাকৃতিক দাঁতের মতো প্রিমিয়াম ক্রাউন।',
+      descEn: 'State-of-the-art, highly durable, and natural-looking premium ceramic crown.',
+      timeBn: '১৫ মিনিট (প্রতি ভিজিট)',
+      timeEn: '15 mins (Per Visit)'
+    },
+    {
+      id: 'ser-05',
+      badgeBn: 'স্ট্যান্ডার্ড ক্যাপ',
+      badgeEn: 'Standard Crown',
+      nameBn: 'মেটাল-সিরামিক (PFM) ক্রাউন/ক্যাপ',
+      nameEn: 'Metal-Ceramic (PFM) Crown/Cap',
+      descBn: 'রুট ক্যানাল বা দুর্বল দাঁতের সুরক্ষায় এবং স্থায়িত্ব বাড়াতে টেকসই মেটাল ও সিরামিকের সংমিশ্রণে তৈরি ক্যাপ।',
+      descEn: 'Durable metal and ceramic combination cap for protection after root canal or weak teeth.',
+      timeBn: '১৫ মিনিট (প্রতি ভিজিট)',
+      timeEn: '15 mins (Per Visit)'
+    },
+    {
+      id: 'ser-06',
+      badgeBn: 'টুথ কালার ফিলিং',
+      badgeEn: 'Tooth Colored',
+      nameBn: 'কম্পোজিট ফিলিং (Composite Filling)',
+      nameEn: 'Composite Filling',
+      descBn: 'দাঁতের ক্যাভিটি বা ক্ষয় রোধে দাঁতের রঙের সাথে মিলিয়ে নিখুঁতভাবে ফিলিং করা।',
+      descEn: 'Tooth-colored filling to repair cavities and restore natural appearance.',
+      timeBn: '১৫-২০ মিনিট',
+      timeEn: '15-20 mins'
+    },
+    {
+      id: 'ser-07',
+      badgeBn: 'স্ট্যান্ডার্ড ফিলিং',
+      badgeEn: 'Standard Filling',
+      nameBn: 'জি.আই ফিলিং (G.I. Filling)',
+      nameEn: 'G.I. Filling',
+      descBn: 'দাঁতের চিকিৎসায় ব্যবহৃত গ্লাস আয়োনোমার সিমেন্ট ফিলিং, যা দাঁতের সুরক্ষায় অত্যন্ত কার্যকর।',
+      descEn: 'Glass Ionomer cement filling used for standard cavity protection.',
+      timeBn: '২০ মিনিট',
+      timeEn: '20 mins'
+    },
+    {
+      id: 'ser-08',
+      badgeBn: 'এক ভিজিটে ফিক্সড দাঁত',
+      badgeEn: 'Single Visit Fixed',
+      nameBn: 'ফাইবার রি-ইনফোর্সড কম্পোজিট ব্রিজ (Fiber-Reinforced Composite Bridge)',
+      nameEn: 'Fiber-Reinforced Composite Bridge',
+      descBn: 'হারিয়ে যাওয়া দাঁতের দুই পাশের দাঁতের সাহায্যে বিশেষ ফাইবার ও কম্পোজিট রজন ব্যবহার করে এক ভিজিটে ফিক্সড কৃত্রিম দাঁত সংযোজন।',
+      descEn: 'Single-visit fixed tooth replacement using high-strength fiber and composite resin supported by adjacent teeth.',
+      timeBn: '৩০-৪৫ মিনিট',
+      timeEn: '30-45 mins'
+    },
+    {
+      id: 'ser-09',
+      badgeBn: 'স্থায়ী সমাধান',
+      badgeEn: 'Permanent Solution',
+      nameBn: 'ইমপ্ল্যান্ট (Dental Implant)',
+      nameEn: 'Dental Implant',
+      descBn: 'হারিয়ে যাওয়া দাঁতের শেকড়ের জায়গায় টাইটানিয়াম ফিক্সড কৃত্রিম দাঁত প্রতিস্থাপনের সর্বাধুনিক ও স্থায়ী সমাধান।',
+      descEn: 'Advanced permanent tooth replacement using titanium fixtures embedded into the jawbone.',
+      timeBn: '৪৫-৯০ মিনিট',
+      timeEn: '45-90 mins'
+    },
+    {
+      id: 'ser-10',
+      badgeBn: 'আঁকাবাঁকা দাঁতের চিকিৎসা',
+      badgeEn: 'Teeth Alignment',
+      nameBn: 'বাঁকা দাঁতের অর্থোডন্টিক কারেকশন (Orthodontic Correction)',
+      nameEn: 'Orthodontic Correction (Braces)',
+      descBn: 'ব্রেসেস বা আধুনিক অ্যালাইনারের সাহায্যে আঁকাবাঁকা ও ফাঁকা দাঁত সোজা করে হাসির সৌন্দর্য ও কামড় ঠিক করা।',
+      descEn: 'Realignment of crooked or spaced teeth using braces or aligners for ideal occlusion and aesthetics.',
+      timeBn: '৩০ মিনিট (প্রতি ভিজিট)',
+      timeEn: '30 mins (Per Visit)'
+    },
+    {
+      id: 'ser-11',
+      badgeBn: 'কসমেটিক ডেন্টিস্ট্রি',
+      badgeEn: 'Cosmetic Dentistry',
+      nameBn: 'মিড-ডায়াস্টেমা ক্লোজ (Front Tooth Gap Closing)',
+      nameEn: 'Mid-Diastema Closure',
+      descBn: 'সামনের দুই দাঁতের মাঝখানের ফাঁকা জায়গা সুন্দরভাবে বন্ধ করার চিকিৎসা।',
+      descEn: 'Aesthetic cosmetic procedure to close gaps between front teeth.',
+      timeBn: '৩০ মিনিট',
+      timeEn: '30 mins'
+    },
+    {
+      id: 'ser-12',
+      badgeBn: 'পেইনলেস সার্ভিস',
+      badgeEn: 'Painless Care',
+      nameBn: 'নরমাল এক্সট্রাকশন (Normal Tooth Extraction)',
+      nameEn: 'Normal Tooth Extraction',
+      descBn: 'অতিরিক্ত ক্ষতিগ্রস্থ বা নড়বড়ে দাঁত নিরাপদে ও পেইনলেসভাবে অপসারণ করা।',
+      descEn: 'Safe and painless removal of severely decayed or loose teeth.',
+      timeBn: '১৫ মিনিট',
+      timeEn: '15 mins'
+    },
+    {
+      id: 'ser-13',
+      badgeBn: 'সার্জারি সেবা',
+      badgeEn: 'Oral Surgery',
+      nameBn: 'সার্জিক্যাল এক্সট্রাকশন (Wisdom Tooth Surgery)',
+      nameEn: 'Surgical Extraction (Wisdom Tooth)',
+      descBn: 'আঁকাবাঁকা বা মাড়ির ভেতরে আটকে থাকা আককেল দাঁত বা জটিল দাঁত অপারেশনের মাধ্যমে অপসারণ।',
+      descEn: 'Surgical removal of impacted wisdom teeth or complex dental structures.',
+      timeBn: '৩০-৬০ মিনিট',
+      timeEn: '30-60 mins'
+    },
+    {
+      id: 'ser-14',
+      badgeBn: 'শিশুদের সেবা',
+      badgeEn: 'Pediatric Care',
+      nameBn: 'বাচ্চাদের ফিলিং ও দাঁত তোলা (Pediatric Dentistry)',
+      nameEn: 'Pediatric Dental Care',
+      descBn: 'ছোটদের দুধ দাঁতের সমস্যা সমাধান এবং শিশুদের উপযোগী কোমল ডেন্টাল কেয়ার।',
+      descEn: 'Gentle dental fillings and extractions specially tailored for children.',
+      timeBn: '১০-২০ মিনিট',
+      timeEn: '10-20 mins'
+    },
+    {
+      id: 'ser-15',
+      badgeBn: 'হাইজিন সেবা',
+      badgeEn: 'Hygiene Care',
+      nameBn: 'স্কেলিং ও পলিশিং (Scaling & Polishing)',
+      nameEn: 'Scaling & Polishing',
+      descBn: 'দাঁতে জমে থাকা টাটার, প্লাক ও দাগ দূর করে মাড়ি সুস্থ ও মুখগহ্বর সতেজ রাখা।',
+      descEn: 'Professional cleaning to remove tartar, plaque, and stains for healthy gums.',
+      timeBn: '২০-২৫ মিনিট',
+      timeEn: '20-25 mins'
+    },
+    {
+      id: 'ser-16',
+      badgeBn: 'আর্টিফিশিয়াল সেট',
+      badgeEn: 'Prosthetics',
+      nameBn: 'ফ্লেক্সিবল ও হিট কিউর ডেঞ্চার',
+      nameEn: 'Flexible & Heat Cure Dentures',
+      descBn: 'হারিয়ে যাওয়া দাঁতের পরিবর্তে আরামদায়ক ও নমনীয় কৃত্রিম আর্টিফিশিয়াল দাঁতের সেট বা ডেনচার।',
+      descEn: 'Removable artificial teeth appliances designed for comfort and mastication.',
+      timeBn: '১৫ মিনিট (প্রতি ভিজিট)',
+      timeEn: '15 mins (Per Visit)'
+    },
+    {
+      id: 'ser-17',
+      badgeBn: 'নাইট গার্ড',
+      badgeEn: 'Teeth Protection',
+      nameBn: 'নাইট গার্ড (Night Guard)',
+      nameEn: 'Night Guard',
+      descBn: 'ঘুমের সময় দাঁত কিড়মিড় করার অভ্যাস (Bruxism) থেকে দাঁতকে সুরক্ষার বিশেষ ট্রের ব্যবস্থা।',
+      descEn: 'Custom protective appliance to prevent tooth damage from nighttime teeth grinding.',
+      timeBn: '১৫ মিনিট (প্রতি ভিজিট)',
+      timeEn: '15 mins (Per Visit)'
+    },
+    {
+      id: 'ser-18',
+      badgeBn: 'উজ্জ্বল হাসি',
+      badgeEn: 'Smile Brightening',
+      nameBn: 'টুথ হোয়াইটেনিং (Tooth Whitening)',
+      nameEn: 'Tooth Whitening (Bleaching)',
+      descBn: 'আধুনিক ও নিরাপদ প্রযুক্তির সাহায্যে হলুদ বা দাগযুক্ত দাঁত উজ্জ্বল, সাদা ও আকর্ষণীয় করে তোলার কসমেটিক সেবা।',
+      descEn: 'Professional whitening treatment to remove stains and brighten your smile safely.',
+      timeBn: '৩০-৪৫ মিনিট',
+      timeEn: '30-45 mins'
+    },
+    {
+      id: 'ser-19',
+      badgeBn: 'ডিজিটাল ইমেজিং',
+      badgeEn: 'Digital Imaging',
+      nameBn: 'ডিজিটাল ডেন্টাল এক্স-রে (RVG)',
+      nameEn: 'Digital Dental X-Ray (RVG)',
+      descBn: 'কম রেডিয়েশনের অত্যন্ত নিখুঁত ও আধুনিক রেডিওগ্রাফি প্রযুক্তি, যার মাধ্যমে দাঁতের ভেতরের অবস্থা তাৎক্ষণিকভাবে স্ক্রিনে দেখা যায়।',
+      descEn: 'Low-radiation advanced digital RVG imaging for accurate and instant dental diagnosis.',
+      timeBn: '৫-১০ মিনিট',
+      timeEn: '5-10 mins'
+    },
+    {
+      id: 'ser-20',
+      badgeBn: 'অ্যাডভান্সড সার্জারি',
+      badgeEn: 'Advanced Surgery',
+      nameBn: 'সিস্ট ইনিউক্লিয়েশন (Cyst Enucleation)',
+      nameEn: 'Cyst Enucleation',
+      descBn: 'মুখগহ্বর বা চোয়ালের ভেতরে তৈরি হওয়া তরলপূর্ণ সিস্ট বা থলি সফলভাবে অপারেশনের মাধ্যমে সম্পূর্ণ অপসারণের চিকিৎসা।',
+      descEn: 'Surgical removal of fluid-filled cysts or lesions developing within the jaws or oral cavity.',
+      timeBn: '৪৫-৬০ মিনিট',
+      timeEn: '45-60 mins'
+    },
+    {
+      id: 'ser-21',
+      badgeBn: 'বিশেষায়িত চিকিৎসা',
+      badgeEn: 'Specialized Care',
+      nameBn: 'দীর্ঘস্থায়ী ঘা ও প্রি-ক্যান্সারাস লেশনের চিকিৎসা',
+      nameEn: 'Long-standing Sores & Pre-cancerous Lesions Treatment',
+      descBn: 'মুখে দীর্ঘদিনের না ভালো হওয়া ঘা, সাদা বা লাল প্যাচ এবং প্রি-ক্যান্সারাস অবস্থা নির্ণয় ও যথাযথ চিকিৎসা প্রদান।',
+      descEn: 'Diagnosis and clinical management of chronic oral ulcers, white/red patches, and pre-cancerous conditions.',
+      timeBn: '৩০-৪৫ মিনিট',
+      timeEn: '30-45 mins'
     }
-  }
-
-  const t = content[lang]
+  ]
 
   return (
-    <main 
-      className="min-h-screen transition-all duration-300 font-sans"
-      style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
-    >
-      {/* টপ ন্যাভ বার */}
-      <header 
-        className="sticky top-0 z-50 px-4 md:px-12 py-4 shadow-sm flex items-center justify-between border-b backdrop-blur-md transition-all"
-        style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
-      >
-        <div className="flex items-center gap-3">
-          <a href="/" className="w-10 h-10 rounded-xl bg-[#2d6a4f] text-white flex items-center justify-center text-xl font-bold shadow-md">
-            🦷
+    <main className="min-h-screen bg-[#F4F9F9] dark:bg-[#081C24] text-slate-800 dark:text-slate-100 transition-colors duration-200">
+      
+      {/* ১. টপ নোটিশ ব্যানার (Bethesda & Dentiva Inspired Top Bar) */}
+      <div className="bg-[#0E3A5D] text-white py-2.5 px-4 text-center text-xs md:text-sm font-medium tracking-wide shadow-md flex items-center justify-center gap-2">
+        <span className="bg-[#00A896] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Notice</span>
+        <span>
+          {lang === 'bn' 
+            ? 'জরুরি বা রুটিন ডেন্টাল অ্যাপয়েন্টমেন্টের জন্য আজই আমাদের সাথে যোগাযোগ করুন।' 
+            : 'Contact us today for emergency or routine dental appointments.'}
+        </span>
+      </div>
+
+      {/* ২. হেডার এবং ন্যাভিগেশন বার */}
+      <header className="sticky top-0 z-50 bg-white/90 dark:bg-[#081C24]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#0E3A5D] flex items-center justify-center text-white text-xl font-black shadow-md">
+              🦷
+            </div>
+            <div>
+              <span className="font-extrabold text-[#0E3A5D] dark:text-[#00A896] text-lg md:text-xl tracking-tight block leading-none">
+                Dr. Sakib
+              </span>
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest block pt-0.5">
+                Dental Care
+              </span>
+            </div>
           </a>
-          <div className="flex flex-col">
-            <span className="font-black text-lg md:text-xl tracking-tight" style={{ color: themeStyles.textColor }}>
-              Dr. Sakib Dental Care
-            </span>
+
+          <div className="flex items-center gap-3 md:gap-4">
+            <a 
+              href="/"
+              className="text-xs md:text-sm font-bold text-[#0E3A5D] dark:text-slate-200 hover:text-[#00A896] dark:hover:text-[#00A896] transition hidden sm:block"
+            >
+              {lang === 'bn' ? '← হোম পেজ' : '← Home'}
+            </a>
+
+            <button
+              type="button"
+              onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
+              className="bg-[#0E3A5D] hover:bg-[#0B2545] text-white font-extrabold px-4 py-2 rounded-xl text-xs md:text-sm shadow-md transition flex items-center gap-1.5 cursor-pointer"
+            >
+              <span>🌐</span>
+              <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
+            </button>
           </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <a 
-            href="/"
-            className="text-xs md:text-sm font-bold px-4 py-2 rounded-full border transition hover:opacity-80"
-            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
-            {t.backHome}
-          </a>
-
-          <button
-            type="button"
-            onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-            className="font-bold px-3 py-2 rounded-lg border text-xs cursor-pointer"
-            style={{ borderColor: themeStyles.borderColor }}
-          >
-            {lang === 'bn' ? 'English' : 'বাংলা'}
-          </button>
-
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="p-2 rounded-lg border text-xs cursor-pointer"
-            style={{ borderColor: themeStyles.borderColor }}
-          >
-            {darkMode ? '☀️' : '🌙'}
-          </button>
         </div>
       </header>
 
-      {/* হিরো ও হেডার সেকশন */}
-      <section className="max-w-7xl mx-auto px-4 md:px-12 pt-12 pb-16">
-        <div 
-          className="rounded-3xl p-8 md:p-16 border shadow-sm relative overflow-hidden transition-all duration-300"
-          style={{ backgroundColor: themeStyles.accentBg, borderColor: themeStyles.borderColor }}
-        >
-          <div className="absolute right-[-20px] bottom-[-20px] opacity-10 text-9xl pointer-events-none">
-            🦷
-          </div>
-
-          <div className="max-w-3xl space-y-6 relative z-10">
-            <span className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full bg-[#2d6a4f] text-white shadow-sm">
-              {t.badge}
-            </span>
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
-              {t.title}
-            </h1>
-            <p className="text-base md:text-lg font-medium leading-relaxed" style={{ color: themeStyles.subTextColor }}>
-              {t.subtitle}
-            </p>
-          </div>
+      {/* ৩. পেজের হেডার / হিরো সেকশন */}
+      <section className="bg-gradient-to-b from-[#0E3A5D]/10 to-transparent dark:from-[#0E3A5D]/30 py-12 px-4 md:px-8">
+        <div className="max-w-4xl mx-auto text-center space-y-3">
+          <span className="inline-block bg-[#00A896]/10 text-[#00A896] text-xs font-bold px-3 py-1 rounded-full border border-[#00A896]/30 uppercase tracking-wider">
+            {lang === 'bn' ? 'আমাদের ডেন্টাল সেবাসমূহ' : 'Clinical Specialties'}
+          </span>
+          <h1 className="text-3xl md:text-5xl font-black text-[#0E3A5D] dark:text-white tracking-tight">
+            {lang === 'bn' ? 'আধুনিক ও ব্যথামুক্ত ডেন্টাল সেবা' : 'Comprehensive & Painless Dental Care'}
+          </h1>
+          <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            {lang === 'bn' 
+              ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আধুনিক প্রযুক্তির সাহায্যে সুনির্দিষ্ট ও নিরাপদ সেবা প্রদান করা হয়।' 
+              : 'Providing precise, hygienic, and state-of-the-art dental procedures using modern technology.'}
+          </p>
         </div>
       </section>
 
-      {/* সার্ভিস কার্ড সেকশন */}
-      <section className="max-w-7xl mx-auto px-4 md:px-12 pb-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {t.servicesList.map((service, index) => (
+      {/* ৪. প্রধান সার্ভিস গ্রিড সেকশন */}
+      <section className="max-w-7xl mx-auto px-4 md:px-8 pb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {servicesList.map((service) => (
             <div 
-              key={index}
-              className="p-8 rounded-3xl border shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between space-y-4"
-              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+              key={service.id} 
+              className="bg-white dark:bg-[#102A36] rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col justify-between group"
             >
-              <div className="space-y-4">
-                <div className="w-14 h-14 rounded-2xl bg-[#2d6a4f]/10 text-[#2d6a4f] flex items-center justify-center text-2xl shadow-inner">
-                  {service.icon}
+              {/* ছবির অংশ */}
+              <div className="w-full h-52 bg-slate-100 dark:bg-slate-800 relative overflow-hidden">
+                {/* ক্যাটাগরি ব্যাজ */}
+                <div className="absolute top-3 left-3 z-10">
+                  <span className="bg-[#0E3A5D]/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/20">
+                    {lang === 'bn' ? service.badgeBn : service.badgeEn}
+                  </span>
                 </div>
-                <h3 className="text-xl font-black tracking-tight" style={{ color: themeStyles.textColor }}>
-                  {service.title}
-                </h3>
-                <p className="text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>
-                  {service.desc}
-                </p>
+
+                <img 
+                  src={`/services/${service.id}.jpeg`} 
+                  alt={service.nameEn}
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='16' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EImage: " + service.id + ".jpeg%3C/text%3E%3C/svg%3E";
+                  }}
+                />
               </div>
 
-              <div className="pt-4 border-t" style={{ borderColor: themeStyles.borderColor }}>
-                <a 
-                  href="/#booking-section"
-                  className="inline-flex items-center gap-2 text-xs font-bold text-[#2d6a4f] hover:underline"
-                >
-                  {lang === 'bn' ? 'অ্যাপয়েন্টমেন্ট নিন →' : 'Book Appointment →'}
-                </a>
+              {/* কন্টেন্ট অংশ */}
+              <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                <div className="space-y-2">
+                  <h3 className="text-lg md:text-xl font-bold text-[#0E3A5D] dark:text-teal-300 leading-snug group-hover:text-[#00A896] transition">
+                    {lang === 'bn' ? service.nameBn : service.nameEn}
+                  </h3>
+                  <p className="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    {lang === 'bn' ? service.descBn : service.descEn}
+                  </p>
+                </div>
+
+                {/* সময় ও বুকিং তথ্য */}
+                <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 font-medium">
+                    <span>⏱️</span>
+                    <span>{lang === 'bn' ? service.timeBn : service.timeEn}</span>
+                  </div>
+
+                  <a 
+                    href="/#booking-section"
+                    className="bg-[#00A896]/10 hover:bg-[#00A896] text-[#00A896] hover:text-white font-extrabold px-3.5 py-1.5 rounded-xl transition duration-200 flex items-center gap-1 text-xs"
+                  >
+                    <span>{lang === 'bn' ? 'বুকিং' : 'Book'}</span>
+                    <span>→</span>
+                  </a>
+                </div>
               </div>
+
             </div>
           ))}
         </div>
+
+        {/* বটম বুকিং বাটন */}
+        <div className="mt-14 text-center">
+          <a 
+            href="/#booking-section"
+            className="inline-flex items-center gap-3 bg-[#00A896] hover:bg-[#02C39A] text-white font-extrabold text-base md:text-lg px-8 py-4 rounded-2xl shadow-xl hover:shadow-teal-500/30 transition-all hover:scale-105 cursor-pointer"
+          >
+            <span>📅</span>
+            <span>{lang === 'bn' ? 'অ্যাপয়েন্টমেন্ট বুক করুন' : 'Book Appointment Now'}</span>
+          </a>
+        </div>
       </section>
 
-      {/* ফুটার */}
-      <footer className="py-8 text-center border-t text-xs font-medium" style={{ borderColor: themeStyles.borderColor, color: themeStyles.subTextColor }}>
-        <p>© {currentYear} Dr. Asir Mosaddeque Sakib Dental Care. All rights reserved.</p>
-      </footer>
     </main>
   )
 }
