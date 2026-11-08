@@ -30,7 +30,7 @@ export default function Home() {
   // সফল বুকিং পপ-আপ স্টেট
   const [showSuccessModal, setShowSuccessModal] = useState(false)
 
-  // পপ-আপ বুকিং ফর্মের স্টেট (শুধু বাটন প্রেস করলেই আসবে)
+  // পপ-আপ বুকিং ফর্মের স্টেট
   const [showPopupBooking, setShowPopupBooking] = useState(false)
 
   const [darkMode, setDarkMode] = useState(false)
@@ -534,11 +534,10 @@ export default function Home() {
             <span>+880 1816 011 701</span>
           </a>
 
-          {/* এখানে ক্লিক করলে পপ-আপ ফর্ম আসবে */}
           <button
             type="button"
             onClick={() => setShowPopupBooking(true)}
-            className="font-bold px-5 py-2.5 rounded-full bg-[#00a8e8] hover:bg-[#0092cd] text-white text-xs md:text-sm shadow-md transition cursor-pointer"
+            className="font-bold px-4 py-2 rounded-full bg-[#00a8e8] hover:bg-[#0092cd] text-white text-xs shadow-md transition cursor-pointer"
           >
             {t[lang].bookingMainBtn}
           </button>
@@ -564,12 +563,63 @@ export default function Home() {
           <button 
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden text-2xl p-1"
+            className="lg:hidden text-2xl p-1 cursor-pointer focus:outline-none"
+            style={{ color: themeStyles.textColor }}
+            aria-label="Mobile Menu Toggle"
           >
-            ☰
+            {mobileMenuOpen ? '✕' : '☰'}
           </button>
         </div>
       </header>
+
+      {/* মোবাইল ড্রপডাউন মেনু */}
+      {mobileMenuOpen && (
+        <div 
+          className="lg:hidden px-6 py-4 space-y-3 border-b shadow-lg transition-all duration-300"
+          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+        >
+          <a 
+            href="/" 
+            onClick={() => setMobileMenuOpen(false)} 
+            className="block py-2 font-bold text-sm border-b"
+            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
+          >
+            Home
+          </a>
+          <a 
+            href="#about-section" 
+            onClick={() => setMobileMenuOpen(false)} 
+            className="block py-2 font-bold text-sm border-b"
+            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
+          >
+            About Us
+          </a>
+          <a 
+            href="/services" 
+            onClick={() => setMobileMenuOpen(false)} 
+            className="block py-2 font-bold text-sm border-b"
+            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
+          >
+            Services
+          </a>
+          <a 
+            href="/gallery" 
+            onClick={() => setMobileMenuOpen(false)} 
+            className="block py-2 font-bold text-sm border-b"
+            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
+          >
+            Gallery
+          </a>
+          <a 
+            href="#contact-section" 
+            onClick={() => setMobileMenuOpen(false)} 
+            className="block py-2 font-bold text-sm"
+            style={{ color: themeStyles.textColor }}
+          >
+            Contact Us
+          </a>
+        </div>
+      )}
 
       {/* ৩. হিরো সেকশন */}
       <section className="relative overflow-hidden bg-gradient-to-r from-[#0d2857] via-[#0b3c85] to-[#0077b6] text-white py-12 lg:py-20 px-4 md:px-12">
@@ -634,7 +684,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৪. পপ-আপ বুকিং ফর্ম (কেবলমাত্র বাটন প্রেস করলেই স্ক্রিনের মাঝখানে ভাসমান উইন্ডো হিসেবে আসবে) */}
+      {/* ৪. পপ-আপ বুকিং ফর্ম */}
       {showPopupBooking && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
           <div 
