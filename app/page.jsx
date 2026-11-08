@@ -20,8 +20,8 @@ export default function Home() {
     isClosed: false,
     titleBn: 'জরুরি নোটিশ: চেম্বার বন্ধ সংক্রান্ত',
     titleEn: 'Important Notice: Chamber Closure',
-    messageBn: 'আগামী ১০ নভেম্বর থেকে ১৫ নভেম্বর পর্যন্ত চেম্বার বন্ধ থাকবে। ১৬ নভেম্বর থেকে যথারীতি অ্যাপয়েন্টমেন্ট নেওয়া যাবে।',
-    messageEn: 'The chamber will be closed from Nov 10 to Nov 15. Appointments will resume from Nov 16.'
+    messageBn: '',
+    messageEn: ''
   })
 
   // সফল বুকিং পপ-আপ স্টেট
@@ -159,6 +159,25 @@ export default function Home() {
     setAvailableDates(dates)
   }, [lang])
 
+  // রিয়েল-টাইম চেম্বার খোলা/বন্ধ স্ট্যাটাস নির্ধারণ (শুক্রবার বাদে বিকেল ৪টা থেকে রাত ৯:৩০ টা)
+  const getDynamicChamberStatus = () => {
+    const now = new Date()
+    const day = now.getDay() // 5 হলো শুক্রবার
+    const hours = now.getHours()
+    const minutes = now.getMinutes()
+    const currentTimeInMinutes = hours * 60 + minutes
+
+    // বিকেল ৪:০০ টা = 16 * 60 = 960 মিনিট
+    // রাত ৯:৩০ টা = 21 * 60 + 30 = 1290 মিনিট
+    const isOpenTime = day !== 5 && currentTimeInMinutes >= 960 && currentTimeInMinutes <= 1290
+
+    if (lang === 'bn') {
+      return isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে';
+    } else {
+      return isOpenTime ? '🟢 Chamber is currently OPEN' : '🔴 Chamber is currently CLOSED';
+    }
+  }
+
   const toggleTheme = () => {
     if (darkMode) {
       document.documentElement.classList.remove('dark')
@@ -205,6 +224,7 @@ export default function Home() {
       closeModalBtn: 'ঠিক আছে',
       scheduleTitle: 'চেম্বারের সময়সূচি',
       tipsTitle: 'দাঁতের যত্ন ও স্বাস্থ্য টিপস',
+      whyUsTitle: 'কেন আপনার জন্য আমরাই?',
       videoTitle: 'দাঁতের যত্ন ও চিকিৎসা বিষয়ক সচেতনতামূলক ভিডিও',
       videoSub: 'দাঁতের বিভিন্ন চিকিৎসা (রুট ক্যানেল, এক্সট্রাকশন, ফিলিং ও ক্যাপ) সম্পর্কে বিস্তারিত জানতে নিচের ভিডিওগুলো দেখুন।'
     },
@@ -241,6 +261,7 @@ export default function Home() {
       closeModalBtn: 'OK',
       scheduleTitle: 'Chamber Schedule',
       tipsTitle: 'Dental Care & Health Tips',
+      whyUsTitle: 'Why Choose Us?',
       videoTitle: 'Dental Care & Treatment Awareness Videos',
       videoSub: 'Watch the videos below to learn more about various dental treatments (Root Canal, Extraction, Filling, and Crowns/Caps).'
     }
@@ -365,7 +386,7 @@ export default function Home() {
     }
   ]
 
-  // দ্বিতীয় বক্সের কালার (#9fb2c6) দিয়ে তৈরি ফিচার বক্সগুলো
+  // দ্বিতীয় বক্সের কালার (#9fb2c6) দিয়ে তৈরি বর্ডারহীন সংযুক্ত ফিচার বক্সগুলো
   const featureBoxes = lang === 'bn' ? [
     {
       icon: '✨',
@@ -418,21 +439,21 @@ export default function Home() {
       style={{ backgroundColor: '#d9dee3' }}
     >
       
-      {/* ১. টপ নোটিশ বা ব্যানার */}
+      {/* ১. টপ নোটিশ বা ব্যানার (এডমিন নোটিশ থাকলে সেটি দেখাবে, না থাকলে রিয়েল-টাইম চেম্বার স্ট্যাটাস দেখাবে) */}
       <div 
-        className="max-w-7xl mx-auto mb-6 text-slate-900 py-2.5 px-4 rounded-2xl text-center text-xs md:text-sm font-medium tracking-wide shadow-md flex items-center justify-center gap-2 border"
+        className="max-w-7xl mx-auto mb-6 text-slate-900 py-3 px-4 rounded-2xl text-center text-xs md:text-sm font-bold tracking-wide shadow-md flex items-center justify-center gap-2 border"
         style={{ backgroundColor: '#d9dee3', borderColor: '#9fb2c6' }}
       >
         <span 
-          className="text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"
+          className="text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm"
           style={{ backgroundColor: '#1a1a1a' }}
         >
-          Notice
+          Status
         </span>
-        <span>
-          {lang === 'bn' 
-            ? 'এবারে চেম্বার বন্ধের নোটিশ সিঙ্ক্রোনাইজেশন ঠিক হয়েছে। জরুরি ডেন্টাল সেবার জন্য যোগাযোগ করুন।' 
-            : 'Chamber closing notice synchronization has been fixed. Contact us for emergency dental care.'}
+        <span className="text-slate-900 font-extrabold">
+          {chamberNotice.isClosed 
+            ? (lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn)
+            : getDynamicChamberStatus()}
         </span>
       </div>
 
@@ -466,13 +487,14 @@ export default function Home() {
         </nav>
 
         <div className="flex items-center gap-3">
+          {/* স্পষ্ট ও দৃশ্যমান লাইট/ডার্ক মোড টগল বাটন */}
           <button
             type="button"
             onClick={toggleTheme}
-            className="font-bold px-3.5 py-2 rounded-xl shadow-sm border transition flex items-center gap-1.5 text-xs cursor-pointer select-none"
+            className="font-bold px-4 py-2 rounded-xl shadow-md border transition flex items-center gap-2 text-xs md:text-sm cursor-pointer select-none"
             style={{ backgroundColor: '#1a1a1a', color: '#d9dee3', borderColor: '#9fb2c6' }}
           >
-            <span>{darkMode ? '☀️' : '🌙'}</span>
+            <span>{darkMode ? '☀️ Light' : '🌙 Dark'}</span>
           </button>
 
           <button
@@ -567,13 +589,12 @@ export default function Home() {
               </div>
             </div>
 
-            {/* সোশ্যাল মিডিয়া লোগো ইমেজ সেকশন (public ফোল্ডার থেকে) */}
+            {/* সোশ্যাল মিডিয়া লোগো ইমেজ সেকশন */}
             <div className="pt-4 border-t flex items-center justify-between" style={{ borderColor: '#9fb2c6' }}>
               <span className="text-xs font-bold text-slate-700 uppercase tracking-widest">
                 {lang === 'bn' ? 'সোশ্যাল লিংক:' : 'Connect:'}
               </span>
               <div className="flex items-center gap-3">
-                {/* ফেসবুক */}
                 <a 
                   href="https://www.facebook.com/share/1ZfF826KUs/" 
                   target="_blank" 
@@ -585,7 +606,6 @@ export default function Home() {
                   <img src="/facebook.png" alt="Facebook" className="w-full h-full object-contain filter invert" />
                 </a>
                 
-                {/* ইনস্টাগ্রাম */}
                 <a 
                   href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
                   target="_blank" 
@@ -597,7 +617,6 @@ export default function Home() {
                   <img src="/instagram.png" alt="Instagram" className="w-full h-full object-contain filter invert" />
                 </a>
                 
-                {/* হোয়াটসঅ্যাপ */}
                 <a 
                   href="https://wa.me/message/KBZOTSKH66H4P1" 
                   target="_blank" 
@@ -827,24 +846,34 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৭. দ্বিতীয় বক্সের কালার (#9fb2c6) দিয়ে তৈরি ফিচার বক্সগুলো */}
+      {/* ৭. "কেন আপনার জন্য আমরাই?" - বর্ডারহীন সংযুক্ত ৩টি কালারের গ্রেডিয়েন্ট সমৃদ্ধ বক্স সেকশন */}
       <section className="max-w-7xl mx-auto mb-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {featureBoxes.map((box, index) => (
-            <div 
-              key={index} 
-              className="p-6 rounded-3xl shadow-xl border flex flex-col justify-between space-y-4"
-              style={{ backgroundColor: '#9fb2c6', borderColor: '#1a1a1a', color: '#1a1a1a' }}
-            >
-              <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-md" style={{ backgroundColor: '#1a1a1a' }}>
-                {box.icon}
+        <div className="text-center mb-6">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
+            {t[lang].whyUsTitle}
+          </h2>
+        </div>
+
+        {/* কাছাকাছি ৩টি কালারের গ্রেডিয়েন্ট বর্ডার মোড়ক */}
+        <div className="p-1 rounded-[2.5xl] shadow-xl bg-gradient-to-r from-[#1a1a1a] via-[#9fb2c6] to-[#d9dee3]">
+          <div className="grid grid-cols-1 md:grid-cols-3 rounded-[2.3rem] overflow-hidden bg-[#9fb2c6]">
+            {featureBoxes.map((box, index) => (
+              <div 
+                key={index} 
+                className={`p-6 md:p-8 flex flex-col justify-between space-y-4 ${
+                  index !== featureBoxes.length - 1 ? 'border-b md:border-b-0 md:border-r border-[#1a1a1a]/20' : ''
+                }`}
+              >
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-md" style={{ backgroundColor: '#1a1a1a' }}>
+                  {box.icon}
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">{box.title}</h3>
+                <p className="text-sm leading-relaxed text-slate-800">
+                  {box.description}
+                </p>
               </div>
-              <h3 className="text-xl font-bold" style={{ color: '#1a1a1a' }}>{box.title}</h3>
-              <p className="text-sm leading-relaxed text-slate-900">
-                {box.description}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
