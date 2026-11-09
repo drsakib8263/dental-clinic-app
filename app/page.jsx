@@ -98,7 +98,7 @@ export default function Home() {
       if (lang === 'bn') {
         setChamberStatusText(isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে')
       } else {
-        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🟢 Chamber is currently CLOSED')
+        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🔴 Chamber is currently CLOSED')
       }
     }
 
@@ -596,7 +596,6 @@ export default function Home() {
               <img src="/doctor.jpeg" alt="Dr. Asir Mosaddeque Sakib" className="w-full h-full object-cover object-top" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#071630] via-transparent to-transparent opacity-40"></div>
               
-              {/* ডক্টরের নাম ও বিবরণ ওভারলে কার্ড */}
               <div className="absolute bottom-2 left-3 right-3 p-3.5 rounded-2xl bg-black/50 backdrop-blur-md border border-white/20 space-y-0.5">
                 <h3 className="font-bold text-sm md:text-base text-white">{t[lang].title}</h3>
                 <p className="text-[11px] text-cyan-300 font-medium whitespace-pre-line">{t[lang].doctorInfo}</p>
@@ -919,6 +918,100 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* ১০. প্রফেশনাল ফুটার সেকশন */}
+      <footer className="bg-[#0c1e3e] text-slate-300 pt-16 pb-8 border-t border-blue-900/50 mt-20">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-blue-900/50">
+          
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-xl font-bold shadow-md">
+                🦷
+              </div>
+              <span className="font-black text-lg text-white tracking-tight">
+                {t[lang].title}
+              </span>
+            </div>
+            <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
+              {lang === 'bn' 
+                ? 'আধুনিক প্রযুক্তি ও অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে নিরাপদ ও পেইনলেস ডেন্টাল কেয়ার নিশ্চিত করা আমাদের লক্ষ্য।' 
+                : 'Ensuring safe and painless dental care with modern technology and expert supervision.'}
+            </p>
+            <div className="flex items-center gap-3 pt-2">
+              <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center transition shadow-sm p-1.5 text-white">
+                <img src="/facebook.png" alt="FB" className="w-full h-full object-contain filter invert" />
+              </a>
+              <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center transition shadow-sm p-1.5 text-white">
+                <img src="/instagram.png" alt="IG" className="w-full h-full object-contain filter invert" />
+              </a>
+              <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center transition shadow-sm p-1.5 text-white">
+                <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-contain filter invert" />
+              </a>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="text-white font-bold text-base border-l-4 border-[#00a8e8] pl-3">
+              {lang === 'bn' ? 'দ্রুত লিংক' : 'Quick Links'}
+            </h4>
+            <ul className="space-y-2 text-sm font-medium">
+              <li><a href="/" className="hover:text-[#00a8e8] transition">🏠 {lang === 'bn' ? 'হোম পেজ' : 'Home'}</a></li>
+              <li><a href="#about-section" className="hover:text-[#00a8e8] transition">ℹ️ {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}</a></li>
+              <li><a href="/services" className="hover:text-[#00a8e8] transition">🦷 {lang === 'bn' ? 'সেবাসমূহ' : 'Services'}</a></li>
+              <li><a href="/gallery" className="hover:text-[#00a8e8] transition">🖼️ {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}</a></li>
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="text-white font-bold text-base border-l-4 border-[#00a8e8] pl-3">
+              {lang === 'bn' ? 'সময়সূচি' : 'Working Hours'}
+            </h4>
+            <div className="space-y-2 text-xs md:text-sm text-slate-300">
+              <p className="flex items-center gap-2">
+                <span>📅</span> 
+                <span className="font-semibold">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার:' : 'Sat - Thu:'}</span>
+              </p>
+              <p className="text-cyan-300 pl-6 font-medium">
+                {lang === 'bn' ? 'বিকাল ৪:০০ টা - রাত ৯:০০ টা' : '4:00 PM - 9:00 PM'}
+              </p>
+              <p className="flex items-center gap-2 pt-2">
+                <span>❌</span> 
+                <span className="text-rose-400 font-semibold">{lang === 'bn' ? 'শুক্রবার: সম্পূর্ণ বন্ধ' : 'Friday: Closed'}</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="text-white font-bold text-base border-l-4 border-[#00a8e8] pl-3">
+              {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
+            </h4>
+            <div className="space-y-3 text-xs md:text-sm">
+              <p className="flex items-start gap-2">
+                <span className="text-cyan-400">📍</span>
+                <span>{t[lang].addressText}</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <span className="text-cyan-400">📞</span>
+                <a href="tel:+8801816011701" className="hover:text-[#00a8e8] transition font-bold">+880 1816 011 701</a>
+              </p>
+              <p className="flex items-center gap-2">
+                <span className="text-cyan-400">✉️</span>
+                <a href="mailto:asir.mosaddeque@gmail.com" className="hover:text-[#00a8e8] transition">asir.mosaddeque@gmail.com</a>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 md:px-8 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+          <p>© {new Date().getFullYear()} Dr. Sakib Dental Care. All rights reserved.</p>
+          <p className="flex items-center gap-1">
+            <span>Developed with</span> 
+            <span className="text-red-500">❤️</span> 
+            <span>for Dr. Asir Mosaddeque Sakib</span>
+          </p>
+        </div>
+      </footer>
 
       {/* সফল বুকিং মোডাল */}
       {showSuccessModal && (
