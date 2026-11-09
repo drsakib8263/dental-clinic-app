@@ -14,10 +14,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  // রিয়েল-টাইম চেম্বার স্ট্যাটাস স্টেট
   const [chamberStatusText, setChamberStatusText] = useState('')
-
-  // চেম্বার বন্ধ থাকার নোটিশ পপ-আপ স্টেট
   const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
   const [chamberNotice, setChamberNotice] = useState({
     isClosed: false,
@@ -27,12 +24,8 @@ export default function Home() {
     messageEn: ''
   })
 
-  // সফল বুকিং পপ-আপ স্টেট
   const [showSuccessModal, setShowSuccessModal] = useState(false)
-
-  // পপ-আপ বুকিং ফর্মের স্টেট
   const [showPopupBooking, setShowPopupBooking] = useState(false)
-
   const [darkMode, setDarkMode] = useState(false)
 
   const [formData, setFormData] = useState({
@@ -94,7 +87,7 @@ export default function Home() {
   useEffect(() => {
     const checkChamberStatus = () => {
       const now = new Date()
-      const day = now.getDay() // 5 হলো শুক্রবার
+      const day = now.getDay()
       const hours = now.getHours()
       const minutes = now.getMinutes()
       const currentTimeInMinutes = hours * 60 + minutes
@@ -184,7 +177,6 @@ export default function Home() {
     localStorage.setItem('theme', nextMode ? 'dark' : 'light')
   }
 
-  // থিম কালার
   const themeStyles = darkMode ? {
     bgMain: '#0f172a',
     cardBg: '#1e293b',
@@ -456,14 +448,14 @@ export default function Home() {
       style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
     >
 
-      {/* ১. টপ নোটিশ ও ইনফরমেশন বার (মোবাইলে সম্পূর্ণ দৃশ্যমান ও ফ্লেক্সিবল) */}
+      {/* ১. টপ নোটিশ ও ইনফরমেশন বার (ঠিকানা সম্পূর্ণ দৃশ্যমান করার জন্য মার্কি বা ফ্লেক্স র‍্যাপ) */}
       <div className="bg-[#0c1e3e] text-white text-[11px] md:text-sm py-2 px-3 md:px-12 flex flex-col sm:flex-row justify-between items-center gap-1 border-b border-blue-900/50">
-        <div className="flex items-center gap-1.5 text-center sm:text-left overflow-hidden">
-          <span>📍</span>
-          <span className="truncate">{t[lang].addressText}</span>
+        <div className="flex items-center gap-1.5 text-center sm:text-left overflow-x-auto w-full sm:w-auto py-0.5">
+          <span className="flex-shrink-0">📍</span>
+          <span className="whitespace-nowrap sm:whitespace-normal font-medium">{t[lang].addressText}</span>
         </div>
         
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-shrink-0">
           <div className="hidden sm:flex items-center gap-2">
             <span>🕒</span>
             <span>Sat - Thu: 4:30 PM - 9:00 PM</span>
@@ -501,22 +493,35 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ২. ন্যাভিগেশন বার (মোবাইল লেআউট অপ্টিমাইজড) */}
+      {/* ২. ন্যাভিগেশন বার (হ্যামবার্গার মেনু একদম বামে এবং কম্প্যাক্ট হোয়াইট বক্স) */}
       <header 
-        className="sticky top-0 z-50 px-3 md:px-12 py-3 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
+        className="sticky top-0 z-50 px-3 md:px-12 py-2 md:py-3 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
         style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
       >
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-lg md:text-xl font-bold shadow-md">
-            🦷
-          </div>
-          <div className="flex flex-col">
-            <span className="font-black text-sm sm:text-base md:text-xl tracking-tight whitespace-nowrap" style={{ color: themeStyles.textColor }}>
-              {t[lang].title}
-            </span>
-            <span className="text-[9px] md:text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider">
-              {t[lang].subtitle}
-            </span>
+        {/* বামপাশ: হ্যামবার্গার মেনু + লোগো ও এক লাইনে টেক্সট */}
+        <div className="flex items-center gap-2.5">
+          <button 
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden text-xl md:text-2xl p-1 cursor-pointer focus:outline-none flex-shrink-0"
+            style={{ color: themeStyles.textColor }}
+            aria-label="Mobile Menu Toggle"
+          >
+            {mobileMenuOpen ? '✕' : '☰'}
+          </button>
+
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-lg md:text-xl font-bold shadow-md flex-shrink-0">
+              🦷
+            </div>
+            <div className="flex flex-col justify-center">
+              <span className="font-black text-xs sm:text-sm md:text-xl tracking-tight whitespace-nowrap leading-none" style={{ color: themeStyles.textColor }}>
+                {t[lang].title}
+              </span>
+              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider pt-0.5">
+                {t[lang].subtitle}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -528,19 +533,18 @@ export default function Home() {
           <a href="#contact-section" className="hover:text-[#00a8e8] transition">Contact Us</a>
         </nav>
 
-        {/* মোবাইল ও ডেস্কটপ কন্ট্রোল প্যানেল */}
+        {/* ডানপাশ: ভাষা টগল, ডার্ক মোড ও কল বাটন */}
         <div className="flex items-center gap-2 md:gap-3">
           <a href="tel:+8801816011701" className="hidden sm:flex items-center gap-2 font-bold text-sm text-[#00a8e8]">
             <span className="w-8 h-8 rounded-full bg-[#00a8e8]/10 flex items-center justify-center text-base">📞</span>
             <span>+880 1816 011 701</span>
           </a>
 
-          {/* মোবাইল ভার্সনের জন্য ওপরে টগল ও অ্যাপয়েন্টমেন্ট বাটন */}
           <div className="flex items-center gap-1.5 md:gap-3">
             <button
               type="button"
               onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-              className="font-bold px-2 py-1.5 md:px-3 md:py-2 rounded-lg border text-[11px] md:text-xs cursor-pointer"
+              className="font-bold px-2 py-1 md:px-3 md:py-2 rounded-lg border text-[10px] md:text-xs cursor-pointer"
               style={{ borderColor: themeStyles.borderColor }}
             >
               {lang === 'bn' ? 'English' : 'বাংলা'}
@@ -554,21 +558,11 @@ export default function Home() {
             >
               {darkMode ? '☀️' : '🌙'}
             </button>
-
-            <button 
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden text-xl md:text-2xl p-1 cursor-pointer focus:outline-none"
-              style={{ color: themeStyles.textColor }}
-              aria-label="Mobile Menu Toggle"
-            >
-              {mobileMenuOpen ? '✕' : '☰'}
-            </button>
           </div>
         </div>
       </header>
 
-      {/* মোবাইল হেডার সাব-সেকশন: ঠিক লোগোর নিচেই ব্লু কালার অ্যাপয়েন্টমেন্ট বাটন */}
+      {/* মোবাইল হেডার সাব-সেকশন: ব্লু কালার অ্যাপয়েন্টমেন্ট বাটন */}
       <div className="lg:hidden px-3 py-2 border-b flex justify-center items-center" style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}>
         <button
           type="button"
