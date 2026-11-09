@@ -836,27 +836,58 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৬. দাঁতের যত্ন ও স্বাস্থ্য টিপস */}
-      <section className="max-w-7xl mx-auto my-12 px-4 md:px-0">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
-            {t[lang].tipsTitle}
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {dentalTips.map((tip, index) => (
-            <div 
-              key={index} 
-              className="p-6 rounded-3xl border shadow-sm space-y-3 transition-all duration-300"
-              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-            >
-              <span className="text-3xl block">{tip.icon}</span>
-              <h3 className="text-lg font-bold" style={{ color: themeStyles.textColor }}>{tip.title}</h3>
-              <p className="text-xs md:text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{tip.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন */}
+<section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
+  <div className="text-center mb-10 space-y-2">
+    <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
+      {lang === 'bn' ? 'দাঁতের যত্ন ও স্বাস্থ্য টিপস' : 'Dental Care & Health Tips'}
+    </h2>
+    <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
+      {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
+    </p>
+  </div>
+
+  {/* ৬টি রেক্ট্যাঙ্গেল বক্স (.jpg / .jpeg অটো-ফলব্যাক সহ) */}
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {[
+      { id: 'tips-01', textBn: 'দিনে অন্তত দুইবার ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে ভালোভাবে দাঁত ব্রাশ করুন।', textEn: 'Brush your teeth thoroughly at least twice a day with fluoride toothpaste.' },
+      { id: 'tips-02', textBn: 'প্রতিদিন নিয়মিত ডেন্টাল ফ্লস ব্যবহার করে দাঁতের ফাঁকে জমে থাকা ময়লা পরিষ্কার রাখুন।', textEn: 'Use dental floss daily to clean food particles trapped between teeth.' },
+      { id: 'tips-03', textBn: 'চিনিযুক্ত খাবার ও মিষ্টি খাওয়ার পর কুলি করার অভ্যাস গড়ে তুলুন।', textEn: 'Develop a habit of rinsing your mouth after consuming sugary foods.' },
+      { id: 'tips-04', textBn: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাঁত চেকআপ করান।', textEn: 'Visit your dental surgeon regularly every six months for a checkup.' },
+      { id: 'tips-05', textBn: 'ধূমপান ও পান-সুপারি থেকে বিরত থাকুন, যা দাঁতের মাড়ির মারাত্মক ক্ষতি করে।', textEn: 'Avoid smoking and betel nut, which severely damage your gums and teeth.' },
+      { id: 'tips-06', textBn: 'দাঁতে কোনো ধরনের ব্যথা বা সংবেদনশীলতা অনুভব করলেই দ্রুত চিকিৎসকের পরামর্শ নিন।', textEn: 'Consult a doctor immediately if you experience any tooth pain or sensitivity.' }
+    ].map((item, index) => (
+      <div 
+        key={index} 
+        className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-end p-6 group transition duration-300 hover:shadow-xl"
+      >
+        {/* ব্যাকগ্রাউন্ড ইমেজ (.jpg থেকে .jpeg অটো-ফলব্যাক লজিক) */}
+        <img 
+          src={`/tips/${item.id}.jpg`} 
+          alt={`Dental Tip ${index + 1}`} 
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
+          onError={(e) => {
+            if (!e.target.dataset.triedJpeg) {
+              e.target.dataset.triedJpeg = "true";
+              e.target.src = `/tips/${item.id}.jpeg`;
+            } else {
+              e.target.onerror = null;
+              e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpg/.jpeg)%3C/text%3E%3C/svg%3E";
+            }
+          }}
+        />
+
+        {/* টেক্সট পরিষ্কার বোঝার জন্য হালকা গ্রেডিয়েন্ট ওভারলে */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+
+        {/* উপদেশ টেক্সট (আইকন ছাড়া) */}
+        <p className="relative z-10 text-white font-bold text-sm md:text-base leading-snug drop-shadow-md">
+          {lang === 'bn' ? item.textBn : item.textEn}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>
 
       {/* ৭. "কেন আপনার জন্য আমরাই?" - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
