@@ -92,13 +92,12 @@ export default function Home() {
       const minutes = now.getMinutes()
       const currentTimeInMinutes = hours * 60 + minutes
 
-      // চেম্বার খোলা সময়: দুপুর ৪টা (৯৬০ মিনিট) থেকে রাত ৯টা (১২৬০ মিনিট)
       const isOpenTime = day !== 5 && currentTimeInMinutes >= 960 && currentTimeInMinutes <= 1260
 
       if (lang === 'bn') {
         setChamberStatusText(isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে')
       } else {
-        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🔴 Chamber is currently CLOSED')
+        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🟢 Chamber is currently CLOSED')
       }
     }
 
@@ -919,7 +918,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ১০. প্রফেশনাল ফুটার সেকশন */}
+      {/* ১০. প্রফেশনাল ফুটার সেকশন (Static Year fix for build error) */}
       <footer className="bg-[#0c1e3e] text-slate-300 pt-16 pb-8 border-t border-blue-900/50 mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-blue-900/50">
           
@@ -1004,7 +1003,7 @@ export default function Home() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 md:px-8 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} Dr. Sakib Dental Care. All rights reserved.</p>
+          <p>© 2026 Dr. Sakib Dental Care. All rights reserved.</p>
           <p className="flex items-center gap-1">
             <span>Developed with</span> 
             <span className="text-red-500">❤️</span> 
