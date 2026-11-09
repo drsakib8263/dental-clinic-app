@@ -799,7 +799,7 @@ export default function Home() {
       return (
         <div 
           key={index} 
-          className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-center items-start p-6 group transition duration-300 hover:shadow-xl bg-white dark:bg-slate-900"
+          className="relative h-72 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-center items-start p-6 group transition duration-300 hover:shadow-xl bg-white dark:bg-slate-900"
         >
           {/* ব্যাকগ্রাউন্ড ইমেজ */}
           <img 
@@ -817,9 +817,9 @@ export default function Home() {
             }}
           />
 
-          {/* বাম পাশে শুধু মূল টিপস লেখা (কোনো Tip 0x ট্যাগ বা ব্লার ছাড়া) */}
-          <div className="relative z-10 max-w-[85%] text-left">
-            <p className={`font-bold text-xs md:text-sm leading-snug drop-shadow-sm ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>
+          {/* বাম পাশে বড় ফন্টে এবং ওপর-নিচে ভেঙে যাওয়ার জন্য নির্দেশিত টেক্সট কন্টেইনার */}
+          <div className="relative z-10 w-[85%] text-left">
+            <p className={`font-black text-base md:text-lg leading-relaxed drop-shadow-md break-words ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>
               {lang === 'bn' ? item.textBn : item.textEn}
             </p>
           </div>
