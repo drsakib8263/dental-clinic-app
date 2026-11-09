@@ -796,6 +796,16 @@ export default function Home() {
       // index ২ (Tip 03) এবং index ৫ (Tip 06) এর জন্য টেক্সট কালার সাদা এবং বাকিগুলোর জন্য গাঢ় কালার
       const isDarkCard = index === 2 || index === 5;
 
+      // প্রতিটি টিপসের জন্য ডেডিকেটেড হেডলাইন (বাংলা ও ইংরেজি)
+      const headlines = [
+        { bn: 'নিয়মিত ব্রাশ করুন', en: 'Brush Regularly' },
+        { bn: 'ডেন্টাল ফ্লস ব্যবহার', en: 'Use Dental Floss' },
+        { bn: 'মিষ্টি খাবার পর কুলি', en: 'Rinse After Sweets' },
+        { bn: 'নিয়মিত চেকআপ', en: 'Regular Checkup' },
+        { bn: 'বর্জন করুন', en: 'Avoid Harmful Habits' },
+        { bn: 'ব্যাথায় সচেতনতা', en: 'Dental Pain Care' }
+      ];
+
       return (
         <div 
           key={index} 
@@ -817,9 +827,12 @@ export default function Home() {
             }}
           />
 
-          {/* বাম পাশে ঠিক এক-তৃতীয়াংশ (1/3) প্রস্থের ভেতর ওপর-নিচে ভাঙা বড় ফন্টের টেক্সট */}
-          <div className="relative z-10 w-1/3 text-left">
-            <p className={`font-black text-sm md:text-base leading-relaxed drop-shadow-md break-words ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>
+          {/* বাম পাশে এক-তৃতীয়াংশ (1/3) প্রস্থের ভেতর বড় হেডলাইন এবং ওপর-নিচে ভাঙা মূল টেক্সট */}
+          <div className="relative z-10 w-1/3 text-left space-y-2">
+            <h3 className={`font-black text-lg md:text-xl tracking-tight drop-shadow-md ${isDarkCard ? 'text-teal-300' : 'text-[#0E3A5D]'}`}>
+              {lang === 'bn' ? headlines[index].bn : headlines[index].en}
+            </h3>
+            <p className={`font-bold text-xs md:text-sm leading-relaxed drop-shadow-md break-words ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>
               {lang === 'bn' ? item.textBn : item.textEn}
             </p>
           </div>
