@@ -792,38 +792,40 @@ export default function Home() {
   </div>
 
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {tipsList.map((item, index) => (
-      <div 
-        key={index} 
-        className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-start p-6 group transition duration-300 hover:shadow-xl bg-white dark:bg-slate-900"
-      >
-        {/* ব্যাকগ্রাউন্ড ইমেজ (কোনো গ্রেডিয়েন্ট বা ব্লার ছাড়া সরাসরি পরিষ্কার ছবি) */}
-        <img 
-          src={`/tips/${item.id}.jpeg`} 
-          alt={`Dental Tip ${index + 1}`} 
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
-          onError={(e) => {
-            if (!e.target.dataset.triedJpg) {
-              e.target.dataset.triedJpg = "true";
-              e.target.src = `/tips/${item.id}.jpg`;
-            } else {
-              e.target.onerror = null;
-              e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpeg/.jpg)%3C/text%3E%3C/svg%3E";
-            }
-          }}
-        />
+    {tipsList.map((item, index) => {
+      // index ২ (Tip 03) এবং index ৫ (Tip 06) এর জন্য টেক্সট কালার সাদা এবং বাকিগুলোর জন্য গাঢ় কালার
+      const isDarkCard = index === 2 || index === 5;
 
-        {/* সরাসরি ছবির ওপর স্পষ্ট লেখা (যদি ছবির ব্যাকগ্রাউন্ড হালকা হয়, তবে টেক্সট ডার্ক বা ব্যাকগ্রাউন্ড টিন্ট দেওয়া যায়, এখানে স্পষ্ট ফুটতে খানিটা সলিড কন্ট্রাস্ট রাখা হয়েছে) */}
-        <div className="relative z-10 bg-white/9 മുഖ്യമന്ത്രി dark:bg-slate-900/90 backdrop-blur-[2px] p-4 rounded-xl shadow-sm border border-white/20">
-          <span className="text-[10px] font-bold text-[#00a8e8] uppercase tracking-wider block mb-1">
-            Tip 0{index + 1}
-          </span>
-          <p className="text-slate-800 dark:text-white font-bold text-xs md:text-sm leading-snug">
-            {lang === 'bn' ? item.textBn : item.textEn}
-          </p>
+      return (
+        <div 
+          key={index} 
+          className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-center items-start p-6 group transition duration-300 hover:shadow-xl bg-white dark:bg-slate-900"
+        >
+          {/* ব্যাকগ্রাউন্ড ইমেজ */}
+          <img 
+            src={`/tips/${item.id}.jpeg`} 
+            alt={`Dental Tip ${index + 1}`} 
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
+            onError={(e) => {
+              if (!e.target.dataset.triedJpg) {
+                e.target.dataset.triedJpg = "true";
+                e.target.src = `/tips/${item.id}.jpg`;
+              } else {
+                e.target.onerror = null;
+                e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpeg/.jpg)%3E%3C/text%3E%3C/svg%3E";
+              }
+            }}
+          />
+
+          {/* বাম পাশে শুধু মূল টিপস লেখা (কোনো Tip 0x ট্যাগ বা ব্লার ছাড়া) */}
+          <div className="relative z-10 max-w-[85%] text-left">
+            <p className={`font-bold text-xs md:text-sm leading-snug drop-shadow-sm ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>
+              {lang === 'bn' ? item.textBn : item.textEn}
+            </p>
+          </div>
         </div>
-      </div>
-    ))}
+      );
+    })}
   </div>
 </section>
 
