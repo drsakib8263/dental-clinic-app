@@ -446,26 +446,41 @@ export default function Home() {
       className="min-h-screen transition-all duration-300 font-sans"
       style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
     >
+      <style jsx>{`
+        @keyframes marquee {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+          display: inline-block;
+          white-space: nowrap;
+          animation: marquee 18s linear infinite;
+        }
+      `}</style>
 
-      {/* ১. টপ নোটিশ ও ইনফরমেশন বার */}
-      <div className="bg-[#0c1e3e] text-white text-[11px] md:text-sm py-2 px-3 md:px-12 flex flex-col sm:flex-row justify-between items-center gap-1 border-b border-blue-900/50">
-        <div className="flex items-center gap-1.5 text-center sm:text-left overflow-x-auto w-full sm:w-auto py-0.5">
-          <span className="flex-shrink-0">📍</span>
-          <span className="whitespace-nowrap sm:whitespace-normal font-medium">{t[lang].addressText}</span>
+      {/* ১ ও ২. টপ নোটিশ ও স্থির চেম্বার টাইম বার */}
+      <div className="bg-[#0c1e3e] text-white text-[11px] md:text-sm py-2 px-3 md:px-12 flex flex-col gap-1 border-b border-blue-900/50">
+        {/* স্লাইডিং টেক্সট (ডান থেকে বামে) */}
+        <div className="overflow-hidden whitespace-nowrap w-full">
+          <div className="animate-marquee inline-flex items-center gap-1.5 font-medium">
+            <span>📍</span>
+            <span>{t[lang].addressText}</span>
+          </div>
         </div>
-        
-        <div className="flex items-center gap-4 flex-shrink-0">
-          <div className="hidden sm:flex items-center gap-2">
+
+        {/* স্থির চেম্বার টাইম ও সোশ্যাল আইকন বার */}
+        <div className="flex justify-between items-center border-t border-blue-800/60 pt-1 text-[11px] md:text-xs">
+          <div className="flex items-center gap-1 text-cyan-300 font-semibold">
             <span>🕒</span>
-            <span>Sat - Thu: 4:30 PM - 9:00 PM</span>
+            <span>চেম্বার খোলা: শনি - বৃহস্পতি (বিকেল ৪:৩০ - রাত ৯:০০), শুক্রবার বন্ধ</span>
           </div>
 
-          <div className="flex items-center gap-2.5 border-t sm:border-t-0 sm:border-l border-blue-800 pt-1 sm:pt-0 sm:pl-3">
+          <div className="flex items-center gap-2.5">
             <a 
               href="https://www.facebook.com/share/1ZfF826KUs/" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1"
+              className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1"
               title="Facebook"
             >
               <img src="/facebook.png" alt="FB" className="w-full h-full object-contain filter invert" />
@@ -474,7 +489,7 @@ export default function Home() {
               href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1"
+              className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1"
               title="Instagram"
             >
               <img src="/instagram.png" alt="IG" className="w-full h-full object-contain filter invert" />
@@ -483,7 +498,7 @@ export default function Home() {
               href="https://wa.me/message/KBZOTSKH66H4P1" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1"
+              className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1"
               title="WhatsApp"
             >
               <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-contain filter invert" />
@@ -492,7 +507,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ২. ন্যাভিগেশন বার */}
+      {/* ৩. ন্যাভিগেশন বার */}
       <header 
         className="sticky top-0 z-50 px-3 md:px-12 py-3 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
         style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
@@ -571,7 +586,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* ৩. হিরো সেকশন */}
+      {/* ৪. হিরো সেকশন (৩ নম্বর নির্দেশনা অনুযায়ী মোবাইল ভিউতে ডক্টরের ছবির ওভারলে বক্সটি নিচে নামানো হয়েছে) */}
       <section className="relative overflow-hidden bg-gradient-to-r from-[#0d2857] via-[#0b3c85] to-[#0077b6] text-white py-10 lg:py-20 px-4 md:px-12">
         <div className="max-w-7xl mx-auto mb-6">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs md:text-sm font-semibold">
@@ -582,13 +597,14 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-5 flex justify-center lg:justify-start order-2 lg:order-1">
-            <div className="relative w-64 h-72 md:w-80 md:h-96 lg:w-96 lg:h-[420px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 bg-[#071630]">
+            <div className="relative w-64 h-[340px] md:w-80 md:h-96 lg:w-96 lg:h-[420px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 bg-[#071630]">
               <img src="/doctor.jpeg" alt="Dr. Sakib" className="w-full h-full object-cover object-top" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#071630] via-transparent to-transparent opacity-80"></div>
-              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
-                <h3 className="font-bold text-lg text-white">{t[lang].title}</h3>
-                <p className="text-xs text-cyan-300 font-medium">BDS (Chattogram Medical College)</p>
-                <p className="text-[11px] text-slate-300">{t[lang].bmdc}</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#071630] via-transparent to-transparent opacity-40"></div>
+              {/* নিচের দিকে নামানো ওভারলে বক্স যাতে ফেস কভার না করে */}
+              <div className="absolute bottom-2 left-3 right-3 p-3.5 rounded-2xl bg-black/50 backdrop-blur-md border border-white/20">
+                <h3 className="font-bold text-base md:text-lg text-white">{t[lang].title}</h3>
+                <p className="text-[11px] text-cyan-300 font-medium">BDS (Chattogram Medical College)</p>
+                <p className="text-[10px] text-slate-300">{t[lang].bmdc}</p>
               </div>
             </div>
           </div>
@@ -622,7 +638,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৪. পপ-আপ বুকিং ফর্ম */}
+      {/* ৫. পপ-আপ বুকিং ফর্ম */}
       {showPopupBooking && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
           <div 
@@ -760,7 +776,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* ৫. স্থায়ী About Us সেকশন */}
+      {/* ৬. স্থায়ী About Us সেকশন */}
       <section 
         id="about-section" 
         className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4 transition-all duration-300"
@@ -779,7 +795,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৬. দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন (৪র্থ বক্সে হোয়াইট বর্ডার / টেক্সট শ্যাডো সহ) */}
+      {/* ৭. দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
         <div className="text-center mb-10 space-y-2">
           <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
@@ -793,7 +809,6 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tipsList.map((item, index) => {
             const isDarkCard = index === 2 || index === 5;
-            // চতুর্থ বক্সের জন্য (index ৩) আলাদা ক্লাস যাতে কালো লেখার চারপাশে হোয়াইট বর্ডার বা শ্যাডো ইফেক্ট থাকে
             const isFourthCard = index === 3;
 
             const headlines = [
@@ -810,7 +825,6 @@ export default function Home() {
                 key={index} 
                 className="relative h-72 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-center items-start p-6 group transition duration-300 hover:shadow-xl bg-white dark:bg-slate-900"
               >
-                {/* ব্যাকগ্রাউন্ড ইমেজ */}
                 <img 
                   src={`/tips/${item.id}.jpeg`} 
                   alt={`Dental Tip ${index + 1}`} 
@@ -826,7 +840,6 @@ export default function Home() {
                   }}
                 />
 
-                {/* বাম পাশে ১/৩ অংশ প্রস্থের ভেতর হেডলাইন এবং মূল টেক্সট */}
                 <div className="relative z-10 w-1/3 text-left space-y-2">
                   <h3 className={`font-black text-lg md:text-xl tracking-tight drop-shadow-md ${isDarkCard ? 'text-teal-300' : isFourthCard ? 'text-black font-extrabold' : 'text-[#0E3A5D]'}`}
                       style={isFourthCard ? { textShadow: '-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff' } : {}}
@@ -846,7 +859,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৭. কেন আপনার জন্য আমরাই? - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
+      {/* ৮. কেন আপনার জন্য আমরাই? - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
@@ -881,7 +894,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৮. সচেতনতামূলক ভিডিও সেকশন */}
+      {/* ৯. সচেতনতামূলক ভিডিও সেকশন */}
       <section 
         id="contact-section"
         className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6 transition-all duration-300"
