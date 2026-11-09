@@ -780,50 +780,50 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৬. দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন (৬টি রেক্ট্যাঙ্গেল বক্স, আইকন ছাড়া, ব্যাকগ্রাউন্ড ইমেজ ও .jpg/.jpeg অটো-ফলব্যাক সহ) */}
-      <section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
-        <div className="text-center mb-10 space-y-2">
-          <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
-            {t[lang].tipsTitle}
-          </h2>
-          <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
-            {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
-          </p>
-        </div>
+      {/* দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন */}
+<section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
+  <div className="text-center mb-10 space-y-2">
+    <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
+      {t[lang].tipsTitle}
+    </h2>
+    <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
+      {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
+    </p>
+  </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tipsList.map((item, index) => (
-            <div 
-              key={index} 
-              className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-end p-6 group transition duration-300 hover:shadow-xl"
-            >
-              {/* ব্যাকগ্রাউন্ড ইমেজ (.jpg থেকে .jpeg অটো-ফলব্যাক) */}
-              <img 
-                src={`/tips/${item.id}.jpg`} 
-                alt={`Dental Tip ${index + 1}`} 
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                onError={(e) => {
-                  if (!e.target.dataset.triedJpeg) {
-                    e.target.dataset.triedJpeg = "true";
-                    e.target.src = `/tips/${item.id}.jpeg`;
-                  } else {
-                    e.target.onerror = null;
-                    e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpg/.jpeg)%3C/text%3E%3C/svg%3E";
-                  }
-                }}
-              />
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {tipsList.map((item, index) => (
+      <div 
+        key={index} 
+        className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-end p-6 group transition duration-300 hover:shadow-xl"
+      >
+        {/* ব্যাকগ্রাউন্ড ইমেজ (.jpeg এবং .jpg উভয় ফরম্যাট অটো-ডিটেক্ট করবে) */}
+        <img 
+          src={`/tips/${item.id}.jpeg`} 
+          alt={`Dental Tip ${index + 1}`} 
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
+          onError={(e) => {
+            if (!e.target.dataset.triedJpg) {
+              e.target.dataset.triedJpg = "true";
+              e.target.src = `/tips/${item.id}.jpg`;
+            } else {
+              e.target.onerror = null;
+              e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpeg/.jpg)%3C/text%3E%3C/svg%3E";
+            }
+          }}
+        />
 
-              {/* টেক্সট পরিষ্কার ফুটিয়ে তোলার জন্য গ্রেডিয়েন্ট ওভারলে */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+        {/* টেক্সট পরিষ্কার ফুটিয়ে তোলার জন্য গ্রেডিয়েন্ট ওভারলে */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
 
-              {/* উপদেশ টেক্সট (আইকন ছাড়া) */}
-              <p className="relative z-10 text-white font-bold text-sm md:text-base leading-snug drop-shadow-md">
-                {lang === 'bn' ? item.textBn : item.textEn}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+        {/* উপদেশ টেক্সট (আইকন ছাড়া) */}
+        <p className="relative z-10 text-white font-bold text-sm md:text-base leading-snug drop-shadow-md">
+          {lang === 'bn' ? item.textBn : item.textEn}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>
 
       {/* ৭. কেন আপনার জন্য আমরাই? - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
