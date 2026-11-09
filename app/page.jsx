@@ -202,7 +202,7 @@ export default function Home() {
       title: 'ডাঃ আসির মোসাদ্দেক সাকিব',
       subtitle: 'ওরাল এন্ড ডেন্টাল সার্জন',
       doctorInfo: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)\nবিএমডিসি রেজি. ৮২৬৩',
-      addressText: 'আলম মেডিকেল হল, পটিয়া কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
+      addressText: 'আলম মেডিকেল হল, পটিয়া সরকারি কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
@@ -918,7 +918,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ১০. প্রফেশনাল ফুটার সেকশন (Static Year fix for build error) */}
+      {/* ১০. প্রফেশনাল ফুটার সেকশন */}
       <footer className="bg-[#0c1e3e] text-slate-300 pt-16 pb-8 border-t border-blue-900/50 mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-blue-900/50">
           
@@ -1004,10 +1004,8 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 md:px-8 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
           <p>© 2026 Dr. Sakib Dental Care. All rights reserved.</p>
-          <p className="flex items-center gap-1">
-            <span>Developed with</span> 
-            <span className="text-red-500">❤️</span> 
-            <span>for Dr. Asir Mosaddeque Sakib</span>
+          <p className="font-medium text-cyan-300">
+            developed by own(Dr. Asir Mosaddeque Sakib)
           </p>
         </div>
       </footer>
