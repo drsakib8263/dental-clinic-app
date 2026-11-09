@@ -14,10 +14,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  // রিয়েল-টাইম চেম্বার স্ট্যাটাস স্টেট
   const [chamberStatusText, setChamberStatusText] = useState('')
-
-  // চেম্বার বন্ধ থাকার নোটিশ পপ-আপ স্টেট
   const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
   const [chamberNotice, setChamberNotice] = useState({
     isClosed: false,
@@ -27,12 +24,8 @@ export default function Home() {
     messageEn: ''
   })
 
-  // সফল বুকিং পপ-আপ স্টেট
   const [showSuccessModal, setShowSuccessModal] = useState(false)
-
-  // পপ-আপ বুকিং ফর্মের স্টেট
   const [showPopupBooking, setShowPopupBooking] = useState(false)
-
   const [darkMode, setDarkMode] = useState(false)
 
   const [formData, setFormData] = useState({
@@ -94,7 +87,7 @@ export default function Home() {
   useEffect(() => {
     const checkChamberStatus = () => {
       const now = new Date()
-      const day = now.getDay() // 5 হলো শুক্রবার
+      const day = now.getDay()
       const hours = now.getHours()
       const minutes = now.getMinutes()
       const currentTimeInMinutes = hours * 60 + minutes
@@ -184,7 +177,6 @@ export default function Home() {
     localStorage.setItem('theme', nextMode ? 'dark' : 'light')
   }
 
-  // থিম কালার
   const themeStyles = darkMode ? {
     bgMain: '#0f172a',
     cardBg: '#1e293b',
@@ -207,7 +199,7 @@ export default function Home() {
     bn: {
       heroTitle: 'বিশ্বস্ত ডেন্টাল সেবা ও সুন্দর হাসির নিশ্চয়তা',
       heroSub: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সর্বাধুনিক ডেন্টাল কেয়ার।',
-      title: 'ডাঃ আসির মোসাদ্দেক সাকিব',
+      title: 'Dr. Sakib Dental Care',
       subtitle: 'ওরাল এন্ড ডেন্টাল সার্জন',
       degree: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)',
       bmdc: 'বিএমডিসি রেজি. ৮২৬৩',
@@ -216,7 +208,7 @@ export default function Home() {
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
-      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:৩০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
+      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪ল্যান্ড:৩০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
       patientName: 'রোগীর নাম *',
       patientNamePlaceholder: 'আপনার নাম লিখুন',
       ageLabel: 'বয়স *',
@@ -246,7 +238,7 @@ export default function Home() {
     en: {
       heroTitle: 'Trustworthy Dental Services for a Healthy Smile',
       heroSub: 'Advanced dental treatment under the expert care of Chattogram Medical College surgeon.',
-      title: 'Dr. Asir Mosaddeque Sakib',
+      title: 'Dr. Sakib Dental Care',
       subtitle: 'Oral & Dental Surgeon',
       degree: 'BDS (Chattagong Medical College)',
       bmdc: 'BMDC Reg. 8263',
@@ -364,37 +356,37 @@ export default function Home() {
     }
   }
 
-  const dentalTips = lang === 'bn' ? [
+  // ৬টি টিপসের ডেটা (tips-01 থেকে tips-06, .jpg/.jpeg অটো-ফলব্যাক সহ)
+  const tipsList = [
     {
-      icon: '🦷',
-      title: 'দিনে দুবার ব্রাশ করার সঠিক নিয়ম',
-      description: 'সকালে নাস্তার পর এবং রাতে ঘুমাতে যাওয়ার আগে অন্তত ২ মিনিট ধরে ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে দাঁত ব্রাশ করুন।'
+      id: 'tips-01',
+      textBn: 'দিনে অন্তত দুইবার ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে ভালোভাবে দাঁত ব্রাশ করুন।',
+      textEn: 'Brush your teeth thoroughly at least twice a day with fluoride toothpaste.'
     },
     {
-      icon: '🧵',
-      title: 'মাড়ির সুস্থতা ও ডেন্টাল ফ্লস',
-      description: 'প্রতিদিন অন্তত একবার ডেন্টাল ফ্লস ব্যবহার করে দাঁতের মধ্যবর্তী জমে থাকা খাবারের কণা ও প্লাক পরিষ্কার করুন।'
+      id: 'tips-02',
+      textBn: 'প্রতিদিন নিয়মিত ডেন্টাল ফ্লস ব্যবহার করে দাঁতের ফাঁকে জমে থাকা ময়লা পরিষ্কার রাখুন।',
+      textEn: 'Use dental floss daily to clean food particles trapped between teeth.'
     },
     {
-      icon: '🩺',
-      title: 'কবে ডেন্টাল সার্জনের কাছে যাবেন?',
-      description: 'দাঁতে সামান্য ব্যথা, মাড়ি দিয়ে রক্ত পড়া বা ঠান্ডা-গরম লাগার সমস্যা দেখা দিলেই অবহেলা না করে সার্জনের পরামর্শ নিন।'
-    }
-  ] : [
-    {
-      icon: '🦷',
-      title: 'Proper Brushing Technique',
-      description: 'Brush your teeth with fluoride toothpaste for at least 2 minutes twice a day.'
+      id: 'tips-03',
+      textBn: 'চিনিযুক্ত খাবার ও মিষ্টি খাওয়ার পর কুলি করার অভ্যাস গড়ে তুলুন।',
+      textEn: 'Develop a habit of rinsing your mouth after consuming sugary foods.'
     },
     {
-      icon: '🧵',
-      title: 'Gum Health and Dental Floss',
-      description: 'Use dental floss at least once a day to clean food particles trapped between your teeth.'
+      id: 'tips-04',
+      textBn: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাঁত চেকআপ করান।',
+      textEn: 'Visit your dental surgeon regularly every six months for a checkup.'
     },
     {
-      icon: '🩺',
-      title: 'When to Visit a Surgeon?',
-      description: 'Consult a dental surgeon immediately if you experience tooth pain, bleeding, or sensitivity.'
+      id: 'tips-05',
+      textBn: 'ধূমপান ও পান-সুপারি থেকে বিরত থাকুন, যা দাঁতের মাড়ির মারাত্মক ক্ষতি করে।',
+      textEn: 'Avoid smoking and betel nut, which severely damage your gums and teeth.'
+    },
+    {
+      id: 'tips-06',
+      textBn: 'দাঁতে কোনো ধরনের ব্যথা বা সংবেদনশীলতা অনুভব করলেই দ্রুত চিকিৎসকের পরামর্শ নিন।',
+      textEn: 'Consult a doctor immediately if you experience any tooth pain or sensitivity.'
     }
   ]
 
@@ -457,24 +449,24 @@ export default function Home() {
     >
 
       {/* ১. টপ নোটিশ ও ইনফরমেশন বার */}
-      <div className="bg-[#0c1e3e] text-white text-xs md:text-sm py-2.5 px-4 md:px-12 flex flex-wrap justify-between items-center gap-3 border-b border-blue-900/50">
-        <div className="flex items-center gap-2">
-          <span>📍</span>
-          <span className="truncate max-w-xs md:max-w-none">{t[lang].addressText}</span>
+      <div className="bg-[#0c1e3e] text-white text-[11px] md:text-sm py-2 px-3 md:px-12 flex flex-col sm:flex-row justify-between items-center gap-1 border-b border-blue-900/50">
+        <div className="flex items-center gap-1.5 text-center sm:text-left overflow-x-auto w-full sm:w-auto py-0.5">
+          <span className="flex-shrink-0">📍</span>
+          <span className="whitespace-nowrap sm:whitespace-normal font-medium">{t[lang].addressText}</span>
         </div>
         
-        <div className="flex items-center gap-6 ml-auto">
+        <div className="flex items-center gap-4 flex-shrink-0">
           <div className="hidden sm:flex items-center gap-2">
             <span>🕒</span>
             <span>Sat - Thu: 4:30 PM - 9:00 PM</span>
           </div>
 
-          <div className="flex items-center gap-3 border-l border-blue-800 pl-4">
+          <div className="flex items-center gap-2.5 border-t sm:border-t-0 sm:border-l border-blue-800 pt-1 sm:pt-0 sm:pl-3">
             <a 
               href="https://www.facebook.com/share/1ZfF826KUs/" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1.5"
+              className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1"
               title="Facebook"
             >
               <img src="/facebook.png" alt="FB" className="w-full h-full object-contain filter invert" />
@@ -483,7 +475,7 @@ export default function Home() {
               href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1.5"
+              className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1"
               title="Instagram"
             >
               <img src="/instagram.png" alt="IG" className="w-full h-full object-contain filter invert" />
@@ -492,7 +484,7 @@ export default function Home() {
               href="https://wa.me/message/KBZOTSKH66H4P1" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1.5"
+              className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition shadow-sm p-1"
               title="WhatsApp"
             >
               <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-contain filter invert" />
@@ -503,18 +495,18 @@ export default function Home() {
 
       {/* ২. ন্যাভিগেশন বার */}
       <header 
-        className="sticky top-0 z-50 px-4 md:px-12 py-4 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
+        className="sticky top-0 z-50 px-3 md:px-12 py-3 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
         style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-xl font-bold shadow-md">
+          <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-lg md:text-xl font-bold shadow-md">
             🦷
           </div>
           <div className="flex flex-col">
-            <span className="font-black text-lg md:text-xl tracking-tight" style={{ color: themeStyles.textColor }}>
-              Dr. Sakib Dental Care
+            <span className="font-black text-sm sm:text-base md:text-xl tracking-tight whitespace-nowrap" style={{ color: themeStyles.textColor }}>
+              {t[lang].title}
             </span>
-            <span className="text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider">
+            <span className="text-[9px] md:text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider">
               {t[lang].subtitle}
             </span>
           </div>
@@ -528,47 +520,41 @@ export default function Home() {
           <a href="#contact-section" className="hover:text-[#00a8e8] transition">Contact Us</a>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           <a href="tel:+8801816011701" className="hidden sm:flex items-center gap-2 font-bold text-sm text-[#00a8e8]">
             <span className="w-8 h-8 rounded-full bg-[#00a8e8]/10 flex items-center justify-center text-base">📞</span>
             <span>+880 1816 011 701</span>
           </a>
 
-          <button
-            type="button"
-            onClick={() => setShowPopupBooking(true)}
-            className="font-bold px-4 py-2 rounded-full bg-[#00a8e8] hover:bg-[#0092cd] text-white text-xs shadow-md transition cursor-pointer"
-          >
-            {t[lang].bookingMainBtn}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
+              className="font-bold px-2.5 py-1.5 md:px-3 md:py-2 rounded-lg border text-xs cursor-pointer"
+              style={{ borderColor: themeStyles.borderColor }}
+            >
+              {lang === 'bn' ? 'English' : 'বাংলা'}
+            </button>
 
-          <button
-            type="button"
-            onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-            className="font-bold px-3 py-2 rounded-lg border text-xs cursor-pointer"
-            style={{ borderColor: themeStyles.borderColor }}
-          >
-            {lang === 'bn' ? 'English' : 'বাংলা'}
-          </button>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="p-1.5 md:p-2 rounded-lg border text-xs cursor-pointer"
+              style={{ borderColor: themeStyles.borderColor }}
+            >
+              {darkMode ? '☀️' : '🌙'}
+            </button>
 
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="p-2 rounded-lg border text-xs cursor-pointer"
-            style={{ borderColor: themeStyles.borderColor }}
-          >
-            {darkMode ? '☀️' : '🌙'}
-          </button>
-
-          <button 
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden text-2xl p-1 cursor-pointer focus:outline-none"
-            style={{ color: themeStyles.textColor }}
-            aria-label="Mobile Menu Toggle"
-          >
-            {mobileMenuOpen ? '✕' : '☰'}
-          </button>
+            <button 
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden text-2xl p-1 cursor-pointer focus:outline-none"
+              style={{ color: themeStyles.textColor }}
+              aria-label="Mobile Menu Toggle"
+            >
+              {mobileMenuOpen ? '✕' : '☰'}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -578,53 +564,17 @@ export default function Home() {
           className="lg:hidden px-6 py-4 space-y-3 border-b shadow-lg transition-all duration-300"
           style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
         >
-          <a 
-            href="/" 
-            onClick={() => setMobileMenuOpen(false)} 
-            className="block py-2 font-bold text-sm border-b"
-            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
-            Home
-          </a>
-          <a 
-            href="#about-section" 
-            onClick={() => setMobileMenuOpen(false)} 
-            className="block py-2 font-bold text-sm border-b"
-            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
-            About Us
-          </a>
-          <a 
-            href="/services" 
-            onClick={() => setMobileMenuOpen(false)} 
-            className="block py-2 font-bold text-sm border-b"
-            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
-            Services
-          </a>
-          <a 
-            href="/gallery" 
-            onClick={() => setMobileMenuOpen(false)} 
-            className="block py-2 font-bold text-sm border-b"
-            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
-            Gallery
-          </a>
-          <a 
-            href="#contact-section" 
-            onClick={() => setMobileMenuOpen(false)} 
-            className="block py-2 font-bold text-sm"
-            style={{ color: themeStyles.textColor }}
-          >
-            Contact Us
-          </a>
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>Home</a>
+          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>About Us</a>
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>Services</a>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>Gallery</a>
+          <a href="#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm" style={{ color: themeStyles.textColor }}>Contact Us</a>
         </div>
       )}
 
       {/* ৩. হিরো সেকশন */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#0d2857] via-[#0b3c85] to-[#0077b6] text-white py-12 lg:py-20 px-4 md:px-12">
-        
-        <div className="max-w-7xl mx-auto mb-8">
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#0d2857] via-[#0b3c85] to-[#0077b6] text-white py-10 lg:py-20 px-4 md:px-12">
+        <div className="max-w-7xl mx-auto mb-6">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs md:text-sm font-semibold">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
             <span>{chamberNotice.isClosed ? (lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn) : chamberStatusText}</span>
@@ -632,18 +582,13 @@ export default function Home() {
         </div>
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
           <div className="lg:col-span-5 flex justify-center lg:justify-start order-2 lg:order-1">
-            <div className="relative w-72 h-80 md:w-80 md:h-96 lg:w-96 lg:h-[420px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 bg-[#071630]">
-              <img 
-                src="/doctor.jpeg" 
-                alt="Dr. Sakib" 
-                className="w-full h-full object-cover object-top"
-              />
+            <div className="relative w-64 h-72 md:w-80 md:h-96 lg:w-96 lg:h-[420px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 bg-[#071630]">
+              <img src="/doctor.jpeg" alt="Dr. Sakib" className="w-full h-full object-cover object-top" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#071630] via-transparent to-transparent opacity-80"></div>
               <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
                 <h3 className="font-bold text-lg text-white">{t[lang].title}</h3>
-                <p className="text-xs text-cyan-300 font-medium">{t[lang].degree}</p>
+                <p className="text-xs text-cyan-300 font-medium">BDS (Chattogram Medical College)</p>
                 <p className="text-[11px] text-slate-300">{t[lang].bmdc}</p>
               </div>
             </div>
@@ -674,13 +619,7 @@ export default function Home() {
                 Learn More
               </a>
             </div>
-
-            <div className="pt-6 border-t border-white/10 flex items-center justify-center lg:justify-start gap-3 text-xs text-cyan-200">
-              <span className="w-7 h-7 rounded-full bg-cyan-500/20 flex items-center justify-center font-bold">✓</span>
-              <span>Say goodbye to dental issues with our painless treatments.</span>
-            </div>
           </div>
-
         </div>
       </section>
 
@@ -841,29 +780,52 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৬. দাঁতের যত্ন ও স্বাস্থ্য টিপস */}
-      <section className="max-w-7xl mx-auto my-12 px-4 md:px-0">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
+      {/* ৬. দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন (৬টি রেক্ট্যাঙ্গেল বক্স, আইকন ছাড়া, ব্যাকগ্রাউন্ড ইমেজ ও .jpg/.jpeg অটো-ফলব্যাক সহ) */}
+      <section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
+        <div className="text-center mb-10 space-y-2">
+          <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
             {t[lang].tipsTitle}
           </h2>
+          <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
+            {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
+          </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {dentalTips.map((tip, index) => (
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tipsList.map((item, index) => (
             <div 
               key={index} 
-              className="p-6 rounded-3xl border shadow-sm space-y-3 transition-all duration-300"
-              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+              className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-end p-6 group transition duration-300 hover:shadow-xl"
             >
-              <span className="text-3xl block">{tip.icon}</span>
-              <h3 className="text-lg font-bold" style={{ color: themeStyles.textColor }}>{tip.title}</h3>
-              <p className="text-xs md:text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{tip.description}</p>
+              {/* ব্যাকগ্রাউন্ড ইমেজ (.jpg থেকে .jpeg অটো-ফলব্যাক) */}
+              <img 
+                src={`/tips/${item.id}.jpg`} 
+                alt={`Dental Tip ${index + 1}`} 
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                onError={(e) => {
+                  if (!e.target.dataset.triedJpeg) {
+                    e.target.dataset.triedJpeg = "true";
+                    e.target.src = `/tips/${item.id}.jpeg`;
+                  } else {
+                    e.target.onerror = null;
+                    e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpg/.jpeg)%3C/text%3E%3C/svg%3E";
+                  }
+                }}
+              />
+
+              {/* টেক্সট পরিষ্কার ফুটিয়ে তোলার জন্য গ্রেডিয়েন্ট ওভারলে */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+
+              {/* উপদেশ টেক্সট (আইকন ছাড়া) */}
+              <p className="relative z-10 text-white font-bold text-sm md:text-base leading-snug drop-shadow-md">
+                {lang === 'bn' ? item.textBn : item.textEn}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ৭. "কেন আপনার জন্য আমরাই?" - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
+      {/* ৭. কেন আপনার জন্য আমরাই? - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
