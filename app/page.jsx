@@ -208,7 +208,7 @@ export default function Home() {
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
-      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪ল্যান্ড:৩০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
+      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:৩০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
       patientName: 'রোগীর নাম *',
       patientNamePlaceholder: 'আপনার নাম লিখুন',
       ageLabel: 'বয়স *',
@@ -356,7 +356,6 @@ export default function Home() {
     }
   }
 
-  // ৬টি টিপসের ডেটা (tips-01 থেকে tips-06, .jpg/.jpeg অটো-ফলব্যাক সহ)
   const tipsList = [
     {
       id: 'tips-01',
@@ -780,67 +779,72 @@ export default function Home() {
         </div>
       </section>
 
-      {/* দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন */}
-<section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
-  <div className="text-center mb-10 space-y-2">
-    <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
-      {t[lang].tipsTitle}
-    </h2>
-    <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
-      {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
-    </p>
-  </div>
-
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {tipsList.map((item, index) => {
-      // index ২ (Tip 03) এবং index ৫ (Tip 06) এর জন্য টেক্সট কালার সাদা এবং বাকিগুলোর জন্য গাঢ় কালার
-      const isDarkCard = index === 2 || index === 5;
-
-      // প্রতিটি টিপসের জন্য ডেডিকেটেড হেডলাইন (বাংলা ও ইংরেজি)
-      const headlines = [
-        { bn: 'নিয়মিত ব্রাশ করুন', en: 'Brush Regularly' },
-        { bn: 'ডেন্টাল ফ্লস ব্যবহার', en: 'Use Dental Floss' },
-        { bn: 'মিষ্টি খাবার পর কুলি', en: 'Rinse After Sweets' },
-        { bn: 'নিয়মিত চেকআপ', en: 'Regular Checkup' },
-        { bn: 'বর্জন করুন', en: 'Avoid Harmful Habits' },
-        { bn: 'ব্যাথায় সচেতনতা', en: 'Dental Pain Care' }
-      ];
-
-      return (
-        <div 
-          key={index} 
-          className="relative h-72 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-center items-start p-6 group transition duration-300 hover:shadow-xl bg-white dark:bg-slate-900"
-        >
-          {/* ব্যাকগ্রাউন্ড ইমেজ */}
-          <img 
-            src={`/tips/${item.id}.jpeg`} 
-            alt={`Dental Tip ${index + 1}`} 
-            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
-            onError={(e) => {
-              if (!e.target.dataset.triedJpg) {
-                e.target.dataset.triedJpg = "true";
-                e.target.src = `/tips/${item.id}.jpg`;
-              } else {
-                e.target.onerror = null;
-                e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpeg/.jpg)%3E%3C/text%3E%3C/svg%3E";
-              }
-            }}
-          />
-
-          {/* বাম পাশে এক-তৃতীয়াংশ (1/3) প্রস্থের ভেতর বড় হেডলাইন এবং ওপর-নিচে ভাঙা মূল টেক্সট */}
-          <div className="relative z-10 w-1/3 text-left space-y-2">
-            <h3 className={`font-black text-lg md:text-xl tracking-tight drop-shadow-md ${isDarkCard ? 'text-teal-300' : 'text-[#0E3A5D]'}`}>
-              {lang === 'bn' ? headlines[index].bn : headlines[index].en}
-            </h3>
-            <p className={`font-bold text-xs md:text-sm leading-relaxed drop-shadow-md break-words ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>
-              {lang === 'bn' ? item.textBn : item.textEn}
-            </p>
-          </div>
+      {/* ৬. দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন (৪র্থ বক্সে হোয়াইট বর্ডার / টেক্সট শ্যাডো সহ) */}
+      <section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
+        <div className="text-center mb-10 space-y-2">
+          <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
+            {t[lang].tipsTitle}
+          </h2>
+          <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
+            {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
+          </p>
         </div>
-      );
-    })}
-  </div>
-</section>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tipsList.map((item, index) => {
+            const isDarkCard = index === 2 || index === 5;
+            // চতুর্থ বক্সের জন্য (index ৩) আলাদা ক্লাস যাতে কালো লেখার চারপাশে হোয়াইট বর্ডার বা শ্যাডো ইফেক্ট থাকে
+            const isFourthCard = index === 3;
+
+            const headlines = [
+              { bn: 'নিয়মিত ব্রাশ করুন', en: 'Brush Regularly' },
+              { bn: 'ডেন্টাল ফ্লস ব্যবহার', en: 'Use Dental Floss' },
+              { bn: 'মিষ্টি খাবার পর কুলি', en: 'Rinse After Sweets' },
+              { bn: 'নিয়মিত চেকআপ', en: 'Regular Checkup' },
+              { bn: 'বর্জন করুন', en: 'Avoid Harmful Habits' },
+              { bn: 'ব্যাথায় সচেতনতা', en: 'Dental Pain Care' }
+            ];
+
+            return (
+              <div 
+                key={index} 
+                className="relative h-72 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-center items-start p-6 group transition duration-300 hover:shadow-xl bg-white dark:bg-slate-900"
+              >
+                {/* ব্যাকগ্রাউন্ড ইমেজ */}
+                <img 
+                  src={`/tips/${item.id}.jpeg`} 
+                  alt={`Dental Tip ${index + 1}`} 
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  onError={(e) => {
+                    if (!e.target.dataset.triedJpg) {
+                      e.target.dataset.triedJpg = "true";
+                      e.target.src = `/tips/${item.id}.jpg`;
+                    } else {
+                      e.target.onerror = null;
+                      e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpeg/.jpg)%3E%3C/text%3E%3C/svg%3E";
+                    }
+                  }}
+                />
+
+                {/* বাম পাশে ১/৩ অংশ প্রস্থের ভেতর হেডলাইন এবং মূল টেক্সট */}
+                <div className="relative z-10 w-1/3 text-left space-y-2">
+                  <h3 className={`font-black text-lg md:text-xl tracking-tight drop-shadow-md ${isDarkCard ? 'text-teal-300' : isFourthCard ? 'text-black font-extrabold' : 'text-[#0E3A5D]'}`}
+                      style={isFourthCard ? { textShadow: '-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff' } : {}}
+                  >
+                    {lang === 'bn' ? headlines[index].bn : headlines[index].en}
+                  </h3>
+                  
+                  <p className={`font-bold text-xs md:text-sm leading-relaxed break-words ${isDarkCard ? 'text-white drop-shadow-md' : isFourthCard ? 'text-black' : 'text-slate-900 drop-shadow-md'}`}
+                     style={isFourthCard ? { textShadow: '-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff' } : {}}
+                  >
+                    {lang === 'bn' ? item.textBn : item.textEn}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       {/* ৭. কেন আপনার জন্য আমরাই? - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
