@@ -95,7 +95,7 @@ export default function Home() {
       const isOpenTime = day !== 5 && currentTimeInMinutes >= 960 && currentTimeInMinutes <= 1290
 
       if (lang === 'bn') {
-        setChamberStatusText(isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে')
+        setChamberStatusText(isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে')
       } else {
         setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🔴 Chamber is currently CLOSED')
       }
@@ -197,14 +197,14 @@ export default function Home() {
 
   const t = {
     bn: {
-      heroTitle: 'বিশ্বস্ত ডেন্টাল সেবা ও সুন্দর হাসির নিশ্চয়তা',
-      heroSub: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সর্বাধুনিক ডেন্টাল কেয়ার।',
+      heroTitle: 'বিশ্বস্ত ডেন্টাল সেবা ও সুন্দর হাসির নিশ্চয়তা',
+      heroSub: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সর্বাধুনিক ডেন্টাল কেয়ার।',
       title: 'Dr. Sakib Dental Care',
       subtitle: 'ওরাল এন্ড ডেন্টাল সার্জন',
       degree: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)',
       bmdc: 'বিএমডিসি রেজি. ৮২৬৩',
       training: 'স্পেশাল ট্রেইনড ইন ইমপ্ল্যান্ট এন্ড কসমেটিক ডেন্টিস্ট্রি',
-      addressText: 'আলম মেডিকেল হল, পটিয়া কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
+      addressText: 'আলম মেডিকেল হল, পটিয়া কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
@@ -356,44 +356,27 @@ export default function Home() {
     }
   }
 
-  const dentalTips = lang === 'bn' ? [
-    {
-      icon: '🦷',
-      title: 'দিনে দুবার ব্রাশ করার সঠিক নিয়ম',
-      description: 'সকালে নাস্তার পর এবং রাতে ঘুমাতে যাওয়ার আগে অন্তত ২ মিনিট ধরে ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে দাঁত ব্রাশ করুন।'
-    },
-    {
-      icon: '🧵',
-      title: 'মাড়ির সুস্থতা ও ডেন্টাল ফ্লস',
-      description: 'প্রতিদিন অন্তত একবার ডেন্টাল ফ্লস ব্যবহার করে দাঁতের মধ্যবর্তী জমে থাকা খাবারের কণা ও প্লাক পরিষ্কার করুন।'
-    },
-    {
-      icon: '🩺',
-      title: 'কবে ডেন্টাল সার্জনের কাছে যাবেন?',
-      description: 'দাঁতে সামান্য ব্যথা, মাড়ি দিয়ে রক্ত পড়া বা ঠান্ডা-গরম লাগার সমস্যা দেখা দিলেই অবহেলা না করে সার্জনের পরামর্শ নিন।'
-    }
+  // ৬টি টিপস ডেটা (tips ফোল্ডারের ছবি ও টেক্সটসহ)
+  const dentalTipsList = lang === 'bn' ? [
+    { id: 'tips-01', text: 'দিনে অন্তত দুইবার ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে ভালোভাবে দাঁত ব্রাশ করুন।' },
+    { id: 'tips-02', text: 'প্রতিদিন নিয়মিত ডেন্টাল ফ্লস ব্যবহার করে দাঁতের ফাঁকে জমে থাকা ময়লা পরিষ্কার রাখুন।' },
+    { id: 'tips-03', text: 'চিনিযুক্ত খাবার ও মিষ্টি খাওয়ার পর কুলি করার অভ্যাস গড়ে তুলুন।' },
+    { id: 'tips-04', text: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাঁত চেকআপ করান।' },
+    { id: 'tips-05', text: 'ধূমপান ও পান-সুপারি থেকে বিরত থাকুন, যা দাঁতের মাড়ির মারাত্মক ক্ষতি করে।' },
+    { id: 'tips-06', text: 'দাঁতে কোনো ধরনের ব্যথা বা সংবেদনশীলতা অনুভব করলেই দ্রুত চিকিৎসকের পরামর্শ নিন।' }
   ] : [
-    {
-      icon: '🦷',
-      title: 'Proper Brushing Technique',
-      description: 'Brush your teeth with fluoride toothpaste for at least 2 minutes twice a day.'
-    },
-    {
-      icon: '🧵',
-      title: 'Gum Health and Dental Floss',
-      description: 'Use dental floss at least once a day to clean food particles trapped between your teeth.'
-    },
-    {
-      icon: '🩺',
-      title: 'When to Visit a Surgeon?',
-      description: 'Consult a dental surgeon immediately if you experience tooth pain, bleeding, or sensitivity.'
-    }
+    { id: 'tips-01', text: 'Brush your teeth thoroughly at least twice a day with fluoride toothpaste.' },
+    { id: 'tips-02', text: 'Use dental floss daily to clean food particles trapped between teeth.' },
+    { id: 'tips-03', text: 'Develop a habit of rinsing your mouth after consuming sugary foods.' },
+    { id: 'tips-04', text: 'Visit your dental surgeon regularly every six months for a checkup.' },
+    { id: 'tips-05', text: 'Avoid smoking and betel nut, which severely damage your gums and teeth.' },
+    { id: 'tips-06', text: 'Consult a doctor immediately if you experience any tooth pain or sensitivity.' }
   ]
 
   const featureBoxes = lang === 'bn' ? [
     {
       title: 'আধুনিক ডেন্টাল কেয়ার',
-      description: 'সর্বাধুনিক যন্ত্রপাতি ও নিরাপদ উপায়ে পেইনলেস ডেন্টাল ট্রিটমেন্ট নিশ্চিত করা হয়।',
+      description: 'সর্বাধুনিক যন্ত্রপাতি ও নিরাপদ উপায়ে পেইনলেস ডেন্টাল ট্রিটমেন্ট নিশ্চিত করা হয়।',
       bgImage: '/why-01.jpeg',
       stepClass: 'md:mr-24 lg:mr-36'
     },
@@ -405,7 +388,7 @@ export default function Home() {
     },
     {
       title: 'অভিজ্ঞ কনসালটেশন',
-      description: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সঠিক রোগ নির্ণয়।',
+      description: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সঠিক রোগ নির্ণয়।',
       bgImage: '/why-03.jpeg',
       stepClass: 'md:ml-24 lg:ml-36'
     }
@@ -448,7 +431,7 @@ export default function Home() {
       style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
     >
 
-      {/* ১. টপ নোটিশ ও ইনফরমেশন বার (ঠিকানা সম্পূর্ণ দৃশ্যমান করার জন্য মার্কি বা ফ্লেক্স র‍্যাপ) */}
+      {/* ১. টপ নোটিশ ও ইনফরমেশন বার */}
       <div className="bg-[#0c1e3e] text-white text-[11px] md:text-sm py-2 px-3 md:px-12 flex flex-col sm:flex-row justify-between items-center gap-1 border-b border-blue-900/50">
         <div className="flex items-center gap-1.5 text-center sm:text-left overflow-x-auto w-full sm:w-auto py-0.5">
           <span className="flex-shrink-0">📍</span>
@@ -493,68 +476,65 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ২. ন্যাভিগেশন বার (হ্যামবার্গার মেনু একদম বামে এবং লেখা এক লাইনে) */}
-<header 
-  className="sticky top-0 z-50 px-3 md:px-12 py-2.5 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
-  style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
->
-  {/* বাম দিক: হ্যামবার্গার মেনু + লোগো + এক লাইনের ক্লিন টেক্সট */}
-  <div className="flex items-center gap-2">
-    <button 
-      type="button"
-      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-      className="lg:hidden text-2xl p-1 cursor-pointer focus:outline-none flex-shrink-0"
-      style={{ color: themeStyles.textColor }}
-      aria-label="Mobile Menu Toggle"
-    >
-      {mobileMenuOpen ? '✕' : '☰'}
-    </button>
+      {/* ২. ন্যাভিগেশন বার (হ্যামবার্গার মেনু একদম বামে ও এক লাইনের টাইটেল) */}
+      <header 
+        className="sticky top-0 z-50 px-3 md:px-12 py-2.5 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
+        style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
+      >
+        <div className="flex items-center gap-2">
+          <button 
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden text-2xl p-1 cursor-pointer focus:outline-none flex-shrink-0"
+            style={{ color: themeStyles.textColor }}
+            aria-label="Mobile Menu Toggle"
+          >
+            {mobileMenuOpen ? '✕' : '☰'}
+          </button>
 
-    <div className="flex items-center gap-2">
-      <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-lg font-bold shadow-md flex-shrink-0">
-        🦷
-      </div>
-      <div className="flex flex-col justify-center">
-        <span className="font-black text-xs sm:text-sm md:text-xl tracking-tight whitespace-nowrap leading-tight" style={{ color: themeStyles.textColor }}>
-          Dr. Sakib Dental Care
-        </span>
-        <span className="text-[8px] sm:text-[9px] md:text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider">
-          Oral & Dental Surgeon
-        </span>
-      </div>
-    </div>
-  </div>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-lg font-bold shadow-md flex-shrink-0">
+              🦷
+            </div>
+            <div className="flex flex-col justify-center">
+              <span className="font-black text-xs sm:text-sm md:text-xl tracking-tight whitespace-nowrap leading-tight" style={{ color: themeStyles.textColor }}>
+                Dr. Sakib Dental Care
+              </span>
+              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider">
+                Oral & Dental Surgeon
+              </span>
+            </div>
+          </div>
+        </div>
 
-  {/* ডেস্কটপ মেনু */}
-  <nav className="hidden lg:flex items-center gap-8 font-bold text-sm" style={{ color: themeStyles.textColor }}>
-    <a href="/" className="text-[#00a8e8] transition">Home</a>
-    <a href="#about-section" className="hover:text-[#00a8e8] transition">About Us</a>
-    <a href="/services" className="hover:text-[#00a8e8] transition">Services</a>
-    <a href="/gallery" className="hover:text-[#00a8e8] transition">Gallery</a>
-    <a href="#contact-section" className="hover:text-[#00a8e8] transition">Contact Us</a>
-  </nav>
+        <nav className="hidden lg:flex items-center gap-8 font-bold text-sm" style={{ color: themeStyles.textColor }}>
+          <a href="/" className="text-[#00a8e8] transition">Home</a>
+          <a href="#about-section" className="hover:text-[#00a8e8] transition">About Us</a>
+          <a href="/services" className="hover:text-[#00a8e8] transition">Services</a>
+          <a href="/gallery" className="hover:text-[#00a8e8] transition">Gallery</a>
+          <a href="#contact-section" className="hover:text-[#00a8e8] transition">Contact Us</a>
+        </nav>
 
-  {/* ডান দিক: ভাষা ও থিম টগল বাটন */}
-  <div className="flex items-center gap-2">
-    <button
-      type="button"
-      onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-      className="font-bold px-2.5 py-1.5 rounded-lg border text-xs cursor-pointer"
-      style={{ borderColor: themeStyles.borderColor }}
-    >
-      {lang === 'bn' ? 'English' : 'বাংলা'}
-    </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
+            className="font-bold px-2.5 py-1.5 rounded-lg border text-xs cursor-pointer"
+            style={{ borderColor: themeStyles.borderColor }}
+          >
+            {lang === 'bn' ? 'English' : 'বাংলা'}
+          </button>
 
-    <button
-      type="button"
-      onClick={toggleTheme}
-      className="p-1.5 md:p-2 rounded-lg border text-xs cursor-pointer"
-      style={{ borderColor: themeStyles.borderColor }}
-    >
-      {darkMode ? '☀️' : '🌙'}
-    </button>
-  </div>
-</header>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="p-1.5 md:p-2 rounded-lg border text-xs cursor-pointer"
+            style={{ borderColor: themeStyles.borderColor }}
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
+        </div>
+      </header>
 
       {/* মোবাইল হেডার সাব-সেকশন: ব্লু কালার অ্যাপয়েন্টমেন্ট বাটন */}
       <div className="lg:hidden px-3 py-2 border-b flex justify-center items-center" style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}>
@@ -618,7 +598,6 @@ export default function Home() {
 
       {/* ৩. হিরো সেকশন */}
       <section className="relative overflow-hidden bg-gradient-to-r from-[#0d2857] via-[#0b3c85] to-[#0077b6] text-white py-10 lg:py-20 px-4 md:px-12">
-        
         <div className="max-w-7xl mx-auto mb-6">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs md:text-sm font-semibold">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -627,7 +606,6 @@ export default function Home() {
         </div>
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
           <div className="lg:col-span-5 flex justify-center lg:justify-start order-2 lg:order-1">
             <div className="relative w-64 h-72 md:w-80 md:h-96 lg:w-96 lg:h-[420px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 bg-[#071630]">
               <img 
@@ -669,13 +647,7 @@ export default function Home() {
                 Learn More
               </a>
             </div>
-
-            <div className="pt-6 border-t border-white/10 flex items-center justify-center lg:justify-start gap-3 text-xs text-cyan-200">
-              <span className="w-7 h-7 rounded-full bg-cyan-500/20 flex items-center justify-center font-bold">✓</span>
-              <span>Say goodbye to dental issues with our painless treatments.</span>
-            </div>
           </div>
-
         </div>
       </section>
 
@@ -817,7 +789,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* ৫. স্থায়ী About Us সেকশন */}
+      {/* ৫. স্থায়ী About Us সেকশন */}
       <section 
         id="about-section" 
         className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4 transition-all duration-300"
@@ -836,60 +808,47 @@ export default function Home() {
         </div>
       </section>
 
-      {/* দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন */}
-<section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
-  <div className="text-center mb-10 space-y-2">
-    <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
-      {lang === 'bn' ? 'দাঁতের যত্ন ও স্বাস্থ্য টিপস' : 'Dental Care & Health Tips'}
-    </h2>
-    <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
-      {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
-    </p>
-  </div>
+      {/* ৬. দাঁতের যত্ন ও স্বাস্থ্য টিপস (৬টি রেক্ট্যাঙ্গেল বক্স, আইকন ছাড়া, tips ফোল্ডার এবং jpg/jpeg ফলব্যাক সহ) */}
+      <section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
+        <div className="text-center mb-10 space-y-2">
+          <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
+            {t[lang].tipsTitle}
+          </h2>
+          <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
+            {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
+          </p>
+        </div>
 
-  {/* ৬টি রেক্ট্যাঙ্গেল বক্স (.jpg / .jpeg অটো-ফলব্যাক সহ) */}
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {[
-      { id: 'tips-01', textBn: 'দিনে অন্তত দুইবার ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে ভালোভাবে দাঁত ব্রাশ করুন।', textEn: 'Brush your teeth thoroughly at least twice a day with fluoride toothpaste.' },
-      { id: 'tips-02', textBn: 'প্রতিদিন নিয়মিত ডেন্টাল ফ্লস ব্যবহার করে দাঁতের ফাঁকে জমে থাকা ময়লা পরিষ্কার রাখুন।', textEn: 'Use dental floss daily to clean food particles trapped between teeth.' },
-      { id: 'tips-03', textBn: 'চিনিযুক্ত খাবার ও মিষ্টি খাওয়ার পর কুলি করার অভ্যাস গড়ে তুলুন।', textEn: 'Develop a habit of rinsing your mouth after consuming sugary foods.' },
-      { id: 'tips-04', textBn: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাঁত চেকআপ করান।', textEn: 'Visit your dental surgeon regularly every six months for a checkup.' },
-      { id: 'tips-05', textBn: 'ধূমপান ও পান-সুপারি থেকে বিরত থাকুন, যা দাঁতের মাড়ির মারাত্মক ক্ষতি করে।', textEn: 'Avoid smoking and betel nut, which severely damage your gums and teeth.' },
-      { id: 'tips-06', textBn: 'দাঁতে কোনো ধরনের ব্যথা বা সংবেদনশীলতা অনুভব করলেই দ্রুত চিকিৎসকের পরামর্শ নিন।', textEn: 'Consult a doctor immediately if you experience any tooth pain or sensitivity.' }
-    ].map((item, index) => (
-      <div 
-        key={index} 
-        className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-end p-6 group transition duration-300 hover:shadow-xl"
-      >
-        {/* ব্যাকগ্রাউন্ড ইমেজ (.jpg থেকে .jpeg অটো-ফলব্যাক লজিক) */}
-        <img 
-          src={`/tips/${item.id}.jpg`} 
-          alt={`Dental Tip ${index + 1}`} 
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
-          onError={(e) => {
-            if (!e.target.dataset.triedJpeg) {
-              e.target.dataset.triedJpeg = "true";
-              e.target.src = `/tips/${item.id}.jpeg`;
-            } else {
-              e.target.onerror = null;
-              e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpg/.jpeg)%3C/text%3E%3C/svg%3E";
-            }
-          }}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {dentalTipsList.map((item, index) => (
+            <div 
+              key={index} 
+              className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-end p-6 group transition duration-300 hover:shadow-xl"
+            >
+              <img 
+                src={`/tips/${item.id}.jpg`} 
+                alt={`Dental Tip ${index + 1}`} 
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                onError={(e) => {
+                  if (!e.target.dataset.triedJpeg) {
+                    e.target.dataset.triedJpeg = "true";
+                    e.target.src = `/tips/${item.id}.jpeg`;
+                  } else {
+                    e.target.onerror = null;
+                    e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpg/.jpeg)%3C/text%3E%3C/svg%3E";
+                  }
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+              <p className="relative z-10 text-white font-bold text-sm md:text-base leading-snug drop-shadow-md">
+                {item.text}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-        {/* টেক্সট পরিষ্কার বোঝার জন্য হালকা গ্রেডিয়েন্ট ওভারলে */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-
-        {/* উপদেশ টেক্সট (আইকন ছাড়া) */}
-        <p className="relative z-10 text-white font-bold text-sm md:text-base leading-snug drop-shadow-md">
-          {lang === 'bn' ? item.textBn : item.textEn}
-        </p>
-      </div>
-    ))}
-  </div>
-</section>
-
-      {/* ৭. "কেন আপনার জন্য আমরাই?" - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
+      {/* ৭. কেন আপনার জন্য আমরাই? */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
