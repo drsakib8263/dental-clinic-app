@@ -795,9 +795,9 @@ export default function Home() {
     {tipsList.map((item, index) => (
       <div 
         key={index} 
-        className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-end p-6 group transition duration-300 hover:shadow-xl"
+        className="relative h-64 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-start p-6 group transition duration-300 hover:shadow-xl bg-white dark:bg-slate-900"
       >
-        {/* ব্যাকগ্রাউন্ড ইমেজ (.jpeg এবং .jpg উভয় ফরম্যাট অটো-ডিটেক্ট করবে) */}
+        {/* ব্যাকগ্রাউন্ড ইমেজ (কোনো গ্রেডিয়েন্ট বা ব্লার ছাড়া সরাসরি পরিষ্কার ছবি) */}
         <img 
           src={`/tips/${item.id}.jpeg`} 
           alt={`Dental Tip ${index + 1}`} 
@@ -813,13 +813,15 @@ export default function Home() {
           }}
         />
 
-        {/* টেক্সট পরিষ্কার ফুটিয়ে তোলার জন্য গ্রেডিয়েন্ট ওভারলে */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-
-        {/* উপদেশ টেক্সট (আইকন ছাড়া) */}
-        <p className="relative z-10 text-white font-bold text-sm md:text-base leading-snug drop-shadow-md">
-          {lang === 'bn' ? item.textBn : item.textEn}
-        </p>
+        {/* সরাসরি ছবির ওপর স্পষ্ট লেখা (যদি ছবির ব্যাকগ্রাউন্ড হালকা হয়, তবে টেক্সট ডার্ক বা ব্যাকগ্রাউন্ড টিন্ট দেওয়া যায়, এখানে স্পষ্ট ফুটতে খানিটা সলিড কন্ট্রাস্ট রাখা হয়েছে) */}
+        <div className="relative z-10 bg-white/9 മുഖ്യമന്ത്രി dark:bg-slate-900/90 backdrop-blur-[2px] p-4 rounded-xl shadow-sm border border-white/20">
+          <span className="text-[10px] font-bold text-[#00a8e8] uppercase tracking-wider block mb-1">
+            Tip 0{index + 1}
+          </span>
+          <p className="text-slate-800 dark:text-white font-bold text-xs md:text-sm leading-snug">
+            {lang === 'bn' ? item.textBn : item.textEn}
+          </p>
+        </div>
       </div>
     ))}
   </div>
