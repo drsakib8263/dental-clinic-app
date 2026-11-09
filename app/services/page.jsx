@@ -493,74 +493,67 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ২. ন্যাভিগেশন বার (হ্যামবার্গার মেনু একদম বামে এবং কম্প্যাক্ট হোয়াইট বক্স) */}
-      <header 
-        className="sticky top-0 z-50 px-3 md:px-12 py-2 md:py-3 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
-        style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
-      >
-        {/* বামপাশ: হ্যামবার্গার মেনু + লোগো ও এক লাইনে টেক্সট */}
-        <div className="flex items-center gap-2.5">
-          <button 
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden text-xl md:text-2xl p-1 cursor-pointer focus:outline-none flex-shrink-0"
-            style={{ color: themeStyles.textColor }}
-            aria-label="Mobile Menu Toggle"
-          >
-            {mobileMenuOpen ? '✕' : '☰'}
-          </button>
+      {/* ২. ন্যাভিগেশন বার (হ্যামবার্গার মেনু একদম বামে এবং ফ্লেক্স লেআউট) */}
+<header 
+  className="sticky top-0 z-50 px-3 md:px-12 py-2.5 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
+  style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
+>
+  {/* বামপাশ: হ্যামবার্গার মেনু + লোগো + এক লাইনের টাইটেল */}
+  <div className="flex items-center gap-2">
+    <button 
+      type="button"
+      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      className="lg:hidden text-2xl p-1 cursor-pointer focus:outline-none flex-shrink-0"
+      style={{ color: themeStyles.textColor }}
+      aria-label="Mobile Menu Toggle"
+    >
+      {mobileMenuOpen ? '✕' : '☰'}
+    </button>
 
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-lg md:text-xl font-bold shadow-md flex-shrink-0">
-              🦷
-            </div>
-            <div className="flex flex-col justify-center">
-              <span className="font-black text-xs sm:text-sm md:text-xl tracking-tight whitespace-nowrap leading-none" style={{ color: themeStyles.textColor }}>
-                {t[lang].title}
-              </span>
-              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider pt-0.5">
-                {t[lang].subtitle}
-              </span>
-            </div>
-          </div>
-        </div>
+    <div className="flex items-center gap-2">
+      <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-lg font-bold shadow-md flex-shrink-0">
+        🦷
+      </div>
+      <div className="flex flex-col justify-center">
+        <span className="font-black text-sm md:text-xl tracking-tight whitespace-nowrap leading-tight" style={{ color: themeStyles.textColor }}>
+          {t[lang].title}
+        </span>
+        <span className="text-[9px] md:text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider">
+          {t[lang].subtitle}
+        </span>
+      </div>
+    </div>
+  </div>
 
-        <nav className="hidden lg:flex items-center gap-8 font-bold text-sm" style={{ color: themeStyles.textColor }}>
-          <a href="/" className="text-[#00a8e8] transition">Home</a>
-          <a href="#about-section" className="hover:text-[#00a8e8] transition">About Us</a>
-          <a href="/services" className="hover:text-[#00a8e8] transition">Services</a>
-          <a href="/gallery" className="hover:text-[#00a8e8] transition">Gallery</a>
-          <a href="#contact-section" className="hover:text-[#00a8e8] transition">Contact Us</a>
-        </nav>
+  <nav className="hidden lg:flex items-center gap-8 font-bold text-sm" style={{ color: themeStyles.textColor }}>
+    <a href="/" className="text-[#00a8e8] transition">Home</a>
+    <a href="#about-section" className="hover:text-[#00a8e8] transition">About Us</a>
+    <a href="/services" className="hover:text-[#00a8e8] transition">Services</a>
+    <a href="/gallery" className="hover:text-[#00a8e8] transition">Gallery</a>
+    <a href="#contact-section" className="hover:text-[#00a8e8] transition">Contact Us</a>
+  </nav>
 
-        {/* ডানপাশ: ভাষা টগল, ডার্ক মোড ও কল বাটন */}
-        <div className="flex items-center gap-2 md:gap-3">
-          <a href="tel:+8801816011701" className="hidden sm:flex items-center gap-2 font-bold text-sm text-[#00a8e8]">
-            <span className="w-8 h-8 rounded-full bg-[#00a8e8]/10 flex items-center justify-center text-base">📞</span>
-            <span>+880 1816 011 701</span>
-          </a>
+  {/* ডানপাশ: ভাষা টগল ও থিম মোড */}
+  <div className="flex items-center gap-2">
+    <button
+      type="button"
+      onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
+      className="font-bold px-2.5 py-1.5 rounded-lg border text-xs cursor-pointer"
+      style={{ borderColor: themeStyles.borderColor }}
+    >
+      {lang === 'bn' ? 'English' : 'বাংলা'}
+    </button>
 
-          <div className="flex items-center gap-1.5 md:gap-3">
-            <button
-              type="button"
-              onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-              className="font-bold px-2 py-1 md:px-3 md:py-2 rounded-lg border text-[10px] md:text-xs cursor-pointer"
-              style={{ borderColor: themeStyles.borderColor }}
-            >
-              {lang === 'bn' ? 'English' : 'বাংলা'}
-            </button>
-
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="p-1.5 md:p-2 rounded-lg border text-xs cursor-pointer"
-              style={{ borderColor: themeStyles.borderColor }}
-            >
-              {darkMode ? '☀️' : '🌙'}
-            </button>
-          </div>
-        </div>
-      </header>
+    <button
+      type="button"
+      onClick={toggleTheme}
+      className="p-1.5 md:p-2 rounded-lg border text-xs cursor-pointer"
+      style={{ borderColor: themeStyles.borderColor }}
+    >
+      {darkMode ? '☀️' : '🌙'}
+    </button>
+  </div>
+</header>
 
       {/* মোবাইল হেডার সাব-সেকশন: ব্লু কালার অ্যাপয়েন্টমেন্ট বাটন */}
       <div className="lg:hidden px-3 py-2 border-b flex justify-center items-center" style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}>
