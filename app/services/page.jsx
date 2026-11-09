@@ -493,12 +493,12 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ২. ন্যাভিগেশন বার (হ্যামবার্গার মেনু একদম বামে এবং ফ্লেক্স লেআউট) */}
+      {/* ২. ন্যাভিগেশন বার (হ্যামবার্গার মেনু একদম বামে এবং লেখা এক লাইনে) */}
 <header 
   className="sticky top-0 z-50 px-3 md:px-12 py-2.5 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
   style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
 >
-  {/* বামপাশ: হ্যামবার্গার মেনু + লোগো + এক লাইনের টাইটেল */}
+  {/* বাম দিক: হ্যামবার্গার মেনু + লোগো + এক লাইনের ক্লিন টেক্সট */}
   <div className="flex items-center gap-2">
     <button 
       type="button"
@@ -515,16 +515,17 @@ export default function Home() {
         🦷
       </div>
       <div className="flex flex-col justify-center">
-        <span className="font-black text-sm md:text-xl tracking-tight whitespace-nowrap leading-tight" style={{ color: themeStyles.textColor }}>
-          {t[lang].title}
+        <span className="font-black text-xs sm:text-sm md:text-xl tracking-tight whitespace-nowrap leading-tight" style={{ color: themeStyles.textColor }}>
+          Dr. Sakib Dental Care
         </span>
-        <span className="text-[9px] md:text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider">
-          {t[lang].subtitle}
+        <span className="text-[8px] sm:text-[9px] md:text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider">
+          Oral & Dental Surgeon
         </span>
       </div>
     </div>
   </div>
 
+  {/* ডেস্কটপ মেনু */}
   <nav className="hidden lg:flex items-center gap-8 font-bold text-sm" style={{ color: themeStyles.textColor }}>
     <a href="/" className="text-[#00a8e8] transition">Home</a>
     <a href="#about-section" className="hover:text-[#00a8e8] transition">About Us</a>
@@ -533,7 +534,7 @@ export default function Home() {
     <a href="#contact-section" className="hover:text-[#00a8e8] transition">Contact Us</a>
   </nav>
 
-  {/* ডানপাশ: ভাষা টগল ও থিম মোড */}
+  {/* ডান দিক: ভাষা ও থিম টগল বাটন */}
   <div className="flex items-center gap-2">
     <button
       type="button"
