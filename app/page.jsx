@@ -817,9 +817,9 @@ export default function Home() {
             }}
           />
 
-          {/* বাম পাশে বড় ফন্টে এবং ওপর-নিচে ভেঙে যাওয়ার জন্য নির্দেশিত টেক্সট কন্টেইনার */}
-          <div className="relative z-10 w-[85%] text-left">
-            <p className={`font-black text-base md:text-lg leading-relaxed drop-shadow-md break-words ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>
+          {/* বাম পাশে ঠিক এক-তৃতীয়াংশ (1/3) প্রস্থের ভেতর ওপর-নিচে ভাঙা বড় ফন্টের টেক্সট */}
+          <div className="relative z-10 w-1/3 text-left">
+            <p className={`font-black text-sm md:text-base leading-relaxed drop-shadow-md break-words ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>
               {lang === 'bn' ? item.textBn : item.textEn}
             </p>
           </div>
