@@ -92,12 +92,13 @@ export default function Home() {
       const minutes = now.getMinutes()
       const currentTimeInMinutes = hours * 60 + minutes
 
-      const isOpenTime = day !== 5 && currentTimeInMinutes >= 960 && currentTimeInMinutes <= 1290
+      // চেম্বার খোলা সময়: দুপুর ৪টা (৯৬০ মিনিট) থেকে রাত ৯টা (১২৬০ মিনিট)
+      const isOpenTime = day !== 5 && currentTimeInMinutes >= 960 && currentTimeInMinutes <= 1260
 
       if (lang === 'bn') {
         setChamberStatusText(isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে')
       } else {
-        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🔴 Chamber is currently CLOSED')
+        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🟢 Chamber is currently CLOSED')
       }
     }
 
@@ -199,16 +200,14 @@ export default function Home() {
     bn: {
       heroTitle: 'বিশ্বস্ত ডেন্টাল সেবা ও সুন্দর হাসির নিশ্চয়তা',
       heroSub: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সর্বাধুনিক ডেন্টাল কেয়ার।',
-      title: 'Dr. Sakib Dental Care',
+      title: 'ডাঃ আসির মোসাদ্দেক সাকিব',
       subtitle: 'ওরাল এন্ড ডেন্টাল সার্জন',
-      degree: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)',
-      bmdc: 'বিএমডিসি রেজি. ৮২৬৩',
-      training: 'স্পেশাল ট্রেইনড ইন ইমপ্ল্যান্ট এন্ড কসমেটিক ডেন্টিস্ট্রি',
+      doctorInfo: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)\nবিএমডিসি রেজি. ৮২৬৩',
       addressText: 'আলম মেডিকেল হল, পটিয়া কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
-      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:৩০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
+      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকাল ৪:০০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
       patientName: 'রোগীর নাম *',
       patientNamePlaceholder: 'আপনার নাম লিখুন',
       ageLabel: 'বয়স *',
@@ -238,16 +237,14 @@ export default function Home() {
     en: {
       heroTitle: 'Trustworthy Dental Services for a Healthy Smile',
       heroSub: 'Advanced dental treatment under the expert care of Chattogram Medical College surgeon.',
-      title: 'Dr. Sakib Dental Care',
+      title: 'Dr. Asir Mosaddeque Sakib',
       subtitle: 'Oral & Dental Surgeon',
-      degree: 'BDS (Chattagong Medical College)',
-      bmdc: 'BMDC Reg. 8263',
-      training: 'Special Trained in Implant & Cosmetic Dentistry',
+      doctorInfo: 'BDS (Chittagong Medical College)\nBMDC reg. 8263',
       addressText: 'Alam Medical Hall, Beside Patiya Govt. College, Anwara Bypass Road, Bus Station, Patiya, Chattogram.',
       bookingMainBtn: 'Book an Appointment',
       bookingCloseBtn: '✕ Close',
       bookingTitle: 'Online Appointment Booking',
-      bookingSub: 'Saturday to Thursday (4:30 PM - 9:00 PM), Friday Closed',
+      bookingSub: 'Saturday to Thursday (4:00 PM - 9:00 PM), Friday Closed',
       patientName: 'Patient Name *',
       patientNamePlaceholder: 'Enter your name',
       ageLabel: 'Age *',
@@ -277,14 +274,14 @@ export default function Home() {
   }
 
   const rawTimes = lang === 'bn' ? [
-    "বিকেল ৪:৩০ টা",
-    "বিকেল ৫:০০ টা", "বিকেল ৫:৩০ টা",
+    "বিকাল ৪:০০ টা", "বিকাল ৪:৩০ টা",
+    "বিকাল ৫:০০ টা", "বিকাল ৫:৩০ টা",
     "সন্ধ্যা ৬:০০ টা", "সন্ধ্যা ৬:৩০ টা",
     "সন্ধ্যা ৭:০০ টা", "সন্ধ্যা ৭:৩০ টা",
     "রাত ৮:০০ টা", "রাত ৮:৩০ টা",
     "রাত ৯:০০ টা"
   ] : [
-    "4:30 PM",
+    "4:00 PM", "4:30 PM",
     "5:00 PM", "5:30 PM",
     "6:00 PM", "6:30 PM",
     "7:00 PM", "7:30 PM",
@@ -460,7 +457,6 @@ export default function Home() {
 
       {/* ১ ও ২. টপ নোটিশ ও স্থির চেম্বার টাইম বার */}
       <div className="bg-[#0c1e3e] text-white text-[11px] md:text-sm py-2 px-3 md:px-12 flex flex-col gap-1 border-b border-blue-900/50">
-        {/* স্লাইডিং টেক্সট (ডান থেকে বামে) */}
         <div className="overflow-hidden whitespace-nowrap w-full">
           <div className="animate-marquee inline-flex items-center gap-1.5 font-medium">
             <span>📍</span>
@@ -468,11 +464,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* স্থির চেম্বার টাইম ও সোশ্যাল আইকন বার */}
         <div className="flex justify-between items-center border-t border-blue-800/60 pt-1 text-[11px] md:text-xs">
           <div className="flex items-center gap-1 text-cyan-300 font-semibold">
             <span>🕒</span>
-            <span>চেম্বার খোলা: শনি - বৃহস্পতি (বিকেল ৪:৩০ - রাত ৯:০০), শুক্রবার বন্ধ</span>
+            <span>{lang === 'bn' ? 'চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:০০ - রাত ৯:০০), শুক্রবার বন্ধ' : 'Chamber Open: Sat - Thu (4:00 PM - 9:00 PM), Friday Closed'}</span>
           </div>
 
           <div className="flex items-center gap-2.5">
@@ -586,7 +581,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* ৪. হিরো সেকশন (৩ নম্বর নির্দেশনা অনুযায়ী মোবাইল ভিউতে ডক্টরের ছবির ওভারলে বক্সটি নিচে নামানো হয়েছে) */}
+      {/* ৪. হিরো সেকশন */}
       <section className="relative overflow-hidden bg-gradient-to-r from-[#0d2857] via-[#0b3c85] to-[#0077b6] text-white py-10 lg:py-20 px-4 md:px-12">
         <div className="max-w-7xl mx-auto mb-6">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs md:text-sm font-semibold">
@@ -598,13 +593,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-5 flex justify-center lg:justify-start order-2 lg:order-1">
             <div className="relative w-64 h-[340px] md:w-80 md:h-96 lg:w-96 lg:h-[420px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 bg-[#071630]">
-              <img src="/doctor.jpeg" alt="Dr. Sakib" className="w-full h-full object-cover object-top" />
+              <img src="/doctor.jpeg" alt="Dr. Asir Mosaddeque Sakib" className="w-full h-full object-cover object-top" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#071630] via-transparent to-transparent opacity-40"></div>
-              {/* নিচের দিকে নামানো ওভারলে বক্স যাতে ফেস কভার না করে */}
-              <div className="absolute bottom-2 left-3 right-3 p-3.5 rounded-2xl bg-black/50 backdrop-blur-md border border-white/20">
-                <h3 className="font-bold text-base md:text-lg text-white">{t[lang].title}</h3>
-                <p className="text-[11px] text-cyan-300 font-medium">BDS (Chattogram Medical College)</p>
-                <p className="text-[10px] text-slate-300">{t[lang].bmdc}</p>
+              
+              {/* ডক্টরের নাম ও বিবরণ ওভারলে কার্ড */}
+              <div className="absolute bottom-2 left-3 right-3 p-3.5 rounded-2xl bg-black/50 backdrop-blur-md border border-white/20 space-y-0.5">
+                <h3 className="font-bold text-sm md:text-base text-white">{t[lang].title}</h3>
+                <p className="text-[11px] text-cyan-300 font-medium whitespace-pre-line">{t[lang].doctorInfo}</p>
               </div>
             </div>
           </div>
