@@ -937,16 +937,34 @@ export default function Home() {
                 : 'Ensuring safe and painless dental care with modern technology and expert supervision.'}
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center transition shadow-sm p-1.5 text-white">
-                <img src="/facebook.png" alt="FB" className="w-full h-full object-contain filter invert" />
-              </a>
-              <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center transition shadow-sm p-1.5 text-white">
-                <img src="/instagram.png" alt="IG" className="w-full h-full object-contain filter invert" />
-              </a>
-              <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center transition shadow-sm p-1.5 text-white">
-                <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-contain filter invert" />
-              </a>
-            </div>
+  <a 
+    href="https://www.facebook.com/share/1ZfF826KUs/" 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
+    title="Facebook"
+  >
+    <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
+  </a>
+  <a 
+    href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
+    title="Instagram"
+  >
+    <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
+  </a>
+  <a 
+    href="https://wa.me/message/KBZOTSKH66H4P1" 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
+    title="WhatsApp"
+  >
+    <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
+  </a>
+</div>
           </div>
 
           <div className="space-y-4">
