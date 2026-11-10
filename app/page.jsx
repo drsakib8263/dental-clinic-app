@@ -1007,7 +1007,21 @@ export default function Home() {
                 <span className="text-cyan-400">📍</span>
                 <span>{t[lang].addressText}</span>
               </p>
-              <p className="flex items-center gap-2">
+
+              {/* গুগল ম্যাপ লোকেশন বাটন */}
+              <div className="pt-1">
+                <a 
+                  href="https://maps.app.goo.gl/4nNgwj68kE6okDZ96?g_st=ac" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#00a8e8] hover:bg-[#008fca] text-white font-bold px-3.5 py-2 rounded-xl transition shadow-sm text-xs"
+                >
+                  <span>🗺️</span> 
+                  <span>{lang === 'bn' ? 'গুগল ম্যাপে লোকেশন দেখুন' : 'View on Google Maps'}</span>
+                </a>
+              </div>
+
+              <p className="flex items-center gap-2 pt-1">
                 <span className="text-cyan-400">📞</span>
                 <a href="tel:+8801816011701" className="hover:text-[#00a8e8] transition font-bold">+880 1816 011 701</a>
               </p>
