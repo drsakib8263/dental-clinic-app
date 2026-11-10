@@ -16,8 +16,6 @@ export default function GalleryPage() {
     const num = String(i + 1).padStart(2, '0')
     return {
       src: `/gallery/chamber-${num}.jpeg`,
-      titleBn: `চেম্বার ছবি #${i + 1}`,
-      titleEn: `Chamber Photo #${i + 1}`
     }
   })
 
@@ -25,8 +23,6 @@ export default function GalleryPage() {
     const num = String(i + 1).padStart(2, '0')
     return {
       src: `/gallery/patient-${num}.jpeg`,
-      titleBn: `রোগীর হাসির প্রচেষ্টা #${i + 1}`,
-      titleEn: `Patient Smile Restoration #${i + 1}`
     }
   })
 
@@ -121,18 +117,9 @@ export default function GalleryPage() {
               >
                 <img 
                   src={chamberImages[chamberIndex].src} 
-                  alt={chamberImages[chamberIndex].titleEn}
+                  alt="Chamber Active"
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80"></div>
-                <div className="absolute bottom-4 left-4 right-4 text-center text-white">
-                  <span className="font-extrabold text-sm md:text-lg drop-shadow-md">
-                    {lang === 'bn' ? chamberImages[chamberIndex].titleBn : chamberImages[chamberIndex].titleEn}
-                  </span>
-                  <span className="block text-xs text-cyan-300 font-semibold mt-1">
-                    {chamberIndex + 1} / {chamberImages.length}
-                  </span>
-                </div>
               </div>
 
               {/* ডান পাশের ঝাপসা ছবি (Peek View) */}
@@ -198,18 +185,9 @@ export default function GalleryPage() {
               >
                 <img 
                   src={patientImages[patientIndex].src} 
-                  alt={patientImages[patientIndex].titleEn}
+                  alt="Patient Active"
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80"></div>
-                <div className="absolute bottom-4 left-4 right-4 text-center text-white">
-                  <span className="font-extrabold text-sm md:text-lg drop-shadow-md">
-                    {lang === 'bn' ? patientImages[patientIndex].titleBn : patientImages[patientIndex].titleEn}
-                  </span>
-                  <span className="block text-xs text-cyan-300 font-semibold mt-1">
-                    {patientIndex + 1} / {patientImages.length}
-                  </span>
-                </div>
               </div>
 
               {/* ডান পাশের ঝাপসা ছবি (Peek View) */}
@@ -260,10 +238,6 @@ export default function GalleryPage() {
                 className="max-h-[70vh] object-contain w-auto"
               />
             </div>
-
-            <h3 className="text-xl font-extrabold text-[#0E3A5D] dark:text-white text-center">
-              {lang === 'bn' ? selectedImage.titleBn : selectedImage.titleEn}
-            </h3>
           </div>
         </div>
       )}
