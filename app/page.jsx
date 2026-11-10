@@ -13,6 +13,7 @@ export default function Home() {
   const [bookedSlotsCount, setBookedSlotsCount] = useState({})
   const [loading, setLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
   const [chamberStatusText, setChamberStatusText] = useState('')
   const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
@@ -95,7 +96,7 @@ export default function Home() {
       const isOpenTime = day !== 5 && currentTimeInMinutes >= 960 && currentTimeInMinutes <= 1260
 
       if (lang === 'bn') {
-        setChamberStatusText(isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে')
+        setChamberStatusText(isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে')
       } else {
         setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🟢 Chamber is currently CLOSED')
       }
@@ -197,12 +198,12 @@ export default function Home() {
 
   const t = {
     bn: {
-      heroTitle: 'বিশ্বস্ত ডেন্টাল সেবা ও সুন্দর হাসির নিশ্চয়তা',
-      heroSub: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সর্বাধুনিক ডেন্টাল কেয়ার।',
+      heroTitle: 'বিশ্বস্ত ডেন্টাল সেবা ও সুন্দর হাসির নিশ্চয়তা',
+      heroSub: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সর্বাধুনিক ডেন্টাল কেয়ার।',
       title: 'ডাঃ আসির মোসাদ্দেক সাকিব',
       subtitle: 'ওরাল এন্ড ডেন্টাল সার্জন',
       doctorInfo: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)\nবিএমডিসি রেজি. ৮২৬৩',
-      addressText: 'আলম মেডিকেল হল, পটিয়া সরকারি কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
+      addressText: 'আলম মেডিকেল হল, পটিয়া সরকারি কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
@@ -355,27 +356,27 @@ export default function Home() {
   const tipsList = [
     {
       id: 'tips-01',
-      textBn: 'দিনে অন্তত দুইবার ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে ভালোভাবে দাঁত ব্রাশ করুন।',
+      textBn: 'দিনে অন্তত দুইবার ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে ভালোভাবে দাঁত ব্রাশ করুন।',
       textEn: 'Brush your teeth thoroughly at least twice a day with fluoride toothpaste.'
     },
     {
       id: 'tips-02',
-      textBn: 'প্রতিদিন নিয়মিত ডেন্টাল ফ্লস ব্যবহার করে দাঁতের ফাঁকে জমে থাকা ময়লা পরিষ্কার রাখুন।',
+      textBn: 'প্রতিদিন নিয়মিত ডেন্টাল ফ্লস ব্যবহার করে দাঁতের ফাঁকে জমে থাকা ময়লা পরিষ্কার রাখুন।',
       textEn: 'Use dental floss daily to clean food particles trapped between teeth.'
     },
     {
       id: 'tips-03',
-      textBn: 'চিনিযুক্ত খাবার ও মিষ্টি খাওয়ার পর কুলি করার অভ্যাস গড়ে তুলুন।',
+      textBn: 'চিনিযুক্ত খাবার ও মিষ্টি খাওয়ার পর কুলি করার অভ্যাস গড়ে তুলুন।',
       textEn: 'Develop a habit of rinsing your mouth after consuming sugary foods.'
     },
     {
       id: 'tips-04',
-      textBn: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাঁত চেকআপ করান।',
+      textBn: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাঁত চেকআপ করান।',
       textEn: 'Visit your dental surgeon regularly every six months for a checkup.'
     },
     {
       id: 'tips-05',
-      textBn: 'ধূমপান ও পান-সুপারি থেকে বিরত থাকুন, যা দাঁতের মাড়ির মারাত্মক ক্ষতি করে।',
+      textBn: 'ধূমপান ও পান-সুপারি থেকে বিরত থাকুন, যা দাঁতের মাড়ির মারাত্মক ক্ষতি করে।',
       textEn: 'Avoid smoking and betel nut, which severely damage your gums and teeth.'
     },
     {
@@ -388,7 +389,7 @@ export default function Home() {
   const featureBoxes = lang === 'bn' ? [
     {
       title: 'আধুনিক ডেন্টাল কেয়ার',
-      description: 'সর্বাধুনিক যন্ত্রপাতি ও নিরাপদ উপায়ে পেইনলেস ডেন্টাল ট্রিটমেন্ট নিশ্চিত করা হয়।',
+      description: 'সর্বাধুনিক যন্ত্রপাতি ও নিরাপদ উপায়ে পেইনলেস ডেন্টাল ট্রিটমেন্ট নিশ্চিত করা হয়।',
       bgImage: '/why-01.jpeg',
       stepClass: 'md:mr-24 lg:mr-36'
     },
@@ -400,7 +401,7 @@ export default function Home() {
     },
     {
       title: 'অভিজ্ঞ কনসালটেশন',
-      description: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সঠিক রোগ নির্ণয়।',
+      description: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সঠিক রোগ নির্ণয়।',
       bgImage: '/why-03.jpeg',
       stepClass: 'md:ml-24 lg:ml-36'
     }
@@ -470,34 +471,34 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-2.5">
-  <a 
-    href="https://www.facebook.com/share/1ZfF826KUs/" 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5"
-    title="Facebook"
-  >
-    <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
-  </a>
-  <a 
-    href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5"
-    title="Instagram"
-  >
-    <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
-  </a>
-  <a 
-    href="https://wa.me/message/KBZOTSKH66H4P1" 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5"
-    title="WhatsApp"
-  >
-    <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
-  </a>
-</div>
+            <a 
+              href="https://www.facebook.com/share/1ZfF826KUs/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5"
+              title="Facebook"
+            >
+              <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
+            </a>
+            <a 
+              href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5"
+              title="Instagram"
+            >
+              <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
+            </a>
+            <a 
+              href="https://wa.me/message/KBZOTSKH66H4P1" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5"
+              title="WhatsApp"
+            >
+              <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
+            </a>
+          </div>
         </div>
       </div>
 
@@ -525,7 +526,13 @@ export default function Home() {
           <a href="#about-section" className="hover:text-[#00a8e8] transition">About Us</a>
           <a href="/services" className="hover:text-[#00a8e8] transition">Services</a>
           <a href="/gallery" className="hover:text-[#00a8e8] transition">Gallery</a>
-          <a href="#contact-section" className="hover:text-[#00a8e8] transition">Contact Us</a>
+          <button 
+            onClick={() => setIsContactModalOpen(true)}
+            className="hover:text-[#00a8e8] transition bg-transparent border-none cursor-pointer font-bold text-sm"
+            style={{ color: themeStyles.textColor }}
+          >
+            {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
+          </button>
         </nav>
 
         <div className="flex items-center gap-2 md:gap-3">
@@ -576,7 +583,16 @@ export default function Home() {
           <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>About Us</a>
           <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>Services</a>
           <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>Gallery</a>
-          <a href="#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm" style={{ color: themeStyles.textColor }}>Contact Us</a>
+          <button 
+            onClick={() => {
+              setMobileMenuOpen(false)
+              setIsContactModalOpen(true)
+            }}
+            className="w-full text-left py-2 font-bold text-sm bg-transparent border-none cursor-pointer"
+            style={{ color: themeStyles.textColor }}
+          >
+            {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
+          </button>
         </div>
       )}
 
@@ -746,7 +762,7 @@ export default function Home() {
                     const slotKey = `${formData.appointment_date}|${time}`
                     const count = bookedSlotsCount[slotKey] || 0
                     const isFull = count >= 2
-                    const fullText = lang === 'bn' ? '(এই সময়ে এপয়েন্টমেন্ট খালি নেই)' : '(Fully Booked)'
+                    const fullText = lang === 'bn' ? '(বুকড)' : '(Full)'
                     const bookedText = lang === 'bn' ? `(বুকড: ${count}/২)` : `(Booked: ${count}/2)`
                     return (
                       <option key={index} value={time} disabled={isFull} style={{ color: isFull ? 'red' : 'inherit' }}>
@@ -769,7 +785,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* ৬. স্থায়ী About Us সেকশন */}
+      {/* ৬. স্থায়ী About Us সেকশন */}
       <section 
         id="about-section" 
         className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4 transition-all duration-300"
@@ -795,7 +811,7 @@ export default function Home() {
             {t[lang].tipsTitle}
           </h2>
           <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
-            {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
+            {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
           </p>
         </div>
 
@@ -805,12 +821,12 @@ export default function Home() {
             const isFourthCard = index === 3;
 
             const headlines = [
-              { bn: 'নিয়মিত ব্রাশ করুন', en: 'Brush Regularly' },
+              { bn: 'নিয়মিত ব্রাশ করুন', en: 'Brush Regularly' },
               { bn: 'ডেন্টাল ফ্লস ব্যবহার', en: 'Use Dental Floss' },
               { bn: 'মিষ্টি খাবার পর কুলি', en: 'Rinse After Sweets' },
-              { bn: 'নিয়মিত চেকআপ', en: 'Regular Checkup' },
+              { bn: 'নিয়মিত চেকআপ', en: 'Regular Checkup' },
               { bn: 'বর্জন করুন', en: 'Avoid Harmful Habits' },
-              { bn: 'ব্যাথায় সচেতনতা', en: 'Dental Pain Care' }
+              { bn: 'ব্যাথায় সচেতনতা', en: 'Dental Pain Care' }
             ];
 
             return (
@@ -852,7 +868,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৮. কেন আপনার জন্য আমরাই? - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
+      {/* ৮. কেন আপনার জন্য আমরাই? - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
@@ -933,38 +949,38 @@ export default function Home() {
             </div>
             <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
               {lang === 'bn' 
-                ? 'আধুনিক প্রযুক্তি ও অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে নিরাপদ ও পেইনলেস ডেন্টাল কেয়ার নিশ্চিত করা আমাদের লক্ষ্য।' 
+                ? 'আধুনিক প্রযুক্তি ও অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে নিরাপদ ও পেইনলেস ডেন্টাল কেয়ার নিশ্চিত করা আমাদের লক্ষ্য।' 
                 : 'Ensuring safe and painless dental care with modern technology and expert supervision.'}
             </p>
             <div className="flex items-center gap-3 pt-2">
-  <a 
-    href="https://www.facebook.com/share/1ZfF826KUs/" 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
-    title="Facebook"
-  >
-    <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
-  </a>
-  <a 
-    href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
-    title="Instagram"
-  >
-    <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
-  </a>
-  <a 
-    href="https://wa.me/message/KBZOTSKH66H4P1" 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
-    title="WhatsApp"
-  >
-    <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
-  </a>
-</div>
+              <a 
+                href="https://www.facebook.com/share/1ZfF826KUs/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
+                title="Facebook"
+              >
+                <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
+              </a>
+              <a 
+                href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
+                title="Instagram"
+              >
+                <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
+              </a>
+              <a 
+                href="https://wa.me/message/KBZOTSKH66H4P1" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
+                title="WhatsApp"
+              >
+                <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
+              </a>
+            </div>
           </div>
 
           <div className="space-y-4">
@@ -1041,6 +1057,90 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      {/* যোগাযোগ পপ-আপ মোডাল (মোবাইল ও কম্পিউটার উভয় ভার্সনের জন্য) */}
+      {isContactModalOpen && (
+        <div 
+          onClick={() => setIsContactModalOpen(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()} 
+            className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#00a8e8] max-w-md w-full relative space-y-6 text-slate-900 dark:text-slate-100"
+          >
+            {/* ক্লোজ বাটন */}
+            <button
+              onClick={() => setIsContactModalOpen(false)}
+              className="absolute top-4 right-4 bg-[#00a8e8] text-white hover:bg-[#008fca] font-bold w-9 h-9 rounded-full flex items-center justify-center shadow-md transition cursor-pointer text-base"
+            >
+              ✕
+            </button>
+
+            {/* মোডাল হেডার */}
+            <div className="border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="text-xl font-extrabold text-[#0E3A5D] dark:text-teal-300">
+                {lang === 'bn' ? 'যোগাযোগ ও লোকেশন' : 'Contact & Location'}
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                {lang === 'bn' ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ার' : 'Dr. Asir Mosaddeque Sakib Dental Care'}
+              </p>
+            </div>
+
+            {/* কন্টেন্ট বডি */}
+            <div className="space-y-4 text-sm">
+              {/* ঠিকানা */}
+              <div className="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-2xl border border-slate-100 dark:border-slate-800">
+                <span className="text-cyan-500 text-lg">📍</span>
+                <span>{t[lang].addressText}</span>
+              </div>
+
+              {/* গুগল ম্যাপ লোকেশন বাটন */}
+              <div>
+                <a 
+                  href="https://maps.app.goo.gl/4nNgwj68kE6okDZ96?g_st=ac" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-[#00a8e8] hover:bg-[#008fca] text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm"
+                >
+                  <span>🗺️</span> 
+                  <span>{lang === 'bn' ? 'গুগল ম্যাপে লোকেশন দেখুন' : 'View on Google Maps'}</span>
+                </a>
+              </div>
+
+              {/* ফোন কল */}
+              <div>
+                <a 
+                  href="tel:+8801816011701" 
+                  className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm"
+                >
+                  <span>📞</span> 
+                  <span>+880 1816 011 701</span>
+                </a>
+              </div>
+
+              {/* হোয়াটসঅ্যাপ বাটন */}
+              <div>
+                <a 
+                  href="https://wa.me/message/KBZOTSKH66H4P1" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm"
+                >
+                  <span>💬</span> 
+                  <span>{lang === 'bn' ? 'হোয়াটসঅ্যাপে যোগাযোগ করুন' : 'Chat on WhatsApp'}</span>
+                </a>
+              </div>
+
+              {/* ইমেইল */}
+              <div className="flex items-center justify-center gap-2 pt-2 text-xs text-slate-500 dark:text-slate-400">
+                <span>✉️</span>
+                <a href="mailto:asir.mosaddeque@gmail.com" className="hover:text-[#00a8e8] transition">asir.mosaddeque@gmail.com</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* সফল বুকিং মোডাল */}
       {showSuccessModal && (
