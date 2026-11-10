@@ -522,10 +522,10 @@ export default function Home() {
         </div>
 
         <nav className="hidden lg:flex items-center gap-8 font-bold text-sm" style={{ color: themeStyles.textColor }}>
-          <a href="/" className="text-[#00a8e8] transition">Home</a>
-          <a href="#about-section" className="hover:text-[#00a8e8] transition">About Us</a>
-          <a href="/services" className="hover:text-[#00a8e8] transition">Services</a>
-          <a href="/gallery" className="hover:text-[#00a8e8] transition">Gallery</a>
+          <a href="/" className="text-[#00a8e8] transition">{lang === 'bn' ? 'হোম' : 'Home'}</a>
+          <a href="#about-section" className="hover:text-[#00a8e8] transition">{lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}</a>
+          <a href="/services" className="hover:text-[#00a8e8] transition">{lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}</a>
+          <a href="/gallery" className="hover:text-[#00a8e8] transition">{lang === 'bn' ? 'গ্যালারি' : 'Gallery'}</a>
           <button 
             onClick={() => setIsContactModalOpen(true)}
             className="hover:text-[#00a8e8] transition bg-transparent border-none cursor-pointer font-bold text-sm"
@@ -579,10 +579,38 @@ export default function Home() {
           className="lg:hidden px-6 py-4 space-y-3 border-b shadow-lg transition-all duration-300"
           style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
         >
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>Home</a>
-          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>About Us</a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>Services</a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>Gallery</a>
+          <a 
+            href="/" 
+            onClick={() => setMobileMenuOpen(false)} 
+            className="block py-2 font-bold text-sm border-b" 
+            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
+          >
+            {lang === 'bn' ? 'হোম' : 'Home'}
+          </a>
+          <a 
+            href="#about-section" 
+            onClick={() => setMobileMenuOpen(false)} 
+            className="block py-2 font-bold text-sm border-b" 
+            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
+          >
+            {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
+          </a>
+          <a 
+            href="/services" 
+            onClick={() => setMobileMenuOpen(false)} 
+            className="block py-2 font-bold text-sm border-b" 
+            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
+          >
+            {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
+          </a>
+          <a 
+            href="/gallery" 
+            onClick={() => setMobileMenuOpen(false)} 
+            className="block py-2 font-bold text-sm border-b" 
+            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
+          >
+            {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
+          </a>
           <button 
             onClick={() => {
               setMobileMenuOpen(false)
