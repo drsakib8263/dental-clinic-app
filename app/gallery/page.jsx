@@ -4,7 +4,9 @@ import { useState } from 'react'
 
 export default function GalleryPage() {
   const [lang, setLang] = useState('bn')
-  const [selectedImage, setSelectedImage] = useState(null)
+  // এখন selectedIndex রাখা হলো যাতে মোডালের ভেতরেও স্লাইড করা যায়
+  const [selectedModalIndex, setSelectedModalIndex] = useState(null)
+  const [activeGalleryType, setActiveGalleryType] = useState('chamber') // 'chamber' অথবা 'patient'
 
   // চেম্বারের ছবির স্লাইড ইনডেক্স
   const [chamberIndex, setChamberIndex] = useState(0)
@@ -39,7 +41,24 @@ export default function GalleryPage() {
     setPatientIndex((prev) => (prev === 0 ? patientImages.length - 1 : prev - 1))
   }
   const nextPatient = () => {
-    setPatientIndex((prev) => (prev === patientImages.length - 1 ? 0 : prev + 1))
+    setPatientIndex((prev) => (prev === patientImages.length - 1 ? 0 : patientIndex + 1))
+  }
+
+  // মোডাল ওপেন করার ফাংশন
+  const openModal = (type, index) => {
+    setActiveGalleryType(type)
+    setSelectedModalIndex(index)
+  }
+
+  // মোডাল স্লাইডার কন্ট্রোল
+  const currentImagesList = activeGalleryType === 'chamber' ? chamberImages : patientImages
+  
+  const prevModalSlide = () => {
+    setSelectedModalIndex((prev) => (prev === 0 ? currentImagesList.length - 1 : prev - 1))
+  }
+  
+  const nextModalSlide = () => {
+    setSelectedModalIndex((prev) => (prev === currentImagesList.length - 1 ? 0 : prev + 1))
   }
 
   return (
@@ -112,7 +131,7 @@ export default function GalleryPage() {
 
               {/* মাঝখানের প্রধান স্পষ্ট ছবি */}
               <div 
-                onClick={() => setSelectedImage(chamberImages[chamberIndex])}
+                onClick={() => openModal('chamber', chamberIndex)}
                 className="relative w-[70%] md:w-2/4 h-64 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-4 border-[#00a8e8]/40 bg-black cursor-pointer group z-20 flex-shrink-0"
               >
                 <img 
@@ -180,7 +199,7 @@ export default function GalleryPage() {
 
               {/* মাঝখানের প্রধান স্পষ্ট ছবি */}
               <div 
-                onClick={() => setSelectedImage(patientImages[patientIndex])}
+                onClick={() => openModal('patient', patientIndex)}
                 className="relative w-[70%] md:w-2/4 h-64 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-4 border-[#00a8e8]/40 bg-black cursor-pointer group z-20 flex-shrink-0"
               >
                 <img 
@@ -214,30 +233,85 @@ export default function GalleryPage() {
 
       </div>
 
-      {/* ছবি বড় করে দেখানোর পপ-আপ (Modal) */}
-      {selectedImage && (
+      {/* ছবি বড় করার পপ-আপ মোডাল (যাতে মোডালের ভেতরেও Peek View স্লাইডার থাকে) */}
+      {selectedModalIndex !== null && (
         <div 
-          onClick={() => setSelectedImage(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setSelectedModalIndex(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-6 bg-black/90 backdrop-blur-md animate-in fade-in duration-200"
         >
           <div 
             onClick={(e) => e.stopPropagation()} 
-            className="bg-white dark:bg-slate-900 p-4 rounded-3xl shadow-2xl border-2 border-[#00a8e8] max-w-3xl w-full relative flex flex-col items-center space-y-4"
+            className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-3xl shadow-2xl border-2 border-[#00a8e8] max-w-4xl w-full relative flex flex-col items-center"
           >
+            {/* ক্লোজ বাটন */}
             <button
-              onClick={() => setSelectedImage(null)}
-              className="absolute top-4 right-4 bg-[#00a8e8] text-white hover:bg-[#008fca] font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition cursor-pointer text-lg"
+              onClick={() => setSelectedModalIndex(null)}
+              className="absolute top-3 right-3 z-40 bg-[#00a8e8] text-white hover:bg-[#008fca] font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition cursor-pointer text-lg"
             >
               ✕
             </button>
 
-            <div className="w-full max-h-[70vh] overflow-hidden rounded-2xl flex items-center justify-center bg-black">
-              <img 
-                src={selectedImage.src} 
-                alt="Enlarged view" 
-                className="max-h-[70vh] object-contain w-auto"
-              />
+            {/* মোডালের ভেতরে পিক ভিউ স্লাইডার কন্টেইনার */}
+            <div className="relative flex items-center justify-center w-full overflow-hidden py-6">
+              
+              {/* প্রিভিয়াস বাটন */}
+              <button 
+                onClick={prevModalSlide}
+                className="absolute left-1 md:left-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-xl shadow-lg transition cursor-pointer"
+              >
+                ❮
+              </button>
+
+              <div className="flex items-center justify-center gap-2 md:gap-4 w-full px-8 md:px-12">
+                {/* মোডাল বাম পাশের ঝাপসা ছবি */}
+                <div 
+                  onClick={() => setSelectedModalIndex((selectedModalIndex - 1 + currentImagesList.length) % currentImagesList.length)}
+                  className="hidden sm:flex relative w-1/4 h-48 md:h-72 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-300 hover:opacity-70 flex-shrink-0"
+                >
+                  <img 
+                    src={currentImagesList[(selectedModalIndex - 1 + currentImagesList.length) % currentImagesList.length].src} 
+                    alt="Modal Prev" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* মোডাল মাঝখানের বড় ও পরিষ্কার ছবি */}
+                <div className="relative w-full sm:w-2/4 h-[50vh] md:h-[65vh] rounded-3xl overflow-hidden shadow-2xl border-4 border-[#00a8e8]/50 bg-black flex items-center justify-center flex-shrink-0 z-20">
+                  <img 
+                    src={currentImagesList[selectedModalIndex].src} 
+                    alt="Modal Active" 
+                    className="max-h-full max-w-full object-contain"
+                  />
+                </div>
+
+                {/* মোডাল ডান পাশের ঝাপসা ছবি */}
+                <div 
+                  onClick={() => setSelectedModalIndex((selectedModalIndex + 1) % currentImagesList.length)}
+                  className="hidden sm:flex relative w-1/4 h-48 md:h-72 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-300 hover:opacity-70 flex-shrink-0"
+                >
+                  <img 
+                    src={currentImagesList[(selectedModalIndex + 1) % currentImagesList.length].src} 
+                    alt="Modal Next" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* নেক্সট বাটন */}
+              <button 
+                onClick={nextModalSlide}
+                className="absolute right-1 md:right-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-xl shadow-lg transition cursor-pointer"
+              >
+                ❯
+              </button>
+
             </div>
+
+            {খালি জায়গায় বা ইনডেক্স দেখানোর অংশ */}
+            <div className="text-sm font-bold text-slate-600 dark:text-slate-300 mt-2">
+              {selectedModalIndex + 1} / {currentImagesList.length}
+            </div>
+
           </div>
         </div>
       )}
