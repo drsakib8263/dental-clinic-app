@@ -4,16 +4,9 @@ import { useState } from 'react'
 
 export default function GalleryPage() {
   const [lang, setLang] = useState('bn')
-  // এখন selectedIndex রাখা হলো যাতে মোডালের ভেতরেও স্লাইড করা যায়
   const [selectedModalIndex, setSelectedModalIndex] = useState(null)
-  const [activeGalleryType, setActiveGalleryType] = useState('chamber') // 'chamber' অথবা 'patient'
+  const [activeGalleryType, setActiveGalleryType] = useState('chamber')
 
-  // চেম্বারের ছবির স্লাইড ইনডেক্স
-  const [chamberIndex, setChamberIndex] = useState(0)
-  // রোগীর হাসির ছবির স্লাইড ইনডেক্স
-  const [patientIndex, setPatientIndex] = useState(0)
-
-  // ২০টি করে ছবির অ্যারে তৈরি করা
   const chamberImages = Array.from({ length: 20 }, (_, i) => {
     const num = String(i + 1).padStart(2, '0')
     return {
@@ -28,7 +21,9 @@ export default function GalleryPage() {
     }
   })
 
-  // চেম্বার স্লাইডার কন্ট্রোল
+  const [chamberIndex, setChamberIndex] = useState(0)
+  const [patientIndex, setPatientIndex] = useState(0)
+
   const prevChamber = () => {
     setChamberIndex((prev) => (prev === 0 ? chamberImages.length - 1 : prev - 1))
   }
@@ -36,21 +31,18 @@ export default function GalleryPage() {
     setChamberIndex((prev) => (prev === chamberImages.length - 1 ? 0 : prev + 1))
   }
 
-  // রোগী স্লাইডার কন্ট্রোল
   const prevPatient = () => {
     setPatientIndex((prev) => (prev === 0 ? patientImages.length - 1 : prev - 1))
   }
   const nextPatient = () => {
-    setPatientIndex((prev) => (prev === patientImages.length - 1 ? 0 : patientIndex + 1))
+    setPatientIndex((prev) => (prev === patientImages.length - 1 ? 0 : prev + 1))
   }
 
-  // মোডাল ওপেন করার ফাংশন
   const openModal = (type, index) => {
     setActiveGalleryType(type)
     setSelectedModalIndex(index)
   }
 
-  // মোডাল স্লাইডার কন্ট্রোল
   const currentImagesList = activeGalleryType === 'chamber' ? chamberImages : patientImages
   
   const prevModalSlide = () => {
@@ -307,7 +299,6 @@ export default function GalleryPage() {
 
             </div>
 
-            {খালি জায়গায় বা ইনডেক্স দেখানোর অংশ */}
             <div className="text-sm font-bold text-slate-600 dark:text-slate-300 mt-2">
               {selectedModalIndex + 1} / {currentImagesList.length}
             </div>
