@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 export default function GalleryPage() {
   const [lang, setLang] = useState('bn')
-  const [darkMode, setDarkMode] = useState(false)
   const [selectedImage, setSelectedImage] = useState(null)
 
   // চেম্বারের ছবির স্লাইড ইনডেক্স
@@ -31,18 +30,6 @@ export default function GalleryPage() {
     }
   })
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme')
-    const isDark = savedTheme === 'dark'
-    setDarkMode(isDark)
-  }, [])
-
-  const toggleTheme = () => {
-    const nextMode = !darkMode
-    setDarkMode(nextMode)
-    localStorage.setItem('theme', nextMode ? 'dark' : 'light')
-  }
-
   // চেম্বার স্লাইডার কন্ট্রোল
   const prevChamber = () => {
     setChamberIndex((prev) => (prev === 0 ? chamberImages.length - 1 : prev - 1))
@@ -60,58 +47,43 @@ export default function GalleryPage() {
   }
 
   return (
-    <main 
-      className="min-h-screen text-slate-900 dark:text-slate-100 relative py-12 px-4 md:px-16 bg-cover bg-center bg-fixed transition-colors duration-200"
-      style={{ backgroundImage: `url('/site-bg.jpeg')` }}
-    >
-      <div className="absolute inset-0 bg-[#EADCD2]/80 dark:bg-[#2B1618]/90 backdrop-blur-md pointer-events-none z-0"></div>
-
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-12 px-4 md:px-16 transition-colors duration-200">
+      
       {/* টপ ন্যাভিগেশন ও ল্যাঙ্গুয়েজ টগল */}
       <div className="max-w-6xl mx-auto flex justify-between items-center mb-8 relative z-50">
         <a 
           href="/"
-          className="bg-[#5A181C] text-[#EADCD2] font-bold px-5 py-2.5 rounded-full shadow-lg transition hover:bg-[#451215]"
+          className="bg-[#00a8e8] hover:bg-[#008fca] text-white font-bold px-5 py-2.5 rounded-full shadow-lg transition"
         >
           {lang === 'bn' ? '← হোম পেজে ফিরে যান' : '← Back to Home'}
         </a>
 
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-extrabold p-2.5 rounded-full shadow-lg transition-all duration-200 cursor-pointer"
-          >
-            {darkMode ? '☀️' : '🌙'}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-            className="bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] font-extrabold px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
-          >
-            <span>🌐</span>
-            <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
+          className="bg-[#00a8e8] hover:bg-[#008fca] text-white font-extrabold px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
+        >
+          <span>🌐</span>
+          <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
+        </button>
       </div>
 
-      <div className="max-w-6xl mx-auto bg-white/90 dark:bg-[#344246]/95 backdrop-blur-xl p-8 md:p-12 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 relative z-10 space-y-16">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-slate-900 p-8 md:p-12 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 relative z-10 space-y-16">
         
         {/* হেডার */}
-        <div className="border-b border-[#5A181C]/20 pb-6 text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-[#5A181C] dark:text-[#EADCD2] tracking-tight">
+        <div className="border-b border-slate-200 dark:border-slate-800 pb-6 text-center">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-[#0E3A5D] dark:text-white tracking-tight">
             {lang === 'bn' ? 'ফটো গ্যালারি' : 'Photo Gallery'}
           </h1>
-          <p className="text-[#8B6B5E] dark:text-[#A89287] font-bold text-lg mt-2">
+          <p className="text-slate-600 dark:text-slate-400 font-bold text-lg mt-2">
             {lang === 'bn' ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ার' : 'Dr. Asir Mosaddeque Sakib Dental Care'}
           </p>
         </div>
 
-        {/* সেকশন ১: আমাদের চেম্বার (ঝাপসা দুই পাশ সহ স্লাইডার) */}
+        {/* সেকশন ১: আমাদের চেম্বার */}
         <div className="space-y-6">
-          <div className="flex items-center gap-3 border-b border-[#5A181C]/20 pb-3">
-            <span className="text-2xl">🏥</span>
-            <h2 className="text-2xl font-extrabold text-[#5A181C] dark:text-teal-300">
+          <div className="border-b border-slate-200 dark:border-slate-800 pb-3">
+            <h2 className="text-2xl font-extrabold text-[#0E3A5D] dark:text-teal-300">
               {lang === 'bn' ? 'আমাদের চেম্বার' : 'Our Chamber'}
             </h2>
           </div>
@@ -121,20 +93,19 @@ export default function GalleryPage() {
               : 'Views of our modern chamber environment. (Click to enlarge)'}
           </p>
 
-          {/* ক্যারোসেল কন্টেইনার */}
           <div className="relative flex items-center justify-center overflow-hidden py-4">
             <button 
               onClick={prevChamber}
-              className="absolute left-2 md:left-4 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] flex items-center justify-center text-xl shadow-lg transition cursor-pointer"
+              className="absolute left-1 md:left-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-lg md:text-xl shadow-lg transition cursor-pointer"
             >
               ❮
             </button>
 
-            <div className="flex items-center justify-center gap-3 md:gap-6 w-full max-w-5xl">
-              {/* বাম পাশের ঝাপসা ছবি */}
+            <div className="flex items-center justify-center gap-2 md:gap-6 w-full max-w-5xl px-8 md:px-0">
+              {/* বাম পাশের ঝাপসা ছবি (Peek View) */}
               <div 
                 onClick={() => setChamberIndex((chamberIndex - 1 + chamberImages.length) % chamberImages.length)}
-                className="hidden md:flex relative w-1/4 h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-500 hover:opacity-70"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
                 <img 
                   src={chamberImages[(chamberIndex - 1 + chamberImages.length) % chamberImages.length].src} 
@@ -143,10 +114,10 @@ export default function GalleryPage() {
                 />
               </div>
 
-              {/* মাঝখানের প্রধান ছবি */}
+              {/* মাঝখানের প্রধান স্পষ্ট ছবি */}
               <div 
                 onClick={() => setSelectedImage(chamberImages[chamberIndex])}
-                className="relative w-full md:w-2/4 h-72 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-4 border-[#5A181C]/40 bg-black cursor-pointer group z-20"
+                className="relative w-[70%] md:w-2/4 h-64 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-4 border-[#00a8e8]/40 bg-black cursor-pointer group z-20 flex-shrink-0"
               >
                 <img 
                   src={chamberImages[chamberIndex].src} 
@@ -155,7 +126,7 @@ export default function GalleryPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80"></div>
                 <div className="absolute bottom-4 left-4 right-4 text-center text-white">
-                  <span className="font-extrabold text-base md:text-lg drop-shadow-md">
+                  <span className="font-extrabold text-sm md:text-lg drop-shadow-md">
                     {lang === 'bn' ? chamberImages[chamberIndex].titleBn : chamberImages[chamberIndex].titleEn}
                   </span>
                   <span className="block text-xs text-cyan-300 font-semibold mt-1">
@@ -164,10 +135,10 @@ export default function GalleryPage() {
                 </div>
               </div>
 
-              {/* ডান পাশের ঝাপসা ছবি */}
+              {/* ডান পাশের ঝাপসা ছবি (Peek View) */}
               <div 
                 onClick={() => setChamberIndex((chamberIndex + 1) % chamberImages.length)}
-                className="hidden md:flex relative w-1/4 h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-500 hover:opacity-70"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
                 <img 
                   src={chamberImages[(chamberIndex + 1) % chamberImages.length].src} 
@@ -179,18 +150,17 @@ export default function GalleryPage() {
 
             <button 
               onClick={nextChamber}
-              className="absolute right-2 md:right-4 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] flex items-center justify-center text-xl shadow-lg transition cursor-pointer"
+              className="absolute right-1 md:right-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-lg md:text-xl shadow-lg transition cursor-pointer"
             >
               ❯
             </button>
           </div>
         </div>
 
-        {/* সেকশন ২: রোগীর হাসি ফিরিয়ে আনার প্রচেষ্টা (ঝাপসা দুই পাশ সহ স্লাইডার) */}
-        <div className="space-y-6 pt-8 border-t-2 border-[#5A181C]/20">
-          <div className="flex items-center gap-3 border-b border-[#5A181C]/20 pb-3">
-            <span className="text-2xl">😁</span>
-            <h2 className="text-2xl font-extrabold text-[#5A181C] dark:text-teal-300">
+        {/* সেকশন ২: রোগীর হাসি ফিরিয়ে আনার প্রচেষ্টা */}
+        <div className="space-y-6 pt-8 border-t border-slate-200 dark:border-slate-800">
+          <div className="border-b border-slate-200 dark:border-slate-800 pb-3">
+            <h2 className="text-2xl font-extrabold text-[#0E3A5D] dark:text-teal-300">
               {lang === 'bn' ? 'রোগীর হাসি ফিরিয়ে আনার প্রচেষ্টা' : 'Patient Smile Restoration'}
             </h2>
           </div>
@@ -200,20 +170,19 @@ export default function GalleryPage() {
               : 'Showcasing smile transformations. (Click to enlarge)'}
           </p>
 
-          {/* ক্যারোসেল কন্টেইনার */}
           <div className="relative flex items-center justify-center overflow-hidden py-4">
             <button 
               onClick={prevPatient}
-              className="absolute left-2 md:left-4 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] flex items-center justify-center text-xl shadow-lg transition cursor-pointer"
+              className="absolute left-1 md:left-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-lg md:text-xl shadow-lg transition cursor-pointer"
             >
               ❮
             </button>
 
-            <div className="flex items-center justify-center gap-3 md:gap-6 w-full max-w-5xl">
-              {/* বাম পাশের ঝাপসা ছবি */}
+            <div className="flex items-center justify-center gap-2 md:gap-6 w-full max-w-5xl px-8 md:px-0">
+              {/* বাম পাশের ঝাপসা ছবি (Peek View) */}
               <div 
                 onClick={() => setPatientIndex((patientIndex - 1 + patientImages.length) % patientImages.length)}
-                className="hidden md:flex relative w-1/4 h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-500 hover:opacity-70"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
                 <img 
                   src={patientImages[(patientIndex - 1 + patientImages.length) % patientImages.length].src} 
@@ -222,10 +191,10 @@ export default function GalleryPage() {
                 />
               </div>
 
-              {/* মাঝখানের প্রধান ছবি */}
+              {/* মাঝখানের প্রধান স্পষ্ট ছবি */}
               <div 
                 onClick={() => setSelectedImage(patientImages[patientIndex])}
-                className="relative w-full md:w-2/4 h-72 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-4 border-[#5A181C]/40 bg-black cursor-pointer group z-20"
+                className="relative w-[70%] md:w-2/4 h-64 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-4 border-[#00a8e8]/40 bg-black cursor-pointer group z-20 flex-shrink-0"
               >
                 <img 
                   src={patientImages[patientIndex].src} 
@@ -234,7 +203,7 @@ export default function GalleryPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80"></div>
                 <div className="absolute bottom-4 left-4 right-4 text-center text-white">
-                  <span className="font-extrabold text-base md:text-lg drop-shadow-md">
+                  <span className="font-extrabold text-sm md:text-lg drop-shadow-md">
                     {lang === 'bn' ? patientImages[patientIndex].titleBn : patientImages[patientIndex].titleEn}
                   </span>
                   <span className="block text-xs text-cyan-300 font-semibold mt-1">
@@ -243,10 +212,10 @@ export default function GalleryPage() {
                 </div>
               </div>
 
-              {/* ডান পাশের ঝাপসা ছবি */}
+              {/* ডান পাশের ঝাপসা ছবি (Peek View) */}
               <div 
                 onClick={() => setPatientIndex((patientIndex + 1) % patientImages.length)}
-                className="hidden md:flex relative w-1/4 h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-500 hover:opacity-70"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
                 <img 
                   src={patientImages[(patientIndex + 1) % patientImages.length].src} 
@@ -258,7 +227,7 @@ export default function GalleryPage() {
 
             <button 
               onClick={nextPatient}
-              className="absolute right-2 md:right-4 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#5A181C] hover:bg-[#451215] text-[#EADCD2] flex items-center justify-center text-xl shadow-lg transition cursor-pointer"
+              className="absolute right-1 md:right-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-lg md:text-xl shadow-lg transition cursor-pointer"
             >
               ❯
             </button>
@@ -275,11 +244,11 @@ export default function GalleryPage() {
         >
           <div 
             onClick={(e) => e.stopPropagation()} 
-            className="bg-white dark:bg-slate-900 p-4 rounded-3xl shadow-2xl border-2 border-[#5A181C] max-w-3xl w-full relative flex flex-col items-center space-y-4"
+            className="bg-white dark:bg-slate-900 p-4 rounded-3xl shadow-2xl border-2 border-[#00a8e8] max-w-3xl w-full relative flex flex-col items-center space-y-4"
           >
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute top-4 right-4 bg-[#5A181C] text-white hover:bg-[#451215] font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition cursor-pointer text-lg"
+              className="absolute top-4 right-4 bg-[#00a8e8] text-white hover:bg-[#008fca] font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition cursor-pointer text-lg"
             >
               ✕
             </button>
@@ -292,7 +261,7 @@ export default function GalleryPage() {
               />
             </div>
 
-            <h3 className="text-xl font-extrabold text-[#5A181C] dark:text-white text-center">
+            <h3 className="text-xl font-extrabold text-[#0E3A5D] dark:text-white text-center">
               {lang === 'bn' ? selectedImage.titleBn : selectedImage.titleEn}
             </h3>
           </div>
