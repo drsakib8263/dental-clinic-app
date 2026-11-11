@@ -225,7 +225,7 @@ export default function Home() {
       patientNamePlaceholder: 'আপনার নাম লিখুন',
       ageLabel: 'বয়স *',
       agePlaceholder: 'যেমন: ৩২ বা ২৫ বছর',
-      phoneLabel: 'মোবাইল নম্বর *',
+      phoneLabel: 'মোবাইল নম্বর * (১১ ডিজিট)',
       serviceLabel: 'চিকিৎসার ধরণ *',
       serviceDefault: 'চিকিৎসার ধরণ নির্বাচন করুন',
       service1: 'দাঁতের নতুন সমস্যা নিয়ে দেখাব',
@@ -262,7 +262,7 @@ export default function Home() {
       patientNamePlaceholder: 'Enter your name',
       ageLabel: 'Age *',
       agePlaceholder: 'e.g. 32',
-      phoneLabel: 'Mobile Number *',
+      phoneLabel: 'Mobile Number * (11 Digits)',
       serviceLabel: 'Treatment Type *',
       serviceDefault: 'Select treatment type',
       service1: 'Consulting for new dental issue',
@@ -315,6 +315,12 @@ export default function Home() {
 
     if (!formData.patient_name || !formData.phone || !formData.service || !formData.appointment_date || !formData.appointment_time) {
       alert(lang === 'bn' ? 'দয়া করে সব ফিল্ড সঠিকভাবে পূরণ করুন।' : 'Please fill in all required fields.')
+      return
+    }
+
+    // মোবাইল নম্বর ১১ ডিজিটের হতে হবে চেক
+    if (formData.phone.length !== 11) {
+      alert(lang === 'bn' ? 'মোবাইল নম্বর অবশ্যই ১১ ডিজিটের হতে হবে।' : 'Mobile number must be exactly 11 digits.')
       return
     }
 
@@ -738,8 +744,12 @@ export default function Home() {
                   type="tel" 
                   name="phone" 
                   value={formData.phone} 
-                  onChange={handleChange} 
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, '').slice(0, 11);
+                    setFormData(prev => ({ ...prev, phone: val }));
+                  }} 
                   required 
+                  maxLength="11"
                   placeholder="017XXXXXXXX" 
                   className="w-full px-4 py-2.5 rounded-xl outline-none border" 
                   style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
