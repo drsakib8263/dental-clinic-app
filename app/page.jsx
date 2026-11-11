@@ -359,15 +359,14 @@ export default function Home() {
         return
       }
 
-      // ২. নিজস্ব API Route-এর মাধ্যমে গুগল শিটে ডেটা পাঠানো
-      try {
-        const payload = {
-          date: formData.appointment_date,     // ফরম্যাট: YYYY-MM-DD
-          timeSlot: formData.appointment_time, // যেমন: "৪.৩০ মি"
-          patientType: formData.patient_type || "পুরাতন রোগী", 
-          patientName: formData.patient_name,   
-          patientPhone: formData.phone          
-        };
+      // পেলোড তৈরির অংশটি এভাবে দিন:
+const payload = {
+  date: formData.appointment_date,     // ইনপুট থেকে আসা "YYYY-MM-DD" স্ট্রিং হুবহু যাবে
+  timeSlot: formData.appointment_time, // যেমন: "৪.৩০ মি"
+  patientType: formData.patient_type || "পুরাতন রোগী", 
+  patientName: formData.patient_name,   
+  patientPhone: formData.phone          
+};
 
         const res = await fetch('/api/appointment', {
           method: 'POST',
