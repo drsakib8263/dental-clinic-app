@@ -93,12 +93,13 @@ export default function Home() {
       const minutes = now.getMinutes()
       const currentTimeInMinutes = hours * 60 + minutes
 
-      const isOpenTime = day !== 5 && currentTimeInMinutes >= 960 && currentTimeInMinutes <= 1260
+      // ৪:৩০ PM (৯৯০ মিনিট) থেকে ৯:৩০ PM (১১৭০ মিনিট)
+      const isOpenTime = day !== 5 && currentTimeInMinutes >= 990 && currentTimeInMinutes <= 1170
 
       if (lang === 'bn') {
         setChamberStatusText(isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে')
       } else {
-        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🟢 Chamber is currently CLOSED')
+        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🔴 Chamber is currently CLOSED')
       }
     }
 
@@ -207,7 +208,7 @@ export default function Home() {
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
-      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকাল ৪:০০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ',
+      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকাল ৪:৩০ টা - রাত ৯:৩০ টা), শুক্রবার বন্ধ',
       patientName: 'রোগীর নাম *',
       patientNamePlaceholder: 'আপনার নাম লিখুন',
       ageLabel: 'বয়স *',
@@ -244,7 +245,7 @@ export default function Home() {
       bookingMainBtn: 'Book an Appointment',
       bookingCloseBtn: '✕ Close',
       bookingTitle: 'Online Appointment Booking',
-      bookingSub: 'Saturday to Thursday (4:00 PM - 9:00 PM), Friday Closed',
+      bookingSub: 'Saturday to Thursday (4:30 PM - 9:30 PM), Friday Closed',
       patientName: 'Patient Name *',
       patientNamePlaceholder: 'Enter your name',
       ageLabel: 'Age *',
@@ -273,20 +274,21 @@ export default function Home() {
     }
   }
 
+  // ৪:৩০ PM থেকে ৯:৩০ PM এর স্লটসমূহ
   const rawTimes = lang === 'bn' ? [
-    "বিকাল ৪:০০ টা", "বিকাল ৪:৩০ টা",
+    "বিকাল ৪:৩০ টা",
     "বিকাল ৫:০০ টা", "বিকাল ৫:৩০ টা",
     "সন্ধ্যা ৬:০০ টা", "সন্ধ্যা ৬:৩০ টা",
     "সন্ধ্যা ৭:০০ টা", "সন্ধ্যা ৭:৩০ টা",
     "রাত ৮:০০ টা", "রাত ৮:৩০ টা",
-    "রাত ৯:০০ টা"
+    "রাত ৯:০০ টা", "রাত ৯:৩০ টা"
   ] : [
-    "4:00 PM", "4:30 PM",
+    "4:30 PM",
     "5:00 PM", "5:30 PM",
     "6:00 PM", "6:30 PM",
     "7:00 PM", "7:30 PM",
     "8:00 PM", "8:30 PM",
-    "9:00 PM"
+    "9:00 PM", "9:30 PM"
   ]
 
   const handleChange = (e) => {
@@ -467,7 +469,7 @@ export default function Home() {
         <div className="flex justify-between items-center border-t border-blue-800/60 pt-1 text-[11px] md:text-xs">
           <div className="flex items-center gap-1 text-cyan-300 font-semibold">
             <span>🕒</span>
-            <span>{lang === 'bn' ? 'চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:০০ - রাত ৯:০০), শুক্রবার বন্ধ' : 'Chamber Open: Sat - Thu (4:00 PM - 9:00 PM), Friday Closed'}</span>
+            <span>{lang === 'bn' ? 'চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:৩০ - রাত ৯:৩০),শুক্রবার বন্ধ' : 'Chamber Open: Sat - Thu (4:30 PM - 9:30 PM), Friday Closed'}</span>
           </div>
 
           <div className="flex items-center gap-2.5">
@@ -1033,7 +1035,7 @@ export default function Home() {
                 <span className="font-semibold">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার:' : 'Sat - Thu:'}</span>
               </p>
               <p className="text-cyan-300 pl-6 font-medium">
-                {lang === 'bn' ? 'বিকাল ৪:০০ টা - রাত ৯:০০ টা' : '4:00 PM - 9:00 PM'}
+                {lang === 'bn' ? 'বিকাল ৪:৩০ টা - রাত ৯:৩০ টা' : '4:30 PM - 9:30 PM'}
               </p>
               <p className="flex items-center gap-2 pt-2">
                 <span>❌</span> 
