@@ -8,15 +8,22 @@ export default function AdminAppointments() {
   const [newBookingAlert, setNewBookingAlert] = useState(null)
 
   useEffect(() => {
+    // ব্রাউজার নোটিফিকেশনের অনুমতি চাওয়া (Notification Permission)
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+        Notification.requestPermission()
+      }
+    }
+
     fetchAppointments()
 
-    // Supabase Realtime লজিক যুক্ত করা হলো যাতে নতুন বুকিং আসলে ইনস্ট্যান্ট আপডেট হয়
+    // Supabase Realtime সাবস্ক্রিপশন
     const channel = supabase
       .channel('admin-appointments-realtime')
       .on(
         'postgres_changes',
         {
-          event: '*', // INSERT, UPDATE, DELETE সব ইভেন্ট ট্র্যাক করার জন্য
+          event: '*',
           schema: 'public',
           table: 'appointments',
         },
@@ -25,6 +32,10 @@ export default function AdminAppointments() {
             setAppointments((prev) => [payload.new, ...prev])
             setNewBookingAlert(payload.new)
             playNotificationSound()
+
+            // মোবাইলের ওপরের বারে বা ব্রাউজারে পুশ নোটিফিকেশন পাঠানো
+            showNativeNotification(payload.new)
+
           } else if (payload.eventType === 'UPDATE') {
             setAppointments((prev) =>
               prev.map((app) => (app.id === payload.new.id ? payload.new : app))
@@ -36,7 +47,6 @@ export default function AdminAppointments() {
       )
       .subscribe()
 
-    // ক্লিনআপ ফাংশন
     return () => {
       supabase.removeChannel(channel)
     }
@@ -55,7 +65,20 @@ export default function AdminAppointments() {
     setLoading(false)
   }
 
-  // ছোট নোটিফিকেশন সাউন্ড বাজানোর ফাংশন
+  // ব্রাউজার/মোবাইল পুশ নোটিফিকেশন দেখানোর ফাংশন
+  const showNativeNotification = (booking) => {
+    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+      try {
+        new Notification('🔔 নতুন অ্যাপয়েন্টমেন্ট!', {
+          body: `রোগী: ${booking.patient_name} (${booking.patient_phone})\nতারিখ: ${booking.appointment_date}`,
+          icon: '/favicon.ico' // চাইলে আপনার ক্লিনিকের লোগো বা আইকন দিতে পারেন
+        })
+      } catch (e) {
+        console.log('Notification error:', e)
+      }
+    }
+  }
+
   const playNotificationSound = () => {
     try {
       const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3')
@@ -65,7 +88,6 @@ export default function AdminAppointments() {
     }
   }
 
-  // তারিখকে বাংলায় রূপান্তর করার ফাংশন
   function formatDateToBangla(dateStr) {
     if (!dateStr) return ''
     const dateObj = new Date(dateStr)
@@ -82,7 +104,6 @@ export default function AdminAppointments() {
     return `${day} ${month} ${year}`
   }
 
-  // স্ট্যাটাস কনফার্ম করা বা বাতিল (ডিলিট) করার ফাংশন
   async function updateStatus(id, newStatus) {
     if (newStatus === 'cancelled') {
       const { error } = await supabase
@@ -113,7 +134,6 @@ export default function AdminAppointments() {
     <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-lg border border-teal-100 mt-8">
       <h2 className="text-2xl font-bold text-teal-900 mb-6">রোগীদের অ্যাপয়েন্টমেন্ট তালিকা</h2>
 
-      {/* নতুন বুকিং আসলে স্ক্রিনের ওপর নোটিফিকেশন পপ-আপ */}
       {newBookingAlert && (
         <div className="mb-6 p-4 bg-teal-50 border-2 border-teal-500 text-teal-900 rounded-2xl shadow-md flex justify-between items-center animate-bounce">
           <div>
