@@ -237,7 +237,7 @@ export default function AdminDashboard() {
     }
   }
 
-  // ব্যাকগ্রাউন্ড পুশ সাবস্ক্রাইব হ্যান্ডলার
+  // ব্যাকগ্রাউন্ড পুশ সাবস্ক্রাইব হ্যান্ডলার (ডাটাবেজে সাবস্ক্রিপশন সেভ সহ)
   const handleSubscribePush = async () => {
     try {
       if (!('serviceWorker' in navigator)) {
@@ -258,7 +258,18 @@ export default function AdminDashboard() {
         applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
       })
 
-      console.log('Push Subscription:', JSON.stringify(subscription))
+      // Supabase ডাটাবেজে সাবস্ক্রিপশন ডেটা সেভ করা
+      const { error } = await supabase
+        .from('push_subscriptions')
+        .upsert({
+          endpoint: subscription.endpoint,
+          subscription: subscription
+        }, { onConflict: 'endpoint' })
+
+      if (error) {
+        console.error('Database save error:', error)
+      }
+
       setIsSubscribed(true)
       localStorage.setItem('push_subscribed', 'true')
       alert('সফলভাবে ব্যাকগ্রাউন্ড পুশ নোটিফিকেশনের জন্য সাবস্ক্রাইব করা হয়েছে!')

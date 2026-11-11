@@ -1,13 +1,27 @@
 import { NextResponse } from 'next/server';
+import webpush from 'web-push';
+import { createClient } from '@supabase/supabase-js';
+
+// Vapid কি কনফিগারেশন
+webpush.setVapidDetails(
+  'mailto:admin@drsakibdental.com',
+  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+  process.env.VAPID_PRIVATE_KEY
+);
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export async function POST(request) {
   try {
     const body = await request.json();
     
-    // আপনার লেটেস্ট গুগল স্ক্রিপ্ট ওয়েব অ্যাপ ইউআরএল
+    // গুগল স্ক্রিপ্ট ওয়েব অ্যাপে ডাটা পাঠানো
     const scriptUrl = 'https://script.google.com/macros/s/AKfycbxTwttvCE4yllq4XqmLKugGRdk_RJggL9jGhP1Rypz2HjNfyTHA_CVf0FhrNbH_atYKfw/exec';
 
-    const response = await fetch(scriptUrl, {
+    await fetch(scriptUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -15,8 +29,30 @@ export async function POST(request) {
       body: JSON.stringify(body),
     });
 
-    const result = await response.text();
-    return NextResponse.json({ success: true, result });
+    // Supabase থেকে সেভ করা পুশ সাবস্ক্রিপশনগুলো ফেচ করা
+    const { data: subs, error: subError } = await supabase
+      .from('push_subscriptions')
+      .select('subscription');
+
+    if (!subError && subs && subs.length > 0) {
+      const payload = JSON.stringify({
+        title: '🔔 নতুন অ্যাপয়েন্টমেন্ট!',
+        body: `রোগী: ${body.patient_name} (${body.patient_phone})\nতারিখ: ${body.appointment_date} (${body.appointment_time})`
+      });
+
+      // সকল সাবস্ক্রাইব করা ডিভাইসে ব্যাকগ্রাউন্ড পুশ নোটিফিকেশন পাঠানো
+      await Promise.all(
+        subs.map(async (sub) => {
+          try {
+            await webpush.sendNotification(sub.subscription, payload);
+          } catch (err) {
+            console.error('Push send error for a subscription:', err);
+          }
+        })
+      );
+    }
+
+    return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
