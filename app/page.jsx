@@ -115,7 +115,7 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [lang])
 
-  // আজ থেকে সামনের ৭টি কার্যকর দিন (শুক্রবার বাদে) দেখানোর লজিক
+  // আজ সহ মোট ৫টি কার্যকর দিন (শুক্রবার বাদে) দেখানোর লজিক
   useEffect(() => {
     const dates = []
     const daysListBn = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার']
@@ -135,7 +135,7 @@ export default function Home() {
     let count = 0
     let i = 0
 
-    while (count < 7 && i < 30) {
+    while (count < 5 && i < 30) {
       const d = new Date(today)
       d.setDate(today.getDate() + i)
       
