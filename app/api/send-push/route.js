@@ -1,6 +1,7 @@
-import webpush from 'web-push';
 import { NextResponse } from 'next/server';
+import webpush from 'web-push';
 
+// কনফিগারেশন
 webpush.setVapidDetails(
   'mailto:admin@drsakibdentalcare.com',
   process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
