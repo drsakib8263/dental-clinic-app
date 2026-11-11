@@ -4,10 +4,9 @@ export async function POST(request) {
   try {
     const body = await request.json();
     
-    // আপনার গুগল স্ক্রিপ্ট ওয়েব অ্যাপ ইউআরএল
+    // আপনার লেটেস্ট গুগল স্ক্রিপ্ট ওয়েব অ্যাপ ইউআরএল
     const scriptUrl = 'https://script.google.com/macros/s/AKfycbxTwttvCE4yllq4XqmLKugGRdk_RJggL9jGhP1Rypz2HjNfyTHA_CVf0FhrNbH_atYKfw/exec';
 
-    // সার্ভার থেকে গুগল স্ক্রিপ্টে ফেচ করা (এখানে কোনো CORS সমস্যা হবে না)
     const response = await fetch(scriptUrl, {
       method: 'POST',
       headers: {
