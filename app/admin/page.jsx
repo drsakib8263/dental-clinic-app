@@ -7,6 +7,19 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+const publicVapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4)
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/')
+  const rawData = window.atob(base64)
+  const outputArray = new Uint8Array(rawData.length)
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i)
+  }
+  return outputArray
+}
+
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [passcode, setPasscode] = useState('')
@@ -14,6 +27,8 @@ export default function AdminDashboard() {
   const [selectedDate, setSelectedDate] = useState('')
   const [loading, setLoading] = useState(false)
   const [darkMode, setDarkMode] = useState(true)
+  const [isSubscribed, setIsSubscribed] = useState(false)
+  const [newBookingAlert, setNewBookingAlert] = useState(null)
 
   // চেম্বার নোটিশ বক্স গুটানো বা খোলার স্টেট (ডিফল্টভাবে বন্ধ/গুটানো থাকবে)
   const [showNoticeBox, setShowNoticeBox] = useState(false)
@@ -35,7 +50,56 @@ export default function AdminDashboard() {
     } else {
       document.documentElement.classList.remove('dark')
     }
+
+    // সার্ভিস ওয়ার্কার রেজিস্টার করা
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => console.log('Service Worker Registered:', reg.scope))
+        .catch((err) => console.error('Service Worker Error:', err))
+    }
+
+    // ব্রাউজার নোটিফিকেশনের অনুমতি চাওয়া
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+        Notification.requestPermission()
+      }
+    }
   }, [])
+
+  // Supabase Realtime সাবস্ক্রিপশন অ্যাডমিন প্যানেলে লাইভ অ্যালার্টের জন্য
+  useEffect(() => {
+    if (!isAuthenticated) return
+
+    const channel = supabase
+      .channel('admin-dashboard-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'appointments',
+        },
+        (payload) => {
+          if (payload.eventType === 'INSERT') {
+            setAppointments((prev) => [payload.new, ...prev])
+            setNewBookingAlert(payload.new)
+            playNotificationSound()
+            showNativeNotification(payload.new)
+          } else if (payload.eventType === 'UPDATE') {
+            setAppointments((prev) =>
+              prev.map((app) => (app.id === payload.new.id ? payload.new : app))
+            )
+          } else if (payload.eventType === 'DELETE') {
+            setAppointments((prev) => prev.filter((app) => app.id !== payload.old.id))
+          }
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [isAuthenticated])
 
   const toggleTheme = () => {
     if (darkMode) {
@@ -120,9 +184,9 @@ export default function AdminDashboard() {
         })
 
       if (error) {
-        alert('নোটিশ আপডেট করতে সমস্যা হয়েছে: ' + error.message)
+        alert('নোটিশ আপডেট করতে সমস্যা হয়েছে: ' + error.message)
       } else {
-        alert('চেম্বারের নোটিশ সফলভাবে আপডেট ও সিঙ্ক হয়েছে!')
+        alert('চেম্বারের নোটিশ সফলভাবে আপডেট ও সিঙ্ক হয়েছে!')
       }
     } catch (err) {
       alert('Error: ' + err.message)
@@ -137,9 +201,9 @@ export default function AdminDashboard() {
         .eq('id', id)
 
       if (error) {
-        alert('কনফার্ম করতে সমস্যা হয়েছে: ' + error.message)
+        alert('কনফার্ম করতে সমস্যা হয়েছে: ' + error.message)
       } else {
-        alert('অ্যাপয়েন্টমেন্ট সফলভাবে কনফার্ম করা হয়েছে!')
+        alert('অ্যাপয়েন্টমেন্ট সফলভাবে কনফার্ম করা হয়েছে!')
         fetchAppointments(selectedDate)
       }
     } catch (err) {
@@ -157,13 +221,65 @@ export default function AdminDashboard() {
         .eq('id', id)
 
       if (error) {
-        alert('ডিলিট করতে সমস্যা হয়েছে: ' + error.message)
+        alert('ডিলিট করতে সমস্যা হয়েছে: ' + error.message)
       } else {
-        alert('অ্যাপয়েন্টমেন্ট সফলভাবে ডিলিট করা হয়েছে!')
+        alert('অ্যাপয়েন্টমেন্ট সফলভাবে ডিলিট করা হয়েছে!')
         fetchAppointments(selectedDate)
       }
     } catch (err) {
       alert('Error: ' + err.message)
+    }
+  }
+
+  // ব্যাকগ্রাউন্ড পুশ সাবস্ক্রাইব হ্যান্ডলার
+  const handleSubscribePush = async () => {
+    try {
+      if (!('serviceWorker' in navigator)) {
+        alert('এই ব্রাউজারে সার্ভিস ওয়ার্কার সমর্থিত নয়!')
+        return
+      }
+
+      const register = await navigator.serviceWorker.ready
+      const permission = await Notification.requestPermission()
+      
+      if (permission !== 'granted') {
+        alert('নোটিফিকেশনের অনুমতি দেওয়া হয়নি!')
+        return
+      }
+
+      const subscription = await register.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+      })
+
+      console.log('Push Subscription:', JSON.stringify(subscription))
+      setIsSubscribed(true)
+      alert('সফলভাবে ব্যাকগ্রাউন্ড পুশ নোটিফিকেশনের জন্য সাবস্ক্রাইব করা হয়েছে!')
+    } catch (error) {
+      console.error('Subscription error:', error)
+      alert('সাবস্ক্রাইব করতে সমস্যা হয়েছে: ' + error.message)
+    }
+  }
+
+  const showNativeNotification = (booking) => {
+    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+      try {
+        new Notification('🔔 নতুন অ্যাপয়েন্টমেন্ট!', {
+          body: `রোগী: ${booking.patient_name} (${booking.patient_phone})\nতারিখ: ${booking.appointment_date}`,
+          icon: '/favicon.ico'
+        })
+      } catch (e) {
+        console.log('Notification error:', e)
+      }
+    }
+  }
+
+  const playNotificationSound = () => {
+    try {
+      const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3')
+      audio.play()
+    } catch (e) {
+      console.log('Audio play error:', e)
     }
   }
 
@@ -194,11 +310,22 @@ export default function AdminDashboard() {
   return (
     <main className="min-h-screen bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-100 p-4 md:p-8 space-y-8 transition-colors">
       
-      {/* টপ হেডার ও থিম টগল */}
-      <div className="max-w-6xl mx-auto flex justify-between items-center bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl">
+      {/* টপ হেডার, ব্যাকগ্রাউন্ড পুশ বাটন ও থিম টগল */}
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl gap-4">
         <h1 className="text-2xl md:text-3xl font-black text-teal-600 dark:text-teal-400">অ্যাডমিন ড্যাশবোর্ড</h1>
         
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          {/* ব্যাকগ্রাউন্ড পুশ অন বাটন */}
+          <button
+            type="button"
+            onClick={handleSubscribePush}
+            className={`px-4 py-2.5 rounded-xl text-white font-bold text-sm shadow transition cursor-pointer ${
+              isSubscribed ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-teal-600 hover:bg-teal-700'
+            }`}
+          >
+            {isSubscribed ? '✅ পুশ অন আছে' : '🔔 ব্যাকগ্রাউন্ড পুশ অন করুন'}
+          </button>
+
           <button
             type="button"
             onClick={toggleTheme}
@@ -215,6 +342,24 @@ export default function AdminDashboard() {
           </button>
         </div>
       </div>
+
+      {/* নতুন বুকিং অ্যালার্ট নোটিফিকেশন ব্যানার */}
+      {newBookingAlert && (
+        <div className="max-w-6xl mx-auto p-4 bg-teal-50 dark:bg-teal-950 border-2 border-teal-500 text-teal-900 dark:text-teal-100 rounded-2xl shadow-md flex justify-between items-center animate-bounce">
+          <div>
+            <h3 className="font-bold text-base">🔔 নতুন একটি অ্যাপয়েন্টমেন্ট এসেছে!</h3>
+            <p className="text-sm">
+              রোগীর নাম: <b>{newBookingAlert.patient_name}</b> ({newBookingAlert.patient_phone})
+            </p>
+          </div>
+          <button 
+            onClick={() => setNewBookingAlert(null)} 
+            className="bg-teal-600 text-white px-3 py-1.5 rounded-xl font-bold text-xs hover:bg-teal-700 cursor-pointer"
+          >
+            বন্ধ করুন
+          </button>
+        </div>
+      )}
 
       {/* চেম্বার নোটিশ কন্ট্রোল সেকশন (গুটানো/Collapsible বক্স) */}
       <div className="max-w-6xl mx-auto bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden transition-colors">
