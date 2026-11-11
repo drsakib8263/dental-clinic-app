@@ -11,12 +11,16 @@ self.addEventListener('activate', (event) => {
 // ব্যাকগ্রাউন্ডে পুশ নোটিফিকেশন রিসিভ করার লজিক
 self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
-  const title = data.title || 'নতুন অ্যাপয়েন্টমেন্ট!';
+  const title = data.title || '🔔 নতুন অ্যাপয়েন্টমেন্ট!';
+  
   const options = {
     body: data.body || 'আপনার চেম্বারে একটি নতুন বুকিং এসেছে।',
-    icon: '/icon.png',
-    badge: '/icon.png',
-    vibrate: [200, 100, 200]
+    icon: '/favicon.ico',
+    badge: '/favicon.ico',
+    vibrate: [300, 100, 300, 100, 300], // জোরালো ভাইব্রেশন প্যাটার্ন
+    tag: 'dental-appointment-alert',
+    renotify: true,
+    requireInteraction: true // ইউজার ক্লিক না করা পর্যন্ত নোটিফিকেশন স্ক্রিনে থাকবে
   };
 
   event.waitUntil(
@@ -24,18 +28,21 @@ self.addEventListener('push', (event) => {
   );
 });
 
-// নোটিফিকেশনে ক্লিক করলে অ্যাপ ওপেন হওয়ার লজিক
+// নোটিফিকেশনে ক্লিক করলে সরাসরি এডমিন প্যানেল ওপেন হওয়ার লজিক
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
+  
   event.waitUntil(
-    clients.matchAll({ type: 'window' }).then((clientList) => {
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      // যদি ইতিমধ্যে এডমিন ট্যাব ওপেন থাকে, তবে সেটিতে ফোকাস করবে
       for (const client of clientList) {
-        if (client.url === '/' && 'focus' in client) {
+        if (client.url.includes('/admin') && 'focus' in client) {
           return client.focus();
         }
       }
+      // না থাকলে সরাসরি এডমিন পেজে নতুন উইন্ডো ওপেন করবে
       if (clients.openWindow) {
-        return clients.openWindow('/');
+        return clients.openWindow('/admin');
       }
     })
   );
