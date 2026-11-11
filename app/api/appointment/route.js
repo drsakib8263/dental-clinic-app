@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
-import webpush from 'web-push';
 import { createClient } from '@supabase/supabase-js';
+
+// CommonJS স্টাইলে web-push লোড করা যাতে বিল্ড এরর না আসে
+const webpush = require('web-push');
 
 // Vapid কি কনফিগারেশন
 webpush.setVapidDetails(
