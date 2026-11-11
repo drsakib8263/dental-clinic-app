@@ -93,7 +93,6 @@ export default function Home() {
       const minutes = now.getMinutes()
       const currentTimeInMinutes = hours * 60 + minutes
 
-      // ৪:৩০ PM (৯৯০ মিনিট) থেকে ৯:৩০ PM (১১৭০ মিনিট)
       const isOpenTime = day !== 5 && currentTimeInMinutes >= 990 && currentTimeInMinutes <= 1170
 
       if (lang === 'bn') {
@@ -116,6 +115,7 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [lang])
 
+  // আজ থেকে সামনের ৭টি কার্যকর দিন (শুক্রবার বাদে) দেখানোর লজিক
   useEffect(() => {
     const dates = []
     const daysListBn = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার']
@@ -135,13 +135,13 @@ export default function Home() {
     let count = 0
     let i = 0
 
-    while (count < 7 && i < 25) {
+    while (count < 7 && i < 30) {
       const d = new Date(today)
       d.setDate(today.getDate() + i)
       
       const dayOfWeek = d.getDay()
       
-      if (dayOfWeek !== 5) {
+      if (dayOfWeek !== 5) { // শুক্রবার বাদে
         const value = d.toISOString().split('T')[0]
         let label = ''
 
@@ -204,7 +204,7 @@ export default function Home() {
       title: 'ডাঃ আসির মোসাদ্দেক সাকিব',
       subtitle: 'ওরাল এন্ড ডেন্টাল সার্জন',
       doctorInfo: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)\nবিএমডিসি রেজি. ৮২৬৩',
-      addressText: 'আলম মেডিকেল হল, পটিয়া সরকারি কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
+      addressText: 'আলম মেডিকেল হল, পটিয়া কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
@@ -274,7 +274,6 @@ export default function Home() {
     }
   }
 
-  // ৪:৩০ PM থেকে ৯:৩০ PM এর স্লটসমূহ
   const rawTimes = lang === 'bn' ? [
     "বিকাল ৪:৩০ টা",
     "বিকাল ৫:০০ টা", "বিকাল ৫:৩০ টা",
@@ -315,8 +314,6 @@ export default function Home() {
 
     setLoading(true)
 
-    // নতুন রোগী বনাম পুরোনো রোগী নির্ধারণের লজিক
-    // "দাঁতের নতুন সমস্যা" অথবা "ওষুধ খাওয়ার পরেও ব্যথা কমছে না" নির্বাচন করলে নতুন রোগী (new)
     const isNewPatient = formData.service.includes("নতুন সমস্যা") || 
                          formData.service.includes("ব্যথা কমছে না") ||
                          formData.service.includes("new dental issue") ||
@@ -330,7 +327,7 @@ export default function Home() {
         service: formData.service,
         appointment_date: formData.appointment_date,
         appointment_time: formData.appointment_time,
-        patient_type: isNewPatient ? 'new' : 'old' // গুগল শিট বা ব্যাকএন্ডে ব্যবহারের জন্য
+        patient_type: isNewPatient ? 'new' : 'old'
       }
 
       const { error } = await supabase
@@ -381,7 +378,7 @@ export default function Home() {
     },
     {
       id: 'tips-04',
-      textBn: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাত চেকআপ করান।',
+      textBn: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাঁত চেকআপ করান।',
       textEn: 'Visit your dental surgeon regularly every six months for a checkup.'
     },
     {
@@ -465,7 +462,7 @@ export default function Home() {
         }
       `}</style>
 
-      {/* ১ ও ২. টপ নোটিশ ও স্থির চেম্বার টাইম বার */}
+      {/* টপ নোটিশ ও স্থির চেম্বার টাইম বার */}
       <div className="bg-[#0c1e3e] text-white text-[11px] md:text-sm py-2 px-3 md:px-12 flex flex-col gap-1 border-b border-blue-900/50">
         <div className="overflow-hidden whitespace-nowrap w-full">
           <div className="animate-marquee inline-flex items-center gap-1.5 font-medium">
@@ -512,7 +509,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ৩. ন্যাভিগেশন বার */}
+      {/* ন্যাভিগেশন বার */}
       <header 
         className="sticky top-0 z-50 px-3 md:px-12 py-3 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
         style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
@@ -634,7 +631,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* ৪. হিরো সেকশন */}
+      {/* হিরো সেকশন */}
       <section className="relative overflow-hidden bg-gradient-to-r from-[#0d2857] via-[#0b3c85] to-[#0077b6] text-white py-10 lg:py-20 px-4 md:px-12">
         <div className="max-w-7xl mx-auto mb-6">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs md:text-sm font-semibold">
@@ -685,7 +682,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৫. পপ-আপ বুকিং ফর্ম */}
+      {/* পপ-আপ বুকিং ফর্ম */}
       {showPopupBooking && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
           <div 
@@ -821,7 +818,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* ৬. স্থায়ী About Us সেকশন */}
+      {/* স্থায়ী About Us সেকশন */}
       <section 
         id="about-section" 
         className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4 transition-all duration-300"
@@ -840,7 +837,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৭. দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন */}
+      {/* দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
         <div className="text-center mb-10 space-y-2">
           <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
@@ -904,7 +901,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৮. কেন আপনার জন্য আমরাই? - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
+      {/* কেন আপনার জন্য আমরাই? - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
@@ -939,7 +936,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ৯. সচেতনতামূলক ভিডিও সেকশন */}
+      {/* সচেতনতামূলক ভিডিও সেকশন */}
       <section 
         id="contact-section"
         className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6 transition-all duration-300"
@@ -970,7 +967,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ১০. প্রফেশনাল ফুটার সেকশন */}
+      {/* প্রফেশনাল ফুটার সেকশন */}
       <footer className="bg-[#0c1e3e] text-slate-300 pt-16 pb-8 border-t border-blue-900/50 mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-blue-900/50">
           
@@ -1094,7 +1091,7 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* যোগাযোগ পপ-আপ মোডাল (মোবাইল ও কম্পিউটার উভয় ভার্সনের জন্য) */}
+      {/* যোগাযোগ পপ-আপ মোডাল */}
       {isContactModalOpen && (
         <div 
           onClick={() => setIsContactModalOpen(false)}
@@ -1104,7 +1101,6 @@ export default function Home() {
             onClick={(e) => e.stopPropagation()} 
             className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#00a8e8] max-w-md w-full relative space-y-6 text-slate-900 dark:text-slate-100"
           >
-            {/* ক্লোজ বাটন */}
             <button
               onClick={() => setIsContactModalOpen(false)}
               className="absolute top-4 right-4 bg-[#00a8e8] text-white hover:bg-[#008fca] font-bold w-9 h-9 rounded-full flex items-center justify-center shadow-md transition cursor-pointer text-base"
@@ -1112,7 +1108,6 @@ export default function Home() {
               ✕
             </button>
 
-            {/* মোডাল হেডার */}
             <div className="border-b border-slate-200 dark:border-slate-800 pb-3">
               <h3 className="text-xl font-extrabold text-[#0E3A5D] dark:text-teal-300">
                 {lang === 'bn' ? 'যোগাযোগ ও লোকেশন' : 'Contact & Location'}
@@ -1122,15 +1117,12 @@ export default function Home() {
               </p>
             </div>
 
-            {/* কন্টেন্ট বডি */}
             <div className="space-y-4 text-sm">
-              {/* ঠিকানা */}
               <div className="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-2xl border border-slate-100 dark:border-slate-800">
                 <span className="text-cyan-500 text-lg">📍</span>
                 <span>{t[lang].addressText}</span>
               </div>
 
-              {/* গুগল ম্যাপ লোকেশন বাটন */}
               <div>
                 <a 
                   href="https://maps.app.goo.gl/4nNgwj68kE6okDZ96?g_st=ac" 
@@ -1143,7 +1135,6 @@ export default function Home() {
                 </a>
               </div>
 
-              {/* ফোন কল */}
               <div>
                 <a 
                   href="tel:+8801816011701" 
@@ -1154,7 +1145,6 @@ export default function Home() {
                 </a>
               </div>
 
-              {/* হোয়াটসঅ্যাপ বাটন */}
               <div>
                 <a 
                   href="https://wa.me/message/KBZOTSKH66H4P1" 
@@ -1167,7 +1157,6 @@ export default function Home() {
                 </a>
               </div>
 
-              {/* ইমেইল */}
               <div className="flex items-center justify-center gap-2 pt-2 text-xs text-slate-500 dark:text-slate-400">
                 <span>✉️</span>
                 <a href="mailto:asir.mosaddeque@gmail.com" className="hover:text-[#00a8e8] transition">asir.mosaddeque@gmail.com</a>
