@@ -115,7 +115,6 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [lang])
 
-  // বৃহস্পতিবার রাত ১২টায় (শুক্রবার) নতুন সপ্তাহ আপডেট হওয়া এবং পার হওয়া দিন ঝাপসা করার লজিক
   useEffect(() => {
     const dates = []
     const daysListBn = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার']
@@ -134,19 +133,17 @@ export default function Home() {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     
-    const currentDayOfWeek = today.getDay() // 0: Sun, 1: Mon... 5: Fri, 6: Sat
+    const currentDayOfWeek = today.getDay()
 
-    // চলতি সপ্তাহের শনিবারের তারিখ নির্ধারণ
     let saturdayDate = new Date(today)
     if (currentDayOfWeek === 5) {
-      saturdayDate.setDate(today.getDate() + 1) // শুক্রবার হলে পরের দিন শনিবার
+      saturdayDate.setDate(today.getDate() + 1)
     } else if (currentDayOfWeek === 6) {
-      saturdayDate = new Date(today) // শনিবার হলে আজই শনিবার
+      saturdayDate = new Date(today)
     } else {
-      saturdayDate.setDate(today.getDate() - (currentDayOfWeek + 1)) // রবি-বৃহস্পতি হলে পেছনের শনিবার
+      saturdayDate.setDate(today.getDate() - (currentDayOfWeek + 1))
     }
 
-    // শনিবার থেকে বৃহস্পতিবার (৬ দিন) জেনারেট
     for (let offset = 0; offset < 6; offset++) {
       const d = new Date(saturdayDate)
       d.setDate(saturdayDate.getDate() + offset)
@@ -154,7 +151,6 @@ export default function Home() {
 
       const dayOfWeek = d.getDay()
       
-      // টাইমজোন সমস্যা এড়াতে নিখুঁত YYYY-MM-DD ফরম্যাট
       const year = d.getFullYear()
       const month = String(d.getMonth() + 1).padStart(2, '0')
       const day = String(d.getDate()).padStart(2, '0')
@@ -224,11 +220,11 @@ export default function Home() {
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
-      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকাল ৪:৩০ টা - রাত ৯:৩০ টা), শুক্রবার বন্ধ',
+      bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকাল ৪:৩০ টা - রাত ৯:৩০ টা)',
       patientName: 'রোগীর নাম *',
       patientNamePlaceholder: 'আপনার নাম লিখুন',
       ageLabel: 'বয়স *',
-      agePlaceholder: 'যেমন: ৩২',
+      agePlaceholder: 'যেমন: ৩২ বা ২৫ বছর',
       phoneLabel: 'মোবাইল নম্বর *',
       serviceLabel: 'চিকিৎসার ধরণ *',
       serviceDefault: 'চিকিৎসার ধরণ নির্বাচন করুন',
@@ -236,9 +232,9 @@ export default function Home() {
       service2: 'দাঁতের চিকিৎসা চলমান রয়েছে',
       service3: 'ওষুধ খাওয়ার পরে আমার চিকিৎসা শুরু হবে',
       service4: 'ওষুধ খাওয়ার পরেও ব্যথা কমছে না',
-      dateLabel: 'পছন্দের তারিখ (শুক্রবার বাদে) *',
+      dateLabel: 'পছন্দের তারিখ *',
       dateDefault: 'তারিখ নির্বাচন করুন',
-      timeLabel: 'পছন্দের সময় (প্রতি স্লটে সর্বোচ্চ ২ জন) *',
+      timeLabel: 'পছন্দের সময় *',
       timeDefault: 'সময় নির্বাচন করুন',
       submitBtn: 'অ্যাপয়েন্টমেন্ট সাবমিট করুন',
       submitting: 'জমা দেওয়া হচ্ছে...',
@@ -261,7 +257,7 @@ export default function Home() {
       bookingMainBtn: 'Book an Appointment',
       bookingCloseBtn: '✕ Close',
       bookingTitle: 'Online Appointment Booking',
-      bookingSub: 'Saturday to Thursday (4:30 PM - 9:30 PM), Friday Closed',
+      bookingSub: 'Saturday to Thursday (4:30 PM - 9:30 PM)',
       patientName: 'Patient Name *',
       patientNamePlaceholder: 'Enter your name',
       ageLabel: 'Age *',
@@ -273,9 +269,9 @@ export default function Home() {
       service2: 'Ongoing dental treatment',
       service3: 'Treatment will start after taking medicine',
       service4: 'Pain persists even after taking medicine',
-      dateLabel: 'Select Date (Excluding Friday) *',
+      dateLabel: 'Select Date *',
       dateDefault: 'Select Date',
-      timeLabel: 'Preferred Time (Max 2 per slot) *',
+      timeLabel: 'Preferred Time *',
       timeDefault: 'Select time',
       submitBtn: 'Book Appointment',
       submitting: 'Submitting...',
@@ -338,12 +334,13 @@ export default function Home() {
     try {
       const patientTypeVal = isNewPatient ? 'নতুন রোগী' : 'পুরাতন রোগী';
 
-      // ১. Supabase-এ ডেটা সেভ করা
+      const parsedAge = isNaN(formData.age) ? formData.age : (formData.age ? parseInt(formData.age, 10) : null)
+
       const { error } = await supabase
         .from('appointments')
         .insert([{
           patient_name: formData.patient_name.trim(),
-          age: formData.age ? parseInt(formData.age, 10) : null,
+          age: parsedAge,
           patient_phone: formData.phone.trim(),
           service: formData.service,
           appointment_date: formData.appointment_date,
@@ -357,13 +354,12 @@ export default function Home() {
         return
       }
 
-      // ২. Google Sheet API Route-এর জন্য সঠিক পেলোড
       const payload = {
-        date: formData.appointment_date,     // YYYY-MM-DD ফরম্যাট
+        date: formData.appointment_date,
         timeSlot: formData.appointment_time, 
         patientType: patientTypeVal, 
-        patientName: formData.patient_name.trim(),   
-        patientPhone: formData.phone.trim()         
+        patientName: formData.patient_name.trim(),
+        patientPhone: formData.phone.trim()
       };
 
       try {
@@ -724,13 +720,11 @@ export default function Home() {
                 <div>
                   <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].ageLabel}</label>
                   <input 
-                    type="number" 
+                    type="text" 
                     name="age" 
                     value={formData.age} 
                     onChange={handleChange} 
                     required 
-                    min="1" 
-                    max="120" 
                     placeholder={t[lang].agePlaceholder} 
                     className="w-full px-4 py-2.5 rounded-xl outline-none border" 
                     style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
