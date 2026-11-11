@@ -99,7 +99,7 @@ export default function Home() {
       if (lang === 'bn') {
         setChamberStatusText(isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে')
       } else {
-        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🔴 Chamber is currently CLOSED')
+        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🟢 Chamber is currently CLOSED')
       }
     }
 
@@ -315,6 +315,13 @@ export default function Home() {
 
     setLoading(true)
 
+    // নতুন রোগী বনাম পুরোনো রোগী নির্ধারণের লজিক
+    // "দাঁতের নতুন সমস্যা" অথবা "ওষুধ খাওয়ার পরেও ব্যথা কমছে না" নির্বাচন করলে নতুন রোগী (new)
+    const isNewPatient = formData.service.includes("নতুন সমস্যা") || 
+                         formData.service.includes("ব্যথা কমছে না") ||
+                         formData.service.includes("new dental issue") ||
+                         formData.service.includes("Pain persists");
+
     try {
       const payload = {
         patient_name: formData.patient_name.trim(),
@@ -322,7 +329,8 @@ export default function Home() {
         patient_phone: formData.phone.trim(),
         service: formData.service,
         appointment_date: formData.appointment_date,
-        appointment_time: formData.appointment_time
+        appointment_time: formData.appointment_time,
+        patient_type: isNewPatient ? 'new' : 'old' // গুগল শিট বা ব্যাকএন্ডে ব্যবহারের জন্য
       }
 
       const { error } = await supabase
@@ -373,7 +381,7 @@ export default function Home() {
     },
     {
       id: 'tips-04',
-      textBn: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাঁত চেকআপ করান।',
+      textBn: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাত চেকআপ করান।',
       textEn: 'Visit your dental surgeon regularly every six months for a checkup.'
     },
     {
@@ -469,7 +477,7 @@ export default function Home() {
         <div className="flex justify-between items-center border-t border-blue-800/60 pt-1 text-[11px] md:text-xs">
           <div className="flex items-center gap-1 text-cyan-300 font-semibold">
             <span>🕒</span>
-            <span>{lang === 'bn' ? 'চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:৩০ - রাত ৯:৩০),শুক্রবার বন্ধ' : 'Chamber Open: Sat - Thu (4:30 PM - 9:30 PM), Friday Closed'}</span>
+            <span>{lang === 'bn' ? 'চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:৩০ - রাত ৯:৩০), শুক্রবার বন্ধ' : 'Chamber Open: Sat - Thu (4:30 PM - 9:30 PM), Friday Closed'}</span>
           </div>
 
           <div className="flex items-center gap-2.5">
@@ -792,11 +800,9 @@ export default function Home() {
                     const slotKey = `${formData.appointment_date}|${time}`
                     const count = bookedSlotsCount[slotKey] || 0
                     const isFull = count >= 2
-                    const fullText = lang === 'bn' ? '(বুকড)' : '(Full)'
-                    const bookedText = lang === 'bn' ? `(বুকড: ${count}/২)` : `(Booked: ${count}/2)`
                     return (
                       <option key={index} value={time} disabled={isFull} style={{ color: isFull ? 'red' : 'inherit' }}>
-                        {time} {isFull ? fullText : bookedText}
+                        {time} {isFull ? (lang === 'bn' ? '(বুকড)' : '(Full)') : ''}
                       </option>
                     )
                   })}
