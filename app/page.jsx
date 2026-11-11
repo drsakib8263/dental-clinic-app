@@ -333,21 +333,44 @@ export default function Home() {
       const payload = {
         patient_name: formData.patient_name.trim(),
         age: formData.age ? parseInt(formData.age, 10) : null,
-        patient_phone: formData.phone.trim(),
+        phone: formData.phone.trim(), // Supabase ও Apps Script উভয়ের জন্য সঠিক ফিল্ড নাম
         service: formData.service,
         appointment_date: formData.appointment_date,
         appointment_time: formData.appointment_time,
         patient_type: isNewPatient ? 'new' : 'old'
       }
 
+      // ১. Supabase-এ ডেটা সেভ করা
       const { error } = await supabase
         .from('appointments')
-        .insert([payload])
+        .insert([{
+          patient_name: payload.patient_name,
+          age: payload.age,
+          patient_phone: payload.phone,
+          service: payload.service,
+          appointment_date: payload.appointment_date,
+          appointment_time: payload.appointment_time,
+          patient_type: payload.patient_type
+        }])
 
       if (error) {
         alert('Database Error: ' + error.message)
         setLoading(false)
         return
+      }
+
+      // ২. গুগল শিটের Apps Script-এ ডেটা পাঠানো (আপনার দেওয়া Web App URL)
+      try {
+        await fetch('https://script.google.com/macros/s/AKfycbx9YndLnEIJ8PdoksKPfBJ5WwwdsmiztvEUYMzf6bGFgNkbxqF16_lljsT_TNkKUwD6/exec', {
+          method: 'POST',
+          mode: 'no-cors', // Google Apps Script-এর জন্য এটি প্রয়োজন
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        });
+      } catch (sheetErr) {
+        console.error('Google Sheet Sync Error:', sheetErr);
       }
 
       await fetchBookingsCount()
