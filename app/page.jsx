@@ -115,7 +115,7 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [lang])
 
-  // আজ সহ মোট ৬টি কার্যকর দিন (শুক্রবার বাদে) দেখানোর লজিক
+  // বৃহস্পতিবার রাত ১২টায় (শুক্রবার) নতুন সপ্তাহ আপডেট হওয়া এবং পার হওয়া দিন ঝাপসা করার লজিক
   useEffect(() => {
     const dates = []
     const daysListBn = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার']
@@ -132,44 +132,54 @@ export default function Home() {
     }
 
     const today = new Date()
-    let count = 0
-    let i = 0
+    today.setHours(0, 0, 0, 0)
+    
+    const currentDayOfWeek = today.getDay() // 0: Sun, 1: Mon... 5: Fri, 6: Sat
 
-    while (count < 6 && i < 30) {
-      const d = new Date(today)
-      d.setDate(today.getDate() + i)
-      
-      const dayOfWeek = d.getDay()
-      
-      if (dayOfWeek !== 5) { // শুক্রবার বাদে
-        const value = d.toISOString().split('T')[0]
-        let label = ''
-
-        if (lang === 'bn') {
-          const bnDayName = daysListBn[dayOfWeek]
-          const dayNum = toBengaliNumber(d.getDate())
-          const bnMonthName = monthsListBn[d.getMonth()]
-          const yearNum = toBengaliNumber(d.getFullYear())
-          
-          label = (count === 0)
-            ? `আজ (${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum})`
-            : `${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum}`
-        } else {
-          const enDayName = daysListEn[dayOfWeek]
-          const dayNum = d.getDate()
-          const enMonthName = monthsListEn[d.getMonth()]
-          const yearNum = d.getFullYear()
-          
-          label = (count === 0)
-            ? `Today (${enDayName}, ${enMonthName} ${dayNum}, ${yearNum})`
-            : `${enDayName}, ${enMonthName} ${dayNum}, ${yearNum}`
-        }
-
-        dates.push({ value, label })
-        count++
-      }
-      i++
+    // চলতি সপ্তাহের শনিবারের তারিখ নির্ধারণ (শুক্রবার রাত ১২টা পার হলেই পরবর্তী সপ্তাহের শনিবার আসবে)
+    let saturdayDate = new Date(today)
+    if (currentDayOfWeek === 5) {
+      saturdayDate.setDate(today.getDate() + 1) // শুক্রবার হলে পরের দিন শনিবার
+    } else if (currentDayOfWeek === 6) {
+      saturdayDate = new Date(today) // শনিবার হলে আজই শনিবার
+    } else {
+      saturdayDate.setDate(today.getDate() - (currentDayOfWeek + 1)) // রবি-বৃহস্পতি হলে পেছনের শনিবার
     }
+
+    // শনিবার থেকে বৃহস্পতিবার (৬ দিন) জেনারেট
+    for (let offset = 0; offset < 6; offset++) {
+      const d = new Date(saturdayDate)
+      d.setDate(saturdayDate.getDate() + offset)
+      d.setHours(0, 0, 0, 0)
+
+      const dayOfWeek = d.getDay()
+      const value = d.toISOString().split('T')[0]
+      const isPast = d < today // পার হয়ে যাওয়া দিন চিহ্নিত করা
+      const isToday = d.getTime() === today.getTime()
+
+      let label = ''
+
+      if (lang === 'bn') {
+        const bnDayName = daysListBn[dayOfWeek]
+        const dayNum = toBengaliNumber(d.getDate())
+        const bnMonthName = monthsListBn[d.getMonth()]
+        const yearNum = toBengaliNumber(d.getFullYear())
+        
+        const dateStr = `${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum}`
+        label = isToday ? `আজ (${dateStr})` : isPast ? `${dateStr} (অতিক্রান্ত)` : dateStr
+      } else {
+        const enDayName = daysListEn[dayOfWeek]
+        const dayNum = d.getDate()
+        const enMonthName = monthsListEn[d.getMonth()]
+        const yearNum = d.getFullYear()
+        
+        const dateStr = `${enDayName}, ${enMonthName} ${dayNum}, ${yearNum}`
+        label = isToday ? `Today (${dateStr})` : isPast ? `${dateStr} (Passed)` : dateStr
+      }
+
+      dates.push({ value, label, isPast })
+    }
+
     setAvailableDates(dates)
   }, [lang])
 
@@ -204,7 +214,7 @@ export default function Home() {
       title: 'ডাঃ আসির মোসাদ্দেক সাকিব',
       subtitle: 'ওরাল এন্ড ডেন্টাল সার্জন',
       doctorInfo: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)\nবিএমডিসি রেজি. ৮২৬৩',
-      addressText: 'আলম মেডিকেল হল, পটিয়া কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
+      addressText: 'আলম মেডিকেল হল, পটিয়া সরকারি কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
@@ -462,7 +472,7 @@ export default function Home() {
         }
       `}</style>
 
-      {/* টপ নোটিশ ও স্থির চেম্বার টাইম বার */}
+      {/* টপ নোটিশ বার */}
       <div className="bg-[#0c1e3e] text-white text-[11px] md:text-sm py-2 px-3 md:px-12 flex flex-col gap-1 border-b border-blue-900/50">
         <div className="overflow-hidden whitespace-nowrap w-full">
           <div className="animate-marquee inline-flex items-center gap-1.5 font-medium">
@@ -478,31 +488,13 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-2.5">
-            <a 
-              href="https://www.facebook.com/share/1ZfF826KUs/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5"
-              title="Facebook"
-            >
+            <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5" title="Facebook">
               <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
             </a>
-            <a 
-              href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5"
-              title="Instagram"
-            >
+            <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5" title="Instagram">
               <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
             </a>
-            <a 
-              href="https://wa.me/message/KBZOTSKH66H4P1" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5"
-              title="WhatsApp"
-            >
+            <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5" title="WhatsApp">
               <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
             </a>
           </div>
@@ -586,36 +578,16 @@ export default function Home() {
           className="lg:hidden px-6 py-4 space-y-3 border-b shadow-lg transition-all duration-300"
           style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
         >
-          <a 
-            href="/" 
-            onClick={() => setMobileMenuOpen(false)} 
-            className="block py-2 font-bold text-sm border-b" 
-            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
             {lang === 'bn' ? 'হোম' : 'Home'}
           </a>
-          <a 
-            href="#about-section" 
-            onClick={() => setMobileMenuOpen(false)} 
-            className="block py-2 font-bold text-sm border-b" 
-            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
+          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
             {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
           </a>
-          <a 
-            href="/services" 
-            onClick={() => setMobileMenuOpen(false)} 
-            className="block py-2 font-bold text-sm border-b" 
-            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
             {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
           </a>
-          <a 
-            href="/gallery" 
-            onClick={() => setMobileMenuOpen(false)} 
-            className="block py-2 font-bold text-sm border-b" 
-            style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
             {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
           </a>
           <button 
@@ -777,7 +749,14 @@ export default function Home() {
                 >
                   <option value="">{t[lang].dateDefault}</option>
                   {availableDates.map((item, index) => (
-                    <option key={index} value={item.value}>{item.label}</option>
+                    <option 
+                      key={index} 
+                      value={item.value} 
+                      disabled={item.isPast}
+                      className={item.isPast ? 'text-gray-400 opacity-50 bg-gray-100 dark:bg-slate-800' : ''}
+                    >
+                      {item.label}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -818,7 +797,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* স্থায়ী About Us সেকশন */}
+      {/* About Us সেকশন */}
       <section 
         id="about-section" 
         className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4 transition-all duration-300"
@@ -837,7 +816,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* দাঁতের যত্ন ও স্বাস্থ্য টিপস সেকশন */}
+      {/* টিপস সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
         <div className="text-center mb-10 space-y-2">
           <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
@@ -901,7 +880,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* কেন আপনার জন্য আমরাই? - রেক্ট্যাঙ্গেল সিঁড়ির প্যাটার্ন সেকশন */}
+      {/* কেন আমাদের পছন্দ করবেন সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
@@ -936,7 +915,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* সচেতনতামূলক ভিডিও সেকশন */}
+      {/* ভিডিও সেকশন */}
       <section 
         id="contact-section"
         className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6 transition-all duration-300"
@@ -967,7 +946,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* প্রফেশনাল ফুটার সেকশন */}
+      {/* ফুটার */}
       <footer className="bg-[#0c1e3e] text-slate-300 pt-16 pb-8 border-t border-blue-900/50 mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-blue-900/50">
           
@@ -986,31 +965,13 @@ export default function Home() {
                 : 'Ensuring safe and painless dental care with modern technology and expert supervision.'}
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <a 
-                href="https://www.facebook.com/share/1ZfF826KUs/" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
-                title="Facebook"
-              >
+              <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white" title="Facebook">
                 <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
               </a>
-              <a 
-                href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
-                title="Instagram"
-              >
+              <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white" title="Instagram">
                 <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
               </a>
-              <a 
-                href="https://wa.me/message/KBZOTSKH66H4P1" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white"
-                title="WhatsApp"
-              >
+              <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white" title="WhatsApp">
                 <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
               </a>
             </div>
@@ -1057,14 +1018,8 @@ export default function Home() {
                 <span>{t[lang].addressText}</span>
               </p>
 
-              {/* গুগল ম্যাপ লোকেশন বাটন */}
               <div className="pt-1">
-                <a 
-                  href="https://maps.app.goo.gl/4nNgwj68kE6okDZ96?g_st=ac" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-[#00a8e8] hover:bg-[#008fca] text-white font-bold px-3.5 py-2 rounded-xl transition shadow-sm text-xs"
-                >
+                <a href="https://maps.app.goo.gl/4nNgwj68kE6okDZ96?g_st=ac" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#00a8e8] hover:bg-[#008fca] text-white font-bold px-3.5 py-2 rounded-xl transition shadow-sm text-xs">
                   <span>🗺️</span> 
                   <span>{lang === 'bn' ? 'গুগল ম্যাপে লোকেশন দেখুন' : 'View on Google Maps'}</span>
                 </a>
@@ -1091,20 +1046,11 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* যোগাযোগ পপ-আপ মোডাল */}
+      {/* কন্টাক্ট মোডাল */}
       {isContactModalOpen && (
-        <div 
-          onClick={() => setIsContactModalOpen(false)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
-        >
-          <div 
-            onClick={(e) => e.stopPropagation()} 
-            className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#00a8e8] max-w-md w-full relative space-y-6 text-slate-900 dark:text-slate-100"
-          >
-            <button
-              onClick={() => setIsContactModalOpen(false)}
-              className="absolute top-4 right-4 bg-[#00a8e8] text-white hover:bg-[#008fca] font-bold w-9 h-9 rounded-full flex items-center justify-center shadow-md transition cursor-pointer text-base"
-            >
+        <div onClick={() => setIsContactModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div onClick={(e) => e.stopPropagation()} className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#00a8e8] max-w-md w-full relative space-y-6 text-slate-900 dark:text-slate-100">
+            <button onClick={() => setIsContactModalOpen(false)} className="absolute top-4 right-4 bg-[#00a8e8] text-white hover:bg-[#008fca] font-bold w-9 h-9 rounded-full flex items-center justify-center shadow-md transition cursor-pointer text-base">
               ✕
             </button>
 
@@ -1124,34 +1070,21 @@ export default function Home() {
               </div>
 
               <div>
-                <a 
-                  href="https://maps.app.goo.gl/4nNgwj68kE6okDZ96?g_st=ac" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-[#00a8e8] hover:bg-[#008fca] text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm"
-                >
+                <a href="https://maps.app.goo.gl/4nNgwj68kE6okDZ96?g_st=ac" target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 bg-[#00a8e8] hover:bg-[#008fca] text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm">
                   <span>🗺️</span> 
                   <span>{lang === 'bn' ? 'গুগল ম্যাপে লোকেশন দেখুন' : 'View on Google Maps'}</span>
                 </a>
               </div>
 
               <div>
-                <a 
-                  href="tel:+8801816011701" 
-                  className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm"
-                >
+                <a href="tel:+8801816011701" className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm">
                   <span>📞</span> 
                   <span>+880 1816 011 701</span>
                 </a>
               </div>
 
               <div>
-                <a 
-                  href="https://wa.me/message/KBZOTSKH66H4P1" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm"
-                >
+                <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm">
                   <span>💬</span> 
                   <span>{lang === 'bn' ? 'হোয়াটসঅ্যাপে যোগাযোগ করুন' : 'Chat on WhatsApp'}</span>
                 </a>
@@ -1162,38 +1095,28 @@ export default function Home() {
                 <a href="mailto:asir.mosaddeque@gmail.com" className="hover:text-[#00a8e8] transition">asir.mosaddeque@gmail.com</a>
               </div>
             </div>
-
           </div>
         </div>
       )}
 
-      {/* সফল বুকিং মোডাল */}
+      {/* সাকসেস মোডাল */}
       {showSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div 
-            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border"
-            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
+          <div className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border" style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
             <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto bg-emerald-500">✓</div>
             <h3 className="text-2xl font-black">{t[lang].successTitle}</h3>
             <p className="text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{t[lang].successMsg}</p>
-            <button 
-              onClick={() => setShowSuccessModal(false)} 
-              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white bg-[#00a8e8]"
-            >
+            <button onClick={() => setShowSuccessModal(false)} className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white bg-[#00a8e8]">
               {t[lang].closeModalBtn}
             </button>
           </div>
         </div>
       )}
 
-      {/* চেম্বার বন্ধ থাকার নোটিশ মোডাল */}
+      {/* চেম্বার ক্লোজড নোটিশ মোডাল */}
       {showChamberClosedModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div 
-            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border"
-            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
+          <div className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border" style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
             <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto bg-amber-500">🔔</div>
             <h3 className="text-2xl font-black text-amber-500">
               {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
@@ -1201,10 +1124,7 @@ export default function Home() {
             <p className="text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>
               {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
             </p>
-            <button 
-              onClick={() => setShowChamberClosedModal(false)} 
-              className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white bg-[#00a8e8]"
-            >
+            <button onClick={() => setShowChamberClosedModal(false)} className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white bg-[#00a8e8]">
               {t[lang].closeModalBtn}
             </button>
           </div>
