@@ -5,9 +5,41 @@ import { supabase } from '@/lib/supabase'
 export default function AdminAppointments() {
   const [appointments, setAppointments] = useState([])
   const [loading, setLoading] = useState(true)
+  const [newBookingAlert, setNewBookingAlert] = useState(null)
 
   useEffect(() => {
     fetchAppointments()
+
+    // Supabase Realtime লজিক যুক্ত করা হলো যাতে নতুন বুকিং আসলে ইনস্ট্যান্ট আপডেট হয়
+    const channel = supabase
+      .channel('admin-appointments-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*', // INSERT, UPDATE, DELETE সব ইভেন্ট ট্র্যাক করার জন্য
+          schema: 'public',
+          table: 'appointments',
+        },
+        (payload) => {
+          if (payload.eventType === 'INSERT') {
+            setAppointments((prev) => [payload.new, ...prev])
+            setNewBookingAlert(payload.new)
+            playNotificationSound()
+          } else if (payload.eventType === 'UPDATE') {
+            setAppointments((prev) =>
+              prev.map((app) => (app.id === payload.new.id ? payload.new : app))
+            )
+          } else if (payload.eventType === 'DELETE') {
+            setAppointments((prev) => prev.filter((app) => app.id !== payload.old.id))
+          }
+        }
+      )
+      .subscribe()
+
+    // ক্লিনআপ ফাংশন
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   async function fetchAppointments() {
@@ -23,7 +55,17 @@ export default function AdminAppointments() {
     setLoading(false)
   }
 
-  // তারিখকে বাংলায় রূপান্তর করার ফাংশন
+  // ছোট নোটিফিকেশন সাউন্ড বাজানোর ফাংশন
+  const playNotificationSound = () => {
+    try {
+      const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3')
+      audio.play()
+    } catch (e) {
+      console.log('Audio play error:', e)
+    }
+  }
+
+  // তারিখকে বাংলায় রূপান্তর করার ফাংশন
   function formatDateToBangla(dateStr) {
     if (!dateStr) return ''
     const dateObj = new Date(dateStr)
@@ -31,7 +73,7 @@ export default function AdminAppointments() {
 
     const day = dateObj.getDate()
     const months = [
-      'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 
+      'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 
       'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
     ]
     const month = months[dateObj.getMonth()]
@@ -43,18 +85,15 @@ export default function AdminAppointments() {
   // স্ট্যাটাস কনফার্ম করা বা বাতিল (ডিলিট) করার ফাংশন
   async function updateStatus(id, newStatus) {
     if (newStatus === 'cancelled') {
-      // যদি বাতিল করা হয়, তবে ডাটাবেস থেকে ডিলিট করে দেওয়া
       const { error } = await supabase
         .from('appointments')
         .delete()
         .eq('id', id)
 
       if (!error) {
-        // লিস্ট থেকে ওই অ্যাপয়েন্টমেন্টটি ফিল্টার করে সরিয়ে দেওয়া যাতে ইনস্ট্যান্ট পেজ থেকে চলে যায়
         setAppointments(appointments.filter(app => app.id !== id))
       }
     } else {
-      // কনফার্ম বা অন্য স্ট্যাটাসের জন্য আপডেট করা
       const { error } = await supabase
         .from('appointments')
         .update({ status: newStatus })
@@ -74,8 +113,26 @@ export default function AdminAppointments() {
     <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-lg border border-teal-100 mt-8">
       <h2 className="text-2xl font-bold text-teal-900 mb-6">রোগীদের অ্যাপয়েন্টমেন্ট তালিকা</h2>
 
+      {/* নতুন বুকিং আসলে স্ক্রিনের ওপর নোটিফিকেশন পপ-আপ */}
+      {newBookingAlert && (
+        <div className="mb-6 p-4 bg-teal-50 border-2 border-teal-500 text-teal-900 rounded-2xl shadow-md flex justify-between items-center animate-bounce">
+          <div>
+            <h3 className="font-bold text-base">🔔 নতুন একটি অ্যাপয়েন্টমেন্ট এসেছে!</h3>
+            <p className="text-sm">
+              রোগীর নাম: <b>{newBookingAlert.patient_name}</b> ({newBookingAlert.patient_phone})
+            </p>
+          </div>
+          <button 
+            onClick={() => setNewBookingAlert(null)} 
+            className="bg-teal-600 text-white px-3 py-1.5 rounded-xl font-bold text-xs hover:bg-teal-700"
+          >
+            বন্ধ করুন
+          </button>
+        </div>
+      )}
+
       {appointments.length === 0 ? (
-        <p className="text-gray-500 text-center">কোনো অ্যাপয়েন্টমেন্ট পাওয়া যায়নি।</p>
+        <p className="text-gray-500 text-center">কোনো অ্যাপয়েন্টমেন্ট পাওয়া যায়নি।</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
@@ -84,7 +141,7 @@ export default function AdminAppointments() {
                 <th className="p-3">রোগীর নাম</th>
                 <th className="p-3">মোবাইল</th>
                 <th className="p-3">চিকিৎসা</th>
-                <th className="p-3">তারিখ ও সময়</th>
+                <th className="p-3">তারিখ ও সময়</th>
                 <th className="p-3">স্ট্যাটাস</th>
                 <th className="p-3">পদক্ষেপ</th>
               </tr>
@@ -105,7 +162,7 @@ export default function AdminAppointments() {
                       app.status === 'confirmed' ? 'bg-green-100 text-green-800' :
                       'bg-yellow-100 text-yellow-800'
                     }`}>
-                      {app.status}
+                      {app.status || 'pending'}
                     </span>
                   </td>
                   <td className="p-3 space-x-2">
