@@ -369,17 +369,15 @@ export default function Home() {
           patientPhone: formData.phone          // রোগীর মোবাইল নম্বর
         };
 
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxTwttvCE4yllq4XqmLKugGRdk_RJggL9jGhP1Rypz2HjNfyTHA_CVf0FhrNbH_atYKfw/exec', {
+        try {
+        await fetch('https://script.google.com/macros/s/AKfycbxTwttvCE4yllq4XqmLKugGRdk_RJggL9jGhP1Rypz2HjNfyTHA_CVf0FhrNbH_atYKfw/exec', {
           method: 'POST',
+          mode: 'no-cors', // CORS ত্রুটি এড়াতে এটি জরুরি
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(payload)
         });
-
-        const result = await response.json();
-        console.log('Google Sheet Response:', result);
-
       } catch (sheetErr) {
         console.error('Google Sheet Sync Error:', sheetErr);
       }
