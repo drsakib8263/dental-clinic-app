@@ -30,7 +30,7 @@ export default function AdminDashboard() {
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [newBookingAlert, setNewBookingAlert] = useState(null)
 
-  // চেম্বার নোটিশ বক্স গুটানো বা খোলার স্টেট (ডিফল্টভাবে বন্ধ/গুটানো থাকবে)
+  // চেম্বার নোটিশ বক্স গুটানো বা খোলার স্টেট
   const [showNoticeBox, setShowNoticeBox] = useState(false)
 
   // চেম্বার নোটিশ স্টেট
@@ -51,10 +51,16 @@ export default function AdminDashboard() {
       document.documentElement.classList.remove('dark')
     }
 
-    // সার্ভিস ওয়ার্কার রেজিস্টার করা
+    // সার্ভিস ওয়ার্কার রেজিস্টার করা এবং পূর্বের সাবস্ক্রিপশন চেক করা
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js')
-        .then((reg) => console.log('Service Worker Registered:', reg.scope))
+        .then(async (reg) => {
+          console.log('Service Worker Registered:', reg.scope)
+          const sub = await reg.pushManager.getSubscription()
+          if (sub) {
+            setIsSubscribed(true)
+          }
+        })
         .catch((err) => console.error('Service Worker Error:', err))
     }
 
@@ -254,6 +260,7 @@ export default function AdminDashboard() {
 
       console.log('Push Subscription:', JSON.stringify(subscription))
       setIsSubscribed(true)
+      localStorage.setItem('push_subscribed', 'true')
       alert('সফলভাবে ব্যাকগ্রাউন্ড পুশ নোটিফিকেশনের জন্য সাবস্ক্রাইব করা হয়েছে!')
     } catch (error) {
       console.error('Subscription error:', error)
@@ -361,7 +368,7 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* চেম্বার নোটিশ কন্ট্রোল সেকশন (গুটানো/Collapsible বক্স) */}
+      {/* চেম্বার নোটিশ কন্ট্রোল সেকশন */}
       <div className="max-w-6xl mx-auto bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden transition-colors">
         <div 
           onClick={() => setShowNoticeBox(!showNoticeBox)}
@@ -376,7 +383,7 @@ export default function AdminDashboard() {
         </div>
 
         {showNoticeBox && (
-          <form onSubmit={handleUpdateNotice} className="p-6 md:p-8 space-y-6 animate-in fade-in duration-200">
+          <form onSubmit={handleUpdateNotice} className="p-6 md:p-8 space-y-6">
             <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
               <input
                 type="checkbox"
