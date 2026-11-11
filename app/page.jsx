@@ -395,8 +395,9 @@ const payload = {
         service: '',
         appointment_date: '',
         appointment_time: '',
-        patient_type: '' // যদি থাকে
+        patient_type: ''
       });
+      
     } catch (err) {
       alert('Error: ' + (err.message || err));
     } finally {
