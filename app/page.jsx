@@ -115,7 +115,7 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [lang])
 
-  // বৃহস্পতিবার রাত ১২টায় (শুক্রবার) নতুন সপ্তাহ আপডেট হওয়া এবং পার হওয়া দিন ঝাপসা করার লজিক
+  // বৃহস্পতিবার রাত ১২টায় (শুক্রবার) নতুন সপ্তাহ আপডেট হওয়া এবং পার হওয়া দিন ঝাপসা করার লজিক
   useEffect(() => {
     const dates = []
     const daysListBn = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার']
@@ -136,7 +136,7 @@ export default function Home() {
     
     const currentDayOfWeek = today.getDay() // 0: Sun, 1: Mon... 5: Fri, 6: Sat
 
-    // চলতি সপ্তাহের শনিবারের তারিখ নির্ধারণ (শুক্রবার রাত ১২টা পার হলেই পরবর্তী সপ্তাহের শনিবার আসবে)
+    // চলতি সপ্তাহের শনিবারের তারিখ নির্ধারণ
     let saturdayDate = new Date(today)
     if (currentDayOfWeek === 5) {
       saturdayDate.setDate(today.getDate() + 1) // শুক্রবার হলে পরের দিন শনিবার
@@ -153,8 +153,14 @@ export default function Home() {
       d.setHours(0, 0, 0, 0)
 
       const dayOfWeek = d.getDay()
-      const value = d.toISOString().split('T')[0]
-      const isPast = d < today // পার হয়ে যাওয়া দিন চিহ্নিত করা
+      
+      // টাইমজোন সমস্যা এড়াতে নিখুঁত YYYY-MM-DD ফরম্যাট
+      const year = d.getFullYear()
+      const month = String(d.getMonth() + 1).padStart(2, '0')
+      const day = String(d.getDate()).padStart(2, '0')
+      const value = `${year}-${month}-${day}`
+      
+      const isPast = d < today
       const isToday = d.getTime() === today.getTime()
 
       let label = ''
@@ -214,7 +220,7 @@ export default function Home() {
       title: 'ডাঃ আসির মোসাদ্দেক সাকিব',
       subtitle: 'ওরাল এন্ড ডেন্টাল সার্জন',
       doctorInfo: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)\nবিএমডিসি রেজি. ৮২৬৩',
-      addressText: 'আলম মেডিকেল হল, পটিয়া সরকারি কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
+      addressText: 'আলম মেডিকেল হল, পটিয়া কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       bookingCloseBtn: '✕ বন্ধ করুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
@@ -330,27 +336,19 @@ export default function Home() {
                          formData.service.includes("Pain persists");
 
     try {
-      const payload = {
-        patient_name: formData.patient_name.trim(),
-        age: formData.age ? parseInt(formData.age, 10) : null,
-        phone: formData.phone.trim(), // Supabase ও Apps Script উভয়ের জন্য সঠিক ফিল্ড নাম
-        service: formData.service,
-        appointment_date: formData.appointment_date,
-        appointment_time: formData.appointment_time,
-        patient_type: isNewPatient ? 'new' : 'old'
-      }
+      const patientTypeVal = isNewPatient ? 'নতুন রোগী' : 'পুরাতন রোগী';
 
       // ১. Supabase-এ ডেটা সেভ করা
       const { error } = await supabase
         .from('appointments')
         .insert([{
-          patient_name: payload.patient_name,
-          age: payload.age,
-          patient_phone: payload.phone,
-          service: payload.service,
-          appointment_date: payload.appointment_date,
-          appointment_time: payload.appointment_time,
-          patient_type: payload.patient_type
+          patient_name: formData.patient_name.trim(),
+          age: formData.age ? parseInt(formData.age, 10) : null,
+          patient_phone: formData.phone.trim(),
+          service: formData.service,
+          appointment_date: formData.appointment_date,
+          appointment_time: formData.appointment_time,
+          patient_type: isNewPatient ? 'new' : 'old'
         }])
 
       if (error) {
@@ -359,15 +357,16 @@ export default function Home() {
         return
       }
 
-      // পেলোড তৈরির অংশটি এভাবে দিন:
-const payload = {
-  date: formData.appointment_date,     // ইনপুট থেকে আসা "YYYY-MM-DD" স্ট্রিং হুবহু যাবে
-  timeSlot: formData.appointment_time, // যেমন: "৪.৩০ মি"
-  patientType: formData.patient_type || "পুরাতন রোগী", 
-  patientName: formData.patient_name,   
-  patientPhone: formData.phone          
-};
+      // ২. Google Sheet API Route-এর জন্য সঠিক পেলোড
+      const payload = {
+        date: formData.appointment_date,     // YYYY-MM-DD ফরম্যাট
+        timeSlot: formData.appointment_time, 
+        patientType: patientTypeVal, 
+        patientName: formData.patient_name.trim(),   
+        patientPhone: formData.phone.trim()         
+      };
 
+      try {
         const res = await fetch('/api/appointment', {
           method: 'POST',
           headers: {
@@ -378,7 +377,6 @@ const payload = {
 
         const data = await res.json();
         console.log('Server Response:', data);
-
       } catch (sheetErr) {
         console.error('Google Sheet Sync Error:', sheetErr);
       }
@@ -1121,7 +1119,7 @@ const payload = {
               <div>
                 <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm">
                   <span>💬</span> 
-                  <span>{lang === 'bn' ? 'হোয়াটসঅ্যাপে যোগাযোগ করুন' : 'Chat on WhatsApp'}</span>
+                  <span>{lang === 'bn' ? 'হোয়াটসঅ্যাপে যোগাযোগ করুন' : 'Chat on WhatsApp'}</span>
                 </a>
               </div>
 
