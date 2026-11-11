@@ -359,25 +359,25 @@ export default function Home() {
         return
       }
 
-      // ২. গুগল শিটের Apps Script-এ ডেটা পাঠানো (সঠিক পেলোড ও মোড সহ)
+      // ২. গুগল শিটের Apps Script-এ ডেটা পাঠানো
       try {
         const payload = {
-          date: formData.appointment_date, // ফরম্যাট: YYYY-MM-DD
+          date: formData.appointment_date,     // ফরম্যাট: YYYY-MM-DD
           timeSlot: formData.appointment_time, // যেমন: "৪.৩০ মি"
-          patientType: formData.patient_type || "পুরাতন রোগী", // ফর্ম থেকে আসা রোগীর ধরণ ("নতুন রোগী" বা "পুরাতন রোগী")
+          patientType: formData.patient_type || "পুরাতন রোগী", // "নতুন রোগী" বা "পুরাতন রোগী"
           patientName: formData.patient_name,   // রোগীর নাম
           patientPhone: formData.phone          // রোগীর মোবাইল নম্বর
         };
 
-        try {
         await fetch('https://script.google.com/macros/s/AKfycbxTwttvCE4yllq4XqmLKugGRdk_RJggL9jGhP1Rypz2HjNfyTHA_CVf0FhrNbH_atYKfw/exec', {
           method: 'POST',
-          mode: 'no-cors', // CORS ত্রুটি এড়াতে এটি জরুরি
+          mode: 'no-cors', // ব্রাউজারের CORS ব্লক করার সমস্যা এড়াতে
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(payload)
         });
+
       } catch (sheetErr) {
         console.error('Google Sheet Sync Error:', sheetErr);
       }
