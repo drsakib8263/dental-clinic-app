@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import webpush from 'web-push';
 
-// কনফিগারেশন
+// Turbopack বা Next.js বিল্ড এরর এড়াতে require ব্যবহার করা হলো
+const webpush = require('web-push');
+
 webpush.setVapidDetails(
   'mailto:admin@drsakibdentalcare.com',
   process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
