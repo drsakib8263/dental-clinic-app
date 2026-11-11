@@ -55,27 +55,26 @@ export default function BookingForm() {
     let count = 0
     let i = 0
 
+    // এখানে শুক্রবার সহ বা সব দিন রেন্ডার করার জন্য ফিল্টার তুলে দেওয়া হয়েছে
     while (count < 7 && i < 20) {
       const d = new Date(today)
       d.setDate(today.getDate() + i)
       
       const enDay = d.toLocaleDateString('en-US', { weekday: 'short' })
       
-      if (enDay !== 'Fri') {
-        const bnDay = daysMap[enDay] || enDay
-        const dayNum = d.getDate()
-        const enMonth = d.toLocaleDateString('en-US', { month: 'short' })
-        const bnMonth = monthsMap[enMonth] || enMonth
-        const year = d.getFullYear()
-        
-        const value = d.toISOString().split('T')[0]
-        const label = (count === 0)
-          ? `আজ (${bnDay}, ${dayNum} ${bnMonth} ${year})`
-          : `${bnDay}, ${dayNum} ${bnMonth} ${year}`
+      const bnDay = daysMap[enDay] || enDay
+      const dayNum = d.getDate()
+      const enMonth = d.toLocaleDateString('en-US', { month: 'short' })
+      const bnMonth = monthsMap[enMonth] || enMonth
+      const year = d.getFullYear()
+      
+      const value = d.toISOString().split('T')[0]
+      const label = (count === 0)
+        ? `আজ (${bnDay}, ${dayNum} ${bnMonth} ${year})`
+        : `${bnDay}, ${dayNum} ${bnMonth} ${year}`
 
-        dates.push({ value, label })
-        count++
-      }
+      dates.push({ value, label })
+      count++
       i++
     }
     setAvailableDates(dates)
@@ -115,12 +114,15 @@ export default function BookingForm() {
     setMessage({ type: '', text: '' })
 
     try {
+      // বয়স যদি সংখ্যা হয় parseInt করা, অন্যথায় যেমন আছে (বাংলা বা টেক্সট) তেমনি রাখা
+      const parsedAge = isNaN(formData.age) ? formData.age : (formData.age ? parseInt(formData.age) : null)
+
       const { error } = await supabase
         .from('appointments')
         .insert([
           {
             patient_name: formData.patient_name,
-            age: formData.age ? parseInt(formData.age) : null,
+            age: parsedAge,
             patient_phone: formData.phone,
             service: formData.service,
             appointment_date: formData.appointment_date,
@@ -155,7 +157,7 @@ export default function BookingForm() {
   return (
     <section className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6 md:p-8 rounded-2xl shadow-lg border border-teal-100 dark:border-gray-800 max-w-2xl mx-auto my-8 relative transition-colors duration-200">
       
-      {/* থিম পরিবর্তন করার টগল বাটন (ফর্মের ওপরের ডান কোণায়) */}
+      {/* থিম পরিবর্তন করার টগল বাটন (ফর্মের ওপরের ডান কোণায়) */}
       <div className="flex justify-end mb-2">
         <button
           type="button"
@@ -170,7 +172,7 @@ export default function BookingForm() {
         অনলাইন অ্যাপয়েন্টমেন্ট বুকিং
       </h2>
       <p className="text-gray-600 dark:text-gray-400 text-center mb-6 text-sm">
-        শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা), শুক্রবার বন্ধ
+        শনিবার থেকে বৃহস্পতিবার (বিকেল ৪:০০ টা - রাত ৯:০০ টা)
       </p>
 
       {/* শুধু এরর মেসেজ থাকলে সেটি ফর্মে দেখাবে */}
@@ -202,14 +204,12 @@ export default function BookingForm() {
               বয়স *
             </label>
             <input
-              type="number"
+              type="text"
               name="age"
               value={formData.age}
               onChange={handleChange}
               required
-              min="1"
-              max="120"
-              placeholder="যেমন: ৩২"
+              placeholder="যেমন: ৩২ বা ২৫ বছর"
               className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-700 outline-none transition bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             />
           </div>
@@ -252,7 +252,7 @@ export default function BookingForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              পছন্দের তারিখ (শুক্রবার বাদে) *
+              পছন্দের তারিখ *
             </label>
             <select
               name="appointment_date"
