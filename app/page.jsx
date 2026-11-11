@@ -359,24 +359,35 @@ export default function Home() {
         return
       }
 
-      // ২. গুগল শিটের Apps Script-এ ডেটা পাঠানো (আপনার দেওয়া Web App URL)
+      // ২. গুগল শিটের Apps Script-এ ডেটা পাঠানো (সঠিক পেলোড ও মোড সহ)
       try {
-        await fetch('https://script.google.com/macros/s/AKfycbx9YndLnEIJ8PdoksKPfBJ5WwwdsmiztvEUYMzf6bGFgNkbxqF16_lljsT_TNkKUwD6/exec', {
+        const payload = {
+          date: formData.appointment_date, // ফরম্যাট: YYYY-MM-DD
+          timeSlot: formData.appointment_time, // যেমন: "৪.৩০ মি"
+          patientType: formData.patient_type || "পুরাতন রোগী", // ফর্ম থেকে আসা রোগীর ধরণ ("নতুন রোগী" বা "পুরাতন রোগী")
+          patientName: formData.patient_name,   // রোগীর নাম
+          patientPhone: formData.phone          // রোগীর মোবাইল নম্বর
+        };
+
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxTwttvCE4yllq4XqmLKugGRdk_RJggL9jGhP1Rypz2HjNfyTHA_CVf0FhrNbH_atYKfw/exec', {
           method: 'POST',
-          mode: 'no-cors', // Google Apps Script-এর জন্য এটি প্রয়োজন
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(payload)
         });
+
+        const result = await response.json();
+        console.log('Google Sheet Response:', result);
+
       } catch (sheetErr) {
         console.error('Google Sheet Sync Error:', sheetErr);
       }
 
-      await fetchBookingsCount()
+      await fetchBookingsCount();
 
-      setShowSuccessModal(true)
-      setShowPopupBooking(false)
+      setShowSuccessModal(true);
+      setShowPopupBooking(false);
 
       setFormData({
         patient_name: '',
@@ -384,12 +395,13 @@ export default function Home() {
         phone: '',
         service: '',
         appointment_date: '',
-        appointment_time: ''
-      })
+        appointment_time: '',
+        patient_type: '' // যদি থাকে
+      });
     } catch (err) {
-      alert('Error: ' + (err.message || err))
+      alert('Error: ' + (err.message || err));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
