@@ -17,10 +17,14 @@ self.addEventListener('push', (event) => {
     body: data.body || 'আপনার চেম্বারে একটি নতুন বুকিং এসেছে।',
     icon: '/favicon.ico',
     badge: '/favicon.ico',
-    vibrate: [300, 100, 300, 100, 300], // জোরালো ভাইব্রেশন প্যাটার্ন
+    vibrate: [500, 200, 500, 200, 500], // দীর্ঘ ও শক্তিশালী ভাইব্রেশন প্যাটার্ন
     tag: 'dental-appointment-alert',
     renotify: true,
-    requireInteraction: true // ইউজার ক্লিক না করা পর্যন্ত নোটিফিকেশন স্ক্রিনে থাকবে
+    requireInteraction: true, // ইউজার ক্লিক না করা পর্যন্ত নোটিফিকেশন স্ক্রিনে থাকবে
+    silent: false, // নোটিফিকেশন যেন কোনোভাবেই সাইলেন্ট না হয়
+    actions: [
+      { action: 'open', title: 'ড্যাশবোর্ড খুলুন' }
+    ]
   };
 
   event.waitUntil(
@@ -34,13 +38,11 @@ self.addEventListener('notificationclick', (event) => {
   
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-      // যদি ইতিমধ্যে এডমিন ট্যাব ওপেন থাকে, তবে সেটিতে ফোকাস করবে
       for (const client of clientList) {
         if (client.url.includes('/admin') && 'focus' in client) {
           return client.focus();
         }
       }
-      // না থাকলে সরাসরি এডমিন পেজে নতুন উইন্ডো ওপেন করবে
       if (clients.openWindow) {
         return clients.openWindow('/admin');
       }
