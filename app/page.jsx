@@ -38,11 +38,12 @@ export default function Home() {
     appointment_time: ''
   })
 
+  // প্রতিটি স্লটে মোট কাউন্ট এবং নতুন/পুরাতন রোগীর হিসাব রাখার জন্য
   const fetchBookingsCount = async () => {
     try {
       const { data, error } = await supabase
         .from('appointments')
-        .select('appointment_date, appointment_time')
+        .select('appointment_date, appointment_time, patient_type')
 
       if (error) {
         console.error('Error fetching bookings:', error)
@@ -52,7 +53,15 @@ export default function Home() {
       const counts = {}
       data.forEach(item => {
         const key = `${item.appointment_date}|${item.appointment_time}`
-        counts[key] = (counts[key] || 0) + 1
+        if (!counts[key]) {
+          counts[key] = { total: 0, new: 0, old: 0 }
+        }
+        counts[key].total += 1
+        if (item.patient_type === 'new') {
+          counts[key].new += 1
+        } else {
+          counts[key].old += 1
+        }
       })
       setBookedSlotsCount(counts)
     } catch (err) {
@@ -302,7 +311,6 @@ export default function Home() {
     "9:00 PM", "9:30 PM"
   ]
 
-  // সকাল ৭টা থেকে রাত ৯টা পর্যন্ত সময় চেক করার ফাংশন
   const handleOpenBooking = () => {
     const now = new Date();
     const currentHour = now.getHours();
@@ -319,6 +327,33 @@ export default function Home() {
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    
+    if (name === 'service') {
+      // যখনই চিকিৎসার ধরণ সিলেক্ট করা হবে, চেক করা যদি অলরেডি সেই স্লটে ওই টাইপের কোটা পূর্ণ থাকে
+      const isNew = value.includes("নতুন সমস্যা") || value.includes("ব্যথা কমছে না") || value.includes("new dental issue") || value.includes("Pain persists");
+      const selectedType = isNew ? 'new' : 'old';
+
+      if (formData.appointment_date && formData.appointment_time) {
+        const slotKey = `${formData.appointment_date}|${formData.appointment_time}`;
+        const slotData = bookedSlotsCount[slotKey];
+
+        if (slotData) {
+          if (slotData.total >= 2) {
+            alert(lang === 'bn' ? 'দুঃখিত, এই স্লটটি ইতিমধ্যে সম্পূর্ণ বুকড।' : 'Sorry, this slot is fully booked.');
+            return;
+          }
+          if (selectedType === 'new' && slotData.new >= 1) {
+            alert(lang === 'bn' ? 'দুঃখিত, এই স্লটে ইতিমধ্যে ১ জন নতুন রোগী বুক করা হয়েছে। আপনি পুরাতন রোগী হিসেবে চেষ্টা করতে পারেন।' : 'Sorry, 1 new patient is already booked in this slot.');
+            return;
+          }
+          if (selectedType === 'old' && slotData.old >= 1) {
+            alert(lang === 'bn' ? 'দুঃখিত, এই স্লটে ইতিমধ্যে ১ জন পুরাতন রোগী বুক করা হয়েছে। আপনি নতুন রোগী হিসেবে চেষ্টা করতে পারেন।' : 'Sorry, 1 old patient is already booked in this slot.');
+            return;
+          }
+        }
+      }
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: value
@@ -328,7 +363,6 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // সাবমিট করার সময়ও ৭টা থেকে ৯টা লিমি트 চেক
     const now = new Date();
     const currentHour = now.getHours();
     if (currentHour < 7 || currentHour >= 21) {
@@ -350,21 +384,33 @@ export default function Home() {
     }
 
     const slotKey = `${formData.appointment_date}|${formData.appointment_time}`
-    if ((bookedSlotsCount[slotKey] || 0) >= 2) {
-      alert(lang === 'bn' ? 'দুঃখিত, এই সময়ে এপয়েন্টমেন্ট খালি নেই।' : 'Sorry, this time slot is fully booked.')
-      return
-    }
-
-    setLoading(true)
-
+    const slotData = bookedSlotsCount[slotKey] || { total: 0, new: 0, old: 0 };
+    
     const isNewPatient = formData.service.includes("নতুন সমস্যা") || 
                          formData.service.includes("ব্যথা কমছে না") ||
                          formData.service.includes("new dental issue") ||
                          formData.service.includes("Pain persists");
+    const targetType = isNewPatient ? 'new' : 'old';
+
+    if (slotData.total >= 2) {
+      alert(lang === 'bn' ? 'দুঃখিত, এই সময়ে এপয়েন্টমেন্ট সম্পূর্ণ বুকড।' : 'Sorry, this time slot is fully booked.')
+      return
+    }
+
+    if (targetType === 'new' && slotData.new >= 1) {
+      alert(lang === 'bn' ? 'দুঃখিত, এই স্লটে ইতিমধ্যে একজন নতুন রোগী বুক করেছেন।' : 'Sorry, a new patient is already booked in this slot.');
+      return;
+    }
+
+    if (targetType === 'old' && slotData.old >= 1) {
+      alert(lang === 'bn' ? 'দুঃখিত, এই স্লটে ইতিমধ্যে একজন পুরাতন রোগী বুক করেছেন।' : 'Sorry, an old patient is already booked in this slot.');
+      return;
+    }
+
+    setLoading(true)
 
     try {
       const patientTypeVal = isNewPatient ? 'নতুন রোগী' : 'পুরাতন রোগী';
-
       const parsedAge = isNaN(formData.age) ? formData.age : (formData.age ? parseInt(formData.age, 10) : null)
 
       const { error } = await supabase
@@ -376,7 +422,7 @@ export default function Home() {
           service: formData.service,
           appointment_date: formData.appointment_date,
           appointment_time: formData.appointment_time,
-          patient_type: isNewPatient ? 'new' : 'old'
+          patient_type: targetType
         }])
 
       if (error) {
@@ -394,16 +440,11 @@ export default function Home() {
       };
 
       try {
-        const res = await fetch('/api/appointment', {
+        await fetch('/api/appointment', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-
-        const data = await res.json();
-        console.log('Server Response:', data);
       } catch (sheetErr) {
         console.error('Google Sheet Sync Error:', sheetErr);
       }
@@ -431,76 +472,22 @@ export default function Home() {
   }
 
   const tipsList = [
-    {
-      id: 'tips-01',
-      textBn: 'দিনে অন্তত দুইবার ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে ভালোভাবে দাঁত ব্রাশ করুন।',
-      textEn: 'Brush your teeth thoroughly at least twice a day with fluoride toothpaste.'
-    },
-    {
-      id: 'tips-02',
-      textBn: 'প্রতিদিন নিয়মিত ডেন্টাল ফ্লস ব্যবহার করে দাঁতের ফাঁকে জমে থাকা ময়লা পরিষ্কার রাখুন।',
-      textEn: 'Use dental floss daily to clean food particles trapped between teeth.'
-    },
-    {
-      id: 'tips-03',
-      textBn: 'চিনিযুক্ত খাবার ও মিষ্টি খাওয়ার পর কুলি করার অভ্যাস গড়ে তুলুন।',
-      textEn: 'Develop a habit of rinsing your mouth after consuming sugary foods.'
-    },
-    {
-      id: 'tips-04',
-      textBn: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাঁত চেকআপ করান।',
-      textEn: 'Visit your dental surgeon regularly every six months for a checkup.'
-    },
-    {
-      id: 'tips-05',
-      textBn: 'ধূমপান ও পান-সুপারি থেকে বিরত থাকুন, যা দাঁতের মাড়ির মারাত্মক ক্ষতি করে।',
-      textEn: 'Avoid smoking and betel nut, which severely damage your gums and teeth.'
-    },
-    {
-      id: 'tips-06',
-      textBn: 'দাঁতে কোনো ধরনের ব্যথা বা সংবেদনশীলতা অনুভব করলেই দ্রুত চিকিৎসকের পরামর্শ নিন।',
-      textEn: 'Consult a doctor immediately if you experience any tooth pain or sensitivity.'
-    }
+    { id: 'tips-01', textBn: 'দিনে অন্তত দুইবার ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে ভালোভাবে দাঁত ব্রাশ করুন।', textEn: 'Brush your teeth thoroughly at least twice a day with fluoride toothpaste.' },
+    { id: 'tips-02', textBn: 'প্রতিদিন নিয়মিত ডেন্টাল ফ্লস ব্যবহার করে দাঁতের ফাঁকে জমে থাকা ময়লা পরিষ্কার রাখুন।', textEn: 'Use dental floss daily to clean food particles trapped between teeth.' },
+    { id: 'tips-03', textBn: 'চিনিযুক্ত খাবার ও মিষ্টি খাওয়ার পর কুলি করার অভ্যাস গড়ে তুলুন।', textEn: 'Develop a habit of rinsing your mouth after consuming sugary foods.' },
+    { id: 'tips-04', textBn: 'ছয় মাস পর পর নিয়মিত ডেন্টাল সার্জনের কাছে গিয়ে দাঁত চেকআপ করান।', textEn: 'Visit your dental surgeon regularly every six months for a checkup.' },
+    { id: 'tips-05', textBn: 'ধূমপান ও পান-সুপারি থেকে বিরত থাকুন, যা দাঁতের মাড়ির মারাত্মক ক্ষতি করে।', textEn: 'Avoid smoking and betel nut, which severely damage your gums and teeth.' },
+    { id: 'tips-06', textBn: 'দাঁতে কোনো ধরনের ব্যথা বা সংবেদনশীলতা অনুভব করলেই দ্রুত চিকিৎসকের পরামর্শ নিন।', textEn: 'Consult a doctor immediately if you experience any tooth pain or sensitivity.' }
   ]
 
   const featureBoxes = lang === 'bn' ? [
-    {
-      title: 'আধুনিক ডেন্টাল কেয়ার',
-      description: 'সর্বাধুনিক যন্ত্রপাতি ও নিরাপদ উপায়ে পেইনলেস ডেন্টাল ট্রিটমেন্ট নিশ্চিত করা হয়।',
-      bgImage: '/why-01.jpeg',
-      stepClass: 'md:mr-24 lg:mr-36'
-    },
-    {
-      title: 'জীবাণুমুক্ত পরিবেশ',
-      description: 'অটোক্লেভ ও উন্নত স্টেরিলাইজেশন প্রযুক্তির মাধ্যমে শতভাগ সংক্রমণমুক্ত পরিবেশ।',
-      bgImage: '/why-02.jpeg',
-      stepClass: 'md:mx-12 lg:mx-20'
-    },
-    {
-      title: 'অভিজ্ঞ কনসালটেশন',
-      description: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সঠিক রোগ নির্ণয়।',
-      bgImage: '/why-03.jpeg',
-      stepClass: 'md:ml-24 lg:ml-36'
-    }
+    { title: 'আধুনিক ডেন্টাল কেয়ার', description: 'সর্বাধুনিক যন্ত্রপাতি ও নিরাপদ উপায়ে পেইনলেস ডেন্টাল ট্রিটমেন্ট নিশ্চিত করা হয়।', bgImage: '/why-01.jpeg', stepClass: 'md:mr-24 lg:mr-36' },
+    { title: 'জীবাণুমুক্ত পরিবেশ', description: 'অটোক্লেভ ও উন্নত স্টেরিলাইজেশন প্রযুক্তির মাধ্যমে শতভাগ সংক্রমণমুক্ত পরিবেশ।', bgImage: '/why-02.jpeg', stepClass: 'md:mx-12 lg:mx-20' },
+    { title: 'অভিজ্ঞ কনসালটেশন', description: 'চট্টগ্রাম মেডিকেল কলেজের অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে সঠিক রোগ নির্ণয়।', bgImage: '/why-03.jpeg', stepClass: 'md:ml-24 lg:ml-36' }
   ] : [
-    {
-      title: 'Modern Dental Care',
-      description: 'Ensuring painless dental treatment using advanced equipment and safe procedures.',
-      bgImage: '/why-01.jpeg',
-      stepClass: 'md:mr-24 lg:mr-36'
-    },
-    {
-      title: 'Sterilized Environment',
-      description: '100% infection-free environment through autoclave and advanced sterilization technology.',
-      bgImage: '/why-02.jpeg',
-      stepClass: 'md:mx-12 lg:mx-20'
-    },
-    {
-      title: 'Expert Consultation',
-      description: 'Accurate diagnosis under the close supervision of an experienced surgeon.',
-      bgImage: '/why-03.jpeg',
-      stepClass: 'md:ml-24 lg:ml-36'
-    }
+    { title: 'Modern Dental Care', description: 'Ensuring painless dental treatment using advanced equipment and safe procedures.', bgImage: '/why-01.jpeg', stepClass: 'md:mr-24 lg:mr-36' },
+    { title: 'Sterilized Environment', description: '100% infection-free environment through autoclave and advanced sterilization technology.', bgImage: '/why-02.jpeg', stepClass: 'md:mx-12 lg:mx-20' },
+    { title: 'Expert Consultation', description: 'Accurate diagnosis under the close supervision of an experienced surgeon.', bgImage: '/why-03.jpeg', stepClass: 'md:ml-24 lg:ml-36' }
   ]
 
   const videoList = lang === 'bn' ? [
@@ -836,8 +823,9 @@ export default function Home() {
                   <option value="">{t[lang].timeDefault}</option>
                   {rawTimes.map((time, index) => {
                     const slotKey = `${formData.appointment_date}|${time}`
-                    const count = bookedSlotsCount[slotKey] || 0
-                    const isFull = count >= 2
+                    const slotData = bookedSlotsCount[slotKey] || { total: 0, new: 0, old: 0 }
+                    const isFull = slotData.total >= 2
+
                     return (
                       <option key={index} value={time} disabled={isFull} style={{ color: isFull ? 'red' : 'inherit' }}>
                         {time} {isFull ? (lang === 'bn' ? '(বুকড)' : '(Full)') : ''}
