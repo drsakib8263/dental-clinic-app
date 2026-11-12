@@ -29,6 +29,17 @@ export default function Home() {
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showPopupBooking, setShowPopupBooking] = useState(false)
   
+  // পেশেন্ট রিভিউ সাবমিট মোডাল ও স্টেট
+  const [showReviewModal, setShowReviewModal] = useState(false)
+  const [reviewsList, setReviewsList] = useState([])
+  const [reviewForm, setReviewForm] = useState({
+    patient_name: '',
+    location: '',
+    review_text: '',
+    rating: 5
+  })
+  const [reviewSubmitting, setReviewSubmitting] = useState(false)
+
   const [customAlert, setCustomAlert] = useState({ show: false, message: '' })
 
   const [darkMode, setDarkMode] = useState(false)
@@ -97,6 +108,38 @@ export default function Home() {
     }
   }
 
+  // ডাটাবেস থেকে রিভিউ ফেচ করা
+  const fetchReviews = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('patient_reviews')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.error('Error fetching reviews:', error)
+        return
+      }
+
+      if (data && data.length > 0) {
+        setReviewsList(data)
+      } else {
+        // ডিফল্ট কিছু স্যাম্পল রিভিউ যদি ডাটাবেস খালি থাকে
+        setReviewsList([
+          {
+            patient_name: lang === 'bn' ? 'মোহাম্মদ আলী' : 'Mohammad Ali',
+            location: lang === 'bn' ? 'পটিয়া, চট্টগ্রাম' : 'Patiya, Chattogram',
+            review_text: lang === 'bn' ? 'ডাক্তার সাহেব ভীষণ যত্ন নিয়ে আমার রুট ক্যানাল চিকিৎসা করেছেন। কোনো ধরনের ব্যথা ছাড়াই কাজটি সম্পন্ন হয়েছে।' : 'Doctor Sakib took great care during my root canal treatment. It was completely painless.',
+            rating: 5,
+            created_at: new Date().toISOString()
+          }
+        ])
+      }
+    } catch (err) {
+      console.error('Error:', err)
+    }
+  }
+
   useEffect(() => {
     const checkChamberStatus = () => {
       const now = new Date()
@@ -124,6 +167,7 @@ export default function Home() {
 
     fetchBookingsCount()
     fetchLiveNotice()
+    fetchReviews()
 
     return () => clearInterval(interval)
   }, [lang])
@@ -258,9 +302,17 @@ export default function Home() {
       tipsTitle: 'দাঁতের যত্ন ও স্বাস্থ্য টিপস',
       whyUsTitle: 'কেন আপনার জন্য আমরাই?',
       videoTitle: 'দাঁতের যত্ন ও চিকিৎসা বিষয়ক সচেতনতামূলক ভিডিও',
-      videoSub: 'দাঁতের বিভিন্ন চিকিৎসা সম্পর্কে বিস্তারিত জানতে নিচের ভিডিওগুলো দেখুন.',
+      videoSub: 'দাঁতের বিভিন্ন চিকিৎসা সম্পর্কে বিস্তারিত জানতে নিচের ভিডিওগুলো দেখুন।',
       reviewsTitle: 'রোগীদের রিভিউ ও মতামত',
-      reviewsSub: 'আমাদের সেবা গ্রহণকারী সম্মানিত রোগীদের কিছু অভিজ্ঞতা ও মতামত'
+      reviewsSub: 'আমাদের সেবা গ্রহণকারী সম্মানিত রোগীদের কিছু অভিজ্ঞতা ও মতামত',
+      addReviewBtn: 'আপনার রিভিউ বা রেটিং দিন ⭐',
+      reviewModalTitle: 'আপনার মূল্যবান মতামত দিন',
+      reviewNameLabel: 'আপনার নাম *',
+      locationLabel: 'আপনার এলাকা / ঠিকানা',
+      ratingLabel: 'রেটিং নির্বাচন করুন *',
+      reviewTextLabel: 'আপনার মন্তব্য / রিভিউ *',
+      reviewSubmitBtn: 'রিভিউ সাবমিট করুন',
+      reviewSubmitting: 'সাবমিট হচ্ছে...'
     },
     en: {
       heroTitle: 'Trustworthy Dental Services for a Healthy Smile',
@@ -299,7 +351,15 @@ export default function Home() {
       videoTitle: 'Dental Care & Treatment Awareness Videos',
       videoSub: 'Watch the videos below to learn more about various dental treatments.',
       reviewsTitle: 'Patient Reviews & Testimonials',
-      reviewsSub: 'Experiences and feedback from our valued patients'
+      reviewsSub: 'Experiences and feedback from our valued patients',
+      addReviewBtn: 'Give Your Review & Rating ⭐',
+      reviewModalTitle: 'Share Your Valuable Feedback',
+      reviewNameLabel: 'Your Name *',
+      locationLabel: 'Your Location / Area',
+      ratingLabel: 'Select Rating *',
+      reviewTextLabel: 'Your Review / Comment *',
+      reviewSubmitBtn: 'Submit Review',
+      reviewSubmitting: 'Submitting...'
     }
   }
 
@@ -500,6 +560,48 @@ export default function Home() {
     }
   }
 
+  // রোগীর রিভিউ সাবমিট করার ফাংশন
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!reviewForm.patient_name || !reviewForm.review_text) {
+      setCustomAlert({
+        show: true,
+        message: lang === 'bn' ? 'দয়া করে নাম এবং রিভিউ এর বিবরণ লিখুন।' : 'Please enter your name and review text.'
+      });
+      return
+    }
+
+    setReviewSubmitting(true)
+
+    try {
+      const { error } = await supabase
+        .from('patient_reviews')
+        .insert([{
+          patient_name: reviewForm.patient_name.trim(),
+          location: reviewForm.location.trim() || (lang === 'bn' ? 'বাংলাদেশ' : 'Bangladesh'),
+          review_text: reviewForm.review_text.trim(),
+          rating: parseInt(reviewForm.rating, 10)
+        }])
+
+      if (error) {
+        setCustomAlert({ show: true, message: 'Review Error: ' + error.message });
+      } else {
+        setCustomAlert({
+          show: true,
+          message: lang === 'bn' ? 'আপনার মূল্যবান মতামতের জন্য ধন্যবাদ! রিভিউটি সফলভাবে জমা হয়েছে।' : 'Thank you for your valuable feedback! Your review has been submitted successfully.'
+        });
+        setShowReviewModal(false)
+        setReviewForm({ patient_name: '', location: '', review_text: '', rating: 5 })
+        fetchReviews()
+      }
+    } catch (err) {
+      setCustomAlert({ show: true, message: 'Error: ' + (err.message || err) });
+    } finally {
+      setReviewSubmitting(false)
+    }
+  }
+
   const tipsList = [
     { id: 'tips-01', textBn: 'দিনে অন্তত দুইবার ফ্লোরাইডযুক্ত টুথপেস্ট দিয়ে ভালোভাবে দাঁত ব্রাশ করুন।', textEn: 'Brush your teeth thoroughly at least twice a day with fluoride toothpaste.' },
     { id: 'tips-02', textBn: 'প্রতিদিন নিয়মিত ডেন্টাল ফ্লস ব্যবহার করে দাঁতের ফাঁকে জমে থাকা ময়লা পরিষ্কার রাখুন।', textEn: 'Use dental floss daily to clean food particles trapped between teeth.' },
@@ -530,53 +632,6 @@ export default function Home() {
     { title: '3. Dental Filling Method', id: 'YOUR_FILLING_VIDEO_ID' },
     { title: '4. Dental Crowns & Caps Overview', id: 'YOUR_CROWN_VIDEO_ID' }
   ]
-
-  // পেশেন্ট রিভিউ ডেটা (বাংলা ও ইংরেজি)
-  const reviewsList = lang === 'bn' ? [
-    {
-      name: 'মোহাম্মদ আলী',
-      location: 'পটিয়া, চট্টগ্রাম',
-      review: 'ডাক্তার সাহেব ভীষণ যত্ন নিয়ে আমার রুট ক্যানাল চিকিৎসা করেছেন। কোনো ধরনের ব্যথা ছাড়াই কাজটি সম্পন্ন হয়েছে। উনার ব্যবহার অত্যন্ত অমায়িক।',
-      rating: 5,
-      date: '২ দিন আগে'
-    },
-    {
-      name: 'তাজ উদ্দিন আহমেদ',
-      location: 'আনোয়ারা',
-      review: 'খুব পরিষ্কার-পরিচ্ছন্ন চেম্বার এবং আধুনিক যন্ত্রপাতি। কম খরচে এত সুন্দর ডেন্টাল সেবা পাবো ভাবিনি। আমি অত্যন্ত সন্তুষ্ট।',
-      rating: 5,
-      date: '১ সপ্তাহ আগে'
-    },
-    {
-      name: 'ফারজানা আক্তার',
-      location: 'বাস স্টেশন, পটিয়া',
-      review: 'আমার দাঁতের দীর্ঘদিনের মাড়ির সমস্যা ছিল। স্যারের পরামর্শ ও ওষুধে এখন আলহামদুলিল্লাহ অনেক ভালো আছি। সবাইকে উনার কাছে যাওয়ার পরামর্শ দেবো।',
-      rating: 5,
-      date: '২ সপ্তাহ আগে'
-    }
-  ] : [
-    {
-      name: 'Mohammad Ali',
-      location: 'Patiya, Chattogram',
-      review: 'Doctor Sakib took great care during my root canal treatment. It was completely painless, and his behavior is extremely polite.',
-      rating: 5,
-      date: '2 days ago'
-    },
-    {
-      name: 'Taj Uddin Ahmed',
-      location: 'Anwara',
-      review: 'Very clean chamber with modern equipment. I never expected such high-quality dental care at an affordable cost. Highly satisfied!',
-      rating: 5,
-      date: '1 week ago'
-    },
-    {
-      name: 'Farhana Akter',
-      location: 'Bus Station, Patiya',
-      review: 'I had long-standing gum issues. With his proper diagnosis and treatment, I am feeling much better now. Highly recommend his chamber.',
-      rating: 5,
-      date: '2 weeks ago'
-    }
-  ];
 
   return (
     <main 
@@ -1100,18 +1155,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* নতুন সংযোজন: আধুনিক পেশেন্ট রিভিউ ও রেটিং সেকশন (ফুটারের ঠিক উপরে) */}
+      {/* পেশেন্ট রিভিউ ও রেটিং সেকশন (ফুটারের ঠিক উপরে) */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
-        <div className="text-center mb-10 space-y-2">
+        <div className="text-center mb-10 space-y-3">
           <span className="text-xs font-bold uppercase tracking-widest text-cyan-500 bg-cyan-500/10 px-3.5 py-1.5 rounded-full border border-cyan-500/20">
             {lang === 'bn' ? 'রোগীদের মূল্যায়ন' : 'Testimonials'}
           </span>
-          <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white pt-2">
+          <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white pt-1">
             {t[lang].reviewsTitle}
           </h2>
           <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
             {t[lang].reviewsSub}
           </p>
+          
+          <div className="pt-3">
+            <button
+              onClick={() => setShowReviewModal(true)}
+              className="px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-extrabold shadow-lg shadow-amber-500/30 transition transform hover:-translate-y-0.5 cursor-pointer text-sm"
+            >
+              {t[lang].addReviewBtn}
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1122,28 +1186,113 @@ export default function Home() {
               style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
             >
               <div className="space-y-4">
-                {/* স্টার রেটিং */}
                 <div className="flex items-center gap-1 text-amber-400 text-lg">
-                  {[...Array(rev.rating)].map((_, i) => (
+                  {[...Array(rev.rating || 5)].map((_, i) => (
                     <span key={i}>★</span>
                   ))}
                 </div>
                 <p className="text-sm md:text-base leading-relaxed italic" style={{ color: themeStyles.subTextColor }}>
-                  "{rev.review}"
+                  "{rev.review_text}"
                 </p>
               </div>
 
               <div className="pt-6 mt-6 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
                 <div>
-                  <h4 className="font-extrabold text-base" style={{ color: themeStyles.textColor }}>{rev.name}</h4>
+                  <h4 className="font-extrabold text-base" style={{ color: themeStyles.textColor }}>{rev.patient_name}</h4>
                   <p className="text-xs font-semibold text-cyan-500">{rev.location}</p>
                 </div>
-                <span className="text-xs text-slate-400 font-medium">{rev.date}</span>
+                <span className="text-xs text-slate-400 font-medium">
+                  {new Date(rev.created_at || Date.now()).toLocaleDateString()}
+                </span>
               </div>
             </div>
           ))}
         </div>
       </section>
+
+      {/* রোগী নিজে রিভিউ সাবমিট করার পপ-আপ মোডাল */}
+      {showReviewModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
+          <div 
+            className="max-w-xl w-full p-6 md:p-8 rounded-3xl shadow-2xl border relative my-8"
+            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2" style={{ color: themeStyles.textColor }}>
+                <span>✍️</span> {t[lang].reviewModalTitle}
+              </h2>
+              <button onClick={() => setShowReviewModal(false)} className="font-bold text-lg p-2 rounded-full opacity-70 hover:opacity-100" style={{ color: themeStyles.textColor }}>
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleReviewSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].reviewNameLabel}</label>
+                <input 
+                  type="text" 
+                  value={reviewForm.patient_name} 
+                  onChange={(e) => setReviewForm({ ...reviewForm, patient_name: e.target.value })} 
+                  required 
+                  placeholder={lang === 'bn' ? 'আপনার নাম লিখুন' : 'Enter your name'} 
+                  className="w-full px-4 py-2.5 rounded-xl outline-none border" 
+                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].locationLabel}</label>
+                <input 
+                  type="text" 
+                  value={reviewForm.location} 
+                  onChange={(e) => setReviewForm({ ...reviewForm, location: e.target.value })} 
+                  placeholder={lang === 'bn' ? 'যেমন: পটিয়া, চট্টগ্রাম' : 'e.g. Patiya, Chattogram'} 
+                  className="w-full px-4 py-2.5 rounded-xl outline-none border" 
+                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].ratingLabel}</label>
+                <select 
+                  value={reviewForm.rating} 
+                  onChange={(e) => setReviewForm({ ...reviewForm, rating: e.target.value })} 
+                  required 
+                  className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
+                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                >
+                  <option value="5">⭐⭐⭐⭐⭐ (5/5 - Excellent)</option>
+                  <option value="4">⭐⭐⭐⭐ (4/5 - Very Good)</option>
+                  <option value="3">⭐⭐⭐ (3/5 - Good)</option>
+                  <option value="2">⭐⭐ (2/5 - Fair)</option>
+                  <option value="1">⭐ (1/5 - Poor)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].reviewTextLabel}</label>
+                <textarea 
+                  rows="4"
+                  value={reviewForm.review_text} 
+                  onChange={(e) => setReviewForm({ ...reviewForm, review_text: e.target.value })} 
+                  required 
+                  placeholder={lang === 'bn' ? 'আপনার অভিজ্ঞতা ও মতামত এখানে বিস্তারিত লিখুন...' : 'Write your experience and feedback in detail...'} 
+                  className="w-full px-4 py-2.5 rounded-xl outline-none border" 
+                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                ></textarea>
+              </div>
+
+              <button 
+                type="submit" 
+                disabled={reviewSubmitting} 
+                className="w-full font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer text-white bg-amber-500 hover:bg-amber-600"
+              >
+                {reviewSubmitting ? t[lang].reviewSubmitting : t[lang].reviewSubmitBtn}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* ফুটার */}
       <footer className="bg-[#0c1e3e] text-slate-300 pt-16 pb-8 border-t border-blue-900/50 mt-20">
