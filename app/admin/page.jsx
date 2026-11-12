@@ -95,7 +95,6 @@ export default function AdminDashboard() {
         (payload) => {
           const today = getTodayBD()
           if (payload.eventType === 'INSERT') {
-            // যদি নতুন বুকিংটি আজকের বা ভবিষ্যতের হয় তবেই লিস্টে দেখাবে
             if (payload.new.appointment_date >= today) {
               setAppointments((prev) => [payload.new, ...prev])
             }
@@ -151,7 +150,6 @@ export default function AdminDashboard() {
       if (dateFilter) {
         query = query.eq('appointment_date', dateFilter)
       } else {
-        // যদি নির্দিষ্ট তারিখ সিলেক্ট করা না থাকে, তবে শুধুমাত্র আজকের ও ভবিষ্যতের সিরিয়াল দেখাবে
         query = query.gte('appointment_date', today)
       }
 
@@ -471,7 +469,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* অ্যাপয়েন্টমেন্ট লিস্ট সেকশন */}
-      <div className="max-w-6xl mx-auto bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl space-y-6">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-slate-800 p-4 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <h2 className="text-xl font-bold text-teal-600 dark:text-teal-400">📅 রোগীর অ্যাপয়েন্টমেন্ট তালিকা (আজ ও ভবিষ্যৎ)</h2>
           <div className="flex items-center gap-3">
@@ -504,57 +502,119 @@ export default function AdminDashboard() {
         ) : appointments.length === 0 ? (
           <p className="text-center py-6 text-slate-500 dark:text-slate-400">কোনো অ্যাপয়েন্টমেন্ট পাওয়া যায়নি।</p>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs md:text-sm">
-                  <th className="py-3 px-4">রোগীর নাম</th>
-                  <th className="py-3 px-4">বয়স</th>
-                  <th className="py-3 px-4">ফোন নম্বর</th>
-                  <th className="py-3 px-4">সেবা</th>
-                  <th className="py-3 px-4">তারিখ ও সময়</th>
-                  <th className="py-3 px-4">স্ট্যাটাস</th>
-                  <th className="py-3 px-4 text-center">অ্যাকশন</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-700 text-xs md:text-sm">
-                {appointments.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{item.patient_name}</td>
-                    <td className="py-3 px-4">{item.age || '-'}</td>
-                    <td className="py-3 px-4 font-semibold text-teal-600 dark:text-teal-300">{item.patient_phone}</td>
-                    <td className="py-3 px-4">{item.service}</td>
-                    <td className="py-3 px-4">
-                      <span className="block font-semibold">{item.appointment_date}</span>
-                      <span className="text-xs text-teal-600 dark:text-teal-400">{item.appointment_time}</span>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                        item.status === 'Confirmed' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/40'
-                      }`}>
-                        {item.status || 'Pending'}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-center space-x-2">
-                      <button
-                        type="button"
-                        onClick={() => handleConfirm(item.id)}
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold text-xs shadow transition cursor-pointer"
-                      >
-                        কনফার্ম
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(item.id)}
-                        className="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg font-bold text-xs shadow transition cursor-pointer"
-                      >
-                        ডিলিট
-                      </button>
-                    </td>
+          <div>
+            {/* মোবাইল স্ক্রিনের জন্য কার্ড ভিউ (md স্ক্রিনের নিচে দেখাবে) */}
+            <div className="grid grid-cols-1 gap-4 md:hidden">
+              {appointments.map((item) => (
+                <div 
+                  key={item.id} 
+                  className="bg-slate-50 dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3"
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="font-extrabold text-base text-slate-900 dark:text-white">{item.patient_name}</h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">বয়স: {item.age || 'প্রযোজ্য নয়'}</p>
+                    </div>
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
+                      item.status === 'Confirmed' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/40'
+                    }`}>
+                      {item.status || 'Pending'}
+                    </span>
+                  </div>
+
+                  <div className="bg-teal-50 dark:bg-teal-950/40 px-3.5 py-2 rounded-xl border border-teal-100 dark:border-teal-900/50 flex justify-between items-center text-xs font-bold text-teal-700 dark:text-teal-300">
+                    <span>📅 {item.appointment_date}</span>
+                    <span>⏰ {item.appointment_time}</span>
+                  </div>
+
+                  <div className="space-y-1 text-sm">
+                    <p className="text-slate-600 dark:text-slate-300">
+                      <span className="font-semibold text-xs text-slate-400 block">মোবাইল নম্বর:</span>
+                      <a href={`tel:${item.patient_phone}`} className="font-bold text-teal-600 dark:text-teal-400 hover:underline">
+                        📞 {item.patient_phone}
+                      </a>
+                    </p>
+                    <p className="text-slate-600 dark:text-slate-300 pt-1">
+                      <span className="font-semibold text-xs text-slate-400 block">রোগীর সমস্যা / সেবা:</span>
+                      <span className="font-medium text-slate-800 dark:text-slate-200">🦷 {item.service}</span>
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                    <button
+                      type="button"
+                      onClick={() => handleConfirm(item.id)}
+                      className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-xl font-bold text-xs shadow transition cursor-pointer text-center"
+                    >
+                      কনফার্ম
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(item.id)}
+                      className="flex-1 bg-rose-600 hover:bg-rose-700 text-white py-2 rounded-xl font-bold text-xs shadow transition cursor-pointer text-center"
+                    >
+                      ডিলিট
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* ডেস্কটপ ও বড় স্ক্রিনের জন্য ট্রেডিশনাল টেবিল ভিউ (md ও তার উপরে দেখাবে) */}
+            <div className="hidden md:block overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm">
+                    <th className="py-3 px-4">রোগীর নাম</th>
+                    <th className="py-3 px-4">বয়স</th>
+                    <th className="py-3 px-4">ফোন নম্বর</th>
+                    <th className="py-3 px-4">সেবা</th>
+                    <th className="py-3 px-4">তারিখ ও সময়</th>
+                    <th className="py-3 px-4">স্ট্যাটাস</th>
+                    <th className="py-3 px-4 text-center">অ্যাকশন</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-700 text-sm">
+                  {appointments.map((item) => (
+                    <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
+                      <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{item.patient_name}</td>
+                      <td className="py-3 px-4">{item.age || '-'}</td>
+                      <td className="py-3 px-4 font-semibold text-teal-600 dark:text-teal-300">
+                        <a href={`tel:${item.patient_phone}`} className="hover:underline">{item.patient_phone}</a>
+                      </td>
+                      <td className="py-3 px-4">{item.service}</td>
+                      <td className="py-3 px-4">
+                        <span className="block font-semibold">{item.appointment_date}</span>
+                        <span className="text-xs text-teal-600 dark:text-teal-400">{item.appointment_time}</span>
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
+                          item.status === 'Confirmed' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/40'
+                        }`}>
+                          {item.status || 'Pending'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-center space-x-2">
+                        <button
+                          type="button"
+                          onClick={() => handleConfirm(item.id)}
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold text-xs shadow transition cursor-pointer"
+                        >
+                          কনফার্ম
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(item.id)}
+                          className="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg font-bold text-xs shadow transition cursor-pointer"
+                        >
+                          ডিলিট
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
