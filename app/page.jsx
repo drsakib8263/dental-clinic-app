@@ -302,6 +302,21 @@ export default function Home() {
     "9:00 PM", "9:30 PM"
   ]
 
+  // সকাল ৭টা থেকে রাত ৯টা পর্যন্ত সময় চেক করার ফাংশন
+  const handleOpenBooking = () => {
+    const now = new Date();
+    const currentHour = now.getHours();
+
+    if (currentHour < 7 || currentHour >= 21) {
+      alert(lang === 'bn' 
+        ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
+        : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again tomorrow at 7:00 AM. Thank you');
+      return;
+    }
+
+    setShowPopupBooking(true);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -313,12 +328,22 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    // সাবমিট করার সময়ও ৭টা থেকে ৯টা লিমি트 চেক
+    const now = new Date();
+    const currentHour = now.getHours();
+    if (currentHour < 7 || currentHour >= 21) {
+      alert(lang === 'bn' 
+        ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
+        : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again tomorrow at 7:00 AM. Thank you');
+      setShowPopupBooking(false);
+      return;
+    }
+
     if (!formData.patient_name || !formData.phone || !formData.service || !formData.appointment_date || !formData.appointment_time) {
       alert(lang === 'bn' ? 'দয়া করে সব ফিল্ড সঠিকভাবে পূরণ করুন।' : 'Please fill in all required fields.')
       return
     }
 
-    // মোবাইল নম্বর ১১ ডিজিটের হতে হবে চেক
     if (formData.phone.length !== 11) {
       alert(lang === 'bn' ? 'মোবাইল নম্বর অবশ্যই ১১ ডিজিটের হতে হবে।' : 'Mobile number must be exactly 11 digits.')
       return
@@ -673,7 +698,7 @@ export default function Home() {
             
             <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <button
-                onClick={() => setShowPopupBooking(true)}
+                onClick={handleOpenBooking}
                 className="px-8 py-4 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white font-extrabold shadow-lg shadow-cyan-900/40 transition transform hover:-translate-y-0.5 cursor-pointer text-sm md:text-base"
               >
                 {t[lang].bookingMainBtn}
@@ -1152,7 +1177,7 @@ export default function Home() {
 
       {/* চেম্বার ক্লোজড নোটিশ মোডাল */}
       {showChamberClosedModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border" style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
             <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto bg-amber-500">🔔</div>
             <h3 className="text-2xl font-black text-amber-500">
