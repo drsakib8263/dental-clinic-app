@@ -258,7 +258,9 @@ export default function Home() {
       tipsTitle: 'দাঁতের যত্ন ও স্বাস্থ্য টিপস',
       whyUsTitle: 'কেন আপনার জন্য আমরাই?',
       videoTitle: 'দাঁতের যত্ন ও চিকিৎসা বিষয়ক সচেতনতামূলক ভিডিও',
-      videoSub: 'দাঁতের বিভিন্ন চিকিৎসা সম্পর্কে বিস্তারিত জানতে নিচের ভিডিওগুলো দেখুন।'
+      videoSub: 'দাঁতের বিভিন্ন চিকিৎসা সম্পর্কে বিস্তারিত জানতে নিচের ভিডিওগুলো দেখুন.',
+      reviewsTitle: 'রোগীদের রিভিউ ও মতামত',
+      reviewsSub: 'আমাদের সেবা গ্রহণকারী সম্মানিত রোগীদের কিছু অভিজ্ঞতা ও মতামত'
     },
     en: {
       heroTitle: 'Trustworthy Dental Services for a Healthy Smile',
@@ -295,7 +297,9 @@ export default function Home() {
       tipsTitle: 'Dental Care & Health Tips',
       whyUsTitle: 'Why Choose Us?',
       videoTitle: 'Dental Care & Treatment Awareness Videos',
-      videoSub: 'Watch the videos below to learn more about various dental treatments.'
+      videoSub: 'Watch the videos below to learn more about various dental treatments.',
+      reviewsTitle: 'Patient Reviews & Testimonials',
+      reviewsSub: 'Experiences and feedback from our valued patients'
     }
   }
 
@@ -526,6 +530,53 @@ export default function Home() {
     { title: '3. Dental Filling Method', id: 'YOUR_FILLING_VIDEO_ID' },
     { title: '4. Dental Crowns & Caps Overview', id: 'YOUR_CROWN_VIDEO_ID' }
   ]
+
+  // পেশেন্ট রিভিউ ডেটা (বাংলা ও ইংরেজি)
+  const reviewsList = lang === 'bn' ? [
+    {
+      name: 'মোহাম্মদ আলী',
+      location: 'পটিয়া, চট্টগ্রাম',
+      review: 'ডাক্তার সাহেব ভীষণ যত্ন নিয়ে আমার রুট ক্যানাল চিকিৎসা করেছেন। কোনো ধরনের ব্যথা ছাড়াই কাজটি সম্পন্ন হয়েছে। উনার ব্যবহার অত্যন্ত অমায়িক।',
+      rating: 5,
+      date: '২ দিন আগে'
+    },
+    {
+      name: 'তাজ উদ্দিন আহমেদ',
+      location: 'আনোয়ারা',
+      review: 'খুব পরিষ্কার-পরিচ্ছন্ন চেম্বার এবং আধুনিক যন্ত্রপাতি। কম খরচে এত সুন্দর ডেন্টাল সেবা পাবো ভাবিনি। আমি অত্যন্ত সন্তুষ্ট।',
+      rating: 5,
+      date: '১ সপ্তাহ আগে'
+    },
+    {
+      name: 'ফারজানা আক্তার',
+      location: 'বাস স্টেশন, পটিয়া',
+      review: 'আমার দাঁতের দীর্ঘদিনের মাড়ির সমস্যা ছিল। স্যারের পরামর্শ ও ওষুধে এখন আলহামদুলিল্লাহ অনেক ভালো আছি। সবাইকে উনার কাছে যাওয়ার পরামর্শ দেবো।',
+      rating: 5,
+      date: '২ সপ্তাহ আগে'
+    }
+  ] : [
+    {
+      name: 'Mohammad Ali',
+      location: 'Patiya, Chattogram',
+      review: 'Doctor Sakib took great care during my root canal treatment. It was completely painless, and his behavior is extremely polite.',
+      rating: 5,
+      date: '2 days ago'
+    },
+    {
+      name: 'Taj Uddin Ahmed',
+      location: 'Anwara',
+      review: 'Very clean chamber with modern equipment. I never expected such high-quality dental care at an affordable cost. Highly satisfied!',
+      rating: 5,
+      date: '1 week ago'
+    },
+    {
+      name: 'Farhana Akter',
+      location: 'Bus Station, Patiya',
+      review: 'I had long-standing gum issues. With his proper diagnosis and treatment, I am feeling much better now. Highly recommend his chamber.',
+      rating: 5,
+      date: '2 weeks ago'
+    }
+  ];
 
   return (
     <main 
@@ -986,7 +1037,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* কেন আমাদের পছন্দ করবেন সেকশন (নম্বর রিমোভ করা হয়েছে) */}
+      {/* কেন আমাদের পছন্দ করবেন সেকশন */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
@@ -1043,6 +1094,51 @@ export default function Home() {
               <h4 className="font-bold text-sm" style={{ color: themeStyles.textColor }}>{vid.title}</h4>
               <div className="w-full h-32 rounded-xl flex items-center justify-center text-xs font-medium opacity-80" style={{ backgroundColor: themeStyles.cardBg }}>
                 🎬 {lang === 'bn' ? 'ভিডিও শীঘ্রই আসছে' : 'Video Coming Soon'}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* নতুন সংযোজন: আধুনিক পেশেন্ট রিভিউ ও রেটিং সেকশন (ফুটারের ঠিক উপরে) */}
+      <section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
+        <div className="text-center mb-10 space-y-2">
+          <span className="text-xs font-bold uppercase tracking-widest text-cyan-500 bg-cyan-500/10 px-3.5 py-1.5 rounded-full border border-cyan-500/20">
+            {lang === 'bn' ? 'রোগীদের মূল্যায়ন' : 'Testimonials'}
+          </span>
+          <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white pt-2">
+            {t[lang].reviewsTitle}
+          </h2>
+          <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
+            {t[lang].reviewsSub}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {reviewsList.map((rev, index) => (
+            <div 
+              key={index}
+              className="p-6 rounded-3xl border shadow-lg relative flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1.5"
+              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
+            >
+              <div className="space-y-4">
+                {/* স্টার রেটিং */}
+                <div className="flex items-center gap-1 text-amber-400 text-lg">
+                  {[...Array(rev.rating)].map((_, i) => (
+                    <span key={i}>★</span>
+                  ))}
+                </div>
+                <p className="text-sm md:text-base leading-relaxed italic" style={{ color: themeStyles.subTextColor }}>
+                  "{rev.review}"
+                </p>
+              </div>
+
+              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
+                <div>
+                  <h4 className="font-extrabold text-base" style={{ color: themeStyles.textColor }}>{rev.name}</h4>
+                  <p className="text-xs font-semibold text-cyan-500">{rev.location}</p>
+                </div>
+                <span className="text-xs text-slate-400 font-medium">{rev.date}</span>
               </div>
             </div>
           ))}
