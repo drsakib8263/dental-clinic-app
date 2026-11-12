@@ -27,6 +27,10 @@ export default function Home() {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showPopupBooking, setShowPopupBooking] = useState(false)
+  
+  // কাস্টম সুন্দর নোটিশ মোডালের জন্য নতুন স্টেট
+  const [customAlert, setCustomAlert] = useState({ show: false, message: '' })
+
   const [darkMode, setDarkMode] = useState(false)
 
   const [formData, setFormData] = useState({
@@ -38,7 +42,6 @@ export default function Home() {
     appointment_time: ''
   })
 
-  // প্রতিটি স্লটে মোট কাউন্ট এবং নতুন/পুরাতন রোগীর হিসাব রাখার জন্য
   const fetchBookingsCount = async () => {
     try {
       const { data, error } = await supabase
@@ -316,9 +319,12 @@ export default function Home() {
     const currentHour = now.getHours();
 
     if (currentHour < 7 || currentHour >= 21) {
-      alert(lang === 'bn' 
-        ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
-        : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again tomorrow at 7:00 AM. Thank you');
+      setCustomAlert({
+        show: true,
+        message: lang === 'bn' 
+          ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
+          : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again tomorrow at 7:00 AM. Thank you'
+      });
       return;
     }
 
@@ -329,7 +335,6 @@ export default function Home() {
     const { name, value } = e.target
     
     if (name === 'service') {
-      // যখনই চিকিৎসার ধরণ সিলেক্ট করা হবে, চেক করা যদি অলরেডি সেই স্লটে ওই টাইপের কোটা পূর্ণ থাকে
       const isNew = value.includes("নতুন সমস্যা") || value.includes("ব্যথা কমছে না") || value.includes("new dental issue") || value.includes("Pain persists");
       const selectedType = isNew ? 'new' : 'old';
 
@@ -339,15 +344,30 @@ export default function Home() {
 
         if (slotData) {
           if (slotData.total >= 2) {
-            alert(lang === 'bn' ? 'দুঃখিত, এই স্লটটি ইতিমধ্যে সম্পূর্ণ বুকড।' : 'Sorry, this slot is fully booked.');
+            setCustomAlert({
+              show: true,
+              message: lang === 'bn' 
+                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+                : 'Sorry, this slot is already booked. Please choose another time.'
+            });
             return;
           }
           if (selectedType === 'new' && slotData.new >= 1) {
-            alert(lang === 'bn' ? 'দুঃখিত, এই স্লটে ইতিমধ্যে ১ জন নতুন রোগী বুক করা হয়েছে। আপনি পুরাতন রোগী হিসেবে চেষ্টা করতে পারেন।' : 'Sorry, 1 new patient is already booked in this slot.');
+            setCustomAlert({
+              show: true,
+              message: lang === 'bn' 
+                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+                : 'Sorry, this slot is already booked. Please choose another time.'
+            });
             return;
           }
           if (selectedType === 'old' && slotData.old >= 1) {
-            alert(lang === 'bn' ? 'দুঃখিত, এই স্লটে ইতিমধ্যে ১ জন পুরাতন রোগী বুক করা হয়েছে। আপনি নতুন রোগী হিসেবে চেষ্টা করতে পারেন।' : 'Sorry, 1 old patient is already booked in this slot.');
+            setCustomAlert({
+              show: true,
+              message: lang === 'bn' 
+                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+                : 'Sorry, this slot is already booked. Please choose another time.'
+            });
             return;
           }
         }
@@ -366,20 +386,29 @@ export default function Home() {
     const now = new Date();
     const currentHour = now.getHours();
     if (currentHour < 7 || currentHour >= 21) {
-      alert(lang === 'bn' 
-        ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
-        : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again tomorrow at 7:00 AM. Thank you');
+      setCustomAlert({
+        show: true,
+        message: lang === 'bn' 
+          ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
+          : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again tomorrow at 7:00 AM. Thank you'
+      });
       setShowPopupBooking(false);
       return;
     }
 
     if (!formData.patient_name || !formData.phone || !formData.service || !formData.appointment_date || !formData.appointment_time) {
-      alert(lang === 'bn' ? 'দয়া করে সব ফিল্ড সঠিকভাবে পূরণ করুন।' : 'Please fill in all required fields.')
+      setCustomAlert({
+        show: true,
+        message: lang === 'bn' ? 'দয়া করে সব ফিল্ড সঠিকভাবে পূরণ করুন।' : 'Please fill in all required fields.'
+      });
       return
     }
 
     if (formData.phone.length !== 11) {
-      alert(lang === 'bn' ? 'মোবাইল নম্বর অবশ্যই ১১ ডিজিটের হতে হবে।' : 'Mobile number must be exactly 11 digits.')
+      setCustomAlert({
+        show: true,
+        message: lang === 'bn' ? 'মোবাইল নম্বর অবশ্যই ১১ ডিজিটের হতে হবে।' : 'Mobile number must be exactly 11 digits.'
+      });
       return
     }
 
@@ -392,18 +421,13 @@ export default function Home() {
                          formData.service.includes("Pain persists");
     const targetType = isNewPatient ? 'new' : 'old';
 
-    if (slotData.total >= 2) {
-      alert(lang === 'bn' ? 'দুঃখিত, এই সময়ে এপয়েন্টমেন্ট সম্পূর্ণ বুকড।' : 'Sorry, this time slot is fully booked.')
-      return
-    }
-
-    if (targetType === 'new' && slotData.new >= 1) {
-      alert(lang === 'bn' ? 'দুঃখিত, এই স্লটে ইতিমধ্যে একজন নতুন রোগী বুক করেছেন।' : 'Sorry, a new patient is already booked in this slot.');
-      return;
-    }
-
-    if (targetType === 'old' && slotData.old >= 1) {
-      alert(lang === 'bn' ? 'দুঃখিত, এই স্লটে ইতিমধ্যে একজন পুরাতন রোগী বুক করেছেন।' : 'Sorry, an old patient is already booked in this slot.');
+    if (slotData.total >= 2 || (targetType === 'new' && slotData.new >= 1) || (targetType === 'old' && slotData.old >= 1)) {
+      setCustomAlert({
+        show: true,
+        message: lang === 'bn' 
+          ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+          : 'Sorry, this slot is already booked. Please choose another time.'
+      });
       return;
     }
 
@@ -426,7 +450,7 @@ export default function Home() {
         }])
 
       if (error) {
-        alert('Database Error: ' + error.message)
+        setCustomAlert({ show: true, message: 'Database Error: ' + error.message });
         setLoading(false)
         return
       }
@@ -465,7 +489,7 @@ export default function Home() {
       });
       
     } catch (err) {
-      alert('Error: ' + (err.message || err));
+      setCustomAlert({ show: true, message: 'Error: ' + (err.message || err) });
     } finally {
       setLoading(false);
     }
@@ -843,6 +867,36 @@ export default function Home() {
                 {loading ? t[lang].submitting : t[lang].submitBtn}
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* অত্যন্ত সুন্দর ও আধুনিক কাস্টম নোটিশ মোডাল */}
+      {customAlert.show && (
+        <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
+          <div 
+            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-5 border relative overflow-hidden" 
+            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
+          >
+            <div className="w-16 h-16 bg-gradient-to-tr from-amber-500 to-amber-400 text-white text-2xl rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-amber-500/30">
+              ⚠️
+            </div>
+            
+            <div className="space-y-2">
+              <h3 className="text-xl font-black text-[#0E3A5D] dark:text-teal-300">
+                {lang === 'bn' ? 'মনোযোগ দিন' : 'Attention'}
+              </h3>
+              <p className="text-sm md:text-base leading-relaxed font-medium" style={{ color: themeStyles.subTextColor }}>
+                {customAlert.message}
+              </p>
+            </div>
+
+            <button 
+              onClick={() => setCustomAlert({ show: false, message: '' })} 
+              className="w-full font-extrabold py-3.5 rounded-2xl transition duration-200 shadow-lg shadow-cyan-500/20 cursor-pointer text-white bg-gradient-to-r from-[#0077b6] to-[#00a8e8] hover:from-[#006096] hover:to-[#008fca]"
+            >
+              {lang === 'bn' ? 'ঠিক আছে' : 'OK'}
+            </button>
           </div>
         </div>
       )}
