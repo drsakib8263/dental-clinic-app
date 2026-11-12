@@ -37,9 +37,13 @@ export async function POST(request) {
       .select('subscription');
 
     if (!subError && subs && subs.length > 0) {
+      // সার্ভিস ওয়ার্কারের জন্য আলাদা আলাদা প্রপার্টিসহ পে-লোড তৈরি
       const payload = JSON.stringify({
         title: '🔔 নতুন অ্যাপয়েন্টমেন্ট!',
-        body: `রোগী: ${body.patient_name} (${body.patient_phone})\nতারিখ: ${body.appointment_date} (${body.appointment_time})`
+        patientName: body.patient_name || 'অজানা রোগী',
+        patientPhone: body.patient_phone || '',
+        date: body.appointment_date || '',
+        timeSlot: body.appointment_time || ''
       });
 
       // সকল সাবস্ক্রাইব করা ডিভাইসে ব্যাকগ্রাউন্ড পুশ নোটিফিকেশন পাঠানো
