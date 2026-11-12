@@ -16,7 +16,7 @@ export default function Home() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
   const [chamberStatusText, setChamberStatusText] = useState('')
-  const [isChamberOpenNow, setIsChamberOpenNow] = useState(false) // চেম্বার খোলা বা বন্ধের রিয়েল-টাইম স্টেট
+  const [isChamberOpenNow, setIsChamberOpenNow] = useState(false)
   const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
   const [chamberNotice, setChamberNotice] = useState({
     isClosed: false,
@@ -29,7 +29,6 @@ export default function Home() {
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showPopupBooking, setShowPopupBooking] = useState(false)
   
-  // কাস্টম সুন্দর নোটিশ মোডালের জন্য স্টেট
   const [customAlert, setCustomAlert] = useState({ show: false, message: '' })
 
   const [darkMode, setDarkMode] = useState(false)
@@ -987,7 +986,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* কেন আমাদের পছন্দ করবেন সেকশন */}
+      {/* কেন আমাদের পছন্দ করবেন সেকশন (নম্বর রিমোভ করা হয়েছে) */}
       <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
@@ -1008,9 +1007,6 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
                 
                 <div className="relative z-10 space-y-3 text-white">
-                  <span className="text-xs font-bold tracking-widest uppercase text-cyan-300 bg-black/60 px-3 py-1 inline-block">
-                    0{index + 1}
-                  </span>
                   <h3 className="text-2xl md:text-4xl font-black drop-shadow-md">{box.title}</h3>
                   <p className="text-sm md:text-base leading-relaxed text-slate-200 font-medium max-w-2xl drop-shadow-sm">
                     {box.description}
