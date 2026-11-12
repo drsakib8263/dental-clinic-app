@@ -42,6 +42,16 @@ export default function AdminDashboard() {
     messageEn: ''
   })
 
+  // বাংলাদেশ সময় অনুযায়ী আজকের তারিখ বের করার ফাংশন (YYYY-MM-DD)
+  const getTodayBD = () => {
+    const now = new Date();
+    const bdTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }));
+    const year = bdTime.getFullYear();
+    const month = String(bdTime.getMonth() + 1).padStart(2, '0');
+    const day = String(bdTime.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
     const isDark = localStorage.getItem('admin_theme') !== 'light'
     setDarkMode(isDark)
@@ -51,11 +61,9 @@ export default function AdminDashboard() {
       document.documentElement.classList.remove('dark')
     }
 
-    // সার্ভিস ওয়ার্কার রেজিস্টার করা এবং পূর্বের সাবস্ক্রিপশন চেক করা
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js')
         .then(async (reg) => {
-          console.log('Service Worker Registered:', reg.scope)
           const sub = await reg.pushManager.getSubscription()
           if (sub) {
             setIsSubscribed(true)
@@ -64,7 +72,6 @@ export default function AdminDashboard() {
         .catch((err) => console.error('Service Worker Error:', err))
     }
 
-    // ব্রাউজার নোটিফিকেশনের অনুমতি চাওয়া
     if (typeof window !== 'undefined' && 'Notification' in window) {
       if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission()
@@ -86,8 +93,12 @@ export default function AdminDashboard() {
           table: 'appointments',
         },
         (payload) => {
+          const today = getTodayBD()
           if (payload.eventType === 'INSERT') {
-            setAppointments((prev) => [payload.new, ...prev])
+            // যদি নতুন বুকিংটি আজকের বা ভবিষ্যতের হয় তবেই লিস্টে দেখাবে
+            if (payload.new.appointment_date >= today) {
+              setAppointments((prev) => [payload.new, ...prev])
+            }
             setNewBookingAlert(payload.new)
             playNotificationSound()
             showNativeNotification(payload.new)
@@ -132,11 +143,16 @@ export default function AdminDashboard() {
 
   const fetchAppointments = async (dateFilter = '') => {
     setLoading(true)
+    const today = getTodayBD()
+
     try {
       let query = supabase.from('appointments').select('*').order('appointment_date', { ascending: true })
       
       if (dateFilter) {
         query = query.eq('appointment_date', dateFilter)
+      } else {
+        // যদি নির্দিষ্ট তারিখ সিলেক্ট করা না থাকে, তবে শুধুমাত্র আজকের ও ভবিষ্যতের সিরিয়াল দেখাবে
+        query = query.gte('appointment_date', today)
       }
 
       const { data, error } = await query
@@ -237,7 +253,6 @@ export default function AdminDashboard() {
     }
   }
 
-  // ব্যাকগ্রাউন্ড পুশ সাবস্ক্রাইব হ্যান্ডলার (ডাটাবেজে সাবস্ক্রিপশন সেভ সহ)
   const handleSubscribePush = async () => {
     try {
       if (!('serviceWorker' in navigator)) {
@@ -258,7 +273,6 @@ export default function AdminDashboard() {
         applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
       })
 
-      // Supabase ডাটাবেজে সাবস্ক্রিপশন ডেটা সেভ করা
       const { error } = await supabase
         .from('push_subscriptions')
         .upsert({
@@ -333,7 +347,6 @@ export default function AdminDashboard() {
         <h1 className="text-2xl md:text-3xl font-black text-teal-600 dark:text-teal-400">অ্যাডমিন ড্যাশবোর্ড</h1>
         
         <div className="flex flex-wrap items-center gap-3">
-          {/* ব্যাকগ্রাউন্ড পুশ অন বাটন */}
           <button
             type="button"
             onClick={handleSubscribePush}
@@ -460,7 +473,7 @@ export default function AdminDashboard() {
       {/* অ্যাপয়েন্টমেন্ট লিস্ট সেকশন */}
       <div className="max-w-6xl mx-auto bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <h2 className="text-xl font-bold text-teal-600 dark:text-teal-400">📅 রোগীর অ্যাপয়েন্টমেন্ট তালিকা</h2>
+          <h2 className="text-xl font-bold text-teal-600 dark:text-teal-400">📅 রোগীর অ্যাপয়েন্টমেন্ট তালিকা (আজ ও ভবিষ্যৎ)</h2>
           <div className="flex items-center gap-3">
             <input
               type="date"
