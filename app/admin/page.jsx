@@ -42,7 +42,7 @@ export default function AdminDashboard() {
     messageEn: ''
   })
 
-  // বাংলাদেশ সময় অনুযায়ী আজকের তারিখ বের করার ফাংশন (YYYY-MM-DD)
+  // বাংলাদেশ সময় অনুযায়ী আজকের তারিখ বের করার ফাংশন (YYYY-MM-DD)
   const getTodayBD = () => {
     const now = new Date();
     const bdTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }));
@@ -243,7 +243,7 @@ export default function AdminDashboard() {
       if (error) {
         alert('ডিলিট করতে সমস্যা হয়েছে: ' + error.message)
       } else {
-        alert('অ্যাপয়েন্টমেন্ট সফলভাবে ডিলিট করা হয়েছে!')
+        // সফলতার পপ-আপ মেসেজটি রিমোভ করা হয়েছে, সরাসরি লিস্ট রিফ্রেশ হবে
         fetchAppointments(selectedDate)
       }
     } catch (err) {
@@ -513,7 +513,7 @@ export default function AdminDashboard() {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-extrabold text-base text-slate-900 dark:text-white">{item.patient_name}</h3>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">বয়স: {item.age || 'প্রযোজ্য নয়'}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">বয়স: {item.age || 'প্রযোজ্য নয়'}</p>
                     </div>
                     <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
                       item.status === 'Confirmed' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/40'
@@ -560,7 +560,7 @@ export default function AdminDashboard() {
               ))}
             </div>
 
-            {/* ডেস্কটপ ও বড় স্ক্রিনের জন্য ট্রেডিশনাল টেবিল ভিউ (md ও তার উপরে দেখাবে) */}
+            {/* ডেস্কটপ ও বড় স্ক্রিনের জন্য ট্রেডিশনাল টেবিল ভিউ (md ও তার উপরে দেখাবে) */}
             <div className="hidden md:block overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700">
               <table className="w-full text-left border-collapse">
                 <thead>
