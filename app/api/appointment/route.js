@@ -37,13 +37,18 @@ export async function POST(request) {
       .select('subscription');
 
     if (!subError && subs && subs.length > 0) {
-      // সার্ভিস ওয়ার্কারের জন্য আলাদা আলাদা প্রপার্টিসহ পে-লোড তৈরি
+      // বিভিন্ন সম্ভাব্য ফিল্ড নেম চেক করে সঠিক মান বের করা
+      const pName = body.patient_name || body.name || body.patientName || 'অজানা রোগী';
+      const pPhone = body.patient_phone || body.phone || body.patientPhone || '';
+      const pDate = body.appointment_date || body.date || '';
+      const pTime = body.appointment_time || body.time || body.timeSlot || '';
+
       const payload = JSON.stringify({
         title: '🔔 নতুন অ্যাপয়েন্টমেন্ট!',
-        patientName: body.patient_name || 'অজানা রোগী',
-        patientPhone: body.patient_phone || '',
-        date: body.appointment_date || '',
-        timeSlot: body.appointment_time || ''
+        patientName: pName,
+        patientPhone: pPhone,
+        date: pDate,
+        timeSlot: pTime
       });
 
       // সকল সাবস্ক্রাইব করা ডিভাইসে ব্যাকগ্রাউন্ড পুশ নোটিফিকেশন পাঠানো
