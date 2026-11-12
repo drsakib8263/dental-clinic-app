@@ -16,6 +16,7 @@ export default function Home() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
   const [chamberStatusText, setChamberStatusText] = useState('')
+  const [isChamberOpenNow, setIsChamberOpenNow] = useState(false) // চেম্বার খোলা বা বন্ধের রিয়েল-টাইম স্টেট
   const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
   const [chamberNotice, setChamberNotice] = useState({
     isClosed: false,
@@ -28,7 +29,7 @@ export default function Home() {
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showPopupBooking, setShowPopupBooking] = useState(false)
   
-  // কাস্টম সুন্দর নোটিশ মোডালের জন্য নতুন স্টেট
+  // কাস্টম সুন্দর নোটিশ মোডালের জন্য স্টেট
   const [customAlert, setCustomAlert] = useState({ show: false, message: '' })
 
   const [darkMode, setDarkMode] = useState(false)
@@ -106,11 +107,12 @@ export default function Home() {
       const currentTimeInMinutes = hours * 60 + minutes
 
       const isOpenTime = day !== 5 && currentTimeInMinutes >= 990 && currentTimeInMinutes <= 1170
+      setIsChamberOpenNow(isOpenTime)
 
       if (lang === 'bn') {
-        setChamberStatusText(isOpenTime ? '🟢 চেম্বার এখন চালু রয়েছে' : '🔴 চেম্বার বর্তমানে বন্ধ রয়েছে')
+        setChamberStatusText(isOpenTime ? 'চেম্বার এখন চালু রয়েছে' : 'চেম্বার বর্তমানে বন্ধ রয়েছে')
       } else {
-        setChamberStatusText(isOpenTime ? '🟢 Chamber is currently OPEN' : '🟢 Chamber is currently CLOSED')
+        setChamberStatusText(isOpenTime ? 'Chamber is currently OPEN' : 'Chamber is currently CLOSED')
       }
     }
 
@@ -322,7 +324,7 @@ export default function Home() {
       setCustomAlert({
         show: true,
         message: lang === 'bn' 
-          ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
+          ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
           : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again tomorrow at 7:00 AM. Thank you'
       });
       return;
@@ -347,7 +349,7 @@ export default function Home() {
             setCustomAlert({
               show: true,
               message: lang === 'bn' 
-                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
                 : 'Sorry, this slot is already booked. Please choose another time.'
             });
             return;
@@ -356,7 +358,7 @@ export default function Home() {
             setCustomAlert({
               show: true,
               message: lang === 'bn' 
-                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
                 : 'Sorry, this slot is already booked. Please choose another time.'
             });
             return;
@@ -365,7 +367,7 @@ export default function Home() {
             setCustomAlert({
               show: true,
               message: lang === 'bn' 
-                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
                 : 'Sorry, this slot is already booked. Please choose another time.'
             });
             return;
@@ -389,7 +391,7 @@ export default function Home() {
       setCustomAlert({
         show: true,
         message: lang === 'bn' 
-          ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
+          ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
           : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again tomorrow at 7:00 AM. Thank you'
       });
       setShowPopupBooking(false);
@@ -425,7 +427,7 @@ export default function Home() {
       setCustomAlert({
         show: true,
         message: lang === 'bn' 
-          ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+          ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
           : 'Sorry, this slot is already booked. Please choose another time.'
       });
       return;
@@ -678,7 +680,8 @@ export default function Home() {
       <section className="relative overflow-hidden bg-gradient-to-r from-[#0d2857] via-[#0b3c85] to-[#0077b6] text-white py-10 lg:py-20 px-4 md:px-12">
         <div className="max-w-7xl mx-auto mb-6">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs md:text-sm font-semibold">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            {/* ডাইনামিক স্ট্যাটাস ইন্ডিকেটর ডট: খোলা থাকলে সবুজ (emerald), বন্ধ থাকলে লাল (rose) */}
+            <span className={`w-2.5 h-2.5 rounded-full ${(!chamberNotice.isClosed && isChamberOpenNow) ? 'bg-emerald-400 animate-pulse' : 'bg-rose-500'}`}></span>
             <span>{chamberNotice.isClosed ? (lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn) : chamberStatusText}</span>
           </div>
         </div>
