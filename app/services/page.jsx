@@ -4,18 +4,9 @@ import { useState, useEffect } from 'react'
 
 export default function ServicesPage() {
   const [lang, setLang] = useState('bn')
-  const [darkMode, setDarkMode] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  useEffect(() => {
-    const root = document.documentElement
-    if (darkMode) {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
-    }
-  }, [darkMode])
-
+  
   const servicesList = [
     {
       id: 'ser-01',
@@ -253,7 +244,7 @@ export default function ServicesPage() {
   return (
     <main
       data-lang={lang}
-      className="font-body-ui min-h-screen transition-colors duration-300 bg-[#F7F5F0] dark:bg-[#121110] text-[#2C2A29] dark:text-[#F7F5F0] overflow-x-clip"
+      className="font-body-ui min-h-screen transition-colors duration-300 bg-[#F7F5F0] text-[#2C2A29] overflow-x-clip"
     >
       <link
         rel="stylesheet"
@@ -261,7 +252,7 @@ export default function ServicesPage() {
       />
 
       {/* টপ নোটিশ ব্যানার */}
-      <div className="bg-[#2C2A29] dark:bg-[#0D0C0B] text-[#D8CFC4] py-2.5 px-4 text-center text-xs md:text-sm font-medium tracking-wide border-b border-[#A68A64]/25 flex items-center justify-center gap-2">
+      <div className="bg-[#2C2A29] text-[#D8CFC4] py-2.5 px-4 text-center text-xs md:text-sm font-medium tracking-wide border-b border-[#A68A64]/25 flex items-center justify-center gap-2">
         <span className="bg-[#A68A64] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
           Notice
         </span>
@@ -273,14 +264,14 @@ export default function ServicesPage() {
       </div>
 
       {/* হেডার এবং ন্যাভিগেশন বার */}
-      <header className="sticky top-0 z-50 bg-[#FCFBF9]/95 dark:bg-[#171615]/95 backdrop-blur-md border-b border-[#E6DFD5] dark:border-white/10 transition-colors duration-300">
+      <header className="sticky top-0 z-50 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-[#E6DFD5] transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between gap-3">
           <a href="/" className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 shrink-0 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] flex items-center justify-center text-lg border border-[#A68A64]/40">
+            <div className="w-10 h-10 shrink-0 rounded-full bg-[#2C2A29] text-[#F7F5F0] flex items-center justify-center text-lg border border-[#A68A64]/40">
               🦷
             </div>
             <div className="min-w-0">
-              <span className="font-bold text-[#2C2A29] dark:text-[#F7F5F0] text-base md:text-xl tracking-tight block leading-none truncate">
+              <span className="font-bold text-[#2C2A29] text-base md:text-xl tracking-tight block leading-none truncate">
                 {lang === 'bn' ? 'ডাঃ আসির মোসাদ্দেক সাকিব' : 'Dr. Asir Mosaddeque Sakib'}
               </span>
               <span className="text-[10px] font-semibold text-[#A68A64] uppercase tracking-widest block pt-1 truncate">
@@ -289,7 +280,7 @@ export default function ServicesPage() {
             </div>
           </a>
 
-          <nav className="hidden lg:flex items-center gap-6 font-medium text-sm text-[#5C5852] dark:text-[#D8CFC4]">
+          <nav className="hidden lg:flex items-center gap-6 font-medium text-sm text-[#5C5852]">
             <a href="/" className="hover:text-[#A68A64] transition-colors duration-300">
               {lang === 'bn' ? 'হোম' : 'Home'}
             </a>
@@ -299,7 +290,7 @@ export default function ServicesPage() {
             <a href="/introduction-to-dentistry" className="hover:text-[#A68A64] transition-colors duration-300">
               {lang === 'bn' ? 'ডেন্টিস্ট্রি সম্পর্কে' : 'About Dentistry'}
             </a>
-            <a href="/services" className="text-[#2C2A29] dark:text-[#F7F5F0] font-semibold border-b border-[#A68A64] pb-0.5 transition-colors duration-300">
+            <a href="/services" className="text-[#2C2A29] font-semibold border-b border-[#A68A64] pb-0.5 transition-colors duration-300">
               {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
             </a>
             <a href="/gallery" className="hover:text-[#A68A64] transition-colors duration-300">
@@ -311,20 +302,11 @@ export default function ServicesPage() {
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={() => setDarkMode(!darkMode)}
-              title={darkMode ? (lang === 'bn' ? 'লাইট মোড' : 'Light Mode') : (lang === 'bn' ? 'ডার্ক মোড' : 'Dark Mode')}
-              aria-label="Toggle Dark Mode"
-              className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-xs sm:text-sm cursor-pointer transition-colors duration-300"
-            >
-              {darkMode ? '☀️' : '🌙'}
-            </button>
-
+            
             <button
               type="button"
               onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-              className="font-semibold px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] text-xs md:text-sm transition-colors duration-300 flex items-center gap-1.5 cursor-pointer"
+              className="font-semibold px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:border-[#A68A64] text-[#2C2A29] text-xs md:text-sm transition-colors duration-300 flex items-center gap-1.5 cursor-pointer"
             >
               <span>🌐</span>
               <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
@@ -333,7 +315,7 @@ export default function ServicesPage() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-base sm:text-lg cursor-pointer focus:outline-none"
+              className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] text-[#2C2A29] flex items-center justify-center text-base sm:text-lg cursor-pointer focus:outline-none"
               aria-label="Mobile Menu Toggle"
             >
               {mobileMenuOpen ? '✕' : '☰'}
@@ -344,38 +326,38 @@ export default function ServicesPage() {
 
       {/* মোবাইল / হ্যামবার্গার ড্রপডাউন মেনু (স্ক্রলের যেকোনো জায়গা থেকে খুলবে) */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[73px] sm:top-[81px] z-50 px-4 sm:px-6 py-4 space-y-2 bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/15 shadow-xl transition-all duration-300 max-h-[75vh] overflow-y-auto">
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#2C2A29] dark:text-[#F7F5F0]">
+        <div className="lg:hidden fixed inset-x-0 top-[73px] sm:top-[81px] z-50 px-4 sm:px-6 py-4 space-y-2 bg-[#FCFBF9] border-b border-[#E6DFD5] shadow-xl transition-all duration-300 max-h-[75vh] overflow-y-auto">
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#2C2A29]">
             {lang === 'bn' ? 'হোম' : 'Home'}
           </a>
-          <a href="/#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
           </a>
-          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'ডেন্টিস্ট্রি সম্পর্কে' : 'About Dentistry'}
           </a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#A68A64]">
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#A68A64]">
             {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
           </a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
           </a>
-          <a href="/#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm text-[#5C5852]">
             {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
           </a>
         </div>
       )}
 
       {/* হিরো সেকশন */}
-      <section className="bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/10 py-12 md:py-16 px-4 md:px-8 transition-colors duration-300">
+      <section className="bg-[#FCFBF9] border-b border-[#E6DFD5] py-12 md:py-16 px-4 md:px-8 transition-colors duration-300">
         <div className="max-w-4xl mx-auto text-center space-y-3">
-          <span className="inline-block bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#A68A64] text-xs font-semibold px-4 py-1.5 rounded-full border border-[#E6DFD5] dark:border-white/15 uppercase tracking-widest">
+          <span className="inline-block bg-[#F7F5F0] text-[#A68A64] text-xs font-semibold px-4 py-1.5 rounded-full border border-[#E6DFD5] uppercase tracking-widest">
             {lang === 'bn' ? 'আমাদের ডেন্টাল সেবাসমূহ' : 'Clinical Specialties'}
           </span>
-          <h1 className="font-heading text-3xl md:text-5xl font-extrabold text-[#2C2A29] dark:text-[#F7F5F0] tracking-tight pt-1">
+          <h1 className="font-heading text-3xl md:text-5xl font-extrabold text-[#2C2A29] tracking-tight pt-1">
             {lang === 'bn' ? 'আধুনিক ও ব্যথামুক্ত ডেন্টাল সেবা' : 'Comprehensive & Painless Dental Care'}
           </h1>
-          <p className="text-sm md:text-base text-[#5C5852] dark:text-[#D8CFC4] max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm md:text-base text-[#5C5852] max-w-2xl mx-auto leading-relaxed">
             {lang === 'bn'
               ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আধুনিক প্রযুক্তির সাহায্যে সুনির্দিষ্ট ও নিরাপদ সেবা প্রদান করা হয়।'
               : 'Providing precise, hygienic, and state-of-the-art dental procedures using modern technology.'}
@@ -389,11 +371,11 @@ export default function ServicesPage() {
           {servicesList.map((service) => (
             <div
               key={service.id}
-              className="bg-[#FCFBF9] dark:bg-[#171615] rounded-2xl border border-[#E6DFD5] dark:border-white/10 hover:border-[#A68A64] transition-all duration-300 overflow-hidden flex flex-col justify-between group"
+              className="bg-[#FCFBF9] rounded-2xl border border-[#E6DFD5] hover:border-[#A68A64] transition-all duration-300 overflow-hidden flex flex-col justify-between group"
             >
-              <div className="w-full h-52 bg-[#F7F5F0] dark:bg-[#1C1B1A] relative overflow-hidden border-b border-[#E6DFD5] dark:border-white/10">
+              <div className="w-full h-52 bg-[#F7F5F0] relative overflow-hidden border-b border-[#E6DFD5]">
                 <div className="absolute top-3 left-3 z-10">
-                  <span className="bg-[#2C2A29]/90 dark:bg-[#121110]/90 backdrop-blur-xs text-[#F7F5F0] text-[11px] font-semibold px-3 py-1 rounded-full border border-[#A68A64]/40">
+                  <span className="bg-[#2C2A29]/90 backdrop-blur-xs text-[#F7F5F0] text-[11px] font-semibold px-3 py-1 rounded-full border border-[#A68A64]/40">
                     {lang === 'bn' ? service.badgeBn : service.badgeEn}
                   </span>
                 </div>
@@ -416,23 +398,23 @@ export default function ServicesPage() {
 
               <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                 <div className="space-y-2">
-                  <h3 className="font-heading text-lg md:text-xl font-bold text-[#2C2A29] dark:text-[#F7F5F0] leading-snug group-hover:text-[#A68A64] transition-colors duration-300">
+                  <h3 className="font-heading text-lg md:text-xl font-bold text-[#2C2A29] leading-snug group-hover:text-[#A68A64] transition-colors duration-300">
                     {lang === 'bn' ? service.nameBn : service.nameEn}
                   </h3>
-                  <p className="text-xs md:text-sm text-[#5C5852] dark:text-[#D8CFC4] leading-relaxed">
+                  <p className="text-xs md:text-sm text-[#5C5852] leading-relaxed">
                     {lang === 'bn' ? service.descBn : service.descEn}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-[#E6DFD5] dark:border-white/10 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-1.5 text-[#5C5852] dark:text-[#D8CFC4] font-medium">
+                <div className="pt-4 border-t border-[#E6DFD5] flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-1.5 text-[#5C5852] font-medium">
                     <span>⏱️</span>
                     <span>{lang === 'bn' ? service.timeBn : service.timeEn}</span>
                   </div>
 
                   <a
                     href="/#booking-section"
-                    className="bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:bg-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] hover:text-white border border-[#E6DFD5] dark:border-white/15 font-semibold px-3.5 py-1.5 rounded-full transition-colors duration-300 flex items-center gap-1 text-xs"
+                    className="bg-[#F7F5F0] hover:bg-[#A68A64] text-[#2C2A29] hover:text-white border border-[#E6DFD5] font-semibold px-3.5 py-1.5 rounded-full transition-colors duration-300 flex items-center gap-1 text-xs"
                   >
                     <span>{lang === 'bn' ? 'বুকিং' : 'Book'}</span>
                     <span>→</span>
@@ -447,7 +429,7 @@ export default function ServicesPage() {
         <div className="mt-14 text-center">
           <a
             href="/#booking-section"
-            className="inline-flex items-center gap-3 bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white font-bold text-sm md:text-base px-8 py-3.5 rounded-full transition-colors duration-300 cursor-pointer"
+            className="inline-flex items-center gap-3 bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] font-bold text-sm md:text-base px-8 py-3.5 rounded-full transition-colors duration-300 cursor-pointer"
           >
             <span>📅</span>
             <span>{lang === 'bn' ? 'অ্যাপয়েন্টমেন্ট বুক করুন' : 'Book Appointment Now'}</span>
@@ -456,7 +438,7 @@ export default function ServicesPage() {
       </section>
 
       {/* ফুটার */}
-      <footer className="bg-[#2C2A29] dark:bg-[#0D0C0B] text-[#D8CFC4] py-8 border-t border-[#A68A64]/25">
+      <footer className="bg-[#2C2A29] text-[#D8CFC4] py-8 border-t border-[#A68A64]/25">
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D8CFC4]/75 gap-4">
           <p>© 2026 Dr. Sakib Dental Care. All rights reserved.</p>
           <p className="font-medium text-[#A68A64]">

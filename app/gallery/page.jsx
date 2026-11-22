@@ -4,20 +4,11 @@ import { useState, useEffect } from 'react'
 
 export default function GalleryPage() {
   const [lang, setLang] = useState('bn')
-  const [darkMode, setDarkMode] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selectedModalIndex, setSelectedModalIndex] = useState(null)
   const [activeGalleryType, setActiveGalleryType] = useState('chamber')
 
-  useEffect(() => {
-    const root = document.documentElement
-    if (darkMode) {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
-    }
-  }, [darkMode])
-
+  
   const chamberImages = Array.from({ length: 20 }, (_, i) => {
     const num = String(i + 1).padStart(2, '0')
     return {
@@ -67,7 +58,7 @@ export default function GalleryPage() {
   return (
     <main
       data-lang={lang}
-      className="font-body-ui min-h-screen bg-[#F7F5F0] dark:bg-[#121110] text-[#2C2A29] dark:text-[#F7F5F0] py-10 px-4 md:px-12 transition-colors duration-300 overflow-x-clip"
+      className="font-body-ui min-h-screen bg-[#F7F5F0] text-[#2C2A29] py-10 px-4 md:px-12 transition-colors duration-300 overflow-x-clip"
     >
       <link
         rel="stylesheet"
@@ -78,26 +69,17 @@ export default function GalleryPage() {
       <div className="max-w-6xl mx-auto flex justify-between items-center gap-2 mb-8 relative z-50">
         <a
           href="/"
-          className="bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white font-semibold px-4 sm:px-5 py-2.5 rounded-full transition-colors duration-300 text-xs sm:text-sm"
+          className="bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] font-semibold px-4 sm:px-5 py-2.5 rounded-full transition-colors duration-300 text-xs sm:text-sm"
         >
           {lang === 'bn' ? '← হোম পেজে ফিরে যান' : '← Back to Home'}
         </a>
 
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setDarkMode(!darkMode)}
-            title={darkMode ? (lang === 'bn' ? 'লাইট মোড' : 'Light Mode') : (lang === 'bn' ? 'ডার্ক মোড' : 'Dark Mode')}
-            aria-label="Toggle Dark Mode"
-            className="w-9 h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-sm cursor-pointer transition-colors duration-300"
-          >
-            {darkMode ? '☀️' : '🌙'}
-          </button>
-
+          
           <button
             type="button"
             onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-            className="bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] border border-[#E6DFD5] dark:border-white/15 font-semibold px-4 sm:px-5 py-2.5 rounded-full transition-colors duration-300 flex items-center gap-2 text-xs sm:text-sm cursor-pointer select-none"
+            className="bg-[#FCFBF9] hover:border-[#A68A64] text-[#2C2A29] border border-[#E6DFD5] font-semibold px-4 sm:px-5 py-2.5 rounded-full transition-colors duration-300 flex items-center gap-2 text-xs sm:text-sm cursor-pointer select-none"
           >
             <span>🌐</span>
             <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
@@ -106,7 +88,7 @@ export default function GalleryPage() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="w-9 h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-lg cursor-pointer transition-colors duration-300 focus:outline-none"
+            className="w-9 h-9 shrink-0 rounded-full border border-[#E6DFD5] bg-[#FCFBF9] hover:border-[#A68A64] text-[#2C2A29] flex items-center justify-center text-lg cursor-pointer transition-colors duration-300 focus:outline-none"
             aria-label="Toggle Hamburger Menu"
           >
             {mobileMenuOpen ? '✕' : '☰'}
@@ -116,51 +98,51 @@ export default function GalleryPage() {
 
       {/* হ্যামবার্গার ড্রপডাউন মেনু (স্ক্রলের যেকোনো পজিশন থেকে খুলবে) */}
       {mobileMenuOpen && (
-        <div className="fixed inset-x-4 top-[88px] z-50 max-w-6xl mx-auto p-4 rounded-2xl border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] shadow-xl space-y-2 font-semibold text-sm text-[#2C2A29] dark:text-[#F7F5F0] max-h-[75vh] overflow-y-auto">
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10">
+        <div className="fixed inset-x-4 top-[88px] z-50 max-w-6xl mx-auto p-4 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] shadow-xl space-y-2 font-semibold text-sm text-[#2C2A29] max-h-[75vh] overflow-y-auto">
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5]">
             {lang === 'bn' ? 'হোম' : 'Home'}
           </a>
-          <a href="/#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
           </a>
-          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'ডেন্টিস্ট্রি সম্পর্কে' : 'About Dentistry'}
           </a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
           </a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#A68A64]">
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] text-[#A68A64]">
             {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
           </a>
-          <a href="/#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl text-[#5C5852]">
             {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
           </a>
         </div>
       )}
 
-      <div className="max-w-6xl mx-auto bg-[#FCFBF9] dark:bg-[#171615] p-6 sm:p-8 md:p-12 rounded-2xl border border-[#E6DFD5] dark:border-white/10 relative z-10 space-y-16 transition-colors duration-300">
+      <div className="max-w-6xl mx-auto bg-[#FCFBF9] p-6 sm:p-8 md:p-12 rounded-2xl border border-[#E6DFD5] relative z-10 space-y-16 transition-colors duration-300">
 
         {/* হেডার */}
-        <div className="border-b border-[#E6DFD5] dark:border-white/10 pb-6 text-center space-y-2">
-          <span className="inline-block bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#A68A64] text-xs font-semibold px-4 py-1.5 rounded-full border border-[#E6DFD5] dark:border-white/15 uppercase tracking-widest">
+        <div className="border-b border-[#E6DFD5] pb-6 text-center space-y-2">
+          <span className="inline-block bg-[#F7F5F0] text-[#A68A64] text-xs font-semibold px-4 py-1.5 rounded-full border border-[#E6DFD5] uppercase tracking-widest">
             {lang === 'bn' ? 'ডেন্টাল গ্যালারি' : 'Visual Showcase'}
           </span>
-          <h1 className="font-heading text-3xl md:text-5xl font-extrabold text-[#2C2A29] dark:text-[#F7F5F0] tracking-tight pt-1">
+          <h1 className="font-heading text-3xl md:text-5xl font-extrabold text-[#2C2A29] tracking-tight pt-1">
             {lang === 'bn' ? 'ফটো গ্যালারি' : 'Photo Gallery'}
           </h1>
-          <p className="text-[#5C5852] dark:text-[#D8CFC4] font-semibold text-base md:text-lg">
+          <p className="text-[#5C5852] font-semibold text-base md:text-lg">
             {lang === 'bn' ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ার' : 'Dr. Asir Mosaddeque Sakib Dental Care'}
           </p>
         </div>
 
         {/* সেকশন ১: আমাদের চেম্বার */}
         <div className="space-y-6">
-          <div className="border-b border-[#E6DFD5] dark:border-white/10 pb-3">
-            <h2 className="font-heading text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
+          <div className="border-b border-[#E6DFD5] pb-3">
+            <h2 className="font-heading text-2xl font-bold text-[#2C2A29]">
               {lang === 'bn' ? 'আমাদের চেম্বার' : 'Our Chamber'}
             </h2>
           </div>
-          <p className="text-sm text-[#5C5852] dark:text-[#D8CFC4] text-center">
+          <p className="text-sm text-[#5C5852] text-center">
             {lang === 'bn'
               ? 'আমাদের চেম্বারের আধুনিক পরিবেশ ও চিকিৎসা সরঞ্জামের দৃশ্যসমূহ। (ছবিতে ক্লিক করে বড় করুন)'
               : 'Views of our modern chamber environment. (Click to enlarge)'}
@@ -170,7 +152,7 @@ export default function GalleryPage() {
             <button
               onClick={prevChamber}
               aria-label="Previous Chamber Image"
-              className="absolute left-1 md:left-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
+              className="absolute left-1 md:left-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
             >
               ❮
             </button>
@@ -179,7 +161,7 @@ export default function GalleryPage() {
               {/* বাম পাশের ঝাপসা ছবি (Peek View) */}
               <div
                 onClick={() => setChamberIndex((chamberIndex - 1 + chamberImages.length) % chamberImages.length)}
-                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
                 <img
                   src={chamberImages[(chamberIndex - 1 + chamberImages.length) % chamberImages.length].src}
@@ -203,7 +185,7 @@ export default function GalleryPage() {
               {/* ডান পাশের ঝাপসা ছবি (Peek View) */}
               <div
                 onClick={() => setChamberIndex((chamberIndex + 1) % chamberImages.length)}
-                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
                 <img
                   src={chamberImages[(chamberIndex + 1) % chamberImages.length].src}
@@ -216,7 +198,7 @@ export default function GalleryPage() {
             <button
               onClick={nextChamber}
               aria-label="Next Chamber Image"
-              className="absolute right-1 md:right-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
+              className="absolute right-1 md:right-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
             >
               ❯
             </button>
@@ -224,13 +206,13 @@ export default function GalleryPage() {
         </div>
 
         {/* সেকশন ২: রোগীর হাসি ফিরিয়ে আনার প্রচেষ্টা */}
-        <div className="space-y-6 pt-8 border-t border-[#E6DFD5] dark:border-white/10">
-          <div className="border-b border-[#E6DFD5] dark:border-white/10 pb-3">
-            <h2 className="font-heading text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
+        <div className="space-y-6 pt-8 border-t border-[#E6DFD5]">
+          <div className="border-b border-[#E6DFD5] pb-3">
+            <h2 className="font-heading text-2xl font-bold text-[#2C2A29]">
               {lang === 'bn' ? 'রোগীর হাসি ফিরিয়ে আনার প্রচেষ্টা' : 'Patient Smile Restoration'}
             </h2>
           </div>
-          <p className="text-sm text-[#5C5852] dark:text-[#D8CFC4] text-center">
+          <p className="text-sm text-[#5C5852] text-center">
             {lang === 'bn'
               ? 'আমাদের সফল চিকিৎসা ও কসমেটিক ডেন্টিস্ট্রির মাধ্যমে রোগীর হাসির রূপান্তরের দৃশ্যসমূহ। (ছবিতে ক্লিক করে বড় করুন)'
               : 'Showcasing smile transformations. (Click to enlarge)'}
@@ -240,7 +222,7 @@ export default function GalleryPage() {
             <button
               onClick={prevPatient}
               aria-label="Previous Patient Image"
-              className="absolute left-1 md:left-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
+              className="absolute left-1 md:left-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
             >
               ❮
             </button>
@@ -249,7 +231,7 @@ export default function GalleryPage() {
               {/* বাম পাশের ঝাপসা ছবি (Peek View) */}
               <div
                 onClick={() => setPatientIndex((patientIndex - 1 + patientImages.length) % patientImages.length)}
-                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
                 <img
                   src={patientImages[(patientIndex - 1 + patientImages.length) % patientImages.length].src}
@@ -273,7 +255,7 @@ export default function GalleryPage() {
               {/* ডান পাশের ঝাপসা ছবি (Peek View) */}
               <div
                 onClick={() => setPatientIndex((patientIndex + 1) % patientImages.length)}
-                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
                 <img
                   src={patientImages[(patientIndex + 1) % patientImages.length].src}
@@ -286,7 +268,7 @@ export default function GalleryPage() {
             <button
               onClick={nextPatient}
               aria-label="Next Patient Image"
-              className="absolute right-1 md:right-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
+              className="absolute right-1 md:right-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
             >
               ❯
             </button>
@@ -303,12 +285,12 @@ export default function GalleryPage() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-[#FCFBF9] dark:bg-[#171615] p-4 md:p-6 rounded-2xl border border-[#E6DFD5] dark:border-white/15 max-w-4xl w-full relative flex flex-col items-center shadow-xl"
+            className="bg-[#FCFBF9] p-4 md:p-6 rounded-2xl border border-[#E6DFD5] max-w-4xl w-full relative flex flex-col items-center shadow-xl"
           >
             {/* ক্লোজ বাটন */}
             <button
               onClick={() => setSelectedModalIndex(null)}
-              className="absolute top-3 right-3 z-40 bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white font-bold w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 cursor-pointer text-lg"
+              className="absolute top-3 right-3 z-40 bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] font-bold w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 cursor-pointer text-lg"
             >
               ✕
             </button>
@@ -320,7 +302,7 @@ export default function GalleryPage() {
               <button
                 onClick={prevModalSlide}
                 aria-label="Previous Modal Slide"
-                className="absolute left-1 md:left-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-xl transition-colors duration-300 cursor-pointer"
+                className="absolute left-1 md:left-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] flex items-center justify-center text-xl transition-colors duration-300 cursor-pointer"
               >
                 ❮
               </button>
@@ -329,7 +311,7 @@ export default function GalleryPage() {
                 {/* মোডাল বাম পাশের ঝাপসা ছবি */}
                 <div
                   onClick={() => setSelectedModalIndex((selectedModalIndex - 1 + currentImagesList.length) % currentImagesList.length)}
-                  className="hidden sm:flex relative w-1/4 h-48 md:h-72 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-300 hover:opacity-70 flex-shrink-0"
+                  className="hidden sm:flex relative w-1/4 h-48 md:h-72 rounded-2xl overflow-hidden border border-[#E6DFD5] cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-300 hover:opacity-70 flex-shrink-0"
                 >
                   <img
                     src={currentImagesList[(selectedModalIndex - 1 + currentImagesList.length) % currentImagesList.length].src}
@@ -350,7 +332,7 @@ export default function GalleryPage() {
                 {/* মোডাল ডান পাশের ঝাপসা ছবি */}
                 <div
                   onClick={() => setSelectedModalIndex((selectedModalIndex + 1) % currentImagesList.length)}
-                  className="hidden sm:flex relative w-1/4 h-48 md:h-72 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-300 hover:opacity-70 flex-shrink-0"
+                  className="hidden sm:flex relative w-1/4 h-48 md:h-72 rounded-2xl overflow-hidden border border-[#E6DFD5] cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-300 hover:opacity-70 flex-shrink-0"
                 >
                   <img
                     src={currentImagesList[(selectedModalIndex + 1) % currentImagesList.length].src}
@@ -364,14 +346,14 @@ export default function GalleryPage() {
               <button
                 onClick={nextModalSlide}
                 aria-label="Next Modal Slide"
-                className="absolute right-1 md:right-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-xl transition-colors duration-300 cursor-pointer"
+                className="absolute right-1 md:right-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] flex items-center justify-center text-xl transition-colors duration-300 cursor-pointer"
               >
                 ❯
               </button>
 
             </div>
 
-            <div className="text-sm font-bold text-[#5C5852] dark:text-[#D8CFC4] mt-2">
+            <div className="text-sm font-bold text-[#5C5852] mt-2">
               {selectedModalIndex + 1} / {currentImagesList.length}
             </div>
 

@@ -4,18 +4,9 @@ import { useState, useEffect } from 'react'
 
 export default function IntroductionToDentistry() {
   const [lang, setLang] = useState('bn')
-  const [darkMode, setDarkMode] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  useEffect(() => {
-    const root = document.documentElement
-    if (darkMode) {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
-    }
-  }, [darkMode])
-
+  
   const content = {
     bn: {
       brandName: 'ডাঃ আসির মোসাদ্দেক সাকিব',
@@ -54,7 +45,7 @@ export default function IntroductionToDentistry() {
   return (
     <main
       data-lang={lang}
-      className="font-body-ui min-h-screen relative py-6 px-4 md:px-12 transition-colors duration-300 scroll-smooth bg-[#F7F5F0] dark:bg-[#121110] text-[#2C2A29] dark:text-[#F7F5F0] overflow-x-clip"
+      className="font-body-ui min-h-screen relative py-6 px-4 md:px-12 transition-colors duration-300 scroll-smooth bg-[#F7F5F0] text-[#2C2A29] overflow-x-clip"
     >
       <link
         rel="stylesheet"
@@ -62,13 +53,13 @@ export default function IntroductionToDentistry() {
       />
 
       {/* ন্যাভিগেশন বার */}
-      <header className="max-w-7xl mx-auto mb-8 sticky top-4 z-50 p-4 md:px-8 rounded-2xl backdrop-blur-md flex items-center justify-between gap-2 border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9]/95 dark:bg-[#171615]/95 transition-colors duration-300">
+      <header className="max-w-7xl mx-auto mb-8 sticky top-4 z-50 p-4 md:px-8 rounded-2xl backdrop-blur-md flex items-center justify-between gap-2 border border-[#E6DFD5] bg-[#FCFBF9]/95 transition-colors duration-300">
         <a href="/" className="flex items-center gap-3 min-w-0">
-          <div className="w-10 h-10 shrink-0 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] flex items-center justify-center text-lg border border-[#A68A64]/40">
+          <div className="w-10 h-10 shrink-0 rounded-full bg-[#2C2A29] text-[#F7F5F0] flex items-center justify-center text-lg border border-[#A68A64]/40">
             🦷
           </div>
           <div className="flex flex-col min-w-0">
-            <span className="font-bold text-sm sm:text-base md:text-xl tracking-tight truncate text-[#2C2A29] dark:text-[#F7F5F0]">
+            <span className="font-bold text-sm sm:text-base md:text-xl tracking-tight truncate text-[#2C2A29]">
               {content[lang].brandName}
             </span>
             <span className="text-[10px] font-semibold text-[#A68A64] uppercase tracking-wider truncate">
@@ -77,14 +68,14 @@ export default function IntroductionToDentistry() {
           </div>
         </a>
 
-        <nav className="hidden lg:flex items-center gap-6 font-medium text-sm text-[#5C5852] dark:text-[#D8CFC4]">
+        <nav className="hidden lg:flex items-center gap-6 font-medium text-sm text-[#5C5852]">
           <a href="/" className="hover:text-[#A68A64] transition-colors duration-300">
             {lang === 'bn' ? 'হোম' : 'Home'}
           </a>
           <a href="/#about-section" className="hover:text-[#A68A64] transition-colors duration-300">
             {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
           </a>
-          <a href="/introduction-to-dentistry" className="text-[#2C2A29] dark:text-[#F7F5F0] font-semibold border-b border-[#A68A64] pb-0.5 transition-colors duration-300">
+          <a href="/introduction-to-dentistry" className="text-[#2C2A29] font-semibold border-b border-[#A68A64] pb-0.5 transition-colors duration-300">
             {content[lang].aboutDentistryMenu}
           </a>
           <a href="/services" className="hover:text-[#A68A64] transition-colors duration-300">
@@ -100,20 +91,11 @@ export default function IntroductionToDentistry() {
 
         <div className="flex items-center gap-2 shrink-0">
           {/* লাইট / ডার্ক মোড টগল বাটন */}
-          <button
-            type="button"
-            onClick={() => setDarkMode(!darkMode)}
-            title={darkMode ? (lang === 'bn' ? 'লাইট মোড' : 'Light Mode') : (lang === 'bn' ? 'ডার্ক মোড' : 'Dark Mode')}
-            aria-label="Toggle Dark Mode"
-            className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-xs sm:text-sm cursor-pointer transition-colors duration-300"
-          >
-            {darkMode ? '☀️' : '🌙'}
-          </button>
-
+          
           <button
             type="button"
             onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-            className="font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] transition-colors duration-300 flex items-center gap-1.5 text-xs md:text-sm cursor-pointer select-none"
+            className="font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:border-[#A68A64] text-[#2C2A29] transition-colors duration-300 flex items-center gap-1.5 text-xs md:text-sm cursor-pointer select-none"
           >
             <span>🌐</span>
             <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
@@ -122,7 +104,7 @@ export default function IntroductionToDentistry() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-base sm:text-lg cursor-pointer focus:outline-none"
+            className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] text-[#2C2A29] flex items-center justify-center text-base sm:text-lg cursor-pointer focus:outline-none"
             aria-label="Toggle Menu"
           >
             {mobileMenuOpen ? '✕' : '☰'}
@@ -132,23 +114,23 @@ export default function IntroductionToDentistry() {
 
       {/* হ্যামবার্গার / মোবাইল ড্রপডাউন মেনু (স্ক্রলের যেকোনো জায়গা থেকে খুলবে) */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-4 top-[88px] z-50 p-4 rounded-2xl border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] shadow-xl space-y-2 font-semibold text-sm text-[#2C2A29] dark:text-[#F7F5F0] max-h-[75vh] overflow-y-auto">
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10">
+        <div className="lg:hidden fixed inset-x-4 top-[88px] z-50 p-4 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] shadow-xl space-y-2 font-semibold text-sm text-[#2C2A29] max-h-[75vh] overflow-y-auto">
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5]">
             {lang === 'bn' ? 'হোম' : 'Home'}
           </a>
-          <a href="/#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
           </a>
-          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#A68A64]">
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] text-[#A68A64]">
             {content[lang].aboutDentistryMenu}
           </a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
           </a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
           </a>
-          <a href="/#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl text-[#5C5852]">
             {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
           </a>
         </div>
@@ -158,58 +140,58 @@ export default function IntroductionToDentistry() {
       <section className="max-w-7xl mx-auto space-y-8 mb-16">
 
         {/* হেডার ব্যানার */}
-        <div className="p-8 md:p-12 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] text-center space-y-4 transition-colors duration-300">
-          <span className="text-[#A68A64] bg-[#F7F5F0] dark:bg-[#1C1B1A] border border-[#E6DFD5] dark:border-white/15 text-xs font-semibold px-4 py-1.5 rounded-full uppercase tracking-widest inline-block">
+        <div className="p-8 md:p-12 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-center space-y-4 transition-colors duration-300">
+          <span className="text-[#A68A64] bg-[#F7F5F0] border border-[#E6DFD5] text-xs font-semibold px-4 py-1.5 rounded-full uppercase tracking-widest inline-block">
             {lang === 'bn' ? 'ডেন্টাল গাইড' : 'Overview'}
           </span>
-          <h1 className="font-heading text-3xl md:text-5xl font-extrabold tracking-tight text-[#2C2A29] dark:text-[#F7F5F0]">
+          <h1 className="font-heading text-3xl md:text-5xl font-extrabold tracking-tight text-[#2C2A29]">
             {content[lang].title}
           </h1>
-          <p className="text-sm md:text-base max-w-2xl mx-auto font-medium text-[#5C5852] dark:text-[#D8CFC4]">
+          <p className="text-sm md:text-base max-w-2xl mx-auto font-medium text-[#5C5852]">
             {content[lang].subtitle}
           </p>
         </div>
 
         {/* প্রধান বিবরণ */}
-        <div className="p-6 md:p-10 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] space-y-4 transition-colors duration-300">
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
+        <div className="p-6 md:p-10 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] space-y-4 transition-colors duration-300">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-[#2C2A29]">
             {content[lang].introTitle}
           </h2>
-          <p className="text-sm md:text-base leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">
+          <p className="text-sm md:text-base leading-relaxed text-[#5C5852]">
             {content[lang].introDesc}
           </p>
         </div>
 
         {/* পয়েন্টসমূহ */}
         <div className="space-y-6">
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-center text-[#2C2A29] dark:text-[#F7F5F0]">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-center text-[#2C2A29]">
             {content[lang].pointsTitle}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            <div className="p-6 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] transition-colors duration-300 space-y-3">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29]">
+            <div className="p-6 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] hover:border-[#A68A64] transition-colors duration-300 space-y-3">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-[#2C2A29] text-[#F7F5F0]">
                 🦷
               </div>
-              <h3 className="font-heading text-lg font-bold text-[#2C2A29] dark:text-[#F7F5F0]">{content[lang].point1Title}</h3>
-              <p className="text-xs md:text-sm leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">{content[lang].point1Desc}</p>
+              <h3 className="font-heading text-lg font-bold text-[#2C2A29]">{content[lang].point1Title}</h3>
+              <p className="text-xs md:text-sm leading-relaxed text-[#5C5852]">{content[lang].point1Desc}</p>
             </div>
 
-            <div className="p-6 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] transition-colors duration-300 space-y-3">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29]">
+            <div className="p-6 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] hover:border-[#A68A64] transition-colors duration-300 space-y-3">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-[#2C2A29] text-[#F7F5F0]">
                 🛡️
               </div>
-              <h3 className="font-heading text-lg font-bold text-[#2C2A29] dark:text-[#F7F5F0]">{content[lang].point2Title}</h3>
-              <p className="text-xs md:text-sm leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">{content[lang].point2Desc}</p>
+              <h3 className="font-heading text-lg font-bold text-[#2C2A29]">{content[lang].point2Title}</h3>
+              <p className="text-xs md:text-sm leading-relaxed text-[#5C5852]">{content[lang].point2Desc}</p>
             </div>
 
-            <div className="p-6 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] transition-colors duration-300 space-y-3">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29]">
+            <div className="p-6 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] hover:border-[#A68A64] transition-colors duration-300 space-y-3">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-[#2C2A29] text-[#F7F5F0]">
                 ⭐
               </div>
-              <h3 className="font-heading text-lg font-bold text-[#2C2A29] dark:text-[#F7F5F0]">{content[lang].point3Title}</h3>
-              <p className="text-xs md:text-sm leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">{content[lang].point3Desc}</p>
+              <h3 className="font-heading text-lg font-bold text-[#2C2A29]">{content[lang].point3Title}</h3>
+              <p className="text-xs md:text-sm leading-relaxed text-[#5C5852]">{content[lang].point3Desc}</p>
             </div>
 
           </div>
@@ -218,7 +200,7 @@ export default function IntroductionToDentistry() {
       </section>
 
       {/* ফুটার */}
-      <footer className="max-w-7xl mx-auto bg-[#2C2A29] dark:bg-[#0D0C0B] text-[#D8CFC4] py-6 px-6 rounded-2xl border border-[#A68A64]/25 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D8CFC4]/75 gap-4">
+      <footer className="max-w-7xl mx-auto bg-[#2C2A29] text-[#D8CFC4] py-6 px-6 rounded-2xl border border-[#A68A64]/25 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D8CFC4]/75 gap-4">
         <p>© 2026 Dr. Sakib Dental Care. All rights reserved.</p>
         <p className="font-medium text-[#A68A64]">
           developed by own(Dr. Asir Mosaddeque Sakib)

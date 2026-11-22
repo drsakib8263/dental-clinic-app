@@ -26,8 +26,7 @@ export default function AdminDashboard() {
   const [appointments, setAppointments] = useState([])
   const [selectedDate, setSelectedDate] = useState('')
   const [loading, setLoading] = useState(false)
-  const [darkMode, setDarkMode] = useState(true)
-  const [isSubscribed, setIsSubscribed] = useState(false)
+    const [isSubscribed, setIsSubscribed] = useState(false)
   const [newBookingAlert, setNewBookingAlert] = useState(null)
 
   // চেম্বার নোটিশ বক্স গুটানো বা খোলার স্টেট
@@ -117,12 +116,7 @@ export default function AdminDashboard() {
     }
   }, [isAuthenticated])
 
-  const toggleTheme = () => {
-    if (darkMode) {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('admin_theme', 'light')
-      setDarkMode(false)
-    } else {
+   else {
       document.documentElement.classList.add('dark')
       localStorage.setItem('admin_theme', 'dark')
       setDarkMode(true)
@@ -315,9 +309,9 @@ export default function AdminDashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors">
-        <form onSubmit={handleLogin} className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full max-w-md space-y-6">
-          <h2 className="text-2xl font-black text-center text-teal-600 dark:text-teal-400">অ্যাডমিন লগইন</h2>
+      <div className="min-h-screen flex items-center justify-center p-4 bg-slate-100 text-slate-900 transition-colors">
+        <form onSubmit={handleLogin} className="bg-white p-8 rounded-3xl shadow-2xl border border-slate-200 w-full max-w-md space-y-6">
+          <h2 className="text-2xl font-black text-center text-teal-600">অ্যাডমিন লগইন</h2>
           <div>
             <label className="block text-sm font-semibold mb-2">পাসকোড দিন</label>
             <input
@@ -325,7 +319,7 @@ export default function AdminDashboard() {
               value={passcode}
               onChange={(e) => setPasscode(e.target.value)}
               placeholder="পাসকোড লিখুন"
-              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none text-slate-900 dark:text-white"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none text-slate-900"
               required
             />
           </div>
@@ -338,11 +332,11 @@ export default function AdminDashboard() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-100 p-4 md:p-8 space-y-8 transition-colors">
+    <main className="min-h-screen bg-slate-100 text-slate-900 p-4 md:p-8 space-y-8 transition-colors">
       
       {/* টপ হেডার, ব্যাকগ্রাউন্ড পুশ বাটন ও থিম টগল */}
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl gap-4">
-        <h1 className="text-2xl md:text-3xl font-black text-teal-600 dark:text-teal-400">অ্যাডমিন ড্যাশবোর্ড</h1>
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center bg-white p-6 rounded-3xl border border-slate-200 shadow-xl gap-4">
+        <h1 className="text-2xl md:text-3xl font-black text-teal-600">অ্যাডমিন ড্যাশবোর্ড</h1>
         
         <div className="flex flex-wrap items-center gap-3">
           <button
@@ -355,14 +349,7 @@ export default function AdminDashboard() {
             {isSubscribed ? '✅ পুশ অন আছে' : '🔔 ব্যাকগ্রাউন্ড পুশ অন করুন'}
           </button>
 
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 font-bold px-4 py-2.5 rounded-xl shadow border border-slate-300 dark:border-slate-600 transition text-sm cursor-pointer"
-          >
-            {darkMode ? '☀️ লাইট মোড' : '🌙 ডার্ক মোড'}
-          </button>
-
+          
           <button
             onClick={() => setIsAuthenticated(false)}
             className="bg-rose-600 hover:bg-rose-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition cursor-pointer"
@@ -374,7 +361,7 @@ export default function AdminDashboard() {
 
       {/* নতুন বুকিং অ্যালার্ট নোটিফিকেশন ব্যানার */}
       {newBookingAlert && (
-        <div className="max-w-6xl mx-auto p-4 bg-teal-50 dark:bg-teal-950 border-2 border-teal-500 text-teal-900 dark:text-teal-100 rounded-2xl shadow-md flex justify-between items-center animate-bounce">
+        <div className="max-w-6xl mx-auto p-4 bg-teal-50 border-2 border-teal-500 text-teal-900 rounded-2xl shadow-md flex justify-between items-center animate-bounce">
           <div>
             <h3 className="font-bold text-base">🔔 নতুন একটি অ্যাপয়েন্টমেন্ট এসেছে!</h3>
             <p className="text-sm">
@@ -391,22 +378,22 @@ export default function AdminDashboard() {
       )}
 
       {/* চেম্বার নোটিশ কন্ট্রোল সেকশন */}
-      <div className="max-w-6xl mx-auto bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden transition-colors">
+      <div className="max-w-6xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden transition-colors">
         <div 
           onClick={() => setShowNoticeBox(!showNoticeBox)}
-          className="p-5 md:p-6 flex items-center justify-between bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700"
+          className="p-5 md:p-6 flex items-center justify-between bg-slate-50 hover:bg-slate-100 cursor-pointer select-none border-b border-slate-200"
         >
-          <h2 className="text-lg md:text-xl font-bold text-teal-600 dark:text-teal-400 flex items-center gap-2">
+          <h2 className="text-lg md:text-xl font-bold text-teal-600 flex items-center gap-2">
             <span>📢</span> চেম্বার বন্ধ/খোলা নোটিশ ম্যানেজমেন্ট
           </h2>
-          <button type="button" className="text-sm font-bold text-teal-600 dark:text-teal-400">
+          <button type="button" className="text-sm font-bold text-teal-600">
             {showNoticeBox ? 'সংকোচন করুন ▲' : 'সেটিংস খুলুন ▼'}
           </button>
         </div>
 
         {showNoticeBox && (
           <form onSubmit={handleUpdateNotice} className="p-6 md:p-8 space-y-6">
-            <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <input
                 type="checkbox"
                 id="isClosed"
@@ -414,7 +401,7 @@ export default function AdminDashboard() {
                 onChange={(e) => setNotice({ ...notice, isClosed: e.target.checked })}
                 className="w-6 h-6 accent-teal-500 cursor-pointer"
               />
-              <label htmlFor="isClosed" className="font-bold text-rose-600 dark:text-rose-400 cursor-pointer">
+              <label htmlFor="isClosed" className="font-bold text-rose-600 cursor-pointer">
                 চেম্বারের কার্যক্রম বর্তমানে বন্ধ রাখুন (হোমপেজে পপ-আপ নোটিশ দেখাবে)
               </label>
             </div>
@@ -426,7 +413,7 @@ export default function AdminDashboard() {
                   type="text"
                   value={notice.titleBn}
                   onChange={(e) => setNotice({ ...notice, titleBn: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white outline-none"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 outline-none"
                 />
               </div>
               <div>
@@ -435,7 +422,7 @@ export default function AdminDashboard() {
                   type="text"
                   value={notice.titleEn}
                   onChange={(e) => setNotice({ ...notice, titleEn: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white outline-none"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 outline-none"
                 />
               </div>
             </div>
@@ -447,7 +434,7 @@ export default function AdminDashboard() {
                   rows="3"
                   value={notice.messageBn}
                   onChange={(e) => setNotice({ ...notice, messageBn: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white outline-none"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 outline-none"
                 ></textarea>
               </div>
               <div>
@@ -456,7 +443,7 @@ export default function AdminDashboard() {
                   rows="3"
                   value={notice.messageEn}
                   onChange={(e) => setNotice({ ...notice, messageEn: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white outline-none"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 outline-none"
                 ></textarea>
               </div>
             </div>
@@ -469,9 +456,9 @@ export default function AdminDashboard() {
       </div>
 
       {/* অ্যাপয়েন্টমেন্ট লিস্ট সেকশন */}
-      <div className="max-w-6xl mx-auto bg-white dark:bg-slate-800 p-4 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl space-y-6">
+      <div className="max-w-6xl mx-auto bg-white p-4 md:p-8 rounded-3xl border border-slate-200 shadow-xl space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <h2 className="text-xl font-bold text-teal-600 dark:text-teal-400">📅 রোগীর অ্যাপয়েন্টমেন্ট তালিকা (আজ ও ভবিষ্যৎ)</h2>
+          <h2 className="text-xl font-bold text-teal-600">📅 রোগীর অ্যাপয়েন্টমেন্ট তালিকা (আজ ও ভবিষ্যৎ)</h2>
           <div className="flex items-center gap-3">
             <input
               type="date"
@@ -480,7 +467,7 @@ export default function AdminDashboard() {
                 setSelectedDate(e.target.value)
                 fetchAppointments(e.target.value)
               }}
-              className="px-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm outline-none"
+              className="px-4 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm outline-none"
             />
             {selectedDate && (
               <button
@@ -489,7 +476,7 @@ export default function AdminDashboard() {
                   setSelectedDate('')
                   fetchAppointments('')
                 }}
-                className="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-white px-3 py-2 rounded-xl text-xs font-bold cursor-pointer"
+                className="bg-slate-200 hover:bg-slate-300 text-slate-800 px-3 py-2 rounded-xl text-xs font-bold cursor-pointer"
               >
                 রিসেট
               </button>
@@ -498,9 +485,9 @@ export default function AdminDashboard() {
         </div>
 
         {loading ? (
-          <p className="text-center py-6 text-slate-500 dark:text-slate-400">লোড হচ্ছে...</p>
+          <p className="text-center py-6 text-slate-500">লোড হচ্ছে...</p>
         ) : appointments.length === 0 ? (
-          <p className="text-center py-6 text-slate-500 dark:text-slate-400">কোনো অ্যাপয়েন্টমেন্ট পাওয়া যায়নি।</p>
+          <p className="text-center py-6 text-slate-500">কোনো অ্যাপয়েন্টমেন্ট পাওয়া যায়নি।</p>
         ) : (
           <div>
             {/* মোবাইল স্ক্রিনের জন্য কার্ড ভিউ (md স্ক্রিনের নিচে দেখাবে) */}
@@ -508,39 +495,39 @@ export default function AdminDashboard() {
               {appointments.map((item) => (
                 <div 
                   key={item.id} 
-                  className="bg-slate-50 dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3"
+                  className="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3"
                 >
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-extrabold text-base text-slate-900 dark:text-white">{item.patient_name}</h3>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">বয়স: {item.age || 'প্রযোজ্য নয়'}</p>
+                      <h3 className="font-extrabold text-base text-slate-900">{item.patient_name}</h3>
+                      <p className="text-xs text-slate-500">বয়স: {item.age || 'প্রযোজ্য নয়'}</p>
                     </div>
                     <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                      item.status === 'Confirmed' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/40'
+                      item.status === 'Confirmed' ? 'bg-emerald-500/20 text-emerald-600 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-600 border border-amber-500/40'
                     }`}>
                       {item.status || 'Pending'}
                     </span>
                   </div>
 
-                  <div className="bg-teal-50 dark:bg-teal-950/40 px-3.5 py-2 rounded-xl border border-teal-100 dark:border-teal-900/50 flex justify-between items-center text-xs font-bold text-teal-700 dark:text-teal-300">
+                  <div className="bg-teal-50 px-3.5 py-2 rounded-xl border border-teal-100 flex justify-between items-center text-xs font-bold text-teal-700">
                     <span>📅 {item.appointment_date}</span>
                     <span>⏰ {item.appointment_time}</span>
                   </div>
 
                   <div className="space-y-1 text-sm">
-                    <p className="text-slate-600 dark:text-slate-300">
+                    <p className="text-slate-600">
                       <span className="font-semibold text-xs text-slate-400 block">মোবাইল নম্বর:</span>
-                      <a href={`tel:${item.patient_phone}`} className="font-bold text-teal-600 dark:text-teal-400 hover:underline">
+                      <a href={`tel:${item.patient_phone}`} className="font-bold text-teal-600 hover:underline">
                         📞 {item.patient_phone}
                       </a>
                     </p>
-                    <p className="text-slate-600 dark:text-slate-300 pt-1">
+                    <p className="text-slate-600 pt-1">
                       <span className="font-semibold text-xs text-slate-400 block">রোগীর সমস্যা / সেবা:</span>
-                      <span className="font-medium text-slate-800 dark:text-slate-200">🦷 {item.service}</span>
+                      <span className="font-medium text-slate-800">🦷 {item.service}</span>
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                  <div className="flex items-center gap-2 pt-2 border-t border-slate-200">
                     <button
                       type="button"
                       onClick={() => handleConfirm(item.id)}
@@ -561,10 +548,10 @@ export default function AdminDashboard() {
             </div>
 
             {/* ডেস্কটপ ও বড় স্ক্রিনের জন্য ট্রেডিশনাল টেবিল ভিউ (md ও তার উপরে দেখাবে) */}
-            <div className="hidden md:block overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div className="hidden md:block overflow-x-auto rounded-2xl border border-slate-200">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm">
+                  <tr className="bg-slate-100 text-slate-800 text-sm">
                     <th className="py-3 px-4">রোগীর নাম</th>
                     <th className="py-3 px-4">বয়স</th>
                     <th className="py-3 px-4">ফোন নম্বর</th>
@@ -574,22 +561,22 @@ export default function AdminDashboard() {
                     <th className="py-3 px-4 text-center">অ্যাকশন</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-700 text-sm">
+                <tbody className="divide-y divide-slate-200 text-sm">
                   {appointments.map((item) => (
-                    <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
-                      <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{item.patient_name}</td>
+                    <tr key={item.id} className="hover:bg-slate-50 transition">
+                      <td className="py-3 px-4 font-bold text-slate-900">{item.patient_name}</td>
                       <td className="py-3 px-4">{item.age || '-'}</td>
-                      <td className="py-3 px-4 font-semibold text-teal-600 dark:text-teal-300">
+                      <td className="py-3 px-4 font-semibold text-teal-600">
                         <a href={`tel:${item.patient_phone}`} className="hover:underline">{item.patient_phone}</a>
                       </td>
                       <td className="py-3 px-4">{item.service}</td>
                       <td className="py-3 px-4">
                         <span className="block font-semibold">{item.appointment_date}</span>
-                        <span className="text-xs text-teal-600 dark:text-teal-400">{item.appointment_time}</span>
+                        <span className="text-xs text-teal-600">{item.appointment_time}</span>
                       </td>
                       <td className="py-3 px-4">
                         <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                          item.status === 'Confirmed' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/40'
+                          item.status === 'Confirmed' ? 'bg-emerald-500/20 text-emerald-600 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-600 border border-amber-500/40'
                         }`}>
                           {item.status || 'Pending'}
                         </span>

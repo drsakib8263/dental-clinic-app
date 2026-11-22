@@ -7,11 +7,11 @@ export default function AboutUs() {
 
   return (
     <main 
-      className="min-h-screen text-slate-900 dark:text-slate-100 relative py-12 px-4 md:px-16 bg-cover bg-center bg-fixed transition-colors duration-200"
+      className="min-h-screen text-slate-900 relative py-12 px-4 md:px-16 bg-cover bg-center bg-fixed transition-colors duration-200"
       style={{ backgroundImage: `url('/site-bg.jpeg')` }}
     >
       {/* ব্যাকগ্রাউন্ড ব্লার ও ওভারলে লেয়ার */}
-      <div className="absolute inset-0 bg-[#EADCD2]/80 dark:bg-[#2B1618]/90 backdrop-blur-md pointer-events-none z-0"></div>
+      <div className="absolute inset-0 bg-[#EADCD2]/80 backdrop-blur-md pointer-events-none z-0"></div>
 
       {/* টপ ল্যাঙ্গুয়েজ টগল ও হোম বাটন */}
       <div className="max-w-4xl mx-auto flex justify-between items-center mb-8 relative z-50">
@@ -33,22 +33,22 @@ export default function AboutUs() {
       </div>
 
       {/* মূল কন্টেন্ট বক্স */}
-      <div className="max-w-4xl mx-auto bg-white/90 dark:bg-[#344246]/95 backdrop-blur-xl p-8 md:p-12 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 relative z-10 space-y-8">
+      <div className="max-w-4xl mx-auto bg-white/90 backdrop-blur-xl p-8 md:p-12 rounded-3xl shadow-2xl border-2 border-[#5A181C]/40 relative z-10 space-y-8">
         
         {/* পেজ হেডিং */}
         <div className="border-b border-[#5A181C]/20 pb-6 text-center md:text-left">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-[#5A181C] dark:text-[#EADCD2] tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-[#5A181C] tracking-tight">
             {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
           </h1>
-          <p className="text-[#8B6B5E] dark:text-[#A89287] font-bold text-lg mt-2">
+          <p className="text-[#8B6B5E] font-bold text-lg mt-2">
             {lang === 'bn' ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ার' : 'Dr. Asir Mosaddeque Sakib Dental Care'}
           </p>
         </div>
 
         {/* প্যারাগ্রাফ সেকশন */}
-        <div className="space-y-6 text-slate-800 dark:text-slate-200 text-base md:text-lg leading-relaxed">
+        <div className="space-y-6 text-slate-800 text-base md:text-lg leading-relaxed">
           
-          <h2 className="text-xl md:text-2xl font-bold text-[#5A181C] dark:text-white">
+          <h2 className="text-xl md:text-2xl font-bold text-[#5A181C]">
             {lang === 'bn' ? 'আপনার দাঁতের সুস্বাস্থ্য ও একটি সুন্দর হাসির নিশ্চয়তা' : 'Committed to Your Dental Health & Beautiful Smile'}
           </h2>
 
@@ -77,7 +77,7 @@ export default function AboutUs() {
 
         {/* নিচে যোগাযোগ বা কল টু অ্যাকশন বাটন */}
         <div className="pt-6 border-t border-[#5A181C]/20 flex flex-col md:flex-row justify-between items-center gap-4">
-          <span className="font-bold text-sm text-slate-700 dark:text-slate-300">
+          <span className="font-bold text-sm text-slate-700">
             {lang === 'bn' ? 'হটলাইন: +880 1816 011 701' : 'Hotline: +880 1816 011 701'}
           </span>
           <a 
