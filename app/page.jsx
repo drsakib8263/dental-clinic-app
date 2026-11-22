@@ -685,6 +685,7 @@ export default function Home() {
         <nav className="hidden lg:flex items-center gap-8 font-medium text-sm text-[#5C5852] dark:text-[#D8CFC4]">
           <a href="/" className="text-[#2C2A29] dark:text-[#F7F5F0] font-semibold border-b border-[#A68A64] pb-0.5 transition-colors duration-300">{lang === 'bn' ? 'হোম' : 'Home'}</a>
           <a href="#about-section" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}</a>
+          <a href="/introduction-to-dentistry" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'ডেন্টিস্ট্রি সম্পর্কে' : 'About Dentistry'}</a>
           <a href="/services" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}</a>
           <a href="/gallery" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'গ্যালারি' : 'Gallery'}</a>
           <button
