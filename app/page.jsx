@@ -9,12 +9,13 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default function Home() {
   const [lang, setLang] = useState('bn')
-    const [availableDates, setAvailableDates] = useState([])
+  const [availableDates, setAvailableDates] = useState([])
   const [bookedSlotsCount, setBookedSlotsCount] = useState({})
   const [loading, setLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
+  const [isFriday, setIsFriday] = useState(false)
   const [chamberStatusText, setChamberStatusText] = useState('')
   const [isChamberOpenNow, setIsChamberOpenNow] = useState(false)
   const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
@@ -51,7 +52,11 @@ export default function Home() {
     appointment_time: ''
   })
 
-  
+  const fridayNoticeBn =
+    'আমাদের ওয়েবসাইটে আপনাকে স্বাগতম। শুক্রবার আমাদের চেম্বার এর কার্যক্রম সম্পূর্ণ বন্ধ থাকে। আগামীকাল শনিবার সকাল ৭ টা থেকে অনলাইনে এপয়েন্টমেন্ট নেয়া যাবে। ধন্যবাদ।'
+  const fridayNoticeEn =
+    'Welcome to our website. Our chamber remains completely closed on Friday. Online appointments will be available starting tomorrow, Saturday, at 7:00 AM. Thank you.'
+
   const fetchBookingsCount = async () => {
     try {
       const { data, error } = await supabase
@@ -98,7 +103,7 @@ export default function Home() {
           messageBn: data.message_bn || '',
           messageEn: data.message_en || ''
         })
-        if (data.is_closed) {
+        if (data.is_closed && !isFriday) {
           setShowChamberClosedModal(true)
         }
       }
@@ -125,9 +130,9 @@ export default function Home() {
         setReviewsList([
           {
             patient_name: lang === 'bn' ? 'মোহাম্মদ আলী' : 'Mohammad Ali',
-            location: lang === 'bn' ? 'পটিয়া, চট্টগ্রাম' : 'Patiya, Chattogram',
+            location: lang === 'bn' ? 'পটিয়া, চট্টগ্রাম' : 'Patiya, Chattogram',
             review_text: lang === 'bn'
-              ? 'ডাক্তার সাহেব ভীষণ যত্ন নিয়ে আমার রুট ক্যানাল চিকিৎসা করেছেন। কোনো ধরনের ব্যথা ছাড়াই কাজটি সম্পন্ন হয়েছে।'
+              ? 'ডাক্তার সাহেব ভীষণ যত্ন নিয়ে আমার রুট ক্যানাল চিকিৎসা করেছেন। কোনো ধরনের ব্যথা ছাড়াই কাজটি সম্পন্ন হয়েছে।'
               : 'Doctor Sakib took great care during my root canal treatment. It was completely painless.',
             rating: 5,
             created_at: new Date().toISOString()
@@ -140,24 +145,39 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const checkChamberStatus = () => {
+    const checkChamberStatus = (shouldOpenFridayPopup = false) => {
       const now = new Date()
       const bdTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }))
 
-      const day = bdTime.getDay() // 0 = Sun, ..., 5 = Fri, 6 = Sat
+      const day = bdTime.getDay() // 5 = Friday
+      const fridayNow = day === 5
+      setIsFriday(fridayNow)
+
       const hours = bdTime.getHours()
       const minutes = bdTime.getMinutes()
       const currentTimeInMinutes = hours * 60 + minutes
 
-      // শুক্রবার (5) বন্ধ; শনি-বৃহস্পতি বিকাল ৪:৩০ (990) থেকে রাত ৯:৩০ (1290) খোলা
+      // শুক্রবার বন্ধ; শনি-বৃহস্পতি বিকাল ৪:৩০ (990) থেকে রাত ৯:৩০ (1290) খোলা
       const isOpenTime =
-        day !== 5 &&
+        !fridayNow &&
         currentTimeInMinutes >= 990 &&
         currentTimeInMinutes <= 1290
 
       setIsChamberOpenNow(isOpenTime)
 
-      if (lang === 'bn') {
+      if (fridayNow) {
+        setChamberStatusText(
+          lang === 'bn'
+            ? 'আজ শুক্রবার, চেম্বার সম্পূর্ণ বন্ধ রয়েছে'
+            : 'Today is Friday, the chamber is completely closed'
+        )
+        if (shouldOpenFridayPopup) {
+          setCustomAlert({
+            show: true,
+            message: lang === 'bn' ? fridayNoticeBn : fridayNoticeEn
+          })
+        }
+      } else if (lang === 'bn') {
         setChamberStatusText(
           isOpenTime ? 'চেম্বার বর্তমানে খোলা রয়েছে' : 'চেম্বার বর্তমানে বন্ধ রয়েছে'
         )
@@ -168,8 +188,8 @@ export default function Home() {
       }
     }
 
-    checkChamberStatus()
-    const interval = setInterval(checkChamberStatus, 60000)
+    checkChamberStatus(true)
+    const interval = setInterval(() => checkChamberStatus(false), 60000)
 
     fetchBookingsCount()
     fetchLiveNotice()
@@ -360,21 +380,30 @@ export default function Home() {
   ]
 
   const handleOpenBooking = () => {
-    const now = new Date();
-    const currentHour = now.getHours();
+    if (isFriday) {
+      setCustomAlert({
+        show: true,
+        message: lang === 'bn' ? fridayNoticeBn : fridayNoticeEn
+      })
+      return
+    }
+
+    const now = new Date()
+    const bdTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }))
+    const currentHour = bdTime.getHours()
 
     if (currentHour < 7 || currentHour >= 21) {
       setCustomAlert({
         show: true,
         message: lang === 'bn'
-          ? 'আমাদের সিরিয়াল নেয়ার সময় -সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত। অনুগ্রহপূর্বক সকাল ৭ টা থেকে আবার চেষ্টা করবেন। ধন্যবাদ।'
+          ? 'আমাদের সিরিয়াল নেয়ার সময় -সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত। অনুগ্রহপূর্বক সকাল ৭ টা থেকে আবার চেষ্টা করবেন। ধন্যবাদ।'
           : 'Our serial booking hours are from 7:00 AM to 9:00 PM. Please try again starting at 7:00 AM. Thank you.'
-      });
-      return;
+      })
+      return
     }
 
-    setShowPopupBooking(true);
-  };
+    setShowPopupBooking(true)
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -428,13 +457,23 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const now = new Date();
-    const currentHour = now.getHours();
+    if (isFriday) {
+      setCustomAlert({
+        show: true,
+        message: lang === 'bn' ? fridayNoticeBn : fridayNoticeEn
+      })
+      setShowPopupBooking(false)
+      return
+    }
+
+    const now = new Date()
+    const bdTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }))
+    const currentHour = bdTime.getHours()
     if (currentHour < 7 || currentHour >= 21) {
       setCustomAlert({
         show: true,
         message: lang === 'bn'
-          ? 'আমাদের সিরিয়াল নেয়ার সময় -সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত। অনুগ্রহপূর্বক সকাল ৭ টা থেকে আবার চেষ্টা করবেন। ধন্যবাদ।'
+          ? 'আমাদের সিরিয়াল নেয়ার সময় -সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত। অনুগ্রহপূর্বক সকাল ৭ টা থেকে আবার চেষ্টা করবেন। ধন্যবাদ।'
           : 'Our serial booking hours are from 7:00 AM to 9:00 PM. Please try again starting at 7:00 AM. Thank you.'
       });
       setShowPopupBooking(false);
@@ -568,7 +607,7 @@ export default function Home() {
       } else {
         setCustomAlert({
           show: true,
-          message: lang === 'bn' ? 'আপনার মূল্যবান মতামতের জন্য ধন্যবাদ! রিভিউটি সফলভাবে জমা হয়েছে।' : 'Thank you for your valuable feedback! Your review has been submitted successfully.'
+          message: lang === 'bn' ? 'আপনার মূল্যবান মতামতের জন্য ধন্যবাদ! রিভিউটি সফলভাবে জমা হয়েছে।' : 'Thank you for your valuable feedback! Your review has been submitted successfully.'
         });
         setShowReviewModal(false)
         setReviewForm({ patient_name: '', location: '', review_text: '', rating: 5 })
@@ -615,7 +654,7 @@ export default function Home() {
   const inputClass =
     'font-body-ui w-full px-4 py-3 rounded-2xl outline-none border border-[#E6DFD5] bg-[#F7F5F0] text-[#2C2A29] placeholder:text-[#5C5852]/70 focus:border-[#A68A64] transition-colors duration-300'
 
-  const isOpenStatus = !chamberNotice.isClosed && isChamberOpenNow
+  const isOpenStatus = !isFriday && !chamberNotice.isClosed && isChamberOpenNow
 
   return (
     <main
@@ -649,35 +688,35 @@ export default function Home() {
         </div>
 
         <div className="flex justify-between items-center gap-2 border-t border-white/10 pt-1.5 text-[10px] sm:text-xs">
-  <div className="flex items-start sm:items-center gap-1.5 text-[#F7F5F0] font-medium min-w-0">
-    <span className="shrink-0 mt-0.5 sm:mt-0">🕒</span>
-    {lang === 'bn' ? (
-      <span className="leading-snug">
-        <span className="block sm:inline">চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:৩০ - রাত ৯:৩০)</span>
-        <span className="hidden sm:inline">, </span>
-        <span className="block sm:inline text-[#E6DFD5]">শুক্রবার বন্ধ</span>
-      </span>
-    ) : (
-      <span className="leading-snug">
-        <span className="block sm:inline">Chamber Open: Sat - Thu (4:30 PM - 9:30 PM)</span>
-        <span className="hidden sm:inline">, </span>
-        <span className="block sm:inline text-[#E6DFD5]">Friday Closed</span>
-      </span>
-    )}
-  </div>
+          <div className="flex items-start sm:items-center gap-1.5 text-[#F7F5F0] font-medium min-w-0">
+            <span className="shrink-0 mt-0.5 sm:mt-0">🕒</span>
+            {lang === 'bn' ? (
+              <span className="leading-snug">
+                <span className="block sm:inline">চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:৩০ - রাত ৯:৩০)</span>
+                <span className="hidden sm:inline">, </span>
+                <span className="block sm:inline text-[#E6DFD5]">শুক্রবার বন্ধ</span>
+              </span>
+            ) : (
+              <span className="leading-snug">
+                <span className="block sm:inline">Chamber Open: Sat - Thu (4:30 PM - 9:30 PM)</span>
+                <span className="hidden sm:inline">, </span>
+                <span className="block sm:inline text-[#E6DFD5]">Friday Closed</span>
+              </span>
+            )}
+          </div>
 
-  <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-    <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="Facebook">
-      <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
-    </a>
-    <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="Instagram">
-      <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
-    </a>
-    <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="WhatsApp">
-      <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
-    </a>
-  </div>
-</div>
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="Facebook">
+              <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
+            </a>
+            <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="Instagram">
+              <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
+            </a>
+            <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="WhatsApp">
+              <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
+            </a>
+          </div>
+        </div>
       </div>
 
       {/* ন্যাভিগেশন বার (হেডার) */}
@@ -716,7 +755,6 @@ export default function Home() {
             <span>+880 1816 011 701</span>
           </a>
 
-          
           <button
             type="button"
             onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
@@ -736,7 +774,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* হেডারের একদম নিচ থেকে শুরু হওয়া চেম্বার স্ট্যাটাস বার */}
+      {/* হেডারের একদম নিচ থেকে শুরু হওয়া চেম্বার স্ট্যাটাস বার */}
       <div className="w-full bg-[#FCFBF9] border-b border-[#E6DFD5] px-2.5 sm:px-6 md:px-12 py-2 transition-colors duration-300">
         <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#2C2A29]">
           <span
@@ -747,16 +785,20 @@ export default function Home() {
             }`}
           ></span>
           <span>
-            {chamberNotice.isClosed
+            {isFriday
               ? lang === 'bn'
-                ? chamberNotice.messageBn
-                : chamberNotice.messageEn
+                ? 'আজ শুক্রবার, চেম্বার সম্পূর্ণ বন্ধ রয়েছে'
+                : 'Today is Friday, the chamber is completely closed'
+              : chamberNotice.isClosed
+              ? lang === 'bn'
+                ? chamberNotice.messageBn || 'চেম্বার বর্তমানে বন্ধ রয়েছে'
+                : chamberNotice.messageEn || 'Chamber is currently closed'
               : chamberStatusText}
           </span>
         </div>
       </div>
 
-      {/* মোবাইল ড্রপডাউন মেনু (স্ক্রলের যেকোনো জায়গা থেকে খুলবে) */}
+      {/* মোবাইল ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-x-0 top-[116px] sm:top-[128px] z-50 px-4 sm:px-6 py-4 space-y-2 bg-[#FCFBF9] border-b border-[#E6DFD5] shadow-xl transition-all duration-300 max-h-[75vh] overflow-y-auto">
           <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#2C2A29]">
@@ -831,7 +873,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ডাক্তারের ক্রেডেনশিয়াল স্ট্রিপ (ছবির বাইরে আলাদা ক্লিন বার) */}
+      {/* ডাক্তারের ক্রেডেনশিয়াল স্ট্রিপ */}
       <div className="w-full bg-[#FCFBF9] border-b border-[#E6DFD5] px-4 sm:px-6 md:px-12 py-4 transition-colors duration-300">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 text-left">
           <div>
@@ -989,7 +1031,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* কাস্টম নোটিশ মোডাল */}
+      {/* কাস্টম নোটিশ মোডাল (শুক্রবার নোটিশ ও অ্যালার্টের জন্য) */}
       {customAlert.show && (
         <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
           <div className="p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-5 shadow-xl">
@@ -1251,7 +1293,7 @@ export default function Home() {
                   type="text"
                   value={reviewForm.location}
                   onChange={(e) => setReviewForm({ ...reviewForm, location: e.target.value })}
-                  placeholder={lang === 'bn' ? 'যেমন: পটিয়া, চট্টগ্রাম' : 'e.g. Patiya, Chattogram'}
+                  placeholder={lang === 'bn' ? 'যেমন: পটিয়া, চট্টগ্রাম' : 'e.g. Patiya, Chattogram'}
                   className={inputClass}
                 />
               </div>
