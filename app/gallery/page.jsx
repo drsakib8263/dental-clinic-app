@@ -1,11 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function GalleryPage() {
   const [lang, setLang] = useState('bn')
+  const [darkMode, setDarkMode] = useState(false)
   const [selectedModalIndex, setSelectedModalIndex] = useState(null)
   const [activeGalleryType, setActiveGalleryType] = useState('chamber')
+
+  useEffect(() => {
+    const root = document.documentElement
+    if (darkMode) {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+  }, [darkMode])
 
   const chamberImages = Array.from({ length: 20 }, (_, i) => {
     const num = String(i + 1).padStart(2, '0')
@@ -44,111 +54,135 @@ export default function GalleryPage() {
   }
 
   const currentImagesList = activeGalleryType === 'chamber' ? chamberImages : patientImages
-  
+
   const prevModalSlide = () => {
     setSelectedModalIndex((prev) => (prev === 0 ? currentImagesList.length - 1 : prev - 1))
   }
-  
+
   const nextModalSlide = () => {
     setSelectedModalIndex((prev) => (prev === currentImagesList.length - 1 ? 0 : prev + 1))
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-12 px-4 md:px-16 transition-colors duration-200">
-      
-      {/* টপ ন্যাভিগেশন ও ল্যাঙ্গুয়েজ টগল */}
-      <div className="max-w-6xl mx-auto flex justify-between items-center mb-8 relative z-50">
-        <a 
+    <main
+      data-lang={lang}
+      className="font-body-ui min-h-screen bg-[#F7F5F0] dark:bg-[#121110] text-[#2C2A29] dark:text-[#F7F5F0] py-10 px-4 md:px-12 transition-colors duration-300 overflow-x-clip"
+    >
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700;800&family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      />
+
+      {/* টপ ন্যাভিগেশন, ডার্ক মোড ও ল্যাঙ্গুয়েজ টগল */}
+      <div className="max-w-6xl mx-auto flex justify-between items-center gap-2 mb-8 relative z-50">
+        <a
           href="/"
-          className="bg-[#00a8e8] hover:bg-[#008fca] text-white font-bold px-5 py-2.5 rounded-full shadow-lg transition"
+          className="bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white font-semibold px-4 sm:px-5 py-2.5 rounded-full transition-colors duration-300 text-xs sm:text-sm"
         >
           {lang === 'bn' ? '← হোম পেজে ফিরে যান' : '← Back to Home'}
         </a>
 
-        <button
-          type="button"
-          onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-          className="bg-[#00a8e8] hover:bg-[#008fca] text-white font-extrabold px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2 text-sm cursor-pointer select-none"
-        >
-          <span>🌐</span>
-          <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setDarkMode(!darkMode)}
+            title={darkMode ? (lang === 'bn' ? 'লাইট মোড' : 'Light Mode') : (lang === 'bn' ? 'ডার্ক মোড' : 'Dark Mode')}
+            aria-label="Toggle Dark Mode"
+            className="w-9 h-9 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-sm cursor-pointer transition-colors duration-300"
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
+            className="bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] border border-[#E6DFD5] dark:border-white/15 font-semibold px-4 sm:px-5 py-2.5 rounded-full transition-colors duration-300 flex items-center gap-2 text-xs sm:text-sm cursor-pointer select-none"
+          >
+            <span>🌐</span>
+            <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
+          </button>
+        </div>
       </div>
 
-      <div className="max-w-6xl mx-auto bg-white dark:bg-slate-900 p-8 md:p-12 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 relative z-10 space-y-16">
-        
+      <div className="max-w-6xl mx-auto bg-[#FCFBF9] dark:bg-[#171615] p-6 sm:p-8 md:p-12 rounded-2xl border border-[#E6DFD5] dark:border-white/10 relative z-10 space-y-16 transition-colors duration-300">
+
         {/* হেডার */}
-        <div className="border-b border-slate-200 dark:border-slate-800 pb-6 text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-[#0E3A5D] dark:text-white tracking-tight">
+        <div className="border-b border-[#E6DFD5] dark:border-white/10 pb-6 text-center space-y-2">
+          <span className="inline-block bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#A68A64] text-xs font-semibold px-4 py-1.5 rounded-full border border-[#E6DFD5] dark:border-white/15 uppercase tracking-widest">
+            {lang === 'bn' ? 'ডেন্টাল গ্যালারি' : 'Visual Showcase'}
+          </span>
+          <h1 className="font-heading text-3xl md:text-5xl font-extrabold text-[#2C2A29] dark:text-[#F7F5F0] tracking-tight pt-1">
             {lang === 'bn' ? 'ফটো গ্যালারি' : 'Photo Gallery'}
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 font-bold text-lg mt-2">
+          <p className="text-[#5C5852] dark:text-[#D8CFC4] font-semibold text-base md:text-lg">
             {lang === 'bn' ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ার' : 'Dr. Asir Mosaddeque Sakib Dental Care'}
           </p>
         </div>
 
         {/* সেকশন ১: আমাদের চেম্বার */}
         <div className="space-y-6">
-          <div className="border-b border-slate-200 dark:border-slate-800 pb-3">
-            <h2 className="text-2xl font-extrabold text-[#0E3A5D] dark:text-teal-300">
+          <div className="border-b border-[#E6DFD5] dark:border-white/10 pb-3">
+            <h2 className="font-heading text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
               {lang === 'bn' ? 'আমাদের চেম্বার' : 'Our Chamber'}
             </h2>
           </div>
-          <p className="text-sm text-slate-700 dark:text-slate-300 text-center">
-            {lang === 'bn' 
-              ? 'আমাদের চেম্বারের আধুনিক পরিবেশ ও চিকিৎসা সরঞ্জামের দৃশ্যসমূহ। (ছবিতে ক্লিক করে বড় করুন)' 
+          <p className="text-sm text-[#5C5852] dark:text-[#D8CFC4] text-center">
+            {lang === 'bn'
+              ? 'আমাদের চেম্বারের আধুনিক পরিবেশ ও চিকিৎসা সরঞ্জামের দৃশ্যসমূহ। (ছবিতে ক্লিক করে বড় করুন)'
               : 'Views of our modern chamber environment. (Click to enlarge)'}
           </p>
 
           <div className="relative flex items-center justify-center overflow-hidden py-4">
-            <button 
+            <button
               onClick={prevChamber}
-              className="absolute left-1 md:left-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-lg md:text-xl shadow-lg transition cursor-pointer"
+              aria-label="Previous Chamber Image"
+              className="absolute left-1 md:left-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
             >
               ❮
             </button>
 
             <div className="flex items-center justify-center gap-2 md:gap-6 w-full max-w-5xl px-8 md:px-0">
               {/* বাম পাশের ঝাপসা ছবি (Peek View) */}
-              <div 
+              <div
                 onClick={() => setChamberIndex((chamberIndex - 1 + chamberImages.length) % chamberImages.length)}
-                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
-                <img 
-                  src={chamberImages[(chamberIndex - 1 + chamberImages.length) % chamberImages.length].src} 
-                  alt="Previous" 
+                <img
+                  src={chamberImages[(chamberIndex - 1 + chamberImages.length) % chamberImages.length].src}
+                  alt="Previous"
                   className="w-full h-full object-cover"
                 />
               </div>
 
               {/* মাঝখানের প্রধান স্পষ্ট ছবি */}
-              <div 
+              <div
                 onClick={() => openModal('chamber', chamberIndex)}
-                className="relative w-[70%] md:w-2/4 h-64 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-4 border-[#00a8e8]/40 bg-black cursor-pointer group z-20 flex-shrink-0"
+                className="relative w-[70%] md:w-2/4 h-64 md:h-96 rounded-2xl overflow-hidden border-2 border-[#A68A64] bg-[#121110] cursor-pointer group z-20 flex-shrink-0"
               >
-                <img 
-                  src={chamberImages[chamberIndex].src} 
+                <img
+                  src={chamberImages[chamberIndex].src}
                   alt="Chamber Active"
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 />
               </div>
 
               {/* ডান পাশের ঝাপসা ছবি (Peek View) */}
-              <div 
+              <div
                 onClick={() => setChamberIndex((chamberIndex + 1) % chamberImages.length)}
-                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
-                <img 
-                  src={chamberImages[(chamberIndex + 1) % chamberImages.length].src} 
-                  alt="Next" 
+                <img
+                  src={chamberImages[(chamberIndex + 1) % chamberImages.length].src}
+                  alt="Next"
                   className="w-full h-full object-cover"
                 />
               </div>
             </div>
 
-            <button 
+            <button
               onClick={nextChamber}
-              className="absolute right-1 md:right-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-lg md:text-xl shadow-lg transition cursor-pointer"
+              aria-label="Next Chamber Image"
+              className="absolute right-1 md:right-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
             >
               ❯
             </button>
@@ -156,67 +190,69 @@ export default function GalleryPage() {
         </div>
 
         {/* সেকশন ২: রোগীর হাসি ফিরিয়ে আনার প্রচেষ্টা */}
-        <div className="space-y-6 pt-8 border-t border-slate-200 dark:border-slate-800">
-          <div className="border-b border-slate-200 dark:border-slate-800 pb-3">
-            <h2 className="text-2xl font-extrabold text-[#0E3A5D] dark:text-teal-300">
+        <div className="space-y-6 pt-8 border-t border-[#E6DFD5] dark:border-white/10">
+          <div className="border-b border-[#E6DFD5] dark:border-white/10 pb-3">
+            <h2 className="font-heading text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
               {lang === 'bn' ? 'রোগীর হাসি ফিরিয়ে আনার প্রচেষ্টা' : 'Patient Smile Restoration'}
             </h2>
           </div>
-          <p className="text-sm text-slate-700 dark:text-slate-300 text-center">
-            {lang === 'bn' 
-              ? 'আমাদের সফল চিকিৎসা ও কসমেটিক ডেন্টিস্ট্রির মাধ্যমে রোগীর হাসির রূপান্তরের দৃশ্যসমূহ। (ছবিতে ক্লিক করে বড় করুন)' 
+          <p className="text-sm text-[#5C5852] dark:text-[#D8CFC4] text-center">
+            {lang === 'bn'
+              ? 'আমাদের সফল চিকিৎসা ও কসমেটিক ডেন্টিস্ট্রির মাধ্যমে রোগীর হাসির রূপান্তরের দৃশ্যসমূহ। (ছবিতে ক্লিক করে বড় করুন)'
               : 'Showcasing smile transformations. (Click to enlarge)'}
           </p>
 
           <div className="relative flex items-center justify-center overflow-hidden py-4">
-            <button 
+            <button
               onClick={prevPatient}
-              className="absolute left-1 md:left-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-lg md:text-xl shadow-lg transition cursor-pointer"
+              aria-label="Previous Patient Image"
+              className="absolute left-1 md:left-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
             >
               ❮
             </button>
 
             <div className="flex items-center justify-center gap-2 md:gap-6 w-full max-w-5xl px-8 md:px-0">
               {/* বাম পাশের ঝাপসা ছবি (Peek View) */}
-              <div 
+              <div
                 onClick={() => setPatientIndex((patientIndex - 1 + patientImages.length) % patientImages.length)}
-                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
-                <img 
-                  src={patientImages[(patientIndex - 1 + patientImages.length) % patientImages.length].src} 
-                  alt="Previous" 
+                <img
+                  src={patientImages[(patientIndex - 1 + patientImages.length) % patientImages.length].src}
+                  alt="Previous"
                   className="w-full h-full object-cover"
                 />
               </div>
 
               {/* মাঝখানের প্রধান স্পষ্ট ছবি */}
-              <div 
+              <div
                 onClick={() => openModal('patient', patientIndex)}
-                className="relative w-[70%] md:w-2/4 h-64 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-4 border-[#00a8e8]/40 bg-black cursor-pointer group z-20 flex-shrink-0"
+                className="relative w-[70%] md:w-2/4 h-64 md:h-96 rounded-2xl overflow-hidden border-2 border-[#A68A64] bg-[#121110] cursor-pointer group z-20 flex-shrink-0"
               >
-                <img 
-                  src={patientImages[patientIndex].src} 
+                <img
+                  src={patientImages[patientIndex].src}
                   alt="Patient Active"
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 />
               </div>
 
               {/* ডান পাশের ঝাপসা ছবি (Peek View) */}
-              <div 
+              <div
                 onClick={() => setPatientIndex((patientIndex + 1) % patientImages.length)}
-                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
+                className="flex relative w-[25%] md:w-1/4 h-40 md:h-56 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[2px] md:blur-[3px] scale-90 transition-all duration-500 hover:opacity-70 flex-shrink-0"
               >
-                <img 
-                  src={patientImages[(patientIndex + 1) % patientImages.length].src} 
-                  alt="Next" 
+                <img
+                  src={patientImages[(patientIndex + 1) % patientImages.length].src}
+                  alt="Next"
                   className="w-full h-full object-cover"
                 />
               </div>
             </div>
 
-            <button 
+            <button
               onClick={nextPatient}
-              className="absolute right-1 md:right-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-lg md:text-xl shadow-lg transition cursor-pointer"
+              aria-label="Next Patient Image"
+              className="absolute right-1 md:right-4 z-30 w-9 h-9 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-lg md:text-xl transition-colors duration-300 cursor-pointer"
             >
               ❯
             </button>
@@ -225,81 +261,83 @@ export default function GalleryPage() {
 
       </div>
 
-      {/* ছবি বড় করার পপ-আপ মোডাল (যাতে মোডালের ভেতরেও Peek View স্লাইডার থাকে) */}
+      {/* ছবি বড় করার পপ-আপ মোডাল */}
       {selectedModalIndex !== null && (
-        <div 
+        <div
           onClick={() => setSelectedModalIndex(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-6 bg-black/90 backdrop-blur-md animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-6 bg-[#2C2A29]/80 backdrop-blur-md"
         >
-          <div 
-            onClick={(e) => e.stopPropagation()} 
-            className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-3xl shadow-2xl border-2 border-[#00a8e8] max-w-4xl w-full relative flex flex-col items-center"
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-[#FCFBF9] dark:bg-[#171615] p-4 md:p-6 rounded-2xl border border-[#E6DFD5] dark:border-white/15 max-w-4xl w-full relative flex flex-col items-center shadow-xl"
           >
             {/* ক্লোজ বাটন */}
             <button
               onClick={() => setSelectedModalIndex(null)}
-              className="absolute top-3 right-3 z-40 bg-[#00a8e8] text-white hover:bg-[#008fca] font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition cursor-pointer text-lg"
+              className="absolute top-3 right-3 z-40 bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white font-bold w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 cursor-pointer text-lg"
             >
               ✕
             </button>
 
             {/* মোডালের ভেতরে পিক ভিউ স্লাইডার কন্টেইনার */}
             <div className="relative flex items-center justify-center w-full overflow-hidden py-6">
-              
+
               {/* প্রিভিয়াস বাটন */}
-              <button 
+              <button
                 onClick={prevModalSlide}
-                className="absolute left-1 md:left-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-xl shadow-lg transition cursor-pointer"
+                aria-label="Previous Modal Slide"
+                className="absolute left-1 md:left-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-xl transition-colors duration-300 cursor-pointer"
               >
                 ❮
               </button>
 
               <div className="flex items-center justify-center gap-2 md:gap-4 w-full px-8 md:px-12">
                 {/* মোডাল বাম পাশের ঝাপসা ছবি */}
-                <div 
+                <div
                   onClick={() => setSelectedModalIndex((selectedModalIndex - 1 + currentImagesList.length) % currentImagesList.length)}
-                  className="hidden sm:flex relative w-1/4 h-48 md:h-72 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-300 hover:opacity-70 flex-shrink-0"
+                  className="hidden sm:flex relative w-1/4 h-48 md:h-72 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-300 hover:opacity-70 flex-shrink-0"
                 >
-                  <img 
-                    src={currentImagesList[(selectedModalIndex - 1 + currentImagesList.length) % currentImagesList.length].src} 
-                    alt="Modal Prev" 
+                  <img
+                    src={currentImagesList[(selectedModalIndex - 1 + currentImagesList.length) % currentImagesList.length].src}
+                    alt="Modal Prev"
                     className="w-full h-full object-cover"
                   />
                 </div>
 
-                {/* মোডাল মাঝখানের বড় ও পরিষ্কার ছবি */}
-                <div className="relative w-full sm:w-2/4 h-[50vh] md:h-[65vh] rounded-3xl overflow-hidden shadow-2xl border-4 border-[#00a8e8]/50 bg-black flex items-center justify-center flex-shrink-0 z-20">
-                  <img 
-                    src={currentImagesList[selectedModalIndex].src} 
-                    alt="Modal Active" 
+                {/* মোডাল মাঝখানের বড় ও পরিষ্কার ছবি */}
+                <div className="relative w-full sm:w-2/4 h-[50vh] md:h-[65vh] rounded-2xl overflow-hidden border-2 border-[#A68A64] bg-[#121110] flex items-center justify-center flex-shrink-0 z-20">
+                  <img
+                    src={currentImagesList[selectedModalIndex].src}
+                    alt="Modal Active"
                     className="max-h-full max-w-full object-contain"
                   />
                 </div>
 
                 {/* মোডাল ডান পাশের ঝাপসা ছবি */}
-                <div 
+                <div
                   onClick={() => setSelectedModalIndex((selectedModalIndex + 1) % currentImagesList.length)}
-                  className="hidden sm:flex relative w-1/4 h-48 md:h-72 rounded-2xl overflow-hidden shadow-md cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-300 hover:opacity-70 flex-shrink-0"
+                  className="hidden sm:flex relative w-1/4 h-48 md:h-72 rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 cursor-pointer opacity-40 blur-[3px] scale-90 transition-all duration-300 hover:opacity-70 flex-shrink-0"
                 >
-                  <img 
-                    src={currentImagesList[(selectedModalIndex + 1) % currentImagesList.length].src} 
-                    alt="Modal Next" 
+                  <img
+                    src={currentImagesList[(selectedModalIndex + 1) % currentImagesList.length].src}
+                    alt="Modal Next"
                     className="w-full h-full object-cover"
                   />
                 </div>
               </div>
 
               {/* নেক্সট বাটন */}
-              <button 
+              <button
                 onClick={nextModalSlide}
-                className="absolute right-1 md:right-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white flex items-center justify-center text-xl shadow-lg transition cursor-pointer"
+                aria-label="Next Modal Slide"
+                className="absolute right-1 md:right-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white flex items-center justify-center text-xl transition-colors duration-300 cursor-pointer"
               >
                 ❯
               </button>
 
             </div>
 
-            <div className="text-sm font-bold text-slate-600 dark:text-slate-300 mt-2">
+            <div className="text-sm font-bold text-[#5C5852] dark:text-[#D8CFC4] mt-2">
               {selectedModalIndex + 1} / {currentImagesList.length}
             </div>
 
