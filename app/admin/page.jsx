@@ -26,7 +26,7 @@ export default function AdminDashboard() {
   const [appointments, setAppointments] = useState([])
   const [selectedDate, setSelectedDate] = useState('')
   const [loading, setLoading] = useState(false)
-    const [isSubscribed, setIsSubscribed] = useState(false)
+  const [isSubscribed, setIsSubscribed] = useState(false)
   const [newBookingAlert, setNewBookingAlert] = useState(null)
 
   // চেম্বার নোটিশ বক্স গুটানো বা খোলার স্টেট
@@ -52,13 +52,9 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    const isDark = localStorage.getItem('admin_theme') !== 'light'
-    setDarkMode(isDark)
-    if (isDark) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+    // পার্মানেন্ট লাইট মোড নিশ্চিত করা
+    localStorage.setItem('admin_theme', 'light')
+    document.documentElement.classList.remove('dark')
 
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js')
@@ -116,8 +112,6 @@ export default function AdminDashboard() {
     }
   }, [isAuthenticated])
 
-}
-
   const handleLogin = (e) => {
     e.preventDefault()
     if (passcode === '1234') {
@@ -135,7 +129,7 @@ export default function AdminDashboard() {
 
     try {
       let query = supabase.from('appointments').select('*').order('appointment_date', { ascending: true })
-      
+
       if (dateFilter) {
         query = query.eq('appointment_date', dateFilter)
       } else {
@@ -232,7 +226,7 @@ export default function AdminDashboard() {
       if (error) {
         alert('ডিলিট করতে সমস্যা হয়েছে: ' + error.message)
       } else {
-        // সফলতার পপ-আপ মেসেজটি রিমোভ করা হয়েছে, সরাসরি লিস্ট রিফ্রেশ হবে
+        // সফলতার পপ-আপ মেসেজটি রিমোভ করা হয়েছে, সরাসরি লিস্ট রিফ্রেশ হবে
         fetchAppointments(selectedDate)
       }
     } catch (err) {
@@ -249,7 +243,7 @@ export default function AdminDashboard() {
 
       const register = await navigator.serviceWorker.ready
       const permission = await Notification.requestPermission()
-      
+
       if (permission !== 'granted') {
         alert('নোটিফিকেশনের অনুমতি দেওয়া হয়নি!')
         return
@@ -328,11 +322,11 @@ export default function AdminDashboard() {
 
   return (
     <main className="min-h-screen bg-slate-100 text-slate-900 p-4 md:p-8 space-y-8 transition-colors">
-      
-      {/* টপ হেডার, ব্যাকগ্রাউন্ড পুশ বাটন ও থিম টগল */}
+
+      {/* টপ হেডার ও ব্যাকগ্রাউন্ড পুশ বাটন */}
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center bg-white p-6 rounded-3xl border border-slate-200 shadow-xl gap-4">
         <h1 className="text-2xl md:text-3xl font-black text-teal-600">অ্যাডমিন ড্যাশবোর্ড</h1>
-        
+
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
@@ -344,7 +338,6 @@ export default function AdminDashboard() {
             {isSubscribed ? '✅ পুশ অন আছে' : '🔔 ব্যাকগ্রাউন্ড পুশ অন করুন'}
           </button>
 
-          
           <button
             onClick={() => setIsAuthenticated(false)}
             className="bg-rose-600 hover:bg-rose-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition cursor-pointer"
@@ -363,8 +356,8 @@ export default function AdminDashboard() {
               রোগীর নাম: <b>{newBookingAlert.patient_name}</b> ({newBookingAlert.patient_phone})
             </p>
           </div>
-          <button 
-            onClick={() => setNewBookingAlert(null)} 
+          <button
+            onClick={() => setNewBookingAlert(null)}
             className="bg-teal-600 text-white px-3 py-1.5 rounded-xl font-bold text-xs hover:bg-teal-700 cursor-pointer"
           >
             বন্ধ করুন
@@ -374,7 +367,7 @@ export default function AdminDashboard() {
 
       {/* চেম্বার নোটিশ কন্ট্রোল সেকশন */}
       <div className="max-w-6xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden transition-colors">
-        <div 
+        <div
           onClick={() => setShowNoticeBox(!showNoticeBox)}
           className="p-5 md:p-6 flex items-center justify-between bg-slate-50 hover:bg-slate-100 cursor-pointer select-none border-b border-slate-200"
         >
@@ -488,8 +481,8 @@ export default function AdminDashboard() {
             {/* মোবাইল স্ক্রিনের জন্য কার্ড ভিউ (md স্ক্রিনের নিচে দেখাবে) */}
             <div className="grid grid-cols-1 gap-4 md:hidden">
               {appointments.map((item) => (
-                <div 
-                  key={item.id} 
+                <div
+                  key={item.id}
                   className="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3"
                 >
                   <div className="flex justify-between items-start">

@@ -16,23 +16,14 @@ export default function BookingForm() {
   const [availableDates, setAvailableDates] = useState([])
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
-  
+
   // পপ-আপ মোডাল দেখানোর জন্য স্টেট
   const [showSuccessModal, setShowSuccessModal] = useState(false)
 
-  // ডার্ক মোড স্টেট
-  
   useEffect(() => {
-    // লোকাল স্টোরেজ বা সিস্টেম প্রিফারেন্স চেক করে ডার্ক মোড সেট করা
-    const isDark = localStorage.getItem('theme') === 'dark' ||
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    
-    setDarkMode(isDark)
-    if (isDark) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+    // পার্মানেন্ট লাইট মোড নিশ্চিত করা
+    localStorage.setItem('theme', 'light')
+    document.documentElement.classList.remove('dark')
 
     const dates = []
     const daysMap = {
@@ -54,19 +45,19 @@ export default function BookingForm() {
     let count = 0
     let i = 0
 
-    // এখানে শুক্রবার সহ বা সব দিন রেন্ডার করার জন্য ফিল্টার তুলে দেওয়া হয়েছে
+    // এখানে শুক্রবার সহ বা সব দিন রেন্ডার করার জন্য ফিল্টার তুলে দেওয়া হয়েছে
     while (count < 7 && i < 20) {
       const d = new Date(today)
       d.setDate(today.getDate() + i)
-      
+
       const enDay = d.toLocaleDateString('en-US', { weekday: 'short' })
-      
+
       const bnDay = daysMap[enDay] || enDay
       const dayNum = d.getDate()
       const enMonth = d.toLocaleDateString('en-US', { month: 'short' })
       const bnMonth = monthsMap[enMonth] || enMonth
       const year = d.getFullYear()
-      
+
       const value = d.toISOString().split('T')[0]
       const label = (count === 0)
         ? `আজ (${bnDay}, ${dayNum} ${bnMonth} ${year})`
@@ -78,7 +69,6 @@ export default function BookingForm() {
     }
     setAvailableDates(dates)
   }, [])
-}
 
   const availableTimes = [
     "বিকেল ৪:০০ টা", "বিকেল ৪:৩০ টা",
@@ -102,7 +92,7 @@ export default function BookingForm() {
     setMessage({ type: '', text: '' })
 
     try {
-      // বয়স যদি সংখ্যা হয় parseInt করা, অন্যথায় যেমন আছে (বাংলা বা টেক্সট) তেমনি রাখা
+      // বয়স যদি সংখ্যা হয় parseInt করা, অন্যথায় যেমন আছে (বাংলা বা টেক্সট) তেমনি রাখা
       const parsedAge = isNaN(formData.age) ? formData.age : (formData.age ? parseInt(formData.age) : null)
 
       const { error } = await supabase
@@ -144,11 +134,6 @@ export default function BookingForm() {
 
   return (
     <section className="bg-white text-gray-900 p-6 md:p-8 rounded-2xl shadow-lg border border-teal-100 max-w-2xl mx-auto my-8 relative transition-colors duration-200">
-      
-      {/* থিম পরিবর্তন করার টগল বাটন (ফর্মের ওপরের ডান কোণায়) */}
-      <div className="flex justify-end mb-2">
-              </div>
-
       <h2 className="text-2xl font-bold text-[#800000] text-center mb-2">
         অনলাইন অ্যাপয়েন্টমেন্ট বুকিং
       </h2>
