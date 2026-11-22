@@ -1,9 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function ServicesPage() {
   const [lang, setLang] = useState('bn')
+  const [darkMode, setDarkMode] = useState(false)
+
+  useEffect(() => {
+    const root = document.documentElement
+    if (darkMode) {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+  }, [darkMode])
 
   const servicesList = [
     {
@@ -240,47 +250,66 @@ export default function ServicesPage() {
   ]
 
   return (
-    <main className="min-h-screen bg-[#F4F9F9] dark:bg-[#081C24] text-slate-800 dark:text-slate-100 transition-colors duration-200">
-      
+    <main
+      data-lang={lang}
+      className="font-body-ui min-h-screen transition-colors duration-300 bg-[#F7F5F0] dark:bg-[#121110] text-[#2C2A29] dark:text-[#F7F5F0] overflow-x-clip"
+    >
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700;800&family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      />
+
       {/* টপ নোটিশ ব্যানার */}
-      <div className="bg-[#0E3A5D] text-white py-2.5 px-4 text-center text-xs md:text-sm font-medium tracking-wide shadow-md flex items-center justify-center gap-2">
-        <span className="bg-[#00A896] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Notice</span>
+      <div className="bg-[#2C2A29] dark:bg-[#0D0C0B] text-[#D8CFC4] py-2.5 px-4 text-center text-xs md:text-sm font-medium tracking-wide border-b border-[#A68A64]/25 flex items-center justify-center gap-2">
+        <span className="bg-[#A68A64] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+          Notice
+        </span>
         <span>
-          {lang === 'bn' 
-            ? 'জরুরি বা রুটিন ডেন্টাল অ্যাপয়েন্টমেন্টের জন্য আজই আমাদের সাথে যোগাযোগ করুন।' 
+          {lang === 'bn'
+            ? 'জরুরি বা রুটিন ডেন্টাল অ্যাপয়েন্টমেন্টের জন্য আজই আমাদের সাথে যোগাযোগ করুন।'
             : 'Contact us today for emergency or routine dental appointments.'}
         </span>
       </div>
 
       {/* হেডার এবং ন্যাভিগেশন বার */}
-      <header className="sticky top-0 z-50 bg-white/90 dark:bg-[#081C24]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0E3A5D] flex items-center justify-center text-white text-xl font-black shadow-md">
+      <header className="sticky top-0 z-50 bg-[#FCFBF9]/95 dark:bg-[#171615]/95 backdrop-blur-md border-b border-[#E6DFD5] dark:border-white/10 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between gap-3">
+          <a href="/" className="flex items-center gap-3 min-w-0">
+            <div className="w-10 h-10 shrink-0 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] flex items-center justify-center text-lg border border-[#A68A64]/40">
               🦷
             </div>
-            <div>
-              <span className="font-extrabold text-[#0E3A5D] dark:text-[#00A896] text-lg md:text-xl tracking-tight block leading-none">
-                Dr. Sakib
+            <div className="min-w-0">
+              <span className="font-bold text-[#2C2A29] dark:text-[#F7F5F0] text-base md:text-xl tracking-tight block leading-none truncate">
+                {lang === 'bn' ? 'ডাঃ আসির মোসাদ্দেক সাকিব' : 'Dr. Asir Mosaddeque Sakib'}
               </span>
-              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest block pt-0.5">
-                Dental Care
+              <span className="text-[10px] font-semibold text-[#A68A64] uppercase tracking-widest block pt-1 truncate">
+                {lang === 'bn' ? 'ওরাল এন্ড ডেন্টাল সার্জন' : 'Oral & Dental Surgeon'}
               </span>
             </div>
           </a>
 
-          <div className="flex items-center gap-3 md:gap-4">
-            <a 
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 shrink-0">
+            <a
               href="/"
-              className="text-xs md:text-sm font-bold text-[#0E3A5D] dark:text-slate-200 hover:text-[#00A896] dark:hover:text-[#00A896] transition hidden sm:block"
+              className="text-xs md:text-sm font-semibold text-[#5C5852] dark:text-[#D8CFC4] hover:text-[#A68A64] transition-colors duration-300 hidden sm:block"
             >
               {lang === 'bn' ? '← হোম পেজ' : '← Home'}
             </a>
 
             <button
               type="button"
+              onClick={() => setDarkMode(!darkMode)}
+              title={darkMode ? (lang === 'bn' ? 'লাইট মোড' : 'Light Mode') : (lang === 'bn' ? 'ডার্ক মোড' : 'Dark Mode')}
+              aria-label="Toggle Dark Mode"
+              className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-xs sm:text-sm cursor-pointer transition-colors duration-300"
+            >
+              {darkMode ? '☀️' : '🌙'}
+            </button>
+
+            <button
+              type="button"
               onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-              className="bg-[#0E3A5D] hover:bg-[#0B2545] text-white font-extrabold px-4 py-2 rounded-xl text-xs md:text-sm shadow-md transition flex items-center gap-1.5 cursor-pointer"
+              className="font-semibold px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] text-xs md:text-sm transition-colors duration-300 flex items-center gap-1.5 cursor-pointer"
             >
               <span>🌐</span>
               <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
@@ -290,39 +319,39 @@ export default function ServicesPage() {
       </header>
 
       {/* হিরো সেকশন */}
-      <section className="bg-gradient-to-b from-[#0E3A5D]/10 to-transparent dark:from-[#0E3A5D]/30 py-12 px-4 md:px-8">
+      <section className="bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/10 py-12 md:py-16 px-4 md:px-8 transition-colors duration-300">
         <div className="max-w-4xl mx-auto text-center space-y-3">
-          <span className="inline-block bg-[#00A896]/10 text-[#00A896] text-xs font-bold px-3 py-1 rounded-full border border-[#00A896]/30 uppercase tracking-wider">
+          <span className="inline-block bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#A68A64] text-xs font-semibold px-4 py-1.5 rounded-full border border-[#E6DFD5] dark:border-white/15 uppercase tracking-widest">
             {lang === 'bn' ? 'আমাদের ডেন্টাল সেবাসমূহ' : 'Clinical Specialties'}
           </span>
-          <h1 className="text-3xl md:text-5xl font-black text-[#0E3A5D] dark:text-white tracking-tight">
+          <h1 className="font-heading text-3xl md:text-5xl font-extrabold text-[#2C2A29] dark:text-[#F7F5F0] tracking-tight pt-1">
             {lang === 'bn' ? 'আধুনিক ও ব্যথামুক্ত ডেন্টাল সেবা' : 'Comprehensive & Painless Dental Care'}
           </h1>
-          <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            {lang === 'bn' 
-              ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আধুনিক প্রযুক্তির সাহায্যে সুনির্দিষ্ট ও নিরাপদ সেবা প্রদান করা হয়।' 
+          <p className="text-sm md:text-base text-[#5C5852] dark:text-[#D8CFC4] max-w-2xl mx-auto leading-relaxed">
+            {lang === 'bn'
+              ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আধুনিক প্রযুক্তির সাহায্যে সুনির্দিষ্ট ও নিরাপদ সেবা প্রদান করা হয়।'
               : 'Providing precise, hygienic, and state-of-the-art dental procedures using modern technology.'}
           </p>
         </div>
       </section>
 
       {/* প্রধান সার্ভিস গ্রিড সেকশন (২১টি সার্ভিস) */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 pb-16">
+      <section className="max-w-7xl mx-auto px-4 md:px-8 py-14 md:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {servicesList.map((service) => (
-            <div 
-              key={service.id} 
-              className="bg-white dark:bg-[#102A36] rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col justify-between group"
+            <div
+              key={service.id}
+              className="bg-[#FCFBF9] dark:bg-[#171615] rounded-2xl border border-[#E6DFD5] dark:border-white/10 hover:border-[#A68A64] transition-all duration-300 overflow-hidden flex flex-col justify-between group"
             >
-              <div className="w-full h-52 bg-slate-100 dark:bg-slate-800 relative overflow-hidden">
+              <div className="w-full h-52 bg-[#F7F5F0] dark:bg-[#1C1B1A] relative overflow-hidden border-b border-[#E6DFD5] dark:border-white/10">
                 <div className="absolute top-3 left-3 z-10">
-                  <span className="bg-[#0E3A5D]/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/20">
+                  <span className="bg-[#2C2A29]/90 dark:bg-[#121110]/90 backdrop-blur-xs text-[#F7F5F0] text-[11px] font-semibold px-3 py-1 rounded-full border border-[#A68A64]/40">
                     {lang === 'bn' ? service.badgeBn : service.badgeEn}
                   </span>
                 </div>
 
-                <img 
-                  src={`/services/${service.id}.jpg`} 
+                <img
+                  src={`/services/${service.id}.jpg`}
                   alt={service.nameEn}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   onError={(e) => {
@@ -331,7 +360,7 @@ export default function ServicesPage() {
                       e.target.src = `/services/${service.id}.jpeg`;
                     } else {
                       e.target.onerror = null;
-                      e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EImage Missing: " + service.id + "(.jpg/.jpeg)%3C/text%3E%3C/svg%3E";
+                      e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F7F5F0' width='400' height='250'/%3E%3Ctext fill='%232C2A29' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EImage Missing: " + service.id + "(.jpg/.jpeg)%3E%3C/text%3E%3C/svg%3E";
                     }
                   }}
                 />
@@ -339,45 +368,54 @@ export default function ServicesPage() {
 
               <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                 <div className="space-y-2">
-                  <h3 className="text-lg md:text-xl font-bold text-[#0E3A5D] dark:text-teal-300 leading-snug group-hover:text-[#00A896] transition">
+                  <h3 className="font-heading text-lg md:text-xl font-bold text-[#2C2A29] dark:text-[#F7F5F0] leading-snug group-hover:text-[#A68A64] transition-colors duration-300">
                     {lang === 'bn' ? service.nameBn : service.nameEn}
                   </h3>
-                  <p className="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  <p className="text-xs md:text-sm text-[#5C5852] dark:text-[#D8CFC4] leading-relaxed">
                     {lang === 'bn' ? service.descBn : service.descEn}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 font-medium">
+                <div className="pt-4 border-t border-[#E6DFD5] dark:border-white/10 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-1.5 text-[#5C5852] dark:text-[#D8CFC4] font-medium">
                     <span>⏱️</span>
                     <span>{lang === 'bn' ? service.timeBn : service.timeEn}</span>
                   </div>
 
-                  <a 
+                  <a
                     href="/#booking-section"
-                    className="bg-[#00A896]/10 hover:bg-[#00A896] text-[#00A896] hover:text-white font-extrabold px-3.5 py-1.5 rounded-xl transition duration-200 flex items-center gap-1 text-xs"
+                    className="bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:bg-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] hover:text-white border border-[#E6DFD5] dark:border-white/15 font-semibold px-3.5 py-1.5 rounded-full transition-colors duration-300 flex items-center gap-1 text-xs"
                   >
                     <span>{lang === 'bn' ? 'বুকিং' : 'Book'}</span>
                     <span>→</span>
                   </a>
                 </div>
               </div>
-
             </div>
           ))}
         </div>
 
         {/* বটম বুকিং বাটন */}
         <div className="mt-14 text-center">
-          <a 
+          <a
             href="/#booking-section"
-            className="inline-flex items-center gap-3 bg-[#00A896] hover:bg-[#02C39A] text-white font-extrabold text-base md:text-lg px-8 py-4 rounded-2xl shadow-xl hover:shadow-teal-500/30 transition-all hover:scale-105 cursor-pointer"
+            className="inline-flex items-center gap-3 bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-white font-bold text-sm md:text-base px-8 py-3.5 rounded-full transition-colors duration-300 cursor-pointer"
           >
             <span>📅</span>
             <span>{lang === 'bn' ? 'অ্যাপয়েন্টমেন্ট বুক করুন' : 'Book Appointment Now'}</span>
           </a>
         </div>
       </section>
+
+      {/* ফুটার */}
+      <footer className="bg-[#2C2A29] dark:bg-[#0D0C0B] text-[#D8CFC4] py-8 border-t border-[#A68A64]/25">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D8CFC4]/75 gap-4">
+          <p>© 2026 Dr. Sakib Dental Care. All rights reserved.</p>
+          <p className="font-medium text-[#A68A64]">
+            developed by own(Dr. Asir Mosaddeque Sakib)
+          </p>
+        </div>
+      </footer>
 
     </main>
   )
