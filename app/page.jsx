@@ -769,42 +769,46 @@ export default function Home() {
         </div>
       )}
 
-      {/* হিরো সেকশন */}
-      <section className="py-20 lg:py-24 px-4 md:px-12 border-b border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] transition-colors duration-300">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 flex justify-center lg:justify-start order-2 lg:order-1">
-            <div className="relative w-72 h-[370px] md:w-80 md:h-[420px] lg:w-96 lg:h-[460px] rounded-2xl overflow-hidden border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] shadow-sm">
-              <img src="/doctor.jpeg" alt="Dr. Asir Mosaddeque Sakib" className="w-full h-full object-cover object-top" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#2C2A29]/85 via-transparent to-transparent"></div>
+      {/* হিরো / ব্যানার সেকশন */}
+      <section className="relative w-full min-h-[540px] md:min-h-[620px] flex items-center overflow-hidden border-b border-[#E6DFD5] dark:border-white/10 bg-[#121110]">
+        {/* পুরো স্ক্রিন জুড়ে ডান থেকে বাম পর্যন্ত ব্যানার ইমেজ */}
+        <img
+          src="/doctor.png"
+          alt="Dr. Asir Mosaddeque Sakib"
+          className="absolute inset-0 w-full h-full object-cover object-right md:object-center"
+        />
 
-              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-[#FCFBF9]/95 dark:bg-[#171615]/95 backdrop-blur-md border border-[#E6DFD5] dark:border-white/15 space-y-1">
-                <h3 className="font-serif font-bold text-base md:text-lg text-[#2C2A29] dark:text-[#F7F5F0]">{t[lang].title}</h3>
-                <p className="text-xs text-[#5C5852] dark:text-[#D8CFC4] font-medium whitespace-pre-line">{t[lang].doctorInfo}</p>
-              </div>
-            </div>
-          </div>
+        {/* ডান দিক থেকে বাম দিকে ক্রমান্বয়ে ব্ল্যাক গ্রেডিয়েন্ট */}
+        <div
+          className="absolute inset-0 bg-gradient-to-l from-black/15 via-black/70 to-black/95 pointer-events-none"
+          aria-hidden="true"
+        ></div>
 
-          <div className="lg:col-span-7 space-y-6 order-1 lg:order-2 text-center lg:text-left">
-            <span className="inline-block text-xs font-semibold uppercase tracking-widest text-[#A68A64] bg-[#F7F5F0] dark:bg-[#1C1B1A] px-4 py-1.5 rounded-full border border-[#E6DFD5] dark:border-white/15">
+        {/* বাম পাশে মোটা হরফের লেখা ও বাটনসমূহ */}
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-4 md:px-12 py-16 md:py-24">
+          <div className="max-w-2xl space-y-6 text-left text-[#F7F5F0]">
+            <span className="inline-block text-xs font-bold uppercase tracking-widest text-[#E6DFD5] bg-white/10 backdrop-blur-xs px-4 py-1.5 rounded-full border border-white/20">
               {t[lang].subtitle}
             </span>
-            <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-[#2C2A29] dark:text-[#F7F5F0]">
+
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-white drop-shadow-sm">
               {t[lang].heroTitle}
             </h1>
-            <p className="font-sans text-base md:text-lg text-[#5C5852] dark:text-[#D8CFC4] max-w-xl mx-auto lg:mx-0 leading-relaxed">
+
+            <p className="font-sans text-base md:text-lg font-medium text-[#E6DFD5]/95 max-w-xl leading-relaxed">
               {t[lang].heroSub}
             </p>
 
-            <div className="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+            <div className="pt-2 flex flex-wrap items-center gap-4">
               <button
                 onClick={handleOpenBooking}
-                className="bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-[#F7F5F0] transition-colors duration-300 rounded-full px-7 py-3.5 font-semibold cursor-pointer text-sm md:text-base"
+                className="bg-[#F7F5F0] text-[#2C2A29] hover:bg-[#A68A64] hover:text-white transition-colors duration-300 rounded-full px-7 py-3.5 font-bold cursor-pointer text-sm md:text-base shadow-md"
               >
                 {t[lang].bookingMainBtn}
               </button>
               <a
                 href="#about-section"
-                className="px-7 py-3.5 rounded-full bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] font-semibold border border-[#E6DFD5] dark:border-white/15 transition-colors duration-300 text-sm md:text-base"
+                className="px-7 py-3.5 rounded-full bg-black/45 hover:bg-black/70 text-white font-bold border border-white/25 transition-colors duration-300 text-sm md:text-base backdrop-blur-xs"
               >
                 {t[lang].learnMoreBtn}
               </a>
