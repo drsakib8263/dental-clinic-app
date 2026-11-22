@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 export default function ServicesPage() {
   const [lang, setLang] = useState('bn')
   const [darkMode, setDarkMode] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const root = document.documentElement
@@ -288,14 +289,28 @@ export default function ServicesPage() {
             </div>
           </a>
 
-          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 shrink-0">
-            <a
-              href="/"
-              className="text-xs md:text-sm font-semibold text-[#5C5852] dark:text-[#D8CFC4] hover:text-[#A68A64] transition-colors duration-300 hidden sm:block"
-            >
-              {lang === 'bn' ? '← হোম পেজ' : '← Home'}
+          <nav className="hidden lg:flex items-center gap-6 font-medium text-sm text-[#5C5852] dark:text-[#D8CFC4]">
+            <a href="/" className="hover:text-[#A68A64] transition-colors duration-300">
+              {lang === 'bn' ? 'হোম' : 'Home'}
             </a>
+            <a href="/#about-section" className="hover:text-[#A68A64] transition-colors duration-300">
+              {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
+            </a>
+            <a href="/introduction-to-dentistry" className="hover:text-[#A68A64] transition-colors duration-300">
+              {lang === 'bn' ? 'ডেন্টিস্ট্রি সম্পর্কে' : 'About Dentistry'}
+            </a>
+            <a href="/services" className="text-[#2C2A29] dark:text-[#F7F5F0] font-semibold border-b border-[#A68A64] pb-0.5 transition-colors duration-300">
+              {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
+            </a>
+            <a href="/gallery" className="hover:text-[#A68A64] transition-colors duration-300">
+              {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
+            </a>
+            <a href="/#contact-section" className="hover:text-[#A68A64] transition-colors duration-300">
+              {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
+            </a>
+          </nav>
 
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
               type="button"
               onClick={() => setDarkMode(!darkMode)}
@@ -314,9 +329,42 @@ export default function ServicesPage() {
               <span>🌐</span>
               <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
             </button>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-base sm:text-lg cursor-pointer focus:outline-none"
+              aria-label="Mobile Menu Toggle"
+            >
+              {mobileMenuOpen ? '✕' : '☰'}
+            </button>
           </div>
         </div>
       </header>
+
+      {/* মোবাইল / হ্যামবার্গার ড্রপডাউন মেনু (স্ক্রলের যেকোনো জায়গা থেকে খুলবে) */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-x-0 top-[73px] sm:top-[81px] z-50 px-4 sm:px-6 py-4 space-y-2 bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/15 shadow-xl transition-all duration-300 max-h-[75vh] overflow-y-auto">
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#2C2A29] dark:text-[#F7F5F0]">
+            {lang === 'bn' ? 'হোম' : 'Home'}
+          </a>
+          <a href="/#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
+          </a>
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'ডেন্টিস্ট্রি সম্পর্কে' : 'About Dentistry'}
+          </a>
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#A68A64]">
+            {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
+          </a>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
+          </a>
+          <a href="/#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
+          </a>
+        </div>
+      )}
 
       {/* হিরো সেকশন */}
       <section className="bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/10 py-12 md:py-16 px-4 md:px-8 transition-colors duration-300">

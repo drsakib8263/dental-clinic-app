@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 export default function GalleryPage() {
   const [lang, setLang] = useState('bn')
   const [darkMode, setDarkMode] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selectedModalIndex, setSelectedModalIndex] = useState(null)
   const [activeGalleryType, setActiveGalleryType] = useState('chamber')
 
@@ -73,7 +74,7 @@ export default function GalleryPage() {
         href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700;800&family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       />
 
-      {/* টপ ন্যাভিগেশন, ডার্ক মোড ও ল্যাঙ্গুয়েজ টগল */}
+      {/* টপ ন্যাভিগেশন, ডার্ক মোড, ল্যাঙ্গুয়েজ টগল ও হ্যামবার্গার বাটন */}
       <div className="max-w-6xl mx-auto flex justify-between items-center gap-2 mb-8 relative z-50">
         <a
           href="/"
@@ -88,7 +89,7 @@ export default function GalleryPage() {
             onClick={() => setDarkMode(!darkMode)}
             title={darkMode ? (lang === 'bn' ? 'লাইট মোড' : 'Light Mode') : (lang === 'bn' ? 'ডার্ক মোড' : 'Dark Mode')}
             aria-label="Toggle Dark Mode"
-            className="w-9 h-9 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-sm cursor-pointer transition-colors duration-300"
+            className="w-9 h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-sm cursor-pointer transition-colors duration-300"
           >
             {darkMode ? '☀️' : '🌙'}
           </button>
@@ -101,8 +102,41 @@ export default function GalleryPage() {
             <span>🌐</span>
             <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
           </button>
+
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="w-9 h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-lg cursor-pointer transition-colors duration-300 focus:outline-none"
+            aria-label="Toggle Hamburger Menu"
+          >
+            {mobileMenuOpen ? '✕' : '☰'}
+          </button>
         </div>
       </div>
+
+      {/* হ্যামবার্গার ড্রপডাউন মেনু (স্ক্রলের যেকোনো পজিশন থেকে খুলবে) */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-x-4 top-[88px] z-50 max-w-6xl mx-auto p-4 rounded-2xl border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] shadow-xl space-y-2 font-semibold text-sm text-[#2C2A29] dark:text-[#F7F5F0] max-h-[75vh] overflow-y-auto">
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10">
+            {lang === 'bn' ? 'হোম' : 'Home'}
+          </a>
+          <a href="/#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
+          </a>
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'ডেন্টিস্ট্রি সম্পর্কে' : 'About Dentistry'}
+          </a>
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
+          </a>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#A68A64]">
+            {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
+          </a>
+          <a href="/#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
+          </a>
+        </div>
+      )}
 
       <div className="max-w-6xl mx-auto bg-[#FCFBF9] dark:bg-[#171615] p-6 sm:p-8 md:p-12 rounded-2xl border border-[#E6DFD5] dark:border-white/10 relative z-10 space-y-16 transition-colors duration-300">
 
