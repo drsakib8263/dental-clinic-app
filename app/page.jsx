@@ -638,23 +638,35 @@ export default function Home() {
         </div>
 
         <div className="flex justify-between items-center gap-2 border-t border-white/10 pt-1.5 text-[10px] sm:text-xs">
-          <div className="flex items-center gap-1.5 text-[#F7F5F0] font-medium min-w-0">
-            <span className="shrink-0">🕒</span>
-            <span className="truncate">{lang === 'bn' ? 'চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:৩০ - রাত ৯:৩০), শুক্রবার বন্ধ' : 'Chamber Open: Sat - Thu (4:30 PM - 9:30 PM), Friday Closed'}</span>
-          </div>
+  <div className="flex items-start sm:items-center gap-1.5 text-[#F7F5F0] font-medium min-w-0">
+    <span className="shrink-0 mt-0.5 sm:mt-0">🕒</span>
+    {lang === 'bn' ? (
+      <span className="leading-snug">
+        <span className="block sm:inline">চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:৩০ - রাত ৯:৩০)</span>
+        <span className="hidden sm:inline">, </span>
+        <span className="block sm:inline text-[#E6DFD5]">শুক্রবার বন্ধ</span>
+      </span>
+    ) : (
+      <span className="leading-snug">
+        <span className="block sm:inline">Chamber Open: Sat - Thu (4:30 PM - 9:30 PM)</span>
+        <span className="hidden sm:inline">, </span>
+        <span className="block sm:inline text-[#E6DFD5]">Friday Closed</span>
+      </span>
+    )}
+  </div>
 
-          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-            <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="Facebook">
-              <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
-            </a>
-            <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="Instagram">
-              <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
-            </a>
-            <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="WhatsApp">
-              <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
-            </a>
-          </div>
-        </div>
+  <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+    <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="Facebook">
+      <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
+    </a>
+    <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="Instagram">
+      <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
+    </a>
+    <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="WhatsApp">
+      <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
+    </a>
+  </div>
+</div>
       </div>
 
       {/* ন্যাভিগেশন বার (হেডার) */}
