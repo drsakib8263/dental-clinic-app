@@ -3,6 +3,10 @@
 :root {
   --background: #F7F5F0;
   --foreground: #2C2A29;
+  --font-en-heading: "Playfair Display", Georgia, serif;
+  --font-en-body: "Plus Jakarta Sans", Arial, sans-serif;
+  --font-bn-heading: "Noto Serif Bengali", "Noto Serif", Georgia, serif;
+  --font-bn-body: "Hind Siliguri", Arial, sans-serif;
 }
 
 .dark {
@@ -13,13 +17,54 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-hind-siliguri), var(--font-jakarta), var(--font-inter), "Hind Siliguri", "Plus Jakarta Sans", "Inter", Arial, sans-serif;
-  --font-serif: var(--font-hind-siliguri), var(--font-jakarta), var(--font-inter), "Hind Siliguri", "Plus Jakarta Sans", "Inter", Georgia, serif;
+  --font-sans: var(--font-bn-body), var(--font-en-body), sans-serif;
+  --font-serif: var(--font-bn-heading), var(--font-en-heading), serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-hind-siliguri), "Hind Siliguri", var(--font-jakarta), var(--font-inter), "Plus Jakarta Sans", "Inter", Arial, sans-serif;
+  font-family: var(--font-bn-body), var(--font-en-body), sans-serif;
+}
+
+/* ভাষা অনুযায়ী হেডিং এবং বডি/বাটন ফন্ট */
+[data-lang="en"] .font-heading,
+[data-lang="en"] h1,
+[data-lang="en"] h2,
+[data-lang="en"] h3,
+[data-lang="en"] h4 {
+  font-family: var(--font-en-heading) !important;
+}
+
+[data-lang="en"] .font-body-ui,
+[data-lang="en"] p,
+[data-lang="en"] span,
+[data-lang="en"] a,
+[data-lang="en"] button,
+[data-lang="en"] input,
+[data-lang="en"] select,
+[data-lang="en"] textarea,
+[data-lang="en"] label {
+  font-family: var(--font-en-body) !important;
+}
+
+[data-lang="bn"] .font-heading,
+[data-lang="bn"] h1,
+[data-lang="bn"] h2,
+[data-lang="bn"] h3,
+[data-lang="bn"] h4 {
+  font-family: var(--font-bn-heading) !important;
+}
+
+[data-lang="bn"] .font-body-ui,
+[data-lang="bn"] p,
+[data-lang="bn"] span,
+[data-lang="bn"] a,
+[data-lang="bn"] button,
+[data-lang="bn"] input,
+[data-lang="bn"] select,
+[data-lang="bn"] textarea,
+[data-lang="bn"] label {
+  font-family: var(--font-bn-body) !important;
 }

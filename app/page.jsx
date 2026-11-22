@@ -611,12 +611,20 @@ export default function Home() {
   ]
 
   const inputClass =
-    'w-full px-4 py-3 rounded-2xl outline-none border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#2C2A29] dark:text-[#F7F5F0] placeholder:text-[#5C5852]/70 dark:placeholder:text-[#D8CFC4]/50 focus:border-[#A68A64] transition-colors duration-300 font-sans'
+    'font-body-ui w-full px-4 py-3 rounded-2xl outline-none border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#2C2A29] dark:text-[#F7F5F0] placeholder:text-[#5C5852]/70 dark:placeholder:text-[#D8CFC4]/50 focus:border-[#A68A64] transition-colors duration-300'
 
   const isOpenStatus = !chamberNotice.isClosed && isChamberOpenNow
 
   return (
-    <main className="min-h-screen transition-colors duration-300 font-sans bg-[#F7F5F0] dark:bg-[#121110] text-[#2C2A29] dark:text-[#F7F5F0] overflow-x-clip">
+    <main
+      data-lang={lang}
+      className="font-body-ui min-h-screen transition-colors duration-300 bg-[#F7F5F0] dark:bg-[#121110] text-[#2C2A29] dark:text-[#F7F5F0] overflow-x-clip"
+    >
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700;800&family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      />
+
       <style jsx>{`
         @keyframes marquee {
           0% { transform: translateX(100%); }
@@ -661,7 +669,7 @@ export default function Home() {
       {/* ন্যাভিগেশন বার (হেডার) */}
       <header className="sticky top-0 z-50 px-2.5 sm:px-6 md:px-12 py-3 md:py-4 bg-[#FCFBF9]/95 dark:bg-[#171615]/95 backdrop-blur-md border-b border-[#E6DFD5] dark:border-white/10 flex items-center justify-between gap-1.5 transition-colors duration-300">
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] flex items-center justify-center text-sm sm:text-lg font-serif border border-[#A68A64]/40">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] flex items-center justify-center text-sm sm:text-lg border border-[#A68A64]/40">
             🦷
           </div>
           <div className="flex flex-col min-w-0">
@@ -771,31 +779,28 @@ export default function Home() {
 
       {/* হিরো / ব্যানার সেকশন */}
       <section className="relative w-full min-h-[460px] sm:min-h-[540px] md:min-h-[620px] flex items-center overflow-hidden border-b border-[#E6DFD5] dark:border-white/10 bg-[#121110]">
-        {/* পুরো স্ক্রিন জুড়ে ডান থেকে বাম পর্যন্ত ব্যানার ইমেজ */}
         <img
           src="/doctor.png"
           alt="Dr. Asir Mosaddeque Sakib"
           className="absolute inset-0 w-full h-full object-cover object-[72%_20%] sm:object-[65%_22%] md:object-right"
         />
 
-        {/* ডান দিক থেকে বাম দিকে ক্রমান্বয়ে ব্ল্যাক গ্রেডিয়েন্ট */}
         <div
           className="absolute inset-0 bg-gradient-to-l from-black/10 via-black/65 to-black/95 pointer-events-none"
           aria-hidden="true"
         ></div>
 
-        {/* বাম পাশে মোটা হরফের লেখা ও বাটনসমূহ */}
         <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 md:px-12 py-10 sm:py-16 md:py-24">
           <div className="max-w-xl lg:max-w-2xl space-y-4 sm:space-y-6 text-left text-[#F7F5F0]">
             <span className="inline-block text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#E6DFD5] bg-white/10 backdrop-blur-xs px-3.5 py-1 rounded-full border border-white/20">
               {t[lang].subtitle}
             </span>
 
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-white drop-shadow-sm">
+            <h1 className="font-heading text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-white drop-shadow-sm">
               {t[lang].heroTitle}
             </h1>
 
-            <p className="font-sans text-sm sm:text-base md:text-lg font-medium text-[#E6DFD5]/95 max-w-md sm:max-w-xl leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg font-medium text-[#E6DFD5]/95 max-w-md sm:max-w-xl leading-relaxed">
               {t[lang].heroSub}
             </p>
 
@@ -821,7 +826,7 @@ export default function Home() {
       <div className="w-full bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/10 px-4 sm:px-6 md:px-12 py-4 transition-colors duration-300">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 text-left">
           <div>
-            <h2 className="font-bold text-base sm:text-lg md:text-xl text-[#2C2A29] dark:text-[#F7F5F0]">
+            <h2 className="font-heading font-bold text-base sm:text-lg md:text-xl text-[#2C2A29] dark:text-[#F7F5F0]">
               {t[lang].title}
             </h2>
             <p className="text-xs sm:text-sm font-semibold text-[#A68A64]">
@@ -829,7 +834,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="font-sans text-xs sm:text-sm text-[#5C5852] dark:text-[#D8CFC4] md:text-right whitespace-pre-line font-medium">
+          <div className="text-xs sm:text-sm text-[#5C5852] dark:text-[#D8CFC4] md:text-right whitespace-pre-line font-medium">
             {t[lang].doctorInfo}
           </div>
         </div>
@@ -840,7 +845,7 @@ export default function Home() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm overflow-y-auto">
           <div className="max-w-xl w-full p-6 md:p-8 rounded-2xl border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] text-[#2C2A29] dark:text-[#F7F5F0] relative my-8 shadow-xl">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-xl md:text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0] flex items-center gap-2">
+              <h2 className="font-heading text-xl md:text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0] flex items-center gap-2">
                 <span>📅</span> {t[lang].bookingTitle}
               </h2>
               <button
@@ -850,7 +855,7 @@ export default function Home() {
                 ✕
               </button>
             </div>
-            <p className="font-sans font-medium mb-6 text-xs md:text-sm text-[#5C5852] dark:text-[#D8CFC4]">
+            <p className="font-medium mb-6 text-xs md:text-sm text-[#5C5852] dark:text-[#D8CFC4]">
               {t[lang].bookingSub}
             </p>
 
@@ -984,10 +989,10 @@ export default function Home() {
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
+              <h3 className="font-heading text-xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
                 {lang === 'bn' ? 'মনোযোগ দিন' : 'Attention'}
               </h3>
-              <p className="font-sans text-sm md:text-base leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">
+              <p className="text-sm md:text-base leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">
                 {customAlert.message}
               </p>
             </div>
@@ -1008,10 +1013,10 @@ export default function Home() {
           id="about-section"
           className="max-w-7xl mx-auto p-8 md:p-12 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] space-y-4 transition-colors duration-300"
         >
-          <h2 className="text-2xl md:text-4xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
+          <h2 className="font-heading text-2xl md:text-4xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
             {lang === 'bn' ? 'আমাদের সম্পর্কে (About Us)' : 'About Us'}
           </h2>
-          <div className="space-y-3 font-sans text-sm md:text-base leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">
+          <div className="space-y-3 text-sm md:text-base leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">
             <p>
               {lang === 'bn'
                 ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আপনাকে স্বাগতম। আমরা আধুনিক প্রযুক্তির সাহায্যে রোগীদের সর্বাধুনিক ও নিরাপদ ডেন্টাল সেবা প্রদান করে থাকি। আমাদের চেম্বারে রুট ক্যানাল ট্রিটমেন্ট, জিরকনিয়া ও মেটাল-সিরামিক ক্রাউন, স্কেলিং, দাঁত তোলা এবং কসমেটিক ডেন্টিস্ট্রির আধুনিক চিকিৎসা নিশ্চিত করা হয়।'
@@ -1026,10 +1031,10 @@ export default function Home() {
       <section className="py-20 md:py-24 px-4 md:px-8 bg-[#FCFBF9] dark:bg-[#171615] border-y border-[#E6DFD5] dark:border-white/10 transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 space-y-2">
-            <h2 className="text-2xl md:text-4xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
+            <h2 className="font-heading text-2xl md:text-4xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
               {t[lang].tipsTitle}
             </h2>
-            <p className="font-sans text-sm md:text-base text-[#5C5852] dark:text-[#D8CFC4]">
+            <p className="text-sm md:text-base text-[#5C5852] dark:text-[#D8CFC4]">
               {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
             </p>
           </div>
@@ -1066,11 +1071,11 @@ export default function Home() {
                   />
 
                   <div className="relative z-10 w-1/2 text-left space-y-2 p-3 rounded-xl bg-[#FCFBF9]/90 dark:bg-[#171615]/90 backdrop-blur-xs border border-[#E6DFD5] dark:border-white/15">
-                    <h3 className="font-bold text-base md:text-lg tracking-tight text-[#2C2A29] dark:text-[#F7F5F0]">
+                    <h3 className="font-heading font-bold text-base md:text-lg tracking-tight text-[#2C2A29] dark:text-[#F7F5F0]">
                       {lang === 'bn' ? headlines[index].bn : headlines[index].en}
                     </h3>
 
-                    <p className="font-sans font-medium text-xs leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">
+                    <p className="font-medium text-xs leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">
                       {lang === 'bn' ? item.textBn : item.textEn}
                     </p>
                   </div>
@@ -1088,7 +1093,7 @@ export default function Home() {
             <span className="text-xs font-semibold uppercase tracking-widest text-[#A68A64]">
               {lang === 'bn' ? 'আমাদের বিশেষত্ব' : 'The Boutique Standard'}
             </span>
-            <h2 className="text-2xl md:text-4xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
+            <h2 className="font-heading text-2xl md:text-4xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
               {t[lang].whyUsTitle}
             </h2>
           </div>
@@ -1106,8 +1111,8 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#2C2A29]/90 via-[#2C2A29]/40 to-transparent"></div>
 
                   <div className="relative z-10 space-y-3 text-[#F7F5F0]">
-                    <h3 className="text-2xl md:text-4xl font-bold text-[#F7F5F0]">{box.title}</h3>
-                    <p className="font-sans text-sm md:text-base leading-relaxed text-[#D8CFC4] max-w-2xl">
+                    <h3 className="font-heading text-2xl md:text-4xl font-bold text-[#F7F5F0]">{box.title}</h3>
+                    <p className="text-sm md:text-base leading-relaxed text-[#D8CFC4] max-w-2xl">
                       {box.description}
                     </p>
                   </div>
@@ -1122,10 +1127,10 @@ export default function Home() {
       <section id="contact-section" className="py-20 md:py-24 px-4 md:px-8 bg-[#FCFBF9] dark:bg-[#171615] border-y border-[#E6DFD5] dark:border-white/10 transition-colors duration-300">
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="text-center space-y-2">
-            <h2 className="text-2xl md:text-4xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
+            <h2 className="font-heading text-2xl md:text-4xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
               {t[lang].videoTitle}
             </h2>
-            <p className="font-sans text-xs md:text-sm max-w-2xl mx-auto text-[#5C5852] dark:text-[#D8CFC4]">
+            <p className="text-xs md:text-sm max-w-2xl mx-auto text-[#5C5852] dark:text-[#D8CFC4]">
               {t[lang].videoSub}
             </p>
           </div>
@@ -1136,7 +1141,7 @@ export default function Home() {
                 key={index}
                 className="p-5 rounded-2xl border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] flex flex-col justify-between space-y-4"
               >
-                <h4 className="font-bold text-base text-[#2C2A29] dark:text-[#F7F5F0]">{vid.title}</h4>
+                <h4 className="font-heading font-bold text-base text-[#2C2A29] dark:text-[#F7F5F0]">{vid.title}</h4>
                 <div className="w-full h-32 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] flex items-center justify-center text-xs font-medium text-[#5C5852] dark:text-[#D8CFC4]">
                   🎬 {lang === 'bn' ? 'ভিডিও শীঘ্রই আসছে' : 'Video Coming Soon'}
                 </div>
@@ -1153,10 +1158,10 @@ export default function Home() {
             <span className="text-xs font-semibold uppercase tracking-widest text-[#A68A64] bg-[#FCFBF9] dark:bg-[#171615] px-4 py-1.5 rounded-full border border-[#E6DFD5] dark:border-white/15">
               {lang === 'bn' ? 'রোগীদের মূল্যায়ন' : 'Testimonials'}
             </span>
-            <h2 className="text-2xl md:text-4xl font-bold text-[#2C2A29] dark:text-[#F7F5F0] pt-1">
+            <h2 className="font-heading text-2xl md:text-4xl font-bold text-[#2C2A29] dark:text-[#F7F5F0] pt-1">
               {t[lang].reviewsTitle}
             </h2>
-            <p className="font-sans text-sm md:text-base text-[#5C5852] dark:text-[#D8CFC4]">
+            <p className="text-sm md:text-base text-[#5C5852] dark:text-[#D8CFC4]">
               {t[lang].reviewsSub}
             </p>
 
@@ -1182,17 +1187,17 @@ export default function Home() {
                       <span key={i}>★</span>
                     ))}
                   </div>
-                  <p className="font-sans text-sm md:text-base leading-relaxed italic text-[#5C5852] dark:text-[#D8CFC4]">
+                  <p className="text-sm md:text-base leading-relaxed italic text-[#5C5852] dark:text-[#D8CFC4]">
                     "{rev.review_text}"
                   </p>
                 </div>
 
                 <div className="pt-6 mt-6 border-t border-[#E6DFD5] dark:border-white/10 flex items-center justify-between">
                   <div>
-                    <h4 className="font-bold text-base text-[#2C2A29] dark:text-[#F7F5F0]">{rev.patient_name}</h4>
-                    <p className="font-sans text-xs font-semibold text-[#A68A64]">{rev.location}</p>
+                    <h4 className="font-heading font-bold text-base text-[#2C2A29] dark:text-[#F7F5F0]">{rev.patient_name}</h4>
+                    <p className="text-xs font-semibold text-[#A68A64]">{rev.location}</p>
                   </div>
-                  <span className="font-sans text-xs text-[#5C5852] dark:text-[#D8CFC4]/75">
+                  <span className="text-xs text-[#5C5852] dark:text-[#D8CFC4]/75">
                     {new Date(rev.created_at || Date.now()).toLocaleDateString()}
                   </span>
                 </div>
@@ -1207,7 +1212,7 @@ export default function Home() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm overflow-y-auto">
           <div className="max-w-xl w-full p-6 md:p-8 rounded-2xl border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] text-[#2C2A29] dark:text-[#F7F5F0] relative my-8 shadow-xl">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl md:text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0] flex items-center gap-2">
+              <h2 className="font-heading text-xl md:text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0] flex items-center gap-2">
                 <span>✍️</span> {t[lang].reviewModalTitle}
               </h2>
               <button
@@ -1288,14 +1293,14 @@ export default function Home() {
 
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#F7F5F0] text-[#2C2A29] flex items-center justify-center text-lg font-serif">
+              <div className="w-10 h-10 rounded-full bg-[#F7F5F0] text-[#2C2A29] flex items-center justify-center text-lg">
                 🦷
               </div>
               <span className="font-bold text-lg text-[#F7F5F0] tracking-tight">
                 {t[lang].title}
               </span>
             </div>
-            <p className="font-sans text-xs md:text-sm text-[#D8CFC4]/80 leading-relaxed">
+            <p className="text-xs md:text-sm text-[#D8CFC4]/80 leading-relaxed">
               {lang === 'bn'
                 ? 'আধুনিক প্রযুক্তি ও অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে নিরাপদ ও পেইনলেস ডেন্টাল কেয়ার নিশ্চিত করা আমাদের লক্ষ্য।'
                 : 'Ensuring safe and painless dental care with modern technology and expert supervision.'}
@@ -1314,10 +1319,10 @@ export default function Home() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-[#F7F5F0] font-bold text-lg border-l-2 border-[#A68A64] pl-3">
+            <h4 className="font-heading text-[#F7F5F0] font-bold text-lg border-l-2 border-[#A68A64] pl-3">
               {lang === 'bn' ? 'দ্রুত লিংক' : 'Quick Links'}
             </h4>
-            <ul className="space-y-2.5 font-sans text-sm">
+            <ul className="space-y-2.5 text-sm">
               <li><a href="/" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'হোম পেজ' : 'Home'}</a></li>
               <li><a href="#about-section" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}</a></li>
               <li><a href="/services" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'সেবাসমূহ' : 'Services'}</a></li>
@@ -1326,10 +1331,10 @@ export default function Home() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-[#F7F5F0] font-bold text-lg border-l-2 border-[#A68A64] pl-3">
+            <h4 className="font-heading text-[#F7F5F0] font-bold text-lg border-l-2 border-[#A68A64] pl-3">
               {lang === 'bn' ? 'সময়সূচি' : 'Working Hours'}
             </h4>
-            <div className="space-y-2 font-sans text-xs md:text-sm text-[#D8CFC4]">
+            <div className="space-y-2 text-xs md:text-sm text-[#D8CFC4]">
               <p className="flex items-center gap-2">
                 <span>📅</span>
                 <span className="font-semibold text-[#F7F5F0]">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার:' : 'Sat - Thu:'}</span>
@@ -1345,10 +1350,10 @@ export default function Home() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-[#F7F5F0] font-bold text-lg border-l-2 border-[#A68A64] pl-3">
+            <h4 className="font-heading text-[#F7F5F0] font-bold text-lg border-l-2 border-[#A68A64] pl-3">
               {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
             </h4>
-            <div className="space-y-3 font-sans text-xs md:text-sm">
+            <div className="space-y-3 text-xs md:text-sm">
               <p className="flex items-start gap-2">
                 <span className="text-[#A68A64]">📍</span>
                 <span>{t[lang].addressText}</span>
@@ -1379,7 +1384,7 @@ export default function Home() {
 
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 md:px-8 pt-6 flex flex-col sm:flex-row items-center justify-between font-sans text-xs text-[#D8CFC4]/75 gap-4">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D8CFC4]/75 gap-4">
           <p>© 2026 Dr. Sakib Dental Care. All rights reserved.</p>
           <p className="font-medium text-[#A68A64]">
             developed by own(Dr. Asir Mosaddeque Sakib)
@@ -1396,15 +1401,15 @@ export default function Home() {
             </button>
 
             <div className="border-b border-[#E6DFD5] dark:border-white/10 pb-3">
-              <h3 className="text-xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
+              <h3 className="font-heading text-xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
                 {lang === 'bn' ? 'যোগাযোগ ও লোকেশন' : 'Contact & Location'}
               </h3>
-              <p className="font-sans text-xs text-[#5C5852] dark:text-[#D8CFC4] mt-1">
+              <p className="text-xs text-[#5C5852] dark:text-[#D8CFC4] mt-1">
                 {lang === 'bn' ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ার' : 'Dr. Asir Mosaddeque Sakib Dental Care'}
               </p>
             </div>
 
-            <div className="space-y-4 font-sans text-sm">
+            <div className="space-y-4 text-sm">
               <div className="flex items-start gap-3 bg-[#F7F5F0] dark:bg-[#1C1B1A] p-3.5 rounded-2xl border border-[#E6DFD5] dark:border-white/15">
                 <span className="text-[#A68A64] text-lg">📍</span>
                 <span className="text-[#5C5852] dark:text-[#D8CFC4]">{t[lang].addressText}</span>
@@ -1445,8 +1450,8 @@ export default function Home() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
           <div className="p-6 md:p-8 rounded-2xl border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] text-[#2C2A29] dark:text-[#F7F5F0] max-w-md w-full text-center space-y-4 shadow-xl">
             <div className="w-16 h-16 text-[#F7F5F0] dark:text-[#2C2A29] text-3xl rounded-full flex items-center justify-center mx-auto bg-[#2C2A29] dark:bg-[#F7F5F0]">✓</div>
-            <h3 className="text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">{t[lang].successTitle}</h3>
-            <p className="font-sans text-sm leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">{t[lang].successMsg}</p>
+            <h3 className="font-heading text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">{t[lang].successTitle}</h3>
+            <p className="text-sm leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">{t[lang].successMsg}</p>
             <button onClick={() => setShowSuccessModal(false)} className="w-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-[#F7F5F0] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer">
               {t[lang].closeModalBtn}
             </button>
@@ -1459,10 +1464,10 @@ export default function Home() {
         <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
           <div className="p-6 md:p-8 rounded-2xl border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] text-[#2C2A29] dark:text-[#F7F5F0] max-w-md w-full text-center space-y-4 shadow-xl">
             <div className="w-16 h-16 text-[#F7F5F0] text-3xl rounded-full flex items-center justify-center mx-auto bg-[#A68A64]">✦</div>
-            <h3 className="text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
+            <h3 className="font-heading text-2xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
               {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
             </h3>
-            <p className="font-sans text-sm leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">
+            <p className="text-sm leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">
               {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
             </p>
             <button onClick={() => setShowChamberClosedModal(false)} className="w-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] hover:bg-[#A68A64] dark:hover:bg-[#A68A64] dark:hover:text-[#F7F5F0] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer">
