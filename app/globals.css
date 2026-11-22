@@ -1,29 +1,25 @@
 @import "tailwindcss";
 
-/* ম্যানুয়াল .dark ক্লাসের জন্য ভ্যারিয়েন্ট ডিফাইন */
-@variant dark (&:where(.dark, .dark *));
-
 :root {
   --background: #F7F5F0;
   --foreground: #2C2A29;
 }
 
-/* সিস্টেমে ডার্ক মোড অন থাকলে বা .dark ক্লাস যুক্ত হলে */
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #121110;
+  --foreground: #F7F5F0;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-hind-siliguri), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-hind-siliguri), var(--font-playfair), ui-serif, Georgia, serif;
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-hind-siliguri), var(--font-jakarta), var(--font-inter), "Hind Siliguri", "Plus Jakarta Sans", "Inter", Arial, sans-serif;
+  --font-serif: var(--font-hind-siliguri), var(--font-jakarta), var(--font-inter), "Hind Siliguri", "Plus Jakarta Sans", "Inter", Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-hind-siliguri), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-hind-siliguri), "Hind Siliguri", var(--font-jakarta), var(--font-inter), "Plus Jakarta Sans", "Inter", Arial, sans-serif;
 }
