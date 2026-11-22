@@ -817,6 +817,24 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ডাক্তারের ক্রেডেনশিয়াল স্ট্রিপ (ছবির বাইরে আলাদা ক্লিন বার) */}
+      <div className="w-full bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/10 px-4 sm:px-6 md:px-12 py-4 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 text-left">
+          <div>
+            <h2 className="font-serif font-bold text-base sm:text-lg md:text-xl text-[#2C2A29] dark:text-[#F7F5F0]">
+              {t[lang].title}
+            </h2>
+            <p className="text-xs sm:text-sm font-semibold text-[#A68A64]">
+              {t[lang].subtitle}
+            </p>
+          </div>
+
+          <div className="font-sans text-xs sm:text-sm text-[#5C5852] dark:text-[#D8CFC4] md:text-right whitespace-pre-line font-medium">
+            {t[lang].doctorInfo}
+          </div>
+        </div>
+      </div>
+
       {/* পপ-আপ বুকিং ফর্ম */}
       {showPopupBooking && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm overflow-y-auto">
