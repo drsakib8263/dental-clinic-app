@@ -150,9 +150,9 @@ export default function Home() {
       setIsChamberOpenNow(isOpenTime)
 
       if (lang === 'bn') {
-        setChamberStatusText(isOpenTime ? 'চেম্বার চালু রয়েছে' : 'চেম্বার বন্ধ রয়েছে')
+        setChamberStatusText(isOpenTime ? 'চেম্বার বর্তমানে খোলা রয়েছে' : 'চেম্বার বর্তমানে বন্ধ রয়েছে')
       } else {
-        setChamberStatusText(isOpenTime ? 'Chamber is OPEN' : 'Chamber is CLOSED')
+        setChamberStatusText(isOpenTime ? 'Chamber is currently open' : 'Chamber is currently closed')
       }
     }
 
