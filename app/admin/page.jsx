@@ -226,7 +226,6 @@ export default function AdminDashboard() {
       if (error) {
         alert('ডিলিট করতে সমস্যা হয়েছে: ' + error.message)
       } else {
-        // সফলতার পপ-আপ মেসেজটি রিমোভ করা হয়েছে, সরাসরি লিস্ট রিফ্রেশ হবে
         fetchAppointments(selectedDate)
       }
     } catch (err) {
@@ -296,9 +295,20 @@ export default function AdminDashboard() {
     }
   }
 
+  const notoSerifStyle = {
+    fontFamily: "'Noto Serif Bengali', serif"
+  }
+
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-slate-100 text-slate-900 transition-colors">
+      <div
+        style={notoSerifStyle}
+        className="min-h-screen flex items-center justify-center p-4 bg-slate-100 text-slate-900 transition-colors"
+      >
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&display=swap"
+        />
         <form onSubmit={handleLogin} className="bg-white p-8 rounded-3xl shadow-2xl border border-slate-200 w-full max-w-md space-y-6">
           <h2 className="text-2xl font-black text-center text-teal-600">অ্যাডমিন লগইন</h2>
           <div>
@@ -321,7 +331,14 @@ export default function AdminDashboard() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-100 text-slate-900 p-4 md:p-8 space-y-8 transition-colors">
+    <main
+      style={notoSerifStyle}
+      className="min-h-screen bg-slate-100 text-slate-900 p-4 md:p-8 space-y-8 transition-colors"
+    >
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&display=swap"
+      />
 
       {/* টপ হেডার ও ব্যাকগ্রাউন্ড পুশ বাটন */}
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center bg-white p-6 rounded-3xl border border-slate-200 shadow-xl gap-4">
