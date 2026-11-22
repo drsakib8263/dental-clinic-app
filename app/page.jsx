@@ -142,18 +142,29 @@ export default function Home() {
   useEffect(() => {
     const checkChamberStatus = () => {
       const now = new Date()
-      const day = now.getDay()
-      const hours = now.getHours()
-      const minutes = now.getMinutes()
+      const bdTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }))
+
+      const day = bdTime.getDay() // 0 = Sun, ..., 5 = Fri, 6 = Sat
+      const hours = bdTime.getHours()
+      const minutes = bdTime.getMinutes()
       const currentTimeInMinutes = hours * 60 + minutes
 
-      const isOpenTime = day !== 5 && currentTimeInMinutes >= 990 && currentTimeInMinutes <= 1170
+      // শুক্রবার (5) বন্ধ; শনি-বৃহস্পতি বিকাল ৪:৩০ (990) থেকে রাত ৯:৩০ (1290) খোলা
+      const isOpenTime =
+        day !== 5 &&
+        currentTimeInMinutes >= 990 &&
+        currentTimeInMinutes <= 1290
+
       setIsChamberOpenNow(isOpenTime)
 
       if (lang === 'bn') {
-        setChamberStatusText(isOpenTime ? 'চেম্বার বর্তমানে খোলা রয়েছে' : 'চেম্বার বর্তমানে বন্ধ রয়েছে')
+        setChamberStatusText(
+          isOpenTime ? 'চেম্বার বর্তমানে খোলা রয়েছে' : 'চেম্বার বর্তমানে বন্ধ রয়েছে'
+        )
       } else {
-        setChamberStatusText(isOpenTime ? 'Chamber is currently open' : 'Chamber is currently closed')
+        setChamberStatusText(
+          isOpenTime ? 'Chamber is currently open' : 'Chamber is currently closed'
+        )
       }
     }
 
