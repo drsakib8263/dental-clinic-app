@@ -616,7 +616,7 @@ export default function Home() {
   const isOpenStatus = !chamberNotice.isClosed && isChamberOpenNow
 
   return (
-    <main className="min-h-screen transition-colors duration-300 font-sans bg-[#F7F5F0] dark:bg-[#121110] text-[#2C2A29] dark:text-[#F7F5F0]">
+    <main className="min-h-screen transition-colors duration-300 font-sans bg-[#F7F5F0] dark:bg-[#121110] text-[#2C2A29] dark:text-[#F7F5F0] overflow-x-clip">
       <style jsx>{`
         @keyframes marquee {
           0% { transform: translateX(100%); }
@@ -630,7 +630,7 @@ export default function Home() {
       `}</style>
 
       {/* টপ নোটিশ বার */}
-      <div className="bg-[#2C2A29] dark:bg-[#0D0C0B] text-[#D8CFC4] text-[11px] md:text-sm py-2.5 px-3 md:px-12 flex flex-col gap-1.5 border-b border-[#A68A64]/25">
+      <div className="bg-[#2C2A29] dark:bg-[#0D0C0B] text-[#D8CFC4] text-[11px] md:text-sm py-2 px-2.5 sm:px-6 md:px-12 flex flex-col gap-1.5 border-b border-[#A68A64]/25">
         <div className="overflow-hidden whitespace-nowrap w-full">
           <div className="animate-marquee inline-flex items-center gap-1.5 font-medium">
             <span>📍</span>
@@ -638,20 +638,20 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex justify-between items-center border-t border-white/10 pt-1.5 text-[11px] md:text-xs">
-          <div className="flex items-center gap-1.5 text-[#F7F5F0] font-medium">
-            <span>🕒</span>
-            <span>{lang === 'bn' ? 'চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:৩০ - রাত ৯:৩০), শুক্রবার বন্ধ' : 'Chamber Open: Sat - Thu (4:30 PM - 9:30 PM), Friday Closed'}</span>
+        <div className="flex justify-between items-center gap-2 border-t border-white/10 pt-1.5 text-[10px] sm:text-xs">
+          <div className="flex items-center gap-1.5 text-[#F7F5F0] font-medium min-w-0">
+            <span className="shrink-0">🕒</span>
+            <span className="truncate">{lang === 'bn' ? 'চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:৩০ - রাত ৯:৩০), শুক্রবার বন্ধ' : 'Chamber Open: Sat - Thu (4:30 PM - 9:30 PM), Friday Closed'}</span>
           </div>
 
-          <div className="flex items-center gap-2.5">
-            <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1.5" title="Facebook">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="Facebook">
               <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
             </a>
-            <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1.5" title="Instagram">
+            <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="Instagram">
               <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
             </a>
-            <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1.5" title="WhatsApp">
+            <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1" title="WhatsApp">
               <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
             </a>
           </div>
@@ -659,16 +659,16 @@ export default function Home() {
       </div>
 
       {/* ন্যাভিগেশন বার (হেডার) */}
-      <header className="sticky top-0 z-50 px-3 md:px-12 py-4 bg-[#FCFBF9]/95 dark:bg-[#171615]/95 backdrop-blur-md border-b border-[#E6DFD5] dark:border-white/10 flex items-center justify-between transition-colors duration-300">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] flex items-center justify-center text-lg font-serif border border-[#A68A64]/40">
+      <header className="sticky top-0 z-50 px-2.5 sm:px-6 md:px-12 py-3 md:py-4 bg-[#FCFBF9]/95 dark:bg-[#171615]/95 backdrop-blur-md border-b border-[#E6DFD5] dark:border-white/10 flex items-center justify-between gap-1.5 transition-colors duration-300">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] flex items-center justify-center text-sm sm:text-lg font-serif border border-[#A68A64]/40">
             🦷
           </div>
-          <div className="flex flex-col">
-            <span className="font-serif font-bold text-sm sm:text-base md:text-xl tracking-tight whitespace-nowrap text-[#2C2A29] dark:text-[#F7F5F0]">
+          <div className="flex flex-col min-w-0">
+            <span className="font-serif font-bold text-xs sm:text-base md:text-xl tracking-tight truncate text-[#2C2A29] dark:text-[#F7F5F0]">
               {t[lang].title}
             </span>
-            <span className="text-[10px] font-semibold text-[#A68A64] uppercase tracking-widest">
+            <span className="text-[9px] sm:text-[10px] font-semibold text-[#A68A64] uppercase tracking-wider truncate">
               {t[lang].subtitle}
             </span>
           </div>
@@ -687,8 +687,8 @@ export default function Home() {
           </button>
         </nav>
 
-        <div className="flex items-center gap-2 md:gap-3">
-          <a href="tel:+8801816011701" className="hidden sm:flex items-center gap-2 font-semibold text-xs md:text-sm text-[#2C2A29] dark:text-[#F7F5F0] hover:text-[#A68A64] transition-colors duration-300">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          <a href="tel:+8801816011701" className="hidden xl:flex items-center gap-2 font-semibold text-xs md:text-sm text-[#2C2A29] dark:text-[#F7F5F0] hover:text-[#A68A64] transition-colors duration-300">
             <span className="w-8 h-8 rounded-full bg-[#F7F5F0] dark:bg-[#1C1B1A] border border-[#E6DFD5] dark:border-white/15 flex items-center justify-center text-sm">📞</span>
             <span>+880 1816 011 701</span>
           </a>
@@ -698,7 +698,7 @@ export default function Home() {
             onClick={() => setDarkMode(!darkMode)}
             title={darkMode ? (lang === 'bn' ? 'লাইট মোড' : 'Light Mode') : (lang === 'bn' ? 'ডার্ক মোড' : 'Dark Mode')}
             aria-label="Toggle Dark Mode"
-            className="w-9 h-9 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-sm cursor-pointer transition-colors duration-300"
+            className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-xs sm:text-sm cursor-pointer transition-colors duration-300"
           >
             {darkMode ? '☀️' : '🌙'}
           </button>
@@ -706,7 +706,7 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-            className="font-semibold px-4 py-2 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] text-xs cursor-pointer transition-colors duration-300"
+            className="font-semibold px-2.5 sm:px-4 py-1.5 sm:py-2 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] text-[11px] sm:text-xs cursor-pointer transition-colors duration-300"
           >
             {lang === 'bn' ? 'English' : 'বাংলা'}
           </button>
@@ -714,7 +714,7 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden text-xl px-3 py-1.5 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#2C2A29] dark:text-[#F7F5F0] cursor-pointer focus:outline-none"
+            className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-base sm:text-lg cursor-pointer focus:outline-none"
             aria-label="Mobile Menu Toggle"
           >
             {mobileMenuOpen ? '✕' : '☰'}
@@ -723,10 +723,10 @@ export default function Home() {
       </header>
 
       {/* হেডারের একদম নিচ থেকে শুরু হওয়া চেম্বার স্ট্যাটাস বার */}
-      <div className="w-full bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/10 px-4 md:px-12 py-2.5 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto flex items-center gap-2.5 text-xs md:text-sm font-semibold text-[#2C2A29] dark:text-[#F7F5F0]">
+      <div className="w-full bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/10 px-2.5 sm:px-6 md:px-12 py-2 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#2C2A29] dark:text-[#F7F5F0]">
           <span
-            className={`w-3 h-3 rounded-full shrink-0 ${
+            className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0 ${
               isOpenStatus
                 ? 'bg-emerald-500 animate-pulse ring-4 ring-emerald-500/20'
                 : 'bg-rose-600 ring-4 ring-rose-600/20'
@@ -744,7 +744,7 @@ export default function Home() {
 
       {/* মোবাইল ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
-        <div className="lg:hidden px-6 py-5 space-y-3 bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/10 transition-all duration-300">
+        <div className="lg:hidden px-4 sm:px-6 py-4 space-y-2.5 bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/10 transition-all duration-300">
           <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#2C2A29] dark:text-[#F7F5F0]">
             {lang === 'bn' ? 'হোম' : 'Home'}
           </a>
@@ -770,45 +770,45 @@ export default function Home() {
       )}
 
       {/* হিরো / ব্যানার সেকশন */}
-      <section className="relative w-full min-h-[540px] md:min-h-[620px] flex items-center overflow-hidden border-b border-[#E6DFD5] dark:border-white/10 bg-[#121110]">
+      <section className="relative w-full min-h-[460px] sm:min-h-[540px] md:min-h-[620px] flex items-center overflow-hidden border-b border-[#E6DFD5] dark:border-white/10 bg-[#121110]">
         {/* পুরো স্ক্রিন জুড়ে ডান থেকে বাম পর্যন্ত ব্যানার ইমেজ */}
         <img
           src="/doctor.png"
           alt="Dr. Asir Mosaddeque Sakib"
-          className="absolute inset-0 w-full h-full object-cover object-right md:object-center"
+          className="absolute inset-0 w-full h-full object-cover object-[72%_20%] sm:object-[65%_22%] md:object-right"
         />
 
         {/* ডান দিক থেকে বাম দিকে ক্রমান্বয়ে ব্ল্যাক গ্রেডিয়েন্ট */}
         <div
-          className="absolute inset-0 bg-gradient-to-l from-black/15 via-black/70 to-black/95 pointer-events-none"
+          className="absolute inset-0 bg-gradient-to-l from-black/10 via-black/65 to-black/95 pointer-events-none"
           aria-hidden="true"
         ></div>
 
         {/* বাম পাশে মোটা হরফের লেখা ও বাটনসমূহ */}
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-4 md:px-12 py-16 md:py-24">
-          <div className="max-w-2xl space-y-6 text-left text-[#F7F5F0]">
-            <span className="inline-block text-xs font-bold uppercase tracking-widest text-[#E6DFD5] bg-white/10 backdrop-blur-xs px-4 py-1.5 rounded-full border border-white/20">
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 md:px-12 py-10 sm:py-16 md:py-24">
+          <div className="max-w-xl lg:max-w-2xl space-y-4 sm:space-y-6 text-left text-[#F7F5F0]">
+            <span className="inline-block text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#E6DFD5] bg-white/10 backdrop-blur-xs px-3.5 py-1 rounded-full border border-white/20">
               {t[lang].subtitle}
             </span>
 
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-white drop-shadow-sm">
+            <h1 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-white drop-shadow-sm">
               {t[lang].heroTitle}
             </h1>
 
-            <p className="font-sans text-base md:text-lg font-medium text-[#E6DFD5]/95 max-w-xl leading-relaxed">
+            <p className="font-sans text-sm sm:text-base md:text-lg font-medium text-[#E6DFD5]/95 max-w-md sm:max-w-xl leading-relaxed">
               {t[lang].heroSub}
             </p>
 
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-2.5 sm:gap-4">
               <button
                 onClick={handleOpenBooking}
-                className="bg-[#F7F5F0] text-[#2C2A29] hover:bg-[#A68A64] hover:text-white transition-colors duration-300 rounded-full px-7 py-3.5 font-bold cursor-pointer text-sm md:text-base shadow-md"
+                className="bg-[#F7F5F0] text-[#2C2A29] hover:bg-[#A68A64] hover:text-white transition-colors duration-300 rounded-full px-5 sm:px-7 py-2.5 sm:py-3.5 font-bold cursor-pointer text-xs sm:text-sm md:text-base shadow-md"
               >
                 {t[lang].bookingMainBtn}
               </button>
               <a
                 href="#about-section"
-                className="px-7 py-3.5 rounded-full bg-black/45 hover:bg-black/70 text-white font-bold border border-white/25 transition-colors duration-300 text-sm md:text-base backdrop-blur-xs"
+                className="px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full bg-black/45 hover:bg-black/70 text-white font-bold border border-white/25 transition-colors duration-300 text-xs sm:text-sm md:text-base backdrop-blur-xs"
               >
                 {t[lang].learnMoreBtn}
               </a>
