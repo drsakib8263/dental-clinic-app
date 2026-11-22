@@ -751,9 +751,9 @@ export default function Home() {
         </div>
       </div>
 
-      {/* মোবাইল / হ্যামবার্গার ড্রপডাউন মেনু */}
+      {/* মোবাইল ড্রপডাউন মেনু (স্ক্রলের যেকোনো জায়গা থেকে খুলবে) */}
       {mobileMenuOpen && (
-        <div className="lg:hidden px-4 sm:px-6 py-4 space-y-2.5 bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/10 transition-all duration-300">
+        <div className="lg:hidden fixed inset-x-0 top-[116px] sm:top-[128px] z-50 px-4 sm:px-6 py-4 space-y-2 bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/15 shadow-xl transition-all duration-300 max-h-[75vh] overflow-y-auto">
           <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#2C2A29] dark:text-[#F7F5F0]">
             {lang === 'bn' ? 'হোম' : 'Home'}
           </a>

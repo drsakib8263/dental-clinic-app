@@ -130,9 +130,9 @@ export default function IntroductionToDentistry() {
         </div>
       </header>
 
-      {/* হ্যামবার্গার / মোবাইল ড্রপডাউন মেনু */}
+      {/* হ্যামবার্গার / মোবাইল ড্রপডাউন মেনু (স্ক্রলের যেকোনো জায়গা থেকে খুলবে) */}
       {mobileMenuOpen && (
-        <div className="max-w-7xl mx-auto mb-6 lg:hidden relative z-50 p-4 rounded-2xl border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] space-y-2.5 font-semibold text-sm text-[#2C2A29] dark:text-[#F7F5F0]">
+        <div className="lg:hidden fixed inset-x-4 top-[88px] z-50 p-4 rounded-2xl border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] shadow-xl space-y-2 font-semibold text-sm text-[#2C2A29] dark:text-[#F7F5F0] max-h-[75vh] overflow-y-auto">
           <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10">
             {lang === 'bn' ? 'হোম' : 'Home'}
           </a>
