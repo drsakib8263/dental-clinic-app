@@ -750,7 +750,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* মোবাইল ড্রপডাউন মেনু */}
+      {/* মোবাইল / হ্যামবার্গার ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
         <div className="lg:hidden px-4 sm:px-6 py-4 space-y-2.5 bg-[#FCFBF9] dark:bg-[#171615] border-b border-[#E6DFD5] dark:border-white/10 transition-all duration-300">
           <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#2C2A29] dark:text-[#F7F5F0]">
@@ -758,6 +758,9 @@ export default function Home() {
           </a>
           <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
             {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
+          </a>
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'ডেন্টিস্ট্রি সম্পর্কে' : 'About Dentistry'}
           </a>
           <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
             {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}

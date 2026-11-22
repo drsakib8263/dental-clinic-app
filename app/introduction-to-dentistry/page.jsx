@@ -8,47 +8,35 @@ export default function IntroductionToDentistry() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme')
-    const isDark = savedTheme === 'dark'
-    setDarkMode(isDark)
-  }, [])
-
-  const toggleTheme = () => {
-    const nextMode = !darkMode
-    setDarkMode(nextMode)
-    localStorage.setItem('theme', nextMode ? 'dark' : 'light')
-  }
-
-  // থিম অনুযায়ী কালার প্যালেট (Services পেজের সাথে মিল রেখে)
-  const themeStyles = darkMode ? {
-    bgMain: '#1a1a1a',
-    cardBg: '#262626',
-    textColor: '#ffffff',
-    subTextColor: '#cbd5e1',
-    borderColor: '#9fb2c6'
-  } : {
-    bgMain: '#d9dee3',
-    cardBg: '#ffffff',
-    textColor: '#1a1a1a',
-    subTextColor: '#334155',
-    borderColor: '#9fb2c6'
-  }
+    const root = document.documentElement
+    if (darkMode) {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+  }, [darkMode])
 
   const content = {
     bn: {
+      brandName: 'ডাঃ আসির মোসাদ্দেক সাকিব',
+      brandSub: 'ওরাল এন্ড ডেন্টাল সার্জন',
+      aboutDentistryMenu: 'ডেন্টিস্ট্রি সম্পর্কে',
       title: 'ডেন্টিস্ট্রি পরিচিতি',
       subtitle: 'মুখের স্বাস্থ্য, ডেন্টাল কেয়ার ও আধুনিক চিকিৎসার মূলভিত্তি',
       introTitle: 'আধুনিক ডেন্টিস্ট্রি ও ওরাল হেলথ',
-      introDesc: 'মুখের স্বাস্থ্য কেবল সুন্দর হাসির সাথেই যুক্ত নয়, এটি আপনার সামগ্রিক শারীরিক সুস্বাস্থ্যের একটি বড় চাবিকাঠি। নিয়মিত ডেন্টাল চেকআপ এবং সঠিক সময়ে সঠিক চিকিৎসা গ্রহণের মাধ্যমে বড় ধরনের অনেক শারীরিক জটিলতা এড়ানো সম্ভব।',
-      pointsTitle: 'কেন ডেন্টাল সচেতনতা জরুরি?',
-      point1Title: '১. ক্যাভিটি ও দাঁতের ক্ষয় রোধ',
-      point1Desc: 'নিয়মিত ব্রাশ ও ফ্লসিংয়ের মাধ্যমে দাঁতে প্লাক জমা হওয়া রোধ করা যায়, যা ক্যাভিটি সৃষ্টিতে বাধা দেয়।',
-      point2Title: '২. মাড়ির রোগ প্রতিরোধ',
-      point2Desc: 'জিঞ্জিভাইটিস বা পিরিয়ডন্টাইটিসের মতো মাড়ির ইনফেকশন এড়াতে প্রাথমিক সচেতনতা অত্যন্ত কার্যকর।',
+      introDesc: 'মুখের স্বাস্থ্য কেবল সুন্দর হাসির সাথেই যুক্ত নয়, এটি আপনার সামগ্রিক শারীরিক সুস্বাস্থ্যের একটি বড় চাবিকাঠি। নিয়মিত ডেন্টাল চেকআপ এবং সঠিক সময়ে সঠিক চিকিৎসা গ্রহণের মাধ্যমে বড় ধরনের অনেক শারীরিক জটিলতা এড়ানো সম্ভব।',
+      pointsTitle: 'কেন ডেন্টিস্ট্রি সম্পর্কে সচেতনতা জরুরি?',
+      point1Title: '১. ক্যাভিটি ও দাঁতের ক্ষয় রোধ',
+      point1Desc: 'নিয়মিত ব্রাশ ও ফ্লসিংয়ের মাধ্যমে দাঁতে প্লাক জমা হওয়া রোধ করা যায়, যা ক্যাভিটি সৃষ্টিতে বাধা দেয়।',
+      point2Title: '২. মাড়ির রোগ প্রতিরোধ',
+      point2Desc: 'জিঞ্জিভাইটিস বা পিরিয়ডন্টাইটিসের মতো মাড়ির ইনফেকশন এড়াতে প্রাথমিক সচেতনতা অত্যন্ত কার্যকর।',
       point3Title: '৩. সামগ্রিক স্বাস্থ্যের সুরক্ষা',
-      point3Desc: 'মুখের ভেতরের ব্যাকটেরিয়া রক্তনালীর মাধ্যমে হৃদরোগ বা ডায়াবেটিসের মতো জটিলতা বাড়াতে পারে, তাই ওরাল হাইজিন অত্যন্ত জরুরি।'
+      point3Desc: 'মুখের ভেতরের ব্যাকটেরিয়া রক্তনালীর মাধ্যমে হৃদরোগ বা ডায়াবেটিসের মতো জটিলতা বাড়াতে পারে, তাই ওরাল হাইজিন অত্যন্ত জরুরি।'
     },
     en: {
+      brandName: 'Dr. Asir Mosaddeque Sakib',
+      brandSub: 'Oral & Dental Surgeon',
+      aboutDentistryMenu: 'About Dentistry',
       title: 'Introduction to Dentistry',
       subtitle: 'The Foundation of Oral Health, Dental Care & Modern Treatments',
       introTitle: 'Modern Dentistry & Oral Health',
@@ -64,172 +52,178 @@ export default function IntroductionToDentistry() {
   }
 
   return (
-    <main 
-      className="min-h-screen relative py-6 px-4 md:px-12 transition-all duration-300 scroll-smooth"
-      style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
+    <main
+      data-lang={lang}
+      className="font-body-ui min-h-screen relative py-6 px-4 md:px-12 transition-colors duration-300 scroll-smooth bg-[#F7F5F0] dark:bg-[#121110] text-[#2C2A29] dark:text-[#F7F5F0] overflow-x-clip"
     >
-      
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700;800&family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      />
+
       {/* ন্যাভিগেশন বার */}
-      <header 
-        className="max-w-7xl mx-auto mb-8 sticky top-4 z-50 p-4 md:px-8 rounded-2xl shadow-xl backdrop-blur-md flex items-center justify-between border transition-all duration-300"
-        style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-      >
-        <div className="flex items-center gap-3">
-          <div 
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-xl font-black shadow-md"
-            style={{ backgroundColor: '#1a1a1a' }}
-          >
+      <header className="max-w-7xl mx-auto mb-8 sticky top-4 z-50 p-4 md:px-8 rounded-2xl backdrop-blur-md flex items-center justify-between gap-2 border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9]/95 dark:bg-[#171615]/95 transition-colors duration-300">
+        <a href="/" className="flex items-center gap-3 min-w-0">
+          <div className="w-10 h-10 shrink-0 rounded-full bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29] flex items-center justify-center text-lg border border-[#A68A64]/40">
             🦷
           </div>
-          <span 
-            className="font-extrabold text-lg md:text-xl tracking-tight"
-            style={{ color: themeStyles.textColor }}
-          >
-            Dr. Sakib Dental Care
-          </span>
-        </div>
+          <div className="flex flex-col min-w-0">
+            <span className="font-bold text-sm sm:text-base md:text-xl tracking-tight truncate text-[#2C2A29] dark:text-[#F7F5F0]">
+              {content[lang].brandName}
+            </span>
+            <span className="text-[10px] font-semibold text-[#A68A64] uppercase tracking-wider truncate">
+              {content[lang].brandSub}
+            </span>
+          </div>
+        </a>
 
-        <nav className="hidden md:flex items-center gap-6 font-bold text-sm md:text-base" style={{ color: themeStyles.textColor }}>
-          <a href="/" className="transition hover:opacity-70">Home</a>
-          <a href="/#about-section" className="transition hover:opacity-70">About us</a>
-          <a href="/introduction-to-dentistry" className="transition hover:opacity-70 border-b-2 pb-0.5" style={{ borderColor: '#9fb2c6' }}>Introduction to Dentistry</a>
-          <a href="/services" className="transition hover:opacity-70">Our services</a>
-          <a href="/gallery" className="transition hover:opacity-70">Gallery</a>
-          <a href="/#contact-section" className="transition hover:opacity-70">Contact us</a>
+        <nav className="hidden lg:flex items-center gap-6 font-medium text-sm text-[#5C5852] dark:text-[#D8CFC4]">
+          <a href="/" className="hover:text-[#A68A64] transition-colors duration-300">
+            {lang === 'bn' ? 'হোম' : 'Home'}
+          </a>
+          <a href="/#about-section" className="hover:text-[#A68A64] transition-colors duration-300">
+            {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
+          </a>
+          <a href="/introduction-to-dentistry" className="text-[#2C2A29] dark:text-[#F7F5F0] font-semibold border-b border-[#A68A64] pb-0.5 transition-colors duration-300">
+            {content[lang].aboutDentistryMenu}
+          </a>
+          <a href="/services" className="hover:text-[#A68A64] transition-colors duration-300">
+            {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
+          </a>
+          <a href="/gallery" className="hover:text-[#A68A64] transition-colors duration-300">
+            {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
+          </a>
+          <a href="/#contact-section" className="hover:text-[#A68A64] transition-colors duration-300">
+            {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
+          </a>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 shrink-0">
           {/* লাইট / ডার্ক মোড টগল বাটন */}
           <button
             type="button"
-            onClick={toggleTheme}
-            className="font-bold px-4 py-2 rounded-xl shadow-md border transition-all duration-300 flex items-center gap-2 text-xs md:text-sm cursor-pointer select-none"
-            style={{ 
-              backgroundColor: darkMode ? '#ffffff' : '#1a1a1a', 
-              color: darkMode ? '#1a1a1a' : '#ffffff', 
-              borderColor: themeStyles.borderColor 
-            }}
+            onClick={() => setDarkMode(!darkMode)}
+            title={darkMode ? (lang === 'bn' ? 'লাইট মোড' : 'Light Mode') : (lang === 'bn' ? 'ডার্ক মোড' : 'Dark Mode')}
+            aria-label="Toggle Dark Mode"
+            className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-xs sm:text-sm cursor-pointer transition-colors duration-300"
           >
-            <span>{darkMode ? '☀️ Light' : '🌙 Dark'}</span>
+            {darkMode ? '☀️' : '🌙'}
           </button>
 
           <button
             type="button"
             onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-            className="font-extrabold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-1.5 text-xs md:text-sm cursor-pointer select-none text-white"
-            style={{ backgroundColor: '#1a1a1a' }}
+            className="font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] hover:border-[#A68A64] text-[#2C2A29] dark:text-[#F7F5F0] transition-colors duration-300 flex items-center gap-1.5 text-xs md:text-sm cursor-pointer select-none"
           >
             <span>🌐</span>
             <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>
           </button>
 
-          <button 
+          <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-2xl p-2 focus:outline-none"
-            style={{ color: themeStyles.textColor }}
+            className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] dark:border-white/15 bg-[#F7F5F0] dark:bg-[#1C1B1A] text-[#2C2A29] dark:text-[#F7F5F0] flex items-center justify-center text-base sm:text-lg cursor-pointer focus:outline-none"
             aria-label="Toggle Menu"
           >
-            ☰
+            {mobileMenuOpen ? '✕' : '☰'}
           </button>
         </div>
       </header>
 
-      {/* মোবাইল ড্রপডাউন মেনু */}
+      {/* হ্যামবার্গার / মোবাইল ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
-        <div 
-          className="max-w-7xl mx-auto mb-6 md:hidden relative z-50 p-4 rounded-2xl shadow-2xl border space-y-3 font-bold text-sm"
-          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-        >
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg" style={{ backgroundColor: '#1a1a1a', color: '#ffffff' }}>Home</a>
-          <a href="/#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">About us</a>
-          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Introduction to Dentistry</a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Our services</a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Gallery</a>
-          <a href="/#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 px-2 rounded-lg opacity-90">Contact us</a>
+        <div className="max-w-7xl mx-auto mb-6 lg:hidden relative z-50 p-4 rounded-2xl border border-[#E6DFD5] dark:border-white/15 bg-[#FCFBF9] dark:bg-[#171615] space-y-2.5 font-semibold text-sm text-[#2C2A29] dark:text-[#F7F5F0]">
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10">
+            {lang === 'bn' ? 'হোম' : 'Home'}
+          </a>
+          <a href="/#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
+          </a>
+          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#A68A64]">
+            {content[lang].aboutDentistryMenu}
+          </a>
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
+          </a>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl border-b border-[#E6DFD5] dark:border-white/10 text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
+          </a>
+          <a href="/#contact-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-xl text-[#5C5852] dark:text-[#D8CFC4]">
+            {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
+          </a>
         </div>
       )}
 
       {/* মূল কন্টেন্ট সেকশন */}
       <section className="max-w-7xl mx-auto space-y-8 mb-16">
-        
+
         {/* হেডার ব্যানার */}
-        <div 
-          className="p-8 md:p-12 rounded-3xl border shadow-lg text-center space-y-4"
-          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-        >
-          <span 
-            className="text-white text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider inline-block"
-            style={{ backgroundColor: '#1a1a1a' }}
-          >
-            Overview
+        <div className="p-8 md:p-12 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] text-center space-y-4 transition-colors duration-300">
+          <span className="text-[#A68A64] bg-[#F7F5F0] dark:bg-[#1C1B1A] border border-[#E6DFD5] dark:border-white/15 text-xs font-semibold px-4 py-1.5 rounded-full uppercase tracking-widest inline-block">
+            {lang === 'bn' ? 'ডেন্টাল গাইড' : 'Overview'}
           </span>
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight" style={{ color: themeStyles.textColor }}>
+          <h1 className="font-heading text-3xl md:text-5xl font-extrabold tracking-tight text-[#2C2A29] dark:text-[#F7F5F0]">
             {content[lang].title}
           </h1>
-          <p className="text-sm md:text-base max-w-2xl mx-auto font-medium" style={{ color: themeStyles.subTextColor }}>
+          <p className="text-sm md:text-base max-w-2xl mx-auto font-medium text-[#5C5852] dark:text-[#D8CFC4]">
             {content[lang].subtitle}
           </p>
         </div>
 
         {/* প্রধান বিবরণ */}
-        <div 
-          className="p-6 md:p-10 rounded-3xl border shadow-sm space-y-4"
-          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-        >
-          <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
+        <div className="p-6 md:p-10 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] space-y-4 transition-colors duration-300">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-[#2C2A29] dark:text-[#F7F5F0]">
             {content[lang].introTitle}
           </h2>
-          <p className="text-sm md:text-base leading-relaxed" style={{ color: themeStyles.subTextColor }}>
+          <p className="text-sm md:text-base leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">
             {content[lang].introDesc}
           </p>
         </div>
 
-        {/* পয়েন্টসমূহ (গ্রেডিয়েন্ট বর্ডার সহ বা ফিচার কার্ড স্টাইলে) */}
+        {/* পয়েন্টসমূহ */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-extrabold text-center" style={{ color: themeStyles.textColor }}>
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-center text-[#2C2A29] dark:text-[#F7F5F0]">
             {content[lang].pointsTitle}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <div 
-              className="p-6 rounded-3xl border shadow-sm space-y-3"
-              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-            >
-              <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-md" style={{ backgroundColor: '#1a1a1a' }}>
+
+            <div className="p-6 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] transition-colors duration-300 space-y-3">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29]">
                 🦷
               </div>
-              <h3 className="text-lg font-bold" style={{ color: themeStyles.textColor }}>{content[lang].point1Title}</h3>
-              <p className="text-xs md:text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{content[lang].point1Desc}</p>
+              <h3 className="font-heading text-lg font-bold text-[#2C2A29] dark:text-[#F7F5F0]">{content[lang].point1Title}</h3>
+              <p className="text-xs md:text-sm leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">{content[lang].point1Desc}</p>
             </div>
 
-            <div 
-              className="p-6 rounded-3xl border shadow-sm space-y-3"
-              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-            >
-              <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-md" style={{ backgroundColor: '#1a1a1a' }}>
+            <div className="p-6 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] transition-colors duration-300 space-y-3">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29]">
                 🛡️
               </div>
-              <h3 className="text-lg font-bold" style={{ color: themeStyles.textColor }}>{content[lang].point2Title}</h3>
-              <p className="text-xs md:text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{content[lang].point2Desc}</p>
+              <h3 className="font-heading text-lg font-bold text-[#2C2A29] dark:text-[#F7F5F0]">{content[lang].point2Title}</h3>
+              <p className="text-xs md:text-sm leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">{content[lang].point2Desc}</p>
             </div>
 
-            <div 
-              className="p-6 rounded-3xl border shadow-sm space-y-3"
-              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-            >
-              <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-md" style={{ backgroundColor: '#1a1a1a' }}>
+            <div className="p-6 rounded-2xl border border-[#E6DFD5] dark:border-white/10 bg-[#FCFBF9] dark:bg-[#171615] hover:border-[#A68A64] transition-colors duration-300 space-y-3">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-[#2C2A29] dark:bg-[#F7F5F0] text-[#F7F5F0] dark:text-[#2C2A29]">
                 ⭐
               </div>
-              <h3 className="text-lg font-bold" style={{ color: themeStyles.textColor }}>{content[lang].point3Title}</h3>
-              <p className="text-xs md:text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{content[lang].point3Desc}</p>
+              <h3 className="font-heading text-lg font-bold text-[#2C2A29] dark:text-[#F7F5F0]">{content[lang].point3Title}</h3>
+              <p className="text-xs md:text-sm leading-relaxed text-[#5C5852] dark:text-[#D8CFC4]">{content[lang].point3Desc}</p>
             </div>
 
           </div>
         </div>
 
       </section>
+
+      {/* ফুটার */}
+      <footer className="max-w-7xl mx-auto bg-[#2C2A29] dark:bg-[#0D0C0B] text-[#D8CFC4] py-6 px-6 rounded-2xl border border-[#A68A64]/25 flex flex-col sm:flex-row items-center justify-between text-xs text-[#D8CFC4]/75 gap-4">
+        <p>© 2026 Dr. Sakib Dental Care. All rights reserved.</p>
+        <p className="font-medium text-[#A68A64]">
+          developed by own(Dr. Asir Mosaddeque Sakib)
+        </p>
+      </footer>
 
     </main>
   )
