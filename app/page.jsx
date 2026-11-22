@@ -313,7 +313,11 @@ export default function Home() {
       ratingLabel: 'রেটিং নির্বাচন করুন *',
       reviewTextLabel: 'আপনার মন্তব্য / রিভিউ *',
       reviewSubmitBtn: 'রিভিউ সাবমিট করুন',
-      reviewSubmitting: 'সাবমিট হচ্ছে...'
+      reviewSubmitting: 'সাবমিট হচ্ছে...',
+      bmdcTitle: 'বিএমডিসি রেজিষ্ট্রেশন যাচাইয়ের প্রয়োজনীয়তা',
+      bmdcBody:
+        'বাংলাদেশ সরকার কর্তৃক সকল বৈধ ও রেজিস্ট্রারড MBBS ও BDS চিকিৎসকদের রেজিষ্ট্রেশন নাম্বার দেয়ার জন্য স্বীকৃত প্রতিষ্ঠান হলো BANGLADESH MEDICAL & DENTAL COUNCIL যাকে সংক্ষেপে BMDC বা BM&DC বলা হয়। বাংলাদেশের সকল বৈধ প্রেকটিশনার বা চিকিৎসকের বিএমডিসি রেজিষ্ট্রেশন নাম্বার থাকা বাধ্যতামূলক। এই নাম্বার ছাড়া সকল প্রকার মেডিকেল ও সার্জিক্যাল চিকিৎসা প্রদান সম্পূর্ণভাবে নিষিদ্ধ ও আইনত দন্ডনীয় অপরাধ। যে কোন MBBS বা BDS ডাক্তারের অবশ্যই BMDC রেজিষ্ট্রেশন নাম্বার থাকবে। এই নাম্বারের সত্যতা যাচাইয়ের জন্য নিচের লিংকে প্রবেশ করে আপনার ডাক্তারের রেজিষ্ট্রেশন নাম্বার লিখে সার্চ করে দেখুন যে সব তথ্য মিল আছে কিনা। দন্ত চিকিৎসকের নাম্বার যাচাইয়ের জন্য BDS এবং মেডিসিন ও সার্জারির চিকিৎসকের নাম্বার যাচাইয়ের জন্য MBBS সিলেক্ট করবেন। এখানের কোন তথ্য মিল না থাকলে বা BMDC রেজিষ্ট্রেশন নাম্বার না থাকলে বুঝতে হবে আপনার সন্ধানকৃত ব্যক্তিটি একজন অবৈধ লাইসেন্সবিহীন প্রেকটিশনার।',
+      bmdcBtn: 'BMDC রেজিষ্ট্রেশন নাম্বার যাচাইয়ের লিংক'
     },
     en: {
       heroTitle: 'Trustworthy Dental Services for a Healthy Smile',
@@ -359,7 +363,11 @@ export default function Home() {
       ratingLabel: 'Select Rating *',
       reviewTextLabel: 'Your Review / Comment *',
       reviewSubmitBtn: 'Submit Review',
-      reviewSubmitting: 'Submitting...'
+      reviewSubmitting: 'Submitting...',
+      bmdcTitle: 'Importance of Verifying BMDC Registration',
+      bmdcBody:
+        'Recognized by the Government of Bangladesh to issue registration numbers to all legitimate and registered MBBS and BDS practitioners is the BANGLADESH MEDICAL & DENTAL COUNCIL, abbreviated as BMDC or BM&DC. Having a BMDC registration number is mandatory for all valid medical and dental practitioners in Bangladesh. Providing medical or surgical treatment without this number is strictly prohibited and a punishable offense by law. Every MBBS or BDS doctor must have a valid BMDC registration number. To verify authenticity, visit the link below, enter the doctor’s registration number, and check if all details match. Select BDS to verify a dental surgeon or MBBS to verify a medicine/surgery practitioner. If no matching record is found or there is no BMDC registration number, the individual is an unlicensed and unauthorized practitioner.',
+      bmdcBtn: 'Verify BMDC Registration Number'
     }
   }
 
@@ -1271,6 +1279,36 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* বিএমডিসি রেজিষ্ট্রেশন যাচাইয়ের প্রয়োজনীয়তা (সতর্কতামূলক সেকশন) */}
+      <section className="pb-20 md:pb-24 px-4 md:px-8">
+        <div className="card-3d max-w-7xl mx-auto p-6 sm:p-8 md:p-12 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] space-y-5 transition-colors duration-300">
+          <div className="flex items-center gap-3">
+            <span className="w-10 h-10 shrink-0 rounded-full bg-[#F7F5F0] border border-[#E6DFD5] text-[#A68A64] flex items-center justify-center text-lg font-bold">
+              ⚠️
+            </span>
+            <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-[#2C2A29]">
+              {t[lang].bmdcTitle}
+            </h2>
+          </div>
+
+          <p className="text-sm md:text-base leading-relaxed text-[#5C5852]">
+            {t[lang].bmdcBody}
+          </p>
+
+          <div className="pt-2">
+            <a
+              href="https://verify.bmdc.org.bd/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-6 sm:px-8 py-3 sm:py-3.5 font-semibold text-xs sm:text-sm md:text-base shadow-md"
+            >
+              <span>🔗</span>
+              <span>{t[lang].bmdcBtn}</span>
+            </a>
           </div>
         </div>
       </section>
