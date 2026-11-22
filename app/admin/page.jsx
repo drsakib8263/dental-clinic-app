@@ -116,12 +116,7 @@ export default function AdminDashboard() {
     }
   }, [isAuthenticated])
 
-   else {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('admin_theme', 'dark')
-      setDarkMode(true)
-    }
-  }
+}
 
   const handleLogin = (e) => {
     e.preventDefault()

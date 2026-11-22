@@ -78,13 +78,7 @@ export default function BookingForm() {
     }
     setAvailableDates(dates)
   }, [])
-
-   else {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-      setDarkMode(true)
-    }
-  }
+}
 
   const availableTimes = [
     "বিকেল ৪:০০ টা", "বিকেল ৪:৩০ টা",
