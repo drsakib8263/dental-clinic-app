@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { Playfair_Display, Plus_Jakarta_Sans, Hind_Siliguri } from "next/font/google";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -12,6 +12,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-jakarta",
+});
+
+const hindSiliguri = Hind_Siliguri({
+  subsets: ["bengali", "latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-hind-siliguri",
 });
 
 export const metadata: Metadata = {
@@ -33,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="bn"
-      className={`${playfairDisplay.variable} ${plusJakartaSans.variable}`}
+      className={`${playfairDisplay.variable} ${plusJakartaSans.variable} ${hindSiliguri.variable}`}
       suppressHydrationWarning
     >
       <body className="font-sans bg-[#F7F5F0] text-[#2C2A29] antialiased overflow-x-hidden">
