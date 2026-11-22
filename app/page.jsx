@@ -676,6 +676,23 @@ export default function Home() {
           white-space: nowrap;
           animation: marquee 18s linear infinite;
         }
+        .card-3d {
+          box-shadow:
+            0 12px 24px -8px rgba(44, 42, 41, 0.14),
+            0 4px 10px -3px rgba(44, 42, 41, 0.08),
+            inset 0 1px 0 0 rgba(255, 255, 255, 0.85),
+            inset 0 -3px 0 0 rgba(166, 138, 100, 0.22);
+          transform: translateY(0px);
+          transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .card-3d:hover {
+          transform: translateY(-4px);
+          box-shadow:
+            0 20px 32px -10px rgba(44, 42, 41, 0.2),
+            0 8px 16px -4px rgba(166, 138, 100, 0.18),
+            inset 0 1px 0 0 rgba(255, 255, 255, 0.95),
+            inset 0 -3px 0 0 rgba(166, 138, 100, 0.38);
+        }
       `}</style>
 
       {/* টপ নোটিশ বার */}
@@ -800,7 +817,7 @@ export default function Home() {
 
       {/* মোবাইল ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[116px] sm:top-[128px] z-50 px-4 sm:px-6 py-4 space-y-2 bg-[#FCFBF9] border-b border-[#E6DFD5] shadow-xl transition-all duration-300 max-h-[75vh] overflow-y-auto">
+        <div className="card-3d lg:hidden fixed inset-x-0 top-[116px] sm:top-[128px] z-50 px-4 sm:px-6 py-4 space-y-2 bg-[#FCFBF9] border-b border-[#E6DFD5] transition-all duration-300 max-h-[75vh] overflow-y-auto">
           <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#2C2A29]">
             {lang === 'bn' ? 'হোম' : 'Home'}
           </a>
@@ -875,7 +892,7 @@ export default function Home() {
 
       {/* ডাক্তারের ক্রেডেনশিয়াল স্ট্রিপ */}
       <div className="w-full bg-[#FCFBF9] border-b border-[#E6DFD5] px-4 sm:px-6 md:px-12 py-4 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 text-left">
+        <div className="card-3d max-w-7xl mx-auto rounded-2xl border border-[#E6DFD5] bg-[#F7F5F0]/60 px-5 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 text-left">
           <div>
             <h2 className="font-heading font-bold text-base sm:text-lg md:text-xl text-[#2C2A29]">
               {t[lang].title}
@@ -894,7 +911,7 @@ export default function Home() {
       {/* পপ-আপ বুকিং ফর্ম */}
       {showPopupBooking && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm overflow-y-auto">
-          <div className="max-w-xl w-full p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-8 shadow-xl">
+          <div className="card-3d max-w-xl w-full p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-8">
             <div className="flex items-center justify-between mb-3">
               <h2 className="font-heading text-xl md:text-2xl font-bold text-[#2C2A29] flex items-center gap-2">
                 <span>📅</span> {t[lang].bookingTitle}
@@ -1034,7 +1051,7 @@ export default function Home() {
       {/* কাস্টম নোটিশ মোডাল (শুক্রবার নোটিশ ও অ্যালার্টের জন্য) */}
       {customAlert.show && (
         <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
-          <div className="p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-5 shadow-xl">
+          <div className="card-3d p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-5">
             <div className="w-14 h-14 bg-[#F7F5F0] border border-[#E6DFD5] text-[#A68A64] text-2xl rounded-full flex items-center justify-center mx-auto">
               ✦
             </div>
@@ -1062,7 +1079,7 @@ export default function Home() {
       <section className="py-20 md:py-24 px-4 md:px-8">
         <div
           id="about-section"
-          className="max-w-7xl mx-auto p-8 md:p-12 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] space-y-4 transition-colors duration-300"
+          className="card-3d max-w-7xl mx-auto p-8 md:p-12 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] space-y-4 transition-colors duration-300"
         >
           <h2 className="font-heading text-2xl md:text-4xl font-bold text-[#2C2A29]">
             {lang === 'bn' ? 'আমাদের সম্পর্কে (About Us)' : 'About Us'}
@@ -1104,7 +1121,7 @@ export default function Home() {
               return (
                 <div
                   key={index}
-                  className="relative h-72 rounded-2xl overflow-hidden border border-[#E6DFD5] bg-[#F7F5F0] flex flex-col justify-center items-start p-6 group transition-colors duration-300"
+                  className="card-3d relative h-72 rounded-2xl overflow-hidden border border-[#E6DFD5] bg-[#F7F5F0] flex flex-col justify-center items-start p-6 group transition-colors duration-300"
                 >
                   <img
                     src={`/tips/${item.id}.jpeg`}
@@ -1121,7 +1138,7 @@ export default function Home() {
                     }}
                   />
 
-                  <div className="relative z-10 w-1/2 text-left space-y-2 p-3 rounded-xl bg-[#FCFBF9]/90 backdrop-blur-xs border border-[#E6DFD5]">
+                  <div className="card-3d relative z-10 w-1/2 text-left space-y-2 p-3 rounded-xl bg-[#FCFBF9]/90 backdrop-blur-xs border border-[#E6DFD5]">
                     <h3 className="font-heading font-bold text-base md:text-lg tracking-tight text-[#2C2A29]">
                       {lang === 'bn' ? headlines[index].bn : headlines[index].en}
                     </h3>
@@ -1153,7 +1170,7 @@ export default function Home() {
             {featureBoxes.map((box, index) => (
               <div
                 key={index}
-                className={`rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] p-2 transition-all duration-300 ${box.stepClass}`}
+                className={`card-3d rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] p-2 transition-all duration-300 ${box.stepClass}`}
               >
                 <div
                   className="relative p-8 md:p-14 min-h-[360px] md:min-h-[420px] rounded-2xl flex flex-col justify-end bg-cover bg-center overflow-hidden"
@@ -1190,7 +1207,7 @@ export default function Home() {
             {videoList.map((vid, index) => (
               <div
                 key={index}
-                className="p-5 rounded-2xl border border-[#E6DFD5] bg-[#F7F5F0] flex flex-col justify-between space-y-4"
+                className="card-3d p-5 rounded-2xl border border-[#E6DFD5] bg-[#F7F5F0] flex flex-col justify-between space-y-4"
               >
                 <h4 className="font-heading font-bold text-base text-[#2C2A29]">{vid.title}</h4>
                 <div className="w-full h-32 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] flex items-center justify-center text-xs font-medium text-[#5C5852]">
@@ -1206,7 +1223,7 @@ export default function Home() {
       <section className="py-20 md:py-24 px-4 md:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 space-y-3">
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#A68A64] bg-[#FCFBF9] px-4 py-1.5 rounded-full border border-[#E6DFD5]">
+            <span className="card-3d inline-block text-xs font-semibold uppercase tracking-widest text-[#A68A64] bg-[#FCFBF9] px-4 py-1.5 rounded-full border border-[#E6DFD5]">
               {lang === 'bn' ? 'রোগীদের মূল্যায়ন' : 'Testimonials'}
             </span>
             <h2 className="font-heading text-2xl md:text-4xl font-bold text-[#2C2A29] pt-1">
@@ -1219,7 +1236,7 @@ export default function Home() {
             <div className="pt-3">
               <button
                 onClick={() => setShowReviewModal(true)}
-                className="bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer text-sm"
+                className="bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer text-sm shadow-md"
               >
                 {t[lang].addReviewBtn}
               </button>
@@ -1230,7 +1247,7 @@ export default function Home() {
             {reviewsList.map((rev, index) => (
               <div
                 key={index}
-                className="p-7 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] flex flex-col justify-between transition-colors duration-300 hover:border-[#A68A64]"
+                className="card-3d p-7 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] flex flex-col justify-between transition-colors duration-300 hover:border-[#A68A64]"
               >
                 <div className="space-y-4">
                   <div className="flex items-center gap-1 text-[#A68A64] text-lg">
@@ -1261,7 +1278,7 @@ export default function Home() {
       {/* রোগী নিজে রিভিউ সাবমিট করার পপ-আপ মোডাল */}
       {showReviewModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm overflow-y-auto">
-          <div className="max-w-xl w-full p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-8 shadow-xl">
+          <div className="card-3d max-w-xl w-full p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-8">
             <div className="flex items-center justify-between mb-5">
               <h2 className="font-heading text-xl md:text-2xl font-bold text-[#2C2A29] flex items-center gap-2">
                 <span>✍️</span> {t[lang].reviewModalTitle}
@@ -1446,7 +1463,7 @@ export default function Home() {
       {/* কন্টাক্ট মোডাল */}
       {isContactModalOpen && (
         <div onClick={() => setIsContactModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
-          <div onClick={(e) => e.stopPropagation()} className="bg-[#FCFBF9] p-6 md:p-8 rounded-2xl border border-[#E6DFD5] max-w-md w-full relative space-y-6 text-[#2C2A29] shadow-xl">
+          <div onClick={(e) => e.stopPropagation()} className="card-3d bg-[#FCFBF9] p-6 md:p-8 rounded-2xl border border-[#E6DFD5] max-w-md w-full relative space-y-6 text-[#2C2A29]">
             <button onClick={() => setIsContactModalOpen(false)} className="absolute top-4 right-4 bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] font-bold w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300 cursor-pointer text-sm">
               ✕
             </button>
@@ -1499,7 +1516,7 @@ export default function Home() {
       {/* সাকসেস মোডাল */}
       {showSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
-          <div className="p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-4 shadow-xl">
+          <div className="card-3d p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-4">
             <div className="w-16 h-16 text-[#F7F5F0] text-3xl rounded-full flex items-center justify-center mx-auto bg-[#2C2A29]">✓</div>
             <h3 className="font-heading text-2xl font-bold text-[#2C2A29]">{t[lang].successTitle}</h3>
             <p className="text-sm leading-relaxed text-[#5C5852]">{t[lang].successMsg}</p>
@@ -1513,7 +1530,7 @@ export default function Home() {
       {/* চেম্বার ক্লোজড নোটিশ মোডাল */}
       {showChamberClosedModal && (
         <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
-          <div className="p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-4 shadow-xl">
+          <div className="card-3d p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-4">
             <div className="w-16 h-16 text-[#F7F5F0] text-3xl rounded-full flex items-center justify-center mx-auto bg-[#A68A64]">✦</div>
             <h3 className="font-heading text-2xl font-bold text-[#2C2A29]">
               {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
