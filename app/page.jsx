@@ -150,9 +150,9 @@ export default function Home() {
       setIsChamberOpenNow(isOpenTime)
 
       if (lang === 'bn') {
-        setChamberStatusText(isOpenTime ? 'চেম্বার এখন চালু রয়েছে' : 'চেম্বার বর্তমানে বন্ধ রয়েছে')
+        setChamberStatusText(isOpenTime ? 'চেম্বার চালু রয়েছে' : 'চেম্বার বন্ধ রয়েছে')
       } else {
-        setChamberStatusText(isOpenTime ? 'Chamber is currently OPEN' : 'Chamber is currently CLOSED')
+        setChamberStatusText(isOpenTime ? 'Chamber is OPEN' : 'Chamber is CLOSED')
       }
     }
 
@@ -603,6 +603,8 @@ export default function Home() {
   const inputClass =
     'w-full px-4 py-3 rounded-2xl outline-none border border-[#E6DFD5] bg-[#F7F5F0] text-[#2C2A29] placeholder:text-[#5C5852]/70 focus:border-[#A68A64] transition-colors duration-300 font-sans'
 
+  const isOpenStatus = !chamberNotice.isClosed && isChamberOpenNow
+
   return (
     <main className="min-h-screen transition-colors duration-300 font-sans bg-[#F7F5F0] text-[#2C2A29]">
       <style jsx>{`
@@ -646,7 +648,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ন্যাভিগেশন বার */}
+      {/* ন্যাভিগেশন বার (হেডার) */}
       <header className="sticky top-0 z-50 px-3 md:px-12 py-4 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-[#E6DFD5] flex items-center justify-between transition-colors duration-300">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-[#2C2A29] text-[#F7F5F0] flex items-center justify-center text-lg font-serif border border-[#A68A64]/40">
@@ -700,6 +702,26 @@ export default function Home() {
         </div>
       </header>
 
+      {/* হেডারের একদম নিচ থেকে শুরু হওয়া চেম্বার স্ট্যাটাস বার */}
+      <div className="w-full bg-[#FCFBF9] border-b border-[#E6DFD5] px-4 md:px-12 py-2.5">
+        <div className="max-w-7xl mx-auto flex items-center gap-2.5 text-xs md:text-sm font-semibold text-[#2C2A29]">
+          <span
+            className={`w-3 h-3 rounded-full shrink-0 ${
+              isOpenStatus
+                ? 'bg-emerald-500 animate-pulse ring-4 ring-emerald-500/20'
+                : 'bg-rose-600 ring-4 ring-rose-600/20'
+            }`}
+          ></span>
+          <span>
+            {chamberNotice.isClosed
+              ? lang === 'bn'
+                ? chamberNotice.messageBn
+                : chamberNotice.messageEn
+              : chamberStatusText}
+          </span>
+        </div>
+      </div>
+
       {/* মোবাইল ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
         <div className="lg:hidden px-6 py-5 space-y-3 bg-[#FCFBF9] border-b border-[#E6DFD5] transition-all duration-300">
@@ -729,13 +751,6 @@ export default function Home() {
 
       {/* হিরো সেকশন */}
       <section className="py-20 lg:py-24 px-4 md:px-12 border-b border-[#E6DFD5] bg-[#FCFBF9]">
-        <div className="max-w-7xl mx-auto mb-8">
-          <div className="inline-flex items-center gap-2.5 bg-[#F7F5F0] px-5 py-2 rounded-full border border-[#E6DFD5] text-xs md:text-sm font-medium text-[#2C2A29]">
-            <span className={`w-2.5 h-2.5 rounded-full ${(!chamberNotice.isClosed && isChamberOpenNow) ? 'bg-emerald-600' : 'bg-[#A68A64]'}`}></span>
-            <span>{chamberNotice.isClosed ? (lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn) : chamberStatusText}</span>
-          </div>
-        </div>
-
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5 flex justify-center lg:justify-start order-2 lg:order-1">
             <div className="relative w-72 h-[370px] md:w-80 md:h-[420px] lg:w-96 lg:h-[460px] rounded-2xl overflow-hidden border border-[#E6DFD5] bg-[#F7F5F0] shadow-sm">
