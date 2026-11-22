@@ -28,7 +28,7 @@ export default function Home() {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showPopupBooking, setShowPopupBooking] = useState(false)
-  
+
   // পেশেন্ট রিভিউ সাবমিট মোডাল ও স্টেট
   const [showReviewModal, setShowReviewModal] = useState(false)
   const [reviewsList, setReviewsList] = useState([])
@@ -41,8 +41,6 @@ export default function Home() {
   const [reviewSubmitting, setReviewSubmitting] = useState(false)
 
   const [customAlert, setCustomAlert] = useState({ show: false, message: '' })
-
-  const [darkMode, setDarkMode] = useState(false)
 
   const [formData, setFormData] = useState({
     patient_name: '',
@@ -108,7 +106,6 @@ export default function Home() {
     }
   }
 
-  // ডাটাবেস থেকে রিভিউ ফেচ করা
   const fetchReviews = async () => {
     try {
       const { data, error } = await supabase
@@ -124,12 +121,13 @@ export default function Home() {
       if (data && data.length > 0) {
         setReviewsList(data)
       } else {
-        // ডিফল্ট কিছু স্যাম্পল রিভিউ যদি ডাটাবেস খালি থাকে
         setReviewsList([
           {
             patient_name: lang === 'bn' ? 'মোহাম্মদ আলী' : 'Mohammad Ali',
             location: lang === 'bn' ? 'পটিয়া, চট্টগ্রাম' : 'Patiya, Chattogram',
-            review_text: lang === 'bn' ? 'ডাক্তার সাহেব ভীষণ যত্ন নিয়ে আমার রুট ক্যানাল চিকিৎসা করেছেন। কোনো ধরনের ব্যথা ছাড়াই কাজটি সম্পন্ন হয়েছে।' : 'Doctor Sakib took great care during my root canal treatment. It was completely painless.',
+            review_text: lang === 'bn'
+              ? 'ডাক্তার সাহেব ভীষণ যত্ন নিয়ে আমার রুট ক্যানাল চিকিৎসা করেছেন। কোনো ধরনের ব্যথা ছাড়াই কাজটি সম্পন্ন হয়েছে।'
+              : 'Doctor Sakib took great care during my root canal treatment. It was completely painless.',
             rating: 5,
             created_at: new Date().toISOString()
           }
@@ -161,10 +159,6 @@ export default function Home() {
     checkChamberStatus()
     const interval = setInterval(checkChamberStatus, 60000)
 
-    const savedTheme = localStorage.getItem('theme')
-    const isDark = savedTheme === 'dark'
-    setDarkMode(isDark)
-
     fetchBookingsCount()
     fetchLiveNotice()
     fetchReviews()
@@ -176,7 +170,7 @@ export default function Home() {
     const dates = []
     const daysListBn = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার']
     const monthsListBn = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর']
-    
+
     const daysListEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     const monthsListEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
@@ -189,7 +183,7 @@ export default function Home() {
 
     const today = new Date()
     today.setHours(0, 0, 0, 0)
-    
+
     const currentDayOfWeek = today.getDay()
 
     let saturdayDate = new Date(today)
@@ -207,12 +201,12 @@ export default function Home() {
       d.setHours(0, 0, 0, 0)
 
       const dayOfWeek = d.getDay()
-      
+
       const year = d.getFullYear()
       const month = String(d.getMonth() + 1).padStart(2, '0')
       const day = String(d.getDate()).padStart(2, '0')
       const value = `${year}-${month}-${day}`
-      
+
       const isPast = d < today
       const isToday = d.getTime() === today.getTime()
 
@@ -223,7 +217,7 @@ export default function Home() {
         const dayNum = toBengaliNumber(d.getDate())
         const bnMonthName = monthsListBn[d.getMonth()]
         const yearNum = toBengaliNumber(d.getFullYear())
-        
+
         const dateStr = `${bnDayName}, ${dayNum} ${bnMonthName} ${yearNum}`
         label = isToday ? `আজ (${dateStr})` : isPast ? `${dateStr} (অতিক্রান্ত)` : dateStr
       } else {
@@ -231,7 +225,7 @@ export default function Home() {
         const dayNum = d.getDate()
         const enMonthName = monthsListEn[d.getMonth()]
         const yearNum = d.getFullYear()
-        
+
         const dateStr = `${enDayName}, ${enMonthName} ${dayNum}, ${yearNum}`
         label = isToday ? `Today (${dateStr})` : isPast ? `${dateStr} (Passed)` : dateStr
       }
@@ -242,30 +236,6 @@ export default function Home() {
     setAvailableDates(dates)
   }, [lang])
 
-  const toggleTheme = () => {
-    const nextMode = !darkMode
-    setDarkMode(nextMode)
-    localStorage.setItem('theme', nextMode ? 'dark' : 'light')
-  }
-
-  const themeStyles = darkMode ? {
-    bgMain: '#0f172a',
-    cardBg: '#1e293b',
-    textColor: '#f8fafc',
-    subTextColor: '#94a3b8',
-    borderColor: '#334155',
-    inputBg: '#334155',
-    inputText: '#ffffff'
-  } : {
-    bgMain: '#f8fafc',
-    cardBg: '#ffffff',
-    textColor: '#0f172a',
-    subTextColor: '#475569',
-    borderColor: '#e2e8f0',
-    inputBg: '#f1f5f9',
-    inputText: '#0f172a'
-  }
-
   const t = {
     bn: {
       heroTitle: 'বিশ্বস্ত ডেন্টাল সেবা ও সুন্দর হাসির নিশ্চয়তা',
@@ -275,7 +245,7 @@ export default function Home() {
       doctorInfo: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)\nবিএমডিসি রেজি. ৮২৬৩',
       addressText: 'আলম মেডিকেল হল, পটিয়া কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
-      bookingCloseBtn: '✕ বন্ধ করুন',
+      learnMoreBtn: 'বিস্তারিত জানুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
       bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকাল ৪:৩০ টা - রাত ৯:৩০ টা)',
       patientName: 'রোগীর নাম *',
@@ -298,7 +268,6 @@ export default function Home() {
       successTitle: 'অভিনন্দন! বুকিং সফল হয়েছে',
       successMsg: 'আপনার অ্যাপয়েন্টমেন্ট আবেদনটি সফলভাবে জমা হয়েছে! শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।',
       closeModalBtn: 'ঠিক আছে',
-      scheduleTitle: 'চেম্বারের সময়সূচি',
       tipsTitle: 'দাঁতের যত্ন ও স্বাস্থ্য টিপস',
       whyUsTitle: 'কেন আপনার জন্য আমরাই?',
       videoTitle: 'দাঁতের যত্ন ও চিকিৎসা বিষয়ক সচেতনতামূলক ভিডিও',
@@ -322,7 +291,7 @@ export default function Home() {
       doctorInfo: 'BDS (Chittagong Medical College)\nBMDC reg. 8263',
       addressText: 'Alam Medical Hall, Beside Patiya Govt. College, Anwara Bypass Road, Bus Station, Patiya, Chattogram.',
       bookingMainBtn: 'Book an Appointment',
-      bookingCloseBtn: '✕ Close',
+      learnMoreBtn: 'Learn More',
       bookingTitle: 'Online Appointment Booking',
       bookingSub: 'Saturday to Thursday (4:30 PM - 9:30 PM)',
       patientName: 'Patient Name *',
@@ -345,7 +314,6 @@ export default function Home() {
       successTitle: 'Congratulations! Booking Successful',
       successMsg: 'Your appointment request has been successfully submitted! We will contact you soon.',
       closeModalBtn: 'OK',
-      scheduleTitle: 'Chamber Schedule',
       tipsTitle: 'Dental Care & Health Tips',
       whyUsTitle: 'Why Choose Us?',
       videoTitle: 'Dental Care & Treatment Awareness Videos',
@@ -386,9 +354,9 @@ export default function Home() {
     if (currentHour < 7 || currentHour >= 21) {
       setCustomAlert({
         show: true,
-        message: lang === 'bn' 
-          ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক সকাল ৭ টা থেকে আবার চেষ্টা করবেন। ধন্যবাদ' 
-          : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again from 7:00 AM. Thank you'
+        message: lang === 'bn'
+          ? 'আমাদের সিরিয়াল নেয়ার সময় -সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত। অনুগ্রহপূর্বক সকাল ৭ টা থেকে আবার চেষ্টা করবেন। ধন্যবাদ।'
+          : 'Our serial booking hours are from 7:00 AM to 9:00 PM. Please try again starting at 7:00 AM. Thank you.'
       });
       return;
     }
@@ -398,7 +366,7 @@ export default function Home() {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    
+
     if (name === 'service') {
       const isNew = value.includes("নতুন সমস্যা") || value.includes("ব্যথা কমছে না") || value.includes("new dental issue") || value.includes("Pain persists");
       const selectedType = isNew ? 'new' : 'old';
@@ -411,8 +379,8 @@ export default function Home() {
           if (slotData.total >= 2) {
             setCustomAlert({
               show: true,
-              message: lang === 'bn' 
-                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+              message: lang === 'bn'
+                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন'
                 : 'Sorry, this slot is already booked. Please choose another time.'
             });
             return;
@@ -420,8 +388,8 @@ export default function Home() {
           if (selectedType === 'new' && slotData.new >= 1) {
             setCustomAlert({
               show: true,
-              message: lang === 'bn' 
-                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+              message: lang === 'bn'
+                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন'
                 : 'Sorry, this slot is already booked. Please choose another time.'
             });
             return;
@@ -429,8 +397,8 @@ export default function Home() {
           if (selectedType === 'old' && slotData.old >= 1) {
             setCustomAlert({
               show: true,
-              message: lang === 'bn' 
-                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+              message: lang === 'bn'
+                ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন'
                 : 'Sorry, this slot is already booked. Please choose another time.'
             });
             return;
@@ -453,9 +421,9 @@ export default function Home() {
     if (currentHour < 7 || currentHour >= 21) {
       setCustomAlert({
         show: true,
-        message: lang === 'bn' 
-          ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
-          : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again tomorrow at 7:00 AM. Thank you'
+        message: lang === 'bn'
+          ? 'আমাদের সিরিয়াল নেয়ার সময় -সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত। অনুগ্রহপূর্বক সকাল ৭ টা থেকে আবার চেষ্টা করবেন। ধন্যবাদ।'
+          : 'Our serial booking hours are from 7:00 AM to 9:00 PM. Please try again starting at 7:00 AM. Thank you.'
       });
       setShowPopupBooking(false);
       return;
@@ -479,18 +447,18 @@ export default function Home() {
 
     const slotKey = `${formData.appointment_date}|${formData.appointment_time}`
     const slotData = bookedSlotsCount[slotKey] || { total: 0, new: 0, old: 0 };
-    
-    const isNewPatient = formData.service.includes("নতুন সমস্যা") || 
-                         formData.service.includes("ব্যথা কমছে না") ||
-                         formData.service.includes("new dental issue") ||
-                         formData.service.includes("Pain persists");
+
+    const isNewPatient = formData.service.includes("নতুন সমস্যা") ||
+      formData.service.includes("ব্যথা কমছে না") ||
+      formData.service.includes("new dental issue") ||
+      formData.service.includes("Pain persists");
     const targetType = isNewPatient ? 'new' : 'old';
 
     if (slotData.total >= 2 || (targetType === 'new' && slotData.new >= 1) || (targetType === 'old' && slotData.old >= 1)) {
       setCustomAlert({
         show: true,
-        message: lang === 'bn' 
-          ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন' 
+        message: lang === 'bn'
+          ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন'
           : 'Sorry, this slot is already booked. Please choose another time.'
       });
       return;
@@ -522,8 +490,8 @@ export default function Home() {
 
       const payload = {
         date: formData.appointment_date,
-        timeSlot: formData.appointment_time, 
-        patientType: patientTypeVal, 
+        timeSlot: formData.appointment_time,
+        patientType: patientTypeVal,
         patientName: formData.patient_name.trim(),
         patientPhone: formData.phone.trim()
       };
@@ -552,7 +520,7 @@ export default function Home() {
         appointment_time: '',
         patient_type: ''
       });
-      
+
     } catch (err) {
       setCustomAlert({ show: true, message: 'Error: ' + (err.message || err) });
     } finally {
@@ -560,7 +528,6 @@ export default function Home() {
     }
   }
 
-  // রোগীর রিভিউ সাবমিট করার ফাংশন
   const handleReviewSubmit = async (e) => {
     e.preventDefault()
 
@@ -633,11 +600,11 @@ export default function Home() {
     { title: '4. Dental Crowns & Caps Overview', id: 'YOUR_CROWN_VIDEO_ID' }
   ]
 
+  const inputClass =
+    'w-full px-4 py-3 rounded-2xl outline-none border border-[#E6DFD5] bg-[#F7F5F0] text-[#2C2A29] placeholder:text-[#5C5852]/70 focus:border-[#A68A64] transition-colors duration-300 font-sans'
+
   return (
-    <main 
-      className="min-h-screen transition-all duration-300 font-sans"
-      style={{ backgroundColor: themeStyles.bgMain, color: themeStyles.textColor }}
-    >
+    <main className="min-h-screen transition-colors duration-300 font-sans bg-[#F7F5F0] text-[#2C2A29]">
       <style jsx>{`
         @keyframes marquee {
           0% { transform: translateX(100%); }
@@ -651,7 +618,7 @@ export default function Home() {
       `}</style>
 
       {/* টপ নোটিশ বার */}
-      <div className="bg-[#0c1e3e] text-white text-[11px] md:text-sm py-2 px-3 md:px-12 flex flex-col gap-1 border-b border-blue-900/50">
+      <div className="bg-[#2C2A29] text-[#D8CFC4] text-[11px] md:text-sm py-2.5 px-3 md:px-12 flex flex-col gap-1.5 border-b border-[#A68A64]/25">
         <div className="overflow-hidden whitespace-nowrap w-full">
           <div className="animate-marquee inline-flex items-center gap-1.5 font-medium">
             <span>📍</span>
@@ -659,20 +626,20 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex justify-between items-center border-t border-blue-800/60 pt-1 text-[11px] md:text-xs">
-          <div className="flex items-center gap-1 text-cyan-300 font-semibold">
+        <div className="flex justify-between items-center border-t border-white/10 pt-1.5 text-[11px] md:text-xs">
+          <div className="flex items-center gap-1.5 text-[#F7F5F0] font-medium">
             <span>🕒</span>
             <span>{lang === 'bn' ? 'চেম্বার খোলা: শনি - বৃহস্পতি (বিকাল ৪:৩০ - রাত ৯:৩০), শুক্রবার বন্ধ' : 'Chamber Open: Sat - Thu (4:30 PM - 9:30 PM), Friday Closed'}</span>
           </div>
 
           <div className="flex items-center gap-2.5">
-            <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5" title="Facebook">
+            <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1.5" title="Facebook">
               <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
             </a>
-            <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5" title="Instagram">
+            <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1.5" title="Instagram">
               <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
             </a>
-            <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center overflow-hidden transition shadow-sm p-1.5" title="WhatsApp">
+            <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1.5" title="WhatsApp">
               <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
             </a>
           </div>
@@ -680,101 +647,80 @@ export default function Home() {
       </div>
 
       {/* ন্যাভিগেশন বার */}
-      <header 
-        className="sticky top-0 z-50 px-3 md:px-12 py-3 shadow-md flex items-center justify-between border-b transition-all duration-300 backdrop-blur-md"
-        style={{ backgroundColor: darkMode ? '#1e293b' : '#ffffff', borderColor: themeStyles.borderColor }}
-      >
+      <header className="sticky top-0 z-50 px-3 md:px-12 py-4 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-[#E6DFD5] flex items-center justify-between transition-colors duration-300">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-lg md:text-xl font-bold shadow-md">
+          <div className="w-10 h-10 rounded-full bg-[#2C2A29] text-[#F7F5F0] flex items-center justify-center text-lg font-serif border border-[#A68A64]/40">
             🦷
           </div>
           <div className="flex flex-col">
-            <span className="font-black text-sm sm:text-base md:text-xl tracking-tight whitespace-nowrap" style={{ color: themeStyles.textColor }}>
+            <span className="font-serif font-bold text-sm sm:text-base md:text-xl tracking-tight whitespace-nowrap text-[#2C2A29]">
               {t[lang].title}
             </span>
-            <span className="text-[9px] md:text-[10px] font-semibold text-[#00a8e8] uppercase tracking-wider">
+            <span className="text-[10px] font-semibold text-[#A68A64] uppercase tracking-widest">
               {t[lang].subtitle}
             </span>
           </div>
         </div>
 
-        <nav className="hidden lg:flex items-center gap-8 font-bold text-sm" style={{ color: themeStyles.textColor }}>
-          <a href="/" className="text-[#00a8e8] transition">{lang === 'bn' ? 'হোম' : 'Home'}</a>
-          <a href="#about-section" className="hover:text-[#00a8e8] transition">{lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}</a>
-          <a href="/services" className="hover:text-[#00a8e8] transition">{lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}</a>
-          <a href="/gallery" className="hover:text-[#00a8e8] transition">{lang === 'bn' ? 'গ্যালারি' : 'Gallery'}</a>
-          <button 
+        <nav className="hidden lg:flex items-center gap-8 font-medium text-sm text-[#5C5852]">
+          <a href="/" className="text-[#2C2A29] font-semibold border-b border-[#A68A64] pb-0.5 transition-colors duration-300">{lang === 'bn' ? 'হোম' : 'Home'}</a>
+          <a href="#about-section" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}</a>
+          <a href="/services" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}</a>
+          <a href="/gallery" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'গ্যালারি' : 'Gallery'}</a>
+          <button
             onClick={() => setIsContactModalOpen(true)}
-            className="hover:text-[#00a8e8] transition bg-transparent border-none cursor-pointer font-bold text-sm"
-            style={{ color: themeStyles.textColor }}
+            className="hover:text-[#A68A64] transition-colors duration-300 bg-transparent border-none cursor-pointer font-medium text-sm text-[#5C5852]"
           >
             {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
           </button>
         </nav>
 
-        <div className="flex items-center gap-2 md:gap-3">
-          <a href="tel:+8801816011701" className="hidden sm:flex items-center gap-2 font-bold text-sm text-[#00a8e8]">
-            <span className="w-8 h-8 rounded-full bg-[#00a8e8]/10 flex items-center justify-center text-base">📞</span>
+        <div className="flex items-center gap-2.5 md:gap-3">
+          <a href="tel:+8801816011701" className="hidden sm:flex items-center gap-2 font-semibold text-xs md:text-sm text-[#2C2A29] hover:text-[#A68A64] transition-colors duration-300">
+            <span className="w-8 h-8 rounded-full bg-[#F7F5F0] border border-[#E6DFD5] flex items-center justify-center text-sm">📞</span>
             <span>+880 1816 011 701</span>
           </a>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-              className="font-bold px-2.5 py-1.5 md:px-3 md:py-2 rounded-lg border text-xs cursor-pointer"
-              style={{ borderColor: themeStyles.borderColor }}
-            >
-              {lang === 'bn' ? 'English' : 'বাংলা'}
-            </button>
+          <button
+            type="button"
+            onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
+            className="font-semibold px-4 py-2 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:border-[#A68A64] text-[#2C2A29] text-xs cursor-pointer transition-colors duration-300"
+          >
+            {lang === 'bn' ? 'English' : 'বাংলা'}
+          </button>
 
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="p-1.5 md:p-2 rounded-lg border text-xs cursor-pointer"
-              style={{ borderColor: themeStyles.borderColor }}
-            >
-              {darkMode ? '☀️' : '🌙'}
-            </button>
-
-            <button 
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden text-2xl p-1 cursor-pointer focus:outline-none"
-              style={{ color: themeStyles.textColor }}
-              aria-label="Mobile Menu Toggle"
-            >
-              {mobileMenuOpen ? '✕' : '☰'}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden text-xl px-3 py-1.5 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] text-[#2C2A29] cursor-pointer focus:outline-none"
+            aria-label="Mobile Menu Toggle"
+          >
+            {mobileMenuOpen ? '✕' : '☰'}
+          </button>
         </div>
       </header>
 
       {/* মোবাইল ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
-        <div 
-          className="lg:hidden px-6 py-4 space-y-3 border-b shadow-lg transition-all duration-300"
-          style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-        >
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
+        <div className="lg:hidden px-6 py-5 space-y-3 bg-[#FCFBF9] border-b border-[#E6DFD5] transition-all duration-300">
+          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#2C2A29]">
             {lang === 'bn' ? 'হোম' : 'Home'}
           </a>
-          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
+          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
           </a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
+          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
           </a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-bold text-sm border-b" style={{ borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#5C5852]">
             {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
           </a>
-          <button 
+          <button
             onClick={() => {
               setMobileMenuOpen(false)
               setIsContactModalOpen(true)
             }}
-            className="w-full text-left py-2 font-bold text-sm bg-transparent border-none cursor-pointer"
-            style={{ color: themeStyles.textColor }}
+            className="w-full text-left py-2 font-semibold text-sm bg-transparent border-none cursor-pointer text-[#5C5852]"
           >
             {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
           </button>
@@ -782,51 +728,50 @@ export default function Home() {
       )}
 
       {/* হিরো সেকশন */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#0d2857] via-[#0b3c85] to-[#0077b6] text-white py-10 lg:py-20 px-4 md:px-12">
-        <div className="max-w-7xl mx-auto mb-6">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs md:text-sm font-semibold">
-            {/* ডাইনামিক স্ট্যাটাস ইন্ডিকেটর ডট: খোলা থাকলে সবুজ (emerald), বন্ধ থাকলে লাল (rose) */}
-            <span className={`w-2.5 h-2.5 rounded-full ${(!chamberNotice.isClosed && isChamberOpenNow) ? 'bg-emerald-400 animate-pulse' : 'bg-rose-500'}`}></span>
+      <section className="py-20 lg:py-24 px-4 md:px-12 border-b border-[#E6DFD5] bg-[#FCFBF9]">
+        <div className="max-w-7xl mx-auto mb-8">
+          <div className="inline-flex items-center gap-2.5 bg-[#F7F5F0] px-5 py-2 rounded-full border border-[#E6DFD5] text-xs md:text-sm font-medium text-[#2C2A29]">
+            <span className={`w-2.5 h-2.5 rounded-full ${(!chamberNotice.isClosed && isChamberOpenNow) ? 'bg-emerald-600' : 'bg-[#A68A64]'}`}></span>
             <span>{chamberNotice.isClosed ? (lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn) : chamberStatusText}</span>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5 flex justify-center lg:justify-start order-2 lg:order-1">
-            <div className="relative w-64 h-[340px] md:w-80 md:h-96 lg:w-96 lg:h-[420px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 bg-[#071630]">
+            <div className="relative w-72 h-[370px] md:w-80 md:h-[420px] lg:w-96 lg:h-[460px] rounded-2xl overflow-hidden border border-[#E6DFD5] bg-[#F7F5F0] shadow-sm">
               <img src="/doctor.jpeg" alt="Dr. Asir Mosaddeque Sakib" className="w-full h-full object-cover object-top" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#071630] via-transparent to-transparent opacity-40"></div>
-              
-              <div className="absolute bottom-2 left-3 right-3 p-3.5 rounded-2xl bg-black/50 backdrop-blur-md border border-white/20 space-y-0.5">
-                <h3 className="font-bold text-sm md:text-base text-white">{t[lang].title}</h3>
-                <p className="text-[11px] text-cyan-300 font-medium whitespace-pre-line">{t[lang].doctorInfo}</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2C2A29]/85 via-transparent to-transparent"></div>
+
+              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-[#FCFBF9]/95 backdrop-blur-md border border-[#E6DFD5] space-y-1">
+                <h3 className="font-serif font-bold text-base md:text-lg text-[#2C2A29]">{t[lang].title}</h3>
+                <p className="text-xs text-[#5C5852] font-medium whitespace-pre-line">{t[lang].doctorInfo}</p>
               </div>
             </div>
           </div>
 
           <div className="lg:col-span-7 space-y-6 order-1 lg:order-2 text-center lg:text-left">
-            <span className="text-xs font-bold uppercase tracking-widest text-cyan-300 bg-cyan-900/40 px-3.5 py-1.5 rounded-full border border-cyan-500/30">
+            <span className="inline-block text-xs font-semibold uppercase tracking-widest text-[#A68A64] bg-[#F7F5F0] px-4 py-1.5 rounded-full border border-[#E6DFD5]">
               {t[lang].subtitle}
             </span>
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight drop-shadow-md">
+            <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-[#2C2A29]">
               {t[lang].heroTitle}
             </h1>
-            <p className="text-base md:text-lg text-cyan-100/90 font-medium max-w-xl mx-auto lg:mx-0 leading-relaxed">
+            <p className="font-sans text-base md:text-lg text-[#5C5852] max-w-xl mx-auto lg:mx-0 leading-relaxed">
               {t[lang].heroSub}
             </p>
-            
-            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+
+            <div className="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <button
                 onClick={handleOpenBooking}
-                className="px-8 py-4 rounded-full bg-[#00a8e8] hover:bg-[#008fca] text-white font-extrabold shadow-lg shadow-cyan-900/40 transition transform hover:-translate-y-0.5 cursor-pointer text-sm md:text-base"
+                className="bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3.5 font-semibold cursor-pointer text-sm md:text-base"
               >
                 {t[lang].bookingMainBtn}
               </button>
               <a
                 href="#about-section"
-                className="px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold border border-white/30 backdrop-blur-md transition text-sm md:text-base"
+                className="px-7 py-3.5 rounded-full bg-[#F7F5F0] hover:border-[#A68A64] text-[#2C2A29] font-semibold border border-[#E6DFD5] transition-colors duration-300 text-sm md:text-base"
               >
-                Learn More
+                {t[lang].learnMoreBtn}
               </a>
             </div>
           </div>
@@ -835,80 +780,76 @@ export default function Home() {
 
       {/* পপ-আপ বুকিং ফর্ম */}
       {showPopupBooking && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
-          <div 
-            className="max-w-xl w-full p-6 md:p-8 rounded-3xl shadow-2xl border relative my-8"
-            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2" style={{ color: themeStyles.textColor }}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm overflow-y-auto">
+          <div className="max-w-xl w-full p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-8 shadow-xl">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-serif text-xl md:text-2xl font-bold text-[#2C2A29] flex items-center gap-2">
                 <span>📅</span> {t[lang].bookingTitle}
               </h2>
-              <button onClick={() => setShowPopupBooking(false)} className="font-bold text-lg p-2 rounded-full opacity-70 hover:opacity-100" style={{ color: themeStyles.textColor }}>
+              <button
+                onClick={() => setShowPopupBooking(false)}
+                className="font-bold text-sm px-3.5 py-1.5 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:bg-[#A68A64] hover:text-[#F7F5F0] text-[#2C2A29] transition-colors duration-300 cursor-pointer"
+              >
                 ✕
               </button>
             </div>
-            <p className="font-semibold mb-6 text-xs md:text-sm" style={{ color: themeStyles.subTextColor }}>
+            <p className="font-sans font-medium mb-6 text-xs md:text-sm text-[#5C5852]">
               {t[lang].bookingSub}
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4 max-h-[75vh] overflow-y-auto pr-2">
+            <form onSubmit={handleSubmit} className="space-y-4 max-h-[75vh] overflow-y-auto pr-1">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].patientName}</label>
-                  <input 
-                    type="text" 
-                    name="patient_name" 
-                    value={formData.patient_name} 
-                    onChange={handleChange} 
-                    required 
-                    placeholder={t[lang].patientNamePlaceholder} 
-                    className="w-full px-4 py-2.5 rounded-xl outline-none border" 
-                    style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                  <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].patientName}</label>
+                  <input
+                    type="text"
+                    name="patient_name"
+                    value={formData.patient_name}
+                    onChange={handleChange}
+                    required
+                    placeholder={t[lang].patientNamePlaceholder}
+                    className={inputClass}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].ageLabel}</label>
-                  <input 
-                    type="text" 
-                    name="age" 
-                    value={formData.age} 
-                    onChange={handleChange} 
-                    required 
-                    placeholder={t[lang].agePlaceholder} 
-                    className="w-full px-4 py-2.5 rounded-xl outline-none border" 
-                    style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                  <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].ageLabel}</label>
+                  <input
+                    type="text"
+                    name="age"
+                    value={formData.age}
+                    onChange={handleChange}
+                    required
+                    placeholder={t[lang].agePlaceholder}
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].phoneLabel}</label>
-                <input 
-                  type="tel" 
-                  name="phone" 
-                  value={formData.phone} 
+                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].phoneLabel}</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
                   onChange={(e) => {
                     const val = e.target.value.replace(/\D/g, '').slice(0, 11);
                     setFormData(prev => ({ ...prev, phone: val }));
-                  }} 
-                  required 
+                  }}
+                  required
                   maxLength="11"
-                  placeholder="017XXXXXXXX" 
-                  className="w-full px-4 py-2.5 rounded-xl outline-none border" 
-                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                  placeholder="017XXXXXXXX"
+                  className={inputClass}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].serviceLabel}</label>
-                <select 
-                  name="service" 
-                  value={formData.service} 
-                  onChange={handleChange} 
-                  required 
-                  className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
-                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].serviceLabel}</label>
+                <select
+                  name="service"
+                  value={formData.service}
+                  onChange={handleChange}
+                  required
+                  className={`${inputClass} cursor-pointer`}
                 >
                   <option value="">{t[lang].serviceDefault}</option>
                   <option value={t[lang].service1}>{t[lang].service1}</option>
@@ -919,22 +860,21 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].dateLabel}</label>
-                <select 
-                  name="appointment_date" 
-                  value={formData.appointment_date} 
-                  onChange={handleChange} 
-                  required 
-                  className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
-                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].dateLabel}</label>
+                <select
+                  name="appointment_date"
+                  value={formData.appointment_date}
+                  onChange={handleChange}
+                  required
+                  className={`${inputClass} cursor-pointer`}
                 >
                   <option value="">{t[lang].dateDefault}</option>
                   {availableDates.map((item, index) => (
-                    <option 
-                      key={index} 
-                      value={item.value} 
+                    <option
+                      key={index}
+                      value={item.value}
                       disabled={item.isPast}
-                      className={item.isPast ? 'text-gray-400 opacity-50 bg-gray-100 dark:bg-slate-800' : ''}
+                      className={item.isPast ? 'text-[#5C5852]/50' : ''}
                     >
                       {item.label}
                     </option>
@@ -943,14 +883,13 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].timeLabel}</label>
-                <select 
-                  name="appointment_time" 
-                  value={formData.appointment_time} 
-                  onChange={handleChange} 
-                  required 
-                  className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
-                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].timeLabel}</label>
+                <select
+                  name="appointment_time"
+                  value={formData.appointment_time}
+                  onChange={handleChange}
+                  required
+                  className={`${inputClass} cursor-pointer`}
                 >
                   <option value="">{t[lang].timeDefault}</option>
                   {rawTimes.map((time, index) => {
@@ -959,7 +898,7 @@ export default function Home() {
                     const isFull = slotData.total >= 2
 
                     return (
-                      <option key={index} value={time} disabled={isFull} style={{ color: isFull ? 'red' : 'inherit' }}>
+                      <option key={index} value={time} disabled={isFull} className={isFull ? 'text-rose-700' : ''}>
                         {time} {isFull ? (lang === 'bn' ? '(বুকড)' : '(Full)') : ''}
                       </option>
                     )
@@ -967,10 +906,10 @@ export default function Home() {
                 </select>
               </div>
 
-              <button 
-                type="submit" 
-                disabled={loading} 
-                className="w-full font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer text-white bg-[#00a8e8] hover:bg-[#008fca]"
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3.5 font-semibold cursor-pointer mt-2"
               >
                 {loading ? t[lang].submitting : t[lang].submitBtn}
               </button>
@@ -979,29 +918,26 @@ export default function Home() {
         </div>
       )}
 
-      {/* অত্যন্ত সুন্দর ও আধুনিক কাস্টম নোটিশ মোডাল */}
+      {/* কাস্টম নোটিশ মোডাল */}
       {customAlert.show && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-          <div 
-            className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-5 border relative overflow-hidden" 
-            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}
-          >
-            <div className="w-16 h-16 bg-gradient-to-tr from-amber-500 to-amber-400 text-white text-2xl rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-amber-500/30">
-              ⚠️
+        <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
+          <div className="p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-5 shadow-xl">
+            <div className="w-14 h-14 bg-[#F7F5F0] border border-[#E6DFD5] text-[#A68A64] text-2xl rounded-full flex items-center justify-center mx-auto">
+              ✦
             </div>
-            
+
             <div className="space-y-2">
-              <h3 className="text-xl font-black text-[#0E3A5D] dark:text-teal-300">
+              <h3 className="font-serif text-xl font-bold text-[#2C2A29]">
                 {lang === 'bn' ? 'মনোযোগ দিন' : 'Attention'}
               </h3>
-              <p className="text-sm md:text-base leading-relaxed font-medium" style={{ color: themeStyles.subTextColor }}>
+              <p className="font-sans text-sm md:text-base leading-relaxed text-[#5C5852]">
                 {customAlert.message}
               </p>
             </div>
 
-            <button 
-              onClick={() => setCustomAlert({ show: false, message: '' })} 
-              className="w-full font-extrabold py-3.5 rounded-2xl transition duration-200 shadow-lg shadow-cyan-500/20 cursor-pointer text-white bg-gradient-to-r from-[#0077b6] to-[#00a8e8] hover:from-[#006096] hover:to-[#008fca]"
+            <button
+              onClick={() => setCustomAlert({ show: false, message: '' })}
+              className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer"
             >
               {lang === 'bn' ? 'ঠিক আছে' : 'OK'}
             </button>
@@ -1010,256 +946,252 @@ export default function Home() {
       )}
 
       {/* About Us সেকশন */}
-      <section 
-        id="about-section" 
-        className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-4 transition-all duration-300"
-        style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-      >
-        <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
-          {lang === 'bn' ? 'আমাদের সম্পর্কে (About Us)' : 'About Us'}
-        </h2>
-        <div className="space-y-3 text-sm md:text-base leading-relaxed" style={{ color: themeStyles.subTextColor }}>
-          <p>
-            {lang === 'bn'
-              ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আপনাকে স্বাগতম। আমরা আধুনিক প্রযুক্তির সাহায্যে রোগীদের সর্বাধুনিক ও নিরাপদ ডেন্টাল সেবা প্রদান করে থাকি। আমাদের চেম্বারে রুট ক্যানাল ট্রিটমেন্ট, জিরকনিয়া ও মেটাল-সিরামিক ক্রাউন, স্কেলিং, দাঁত তোলা এবং কসমেটিক ডেন্টিস্ট্রির আধুনিক চিকিৎসা নিশ্চিত করা হয়।'
-              : 'Welcome to Dr. Asir Mosaddeque Sakib Dental Care. We provide advanced and safe dental services using modern technology. Our chamber ensures state-of-the-art treatments including Root Canal Therapy, Zirconia & PFM Crowns, Scaling, Extractions, and Cosmetic Dentistry.'
-            }
-          </p>
+      <section className="py-20 md:py-24 px-4 md:px-8">
+        <div
+          id="about-section"
+          className="max-w-7xl mx-auto p-8 md:p-12 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] space-y-4"
+        >
+          <h2 className="font-serif text-2xl md:text-4xl font-bold text-[#2C2A29]">
+            {lang === 'bn' ? 'আমাদের সম্পর্কে (About Us)' : 'About Us'}
+          </h2>
+          <div className="space-y-3 font-sans text-sm md:text-base leading-relaxed text-[#5C5852]">
+            <p>
+              {lang === 'bn'
+                ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আপনাকে স্বাগতম। আমরা আধুনিক প্রযুক্তির সাহায্যে রোগীদের সর্বাধুনিক ও নিরাপদ ডেন্টাল সেবা প্রদান করে থাকি। আমাদের চেম্বারে রুট ক্যানাল ট্রিটমেন্ট, জিরকনিয়া ও মেটাল-সিরামিক ক্রাউন, স্কেলিং, দাঁত তোলা এবং কসমেটিক ডেন্টিস্ট্রির আধুনিক চিকিৎসা নিশ্চিত করা হয়।'
+                : 'Welcome to Dr. Asir Mosaddeque Sakib Dental Care. We provide advanced and safe dental services using modern technology. Our chamber ensures state-of-the-art treatments including Root Canal Therapy, Zirconia & PFM Crowns, Scaling, Extractions, and Cosmetic Dentistry.'
+              }
+            </p>
+          </div>
         </div>
       </section>
 
       {/* টিপস সেকশন */}
-      <section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
-        <div className="text-center mb-10 space-y-2">
-          <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white">
-            {t[lang].tipsTitle}
-          </h2>
-          <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
-            {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
-          </p>
-        </div>
+      <section className="py-20 md:py-24 px-4 md:px-8 bg-[#FCFBF9] border-y border-[#E6DFD5]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 space-y-2">
+            <h2 className="font-serif text-2xl md:text-4xl font-bold text-[#2C2A29]">
+              {t[lang].tipsTitle}
+            </h2>
+            <p className="font-sans text-sm md:text-base text-[#5C5852]">
+              {lang === 'bn' ? 'সুস্থ ও উজ্জ্বল হাসি ধরে রাখতে অনুসরণ করুন প্রয়োজনীয় কিছু টিপস' : 'Follow these essential tips to maintain a healthy and bright smile.'}
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tipsList.map((item, index) => {
-            const isDarkCard = index === 2 || index === 5;
-            const isFourthCard = index === 3;
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {tipsList.map((item, index) => {
+              const headlines = [
+                { bn: 'নিয়মিত ব্রাশ করুন', en: 'Brush Regularly' },
+                { bn: 'ডেন্টাল ফ্লস ব্যবহার', en: 'Use Dental Floss' },
+                { bn: 'মিষ্টি খাবার পর কুলি', en: 'Rinse After Sweets' },
+                { bn: 'নিয়মিত চেকআপ', en: 'Regular Checkup' },
+                { bn: 'বর্জন করুন', en: 'Avoid Harmful Habits' },
+                { bn: 'ব্যাথায় সচেতনতা', en: 'Dental Pain Care' }
+              ];
 
-            const headlines = [
-              { bn: 'নিয়মিত ব্রাশ করুন', en: 'Brush Regularly' },
-              { bn: 'ডেন্টাল ফ্লস ব্যবহার', en: 'Use Dental Floss' },
-              { bn: 'মিষ্টি খাবার পর কুলি', en: 'Rinse After Sweets' },
-              { bn: 'নিয়মিত চেকআপ', en: 'Regular Checkup' },
-              { bn: 'বর্জন করুন', en: 'Avoid Harmful Habits' },
-              { bn: 'ব্যাথায় সচেতনতা', en: 'Dental Pain Care' }
-            ];
+              return (
+                <div
+                  key={index}
+                  className="relative h-72 rounded-2xl overflow-hidden border border-[#E6DFD5] bg-[#F7F5F0] flex flex-col justify-center items-start p-6 group transition-colors duration-300"
+                >
+                  <img
+                    src={`/tips/${item.id}.jpeg`}
+                    alt={`Dental Tip ${index + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                    onError={(e) => {
+                      if (!e.target.dataset.triedJpg) {
+                        e.target.dataset.triedJpg = "true";
+                        e.target.src = `/tips/${item.id}.jpg`;
+                      } else {
+                        e.target.onerror = null;
+                        e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23FCFBF9' width='400' height='250'/%3E%3Ctext fill='%232C2A29' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpeg/.jpg)%3E%3C/text%3E%3C/svg%3E";
+                      }
+                    }}
+                  />
 
-            return (
-              <div 
-                key={index} 
-                className="relative h-72 rounded-2xl overflow-hidden shadow-md border border-slate-200/50 dark:border-slate-800 flex flex-col justify-center items-start p-6 group transition duration-300 hover:shadow-xl bg-white dark:bg-slate-900"
-              >
-                <img 
-                  src={`/tips/${item.id}.jpeg`} 
-                  alt={`Dental Tip ${index + 1}`} 
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                  onError={(e) => {
-                    if (!e.target.dataset.triedJpg) {
-                      e.target.dataset.triedJpg = "true";
-                      e.target.src = `/tips/${item.id}.jpg`;
-                    } else {
-                      e.target.onerror = null;
-                      e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23F4F9F9' width='400' height='250'/%3E%3Ctext fill='%230E3A5D' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpeg/.jpg)%3E%3C/text%3E%3C/svg%3E";
-                    }
-                  }}
-                />
+                  <div className="relative z-10 w-1/2 text-left space-y-2 p-3 rounded-xl bg-[#FCFBF9]/90 backdrop-blur-xs border border-[#E6DFD5]">
+                    <h3 className="font-serif font-bold text-base md:text-lg tracking-tight text-[#2C2A29]">
+                      {lang === 'bn' ? headlines[index].bn : headlines[index].en}
+                    </h3>
 
-                <div className="relative z-10 w-1/3 text-left space-y-2">
-                  <h3 className={`font-black text-lg md:text-xl tracking-tight drop-shadow-md ${isDarkCard ? 'text-teal-300' : isFourthCard ? 'text-black font-extrabold' : 'text-[#0E3A5D]'}`}
-                      style={isFourthCard ? { textShadow: '-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff' } : {}}
-                  >
-                    {lang === 'bn' ? headlines[index].bn : headlines[index].en}
-                  </h3>
-                  
-                  <p className={`font-bold text-xs md:text-sm leading-relaxed break-words ${isDarkCard ? 'text-white drop-shadow-md' : isFourthCard ? 'text-black' : 'text-slate-900 drop-shadow-md'}`}
-                     style={isFourthCard ? { textShadow: '-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff' } : {}}
-                  >
-                    {lang === 'bn' ? item.textBn : item.textEn}
-                  </p>
+                    <p className="font-sans font-medium text-xs leading-relaxed text-[#5C5852]">
+                      {lang === 'bn' ? item.textBn : item.textEn}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
 
       {/* কেন আমাদের পছন্দ করবেন সেকশন */}
-      <section className="max-w-7xl mx-auto my-16 px-4 md:px-0">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
-            {t[lang].whyUsTitle}
-          </h2>
-        </div>
+      <section className="py-20 md:py-24 px-4 md:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 space-y-2">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#A68A64]">
+              {lang === 'bn' ? 'আমাদের বিশেষত্ব' : 'The Boutique Standard'}
+            </span>
+            <h2 className="font-serif text-2xl md:text-4xl font-bold text-[#2C2A29]">
+              {t[lang].whyUsTitle}
+            </h2>
+          </div>
 
-        <div className="space-y-8 md:space-y-10">
-          {featureBoxes.map((box, index) => (
-            <div 
-              key={index} 
-              className={`p-1 shadow-2xl bg-gradient-to-r from-[#0c1e3e] via-[#0077b6] to-[#00a8e8] transition-all duration-300 ${box.stepClass}`}
-            >
-              <div 
-                className="relative p-8 md:p-14 min-h-[380px] md:min-h-[440px] flex flex-col justify-end bg-cover bg-center overflow-hidden"
-                style={{ backgroundImage: `url(${box.bgImage})` }}
+          <div className="space-y-8 md:space-y-10">
+            {featureBoxes.map((box, index) => (
+              <div
+                key={index}
+                className={`rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] p-2 transition-all duration-300 ${box.stepClass}`}
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-                
-                <div className="relative z-10 space-y-3 text-white">
-                  <h3 className="text-2xl md:text-4xl font-black drop-shadow-md">{box.title}</h3>
-                  <p className="text-sm md:text-base leading-relaxed text-slate-200 font-medium max-w-2xl drop-shadow-sm">
-                    {box.description}
-                  </p>
+                <div
+                  className="relative p-8 md:p-14 min-h-[360px] md:min-h-[420px] rounded-2xl flex flex-col justify-end bg-cover bg-center overflow-hidden"
+                  style={{ backgroundImage: `url(${box.bgImage})` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2C2A29]/90 via-[#2C2A29]/40 to-transparent"></div>
+
+                  <div className="relative z-10 space-y-3 text-[#F7F5F0]">
+                    <h3 className="font-serif text-2xl md:text-4xl font-bold text-[#F7F5F0]">{box.title}</h3>
+                    <p className="font-sans text-sm md:text-base leading-relaxed text-[#D8CFC4] max-w-2xl">
+                      {box.description}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ভিডিও সেকশন */}
-      <section 
-        id="contact-section"
-        className="max-w-7xl mx-auto my-12 p-6 md:p-10 rounded-3xl border shadow-sm space-y-6 transition-all duration-300"
-        style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-      >
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: themeStyles.textColor }}>
-            {t[lang].videoTitle}
-          </h2>
-          <p className="text-xs md:text-sm max-w-2xl mx-auto" style={{ color: themeStyles.subTextColor }}>
-            {t[lang].videoSub}
-          </p>
-        </div>
+      <section id="contact-section" className="py-20 md:py-24 px-4 md:px-8 bg-[#FCFBF9] border-y border-[#E6DFD5]">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="text-center space-y-2">
+            <h2 className="font-serif text-2xl md:text-4xl font-bold text-[#2C2A29]">
+              {t[lang].videoTitle}
+            </h2>
+            <p className="font-sans text-xs md:text-sm max-w-2xl mx-auto text-[#5C5852]">
+              {t[lang].videoSub}
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {videoList.map((vid, index) => (
-            <div 
-              key={index} 
-              className="p-4 rounded-2xl border flex flex-col justify-between space-y-3 shadow-sm"
-              style={{ backgroundColor: themeStyles.bgMain, borderColor: themeStyles.borderColor }}
-            >
-              <h4 className="font-bold text-sm" style={{ color: themeStyles.textColor }}>{vid.title}</h4>
-              <div className="w-full h-32 rounded-xl flex items-center justify-center text-xs font-medium opacity-80" style={{ backgroundColor: themeStyles.cardBg }}>
-                🎬 {lang === 'bn' ? 'ভিডিও শীঘ্রই আসছে' : 'Video Coming Soon'}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {videoList.map((vid, index) => (
+              <div
+                key={index}
+                className="p-5 rounded-2xl border border-[#E6DFD5] bg-[#F7F5F0] flex flex-col justify-between space-y-4"
+              >
+                <h4 className="font-serif font-bold text-base text-[#2C2A29]">{vid.title}</h4>
+                <div className="w-full h-32 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] flex items-center justify-center text-xs font-medium text-[#5C5852]">
+                  🎬 {lang === 'bn' ? 'ভিডিও শীঘ্রই আসছে' : 'Video Coming Soon'}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* পেশেন্ট রিভিউ ও রেটিং সেকশন (ফুটারের ঠিক উপরে) */}
-      <section className="max-w-7xl mx-auto my-16 px-4 md:px-8">
-        <div className="text-center mb-10 space-y-3">
-          <span className="text-xs font-bold uppercase tracking-widest text-cyan-500 bg-cyan-500/10 px-3.5 py-1.5 rounded-full border border-cyan-500/20">
-            {lang === 'bn' ? 'রোগীদের মূল্যায়ন' : 'Testimonials'}
-          </span>
-          <h2 className="text-2xl md:text-4xl font-black text-[#0E3A5D] dark:text-white pt-1">
-            {t[lang].reviewsTitle}
-          </h2>
-          <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
-            {t[lang].reviewsSub}
-          </p>
-          
-          <div className="pt-3">
-            <button
-              onClick={() => setShowReviewModal(true)}
-              className="px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-extrabold shadow-lg shadow-amber-500/30 transition transform hover:-translate-y-0.5 cursor-pointer text-sm"
-            >
-              {t[lang].addReviewBtn}
-            </button>
-          </div>
-        </div>
+      {/* পেশেন্ট রিভিউ ও রেটিং সেকশন */}
+      <section className="py-20 md:py-24 px-4 md:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 space-y-3">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#A68A64] bg-[#FCFBF9] px-4 py-1.5 rounded-full border border-[#E6DFD5]">
+              {lang === 'bn' ? 'রোগীদের মূল্যায়ন' : 'Testimonials'}
+            </span>
+            <h2 className="font-serif text-2xl md:text-4xl font-bold text-[#2C2A29] pt-1">
+              {t[lang].reviewsTitle}
+            </h2>
+            <p className="font-sans text-sm md:text-base text-[#5C5852]">
+              {t[lang].reviewsSub}
+            </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {reviewsList.map((rev, index) => (
-            <div 
-              key={index}
-              className="p-6 rounded-3xl border shadow-lg relative flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1.5"
-              style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-            >
-              <div className="space-y-4">
-                <div className="flex items-center gap-1 text-amber-400 text-lg">
-                  {[...Array(rev.rating || 5)].map((_, i) => (
-                    <span key={i}>★</span>
-                  ))}
-                </div>
-                <p className="text-sm md:text-base leading-relaxed italic" style={{ color: themeStyles.subTextColor }}>
-                  "{rev.review_text}"
-                </p>
-              </div>
-
-              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
-                <div>
-                  <h4 className="font-extrabold text-base" style={{ color: themeStyles.textColor }}>{rev.patient_name}</h4>
-                  <p className="text-xs font-semibold text-cyan-500">{rev.location}</p>
-                </div>
-                <span className="text-xs text-slate-400 font-medium">
-                  {new Date(rev.created_at || Date.now()).toLocaleDateString()}
-                </span>
-              </div>
+            <div className="pt-3">
+              <button
+                onClick={() => setShowReviewModal(true)}
+                className="bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer text-sm"
+              >
+                {t[lang].addReviewBtn}
+              </button>
             </div>
-          ))}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {reviewsList.map((rev, index) => (
+              <div
+                key={index}
+                className="p-7 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] flex flex-col justify-between transition-colors duration-300 hover:border-[#A68A64]"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center gap-1 text-[#A68A64] text-lg">
+                    {[...Array(rev.rating || 5)].map((_, i) => (
+                      <span key={i}>★</span>
+                    ))}
+                  </div>
+                  <p className="font-sans text-sm md:text-base leading-relaxed italic text-[#5C5852]">
+                    "{rev.review_text}"
+                  </p>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-[#E6DFD5] flex items-center justify-between">
+                  <div>
+                    <h4 className="font-serif font-bold text-base text-[#2C2A29]">{rev.patient_name}</h4>
+                    <p className="font-sans text-xs font-semibold text-[#A68A64]">{rev.location}</p>
+                  </div>
+                  <span className="font-sans text-xs text-[#5C5852]">
+                    {new Date(rev.created_at || Date.now()).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* রোগী নিজে রিভিউ সাবমিট করার পপ-আপ মোডাল */}
       {showReviewModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
-          <div 
-            className="max-w-xl w-full p-6 md:p-8 rounded-3xl shadow-2xl border relative my-8"
-            style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2" style={{ color: themeStyles.textColor }}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm overflow-y-auto">
+          <div className="max-w-xl w-full p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-8 shadow-xl">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="font-serif text-xl md:text-2xl font-bold text-[#2C2A29] flex items-center gap-2">
                 <span>✍️</span> {t[lang].reviewModalTitle}
               </h2>
-              <button onClick={() => setShowReviewModal(false)} className="font-bold text-lg p-2 rounded-full opacity-70 hover:opacity-100" style={{ color: themeStyles.textColor }}>
+              <button
+                onClick={() => setShowReviewModal(false)}
+                className="font-bold text-sm px-3.5 py-1.5 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:bg-[#A68A64] hover:text-[#F7F5F0] text-[#2C2A29] transition-colors duration-300 cursor-pointer"
+              >
                 ✕
               </button>
             </div>
 
             <form onSubmit={handleReviewSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].reviewNameLabel}</label>
-                <input 
-                  type="text" 
-                  value={reviewForm.patient_name} 
-                  onChange={(e) => setReviewForm({ ...reviewForm, patient_name: e.target.value })} 
-                  required 
-                  placeholder={lang === 'bn' ? 'আপনার নাম লিখুন' : 'Enter your name'} 
-                  className="w-full px-4 py-2.5 rounded-xl outline-none border" 
-                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].reviewNameLabel}</label>
+                <input
+                  type="text"
+                  value={reviewForm.patient_name}
+                  onChange={(e) => setReviewForm({ ...reviewForm, patient_name: e.target.value })}
+                  required
+                  placeholder={lang === 'bn' ? 'আপনার নাম লিখুন' : 'Enter your name'}
+                  className={inputClass}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].locationLabel}</label>
-                <input 
-                  type="text" 
-                  value={reviewForm.location} 
-                  onChange={(e) => setReviewForm({ ...reviewForm, location: e.target.value })} 
-                  placeholder={lang === 'bn' ? 'যেমন: পটিয়া, চট্টগ্রাম' : 'e.g. Patiya, Chattogram'} 
-                  className="w-full px-4 py-2.5 rounded-xl outline-none border" 
-                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].locationLabel}</label>
+                <input
+                  type="text"
+                  value={reviewForm.location}
+                  onChange={(e) => setReviewForm({ ...reviewForm, location: e.target.value })}
+                  placeholder={lang === 'bn' ? 'যেমন: পটিয়া, চট্টগ্রাম' : 'e.g. Patiya, Chattogram'}
+                  className={inputClass}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].ratingLabel}</label>
-                <select 
-                  value={reviewForm.rating} 
-                  onChange={(e) => setReviewForm({ ...reviewForm, rating: e.target.value })} 
-                  required 
-                  className="w-full px-4 py-3 rounded-xl outline-none border font-medium cursor-pointer" 
-                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].ratingLabel}</label>
+                <select
+                  value={reviewForm.rating}
+                  onChange={(e) => setReviewForm({ ...reviewForm, rating: e.target.value })}
+                  required
+                  className={`${inputClass} cursor-pointer`}
                 >
                   <option value="5">⭐⭐⭐⭐⭐ (5/5 - Excellent)</option>
                   <option value="4">⭐⭐⭐⭐ (4/5 - Very Good)</option>
@@ -1270,22 +1202,21 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-1" style={{ color: themeStyles.textColor }}>{t[lang].reviewTextLabel}</label>
-                <textarea 
+                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].reviewTextLabel}</label>
+                <textarea
                   rows="4"
-                  value={reviewForm.review_text} 
-                  onChange={(e) => setReviewForm({ ...reviewForm, review_text: e.target.value })} 
-                  required 
-                  placeholder={lang === 'bn' ? 'আপনার অভিজ্ঞতা ও মতামত এখানে বিস্তারিত লিখুন...' : 'Write your experience and feedback in detail...'} 
-                  className="w-full px-4 py-2.5 rounded-xl outline-none border" 
-                  style={{ backgroundColor: themeStyles.inputBg, color: themeStyles.inputText, borderColor: themeStyles.borderColor }}
+                  value={reviewForm.review_text}
+                  onChange={(e) => setReviewForm({ ...reviewForm, review_text: e.target.value })}
+                  required
+                  placeholder={lang === 'bn' ? 'আপনার অভিজ্ঞতা ও মতামত এখানে বিস্তারিত লিখুন...' : 'Write your experience and feedback in detail...'}
+                  className={inputClass}
                 ></textarea>
               </div>
 
-              <button 
-                type="submit" 
-                disabled={reviewSubmitting} 
-                className="w-full font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg cursor-pointer text-white bg-amber-500 hover:bg-amber-600"
+              <button
+                type="submit"
+                disabled={reviewSubmitting}
+                className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3.5 font-semibold cursor-pointer"
               >
                 {reviewSubmitting ? t[lang].reviewSubmitting : t[lang].reviewSubmitBtn}
               </button>
@@ -1295,100 +1226,105 @@ export default function Home() {
       )}
 
       {/* ফুটার */}
-      <footer className="bg-[#0c1e3e] text-slate-300 pt-16 pb-8 border-t border-blue-900/50 mt-20">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-blue-900/50">
-          
+      <footer className="bg-[#2C2A29] text-[#D8CFC4] pt-20 pb-10 border-t border-[#A68A64]/25">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#00a8e8] text-white flex items-center justify-center text-xl font-bold shadow-md">
+              <div className="w-10 h-10 rounded-full bg-[#F7F5F0] text-[#2C2A29] flex items-center justify-center text-lg font-serif">
                 🦷
               </div>
-              <span className="font-black text-lg text-white tracking-tight">
+              <span className="font-serif font-bold text-lg text-[#F7F5F0] tracking-tight">
                 {t[lang].title}
               </span>
             </div>
-            <p className="text-xs md:text-sm text-slate-400 leading-relaxed">
-              {lang === 'bn' 
-                ? 'আধুনিক প্রযুক্তি ও অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে নিরাপদ ও পেইনলেস ডেন্টাল কেয়ার নিশ্চিত করা আমাদের লক্ষ্য।' 
+            <p className="font-sans text-xs md:text-sm text-[#D8CFC4]/80 leading-relaxed">
+              {lang === 'bn'
+                ? 'আধুনিক প্রযুক্তি ও অভিজ্ঞ চিকিৎসকের নিবিড় তত্ত্বাবধানে নিরাপদ ও পেইনলেস ডেন্টাল কেয়ার নিশ্চিত করা আমাদের লক্ষ্য।'
                 : 'Ensuring safe and painless dental care with modern technology and expert supervision.'}
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white" title="Facebook">
+              <a href="https://www.facebook.com/share/1ZfF826KUs/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1.5" title="Facebook">
                 <img src="/facebook.png" alt="FB" className="w-full h-full object-cover rounded-full" />
               </a>
-              <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white" title="Instagram">
+              <a href="https://www.instagram.com/sakib.cmc?exln=MXQ0N214dDNyaTU4ZQ==" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1.5" title="Instagram">
                 <img src="/instagram.png" alt="IG" className="w-full h-full object-cover rounded-full" />
               </a>
-              <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00a8e8] flex items-center justify-center overflow-hidden transition shadow-sm p-1.5 text-white" title="WhatsApp">
+              <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#A68A64] flex items-center justify-center overflow-hidden transition-colors duration-300 p-1.5" title="WhatsApp">
                 <img src="/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover rounded-full" />
               </a>
             </div>
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-white font-bold text-base border-l-4 border-[#00a8e8] pl-3">
+            <h4 className="font-serif text-[#F7F5F0] font-bold text-lg border-l-2 border-[#A68A64] pl-3">
               {lang === 'bn' ? 'দ্রুত লিংক' : 'Quick Links'}
             </h4>
-            <ul className="space-y-2 text-sm font-medium">
-              <li><a href="/" className="hover:text-[#00a8e8] transition">🏠 {lang === 'bn' ? 'হোম পেজ' : 'Home'}</a></li>
-              <li><a href="#about-section" className="hover:text-[#00a8e8] transition">ℹ️ {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}</a></li>
-              <li><a href="/services" className="hover:text-[#00a8e8] transition">🦷 {lang === 'bn' ? 'সেবাসমূহ' : 'Services'}</a></li>
-              <li><a href="/gallery" className="hover:text-[#00a8e8] transition">🖼️ {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}</a></li>
+            <ul className="space-y-2.5 font-sans text-sm">
+              <li><a href="/" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'হোম পেজ' : 'Home'}</a></li>
+              <li><a href="#about-section" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}</a></li>
+              <li><a href="/services" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'সেবাসমূহ' : 'Services'}</a></li>
+              <li><a href="/gallery" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'গ্যালারি' : 'Gallery'}</a></li>
             </ul>
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-white font-bold text-base border-l-4 border-[#00a8e8] pl-3">
+            <h4 className="font-serif text-[#F7F5F0] font-bold text-lg border-l-2 border-[#A68A64] pl-3">
               {lang === 'bn' ? 'সময়সূচি' : 'Working Hours'}
             </h4>
-            <div className="space-y-2 text-xs md:text-sm text-slate-300">
+            <div className="space-y-2 font-sans text-xs md:text-sm text-[#D8CFC4]">
               <p className="flex items-center gap-2">
-                <span>📅</span> 
-                <span className="font-semibold">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার:' : 'Sat - Thu:'}</span>
+                <span>📅</span>
+                <span className="font-semibold text-[#F7F5F0]">{lang === 'bn' ? 'শনিবার - বৃহস্পতিবার:' : 'Sat - Thu:'}</span>
               </p>
-              <p className="text-cyan-300 pl-6 font-medium">
+              <p className="text-[#A68A64] pl-6 font-medium">
                 {lang === 'bn' ? 'বিকাল ৪:৩০ টা - রাত ৯:৩০ টা' : '4:30 PM - 9:30 PM'}
               </p>
               <p className="flex items-center gap-2 pt-2">
-                <span>❌</span> 
-                <span className="text-rose-400 font-semibold">{lang === 'bn' ? 'শুক্রবার: সম্পূর্ণ বন্ধ' : 'Friday: Closed'}</span>
+                <span>✦</span>
+                <span className="text-[#D8CFC4]/80 font-medium">{lang === 'bn' ? 'শুক্রবার: সম্পূর্ণ বন্ধ' : 'Friday: Closed'}</span>
               </p>
             </div>
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-white font-bold text-base border-l-4 border-[#00a8e8] pl-3">
+            <h4 className="font-serif text-[#F7F5F0] font-bold text-lg border-l-2 border-[#A68A64] pl-3">
               {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
             </h4>
-            <div className="space-y-3 text-xs md:text-sm">
+            <div className="space-y-3 font-sans text-xs md:text-sm">
               <p className="flex items-start gap-2">
-                <span className="text-cyan-400">📍</span>
+                <span className="text-[#A68A64]">📍</span>
                 <span>{t[lang].addressText}</span>
               </p>
 
               <div className="pt-1">
-                <a href="https://maps.app.goo.gl/4nNgwj68kE6okDZ96?g_st=ac" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#00a8e8] hover:bg-[#008fca] text-white font-bold px-3.5 py-2 rounded-xl transition shadow-sm text-xs">
-                  <span>🗺️</span> 
+                <a
+                  href="https://maps.app.goo.gl/4nNgwj68kE6okDZ96?g_st=ac"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#F7F5F0] text-[#2C2A29] hover:bg-[#A68A64] hover:text-[#F7F5F0] font-semibold px-5 py-2.5 rounded-full transition-colors duration-300 text-xs"
+                >
+                  <span>🗺️</span>
                   <span>{lang === 'bn' ? 'গুগল ম্যাপে লোকেশন দেখুন' : 'View on Google Maps'}</span>
                 </a>
               </div>
 
               <p className="flex items-center gap-2 pt-1">
-                <span className="text-cyan-400">📞</span>
-                <a href="tel:+8801816011701" className="hover:text-[#00a8e8] transition font-bold">+880 1816 011 701</a>
+                <span className="text-[#A68A64]">📞</span>
+                <a href="tel:+8801816011701" className="hover:text-[#A68A64] transition-colors duration-300 font-semibold text-[#F7F5F0]">+880 1816 011 701</a>
               </p>
               <p className="flex items-center gap-2">
-                <span className="text-cyan-400">✉️</span>
-                <a href="mailto:asir.mosaddeque@gmail.com" className="hover:text-[#00a8e8] transition">asir.mosaddeque@gmail.com</a>
+                <span className="text-[#A68A64]">✉️</span>
+                <a href="mailto:asir.mosaddeque@gmail.com" className="hover:text-[#A68A64] transition-colors duration-300">asir.mosaddeque@gmail.com</a>
               </p>
             </div>
           </div>
 
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 md:px-8 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 pt-6 flex flex-col sm:flex-row items-center justify-between font-sans text-xs text-[#D8CFC4]/75 gap-4">
           <p>© 2026 Dr. Sakib Dental Care. All rights reserved.</p>
-          <p className="font-medium text-cyan-300">
+          <p className="font-medium text-[#A68A64]">
             developed by own(Dr. Asir Mosaddeque Sakib)
           </p>
         </div>
@@ -1396,51 +1332,51 @@ export default function Home() {
 
       {/* কন্টাক্ট মোডাল */}
       {isContactModalOpen && (
-        <div onClick={() => setIsContactModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div onClick={(e) => e.stopPropagation()} className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-[#00a8e8] max-w-md w-full relative space-y-6 text-slate-900 dark:text-slate-100">
-            <button onClick={() => setIsContactModalOpen(false)} className="absolute top-4 right-4 bg-[#00a8e8] text-white hover:bg-[#008fca] font-bold w-9 h-9 rounded-full flex items-center justify-center shadow-md transition cursor-pointer text-base">
+        <div onClick={() => setIsContactModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
+          <div onClick={(e) => e.stopPropagation()} className="bg-[#FCFBF9] p-6 md:p-8 rounded-2xl border border-[#E6DFD5] max-w-md w-full relative space-y-6 text-[#2C2A29] shadow-xl">
+            <button onClick={() => setIsContactModalOpen(false)} className="absolute top-4 right-4 bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] font-bold w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300 cursor-pointer text-sm">
               ✕
             </button>
 
-            <div className="border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="text-xl font-extrabold text-[#0E3A5D] dark:text-teal-300">
+            <div className="border-b border-[#E6DFD5] pb-3">
+              <h3 className="font-serif text-xl font-bold text-[#2C2A29]">
                 {lang === 'bn' ? 'যোগাযোগ ও লোকেশন' : 'Contact & Location'}
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <p className="font-sans text-xs text-[#5C5852] mt-1">
                 {lang === 'bn' ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ার' : 'Dr. Asir Mosaddeque Sakib Dental Care'}
               </p>
             </div>
 
-            <div className="space-y-4 text-sm">
-              <div className="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-2xl border border-slate-100 dark:border-slate-800">
-                <span className="text-cyan-500 text-lg">📍</span>
-                <span>{t[lang].addressText}</span>
+            <div className="space-y-4 font-sans text-sm">
+              <div className="flex items-start gap-3 bg-[#F7F5F0] p-3.5 rounded-2xl border border-[#E6DFD5]">
+                <span className="text-[#A68A64] text-lg">📍</span>
+                <span className="text-[#5C5852]">{t[lang].addressText}</span>
               </div>
 
               <div>
-                <a href="https://maps.app.goo.gl/4nNgwj68kE6okDZ96?g_st=ac" target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 bg-[#00a8e8] hover:bg-[#008fca] text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm">
-                  <span>🗺️</span> 
+                <a href="https://maps.app.goo.gl/4nNgwj68kE6okDZ96?g_st=ac" target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] font-semibold px-7 py-3 rounded-full transition-colors duration-300 text-sm">
+                  <span>🗺️</span>
                   <span>{lang === 'bn' ? 'গুগল ম্যাপে লোকেশন দেখুন' : 'View on Google Maps'}</span>
                 </a>
               </div>
 
               <div>
-                <a href="tel:+8801816011701" className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm">
-                  <span>📞</span> 
+                <a href="tel:+8801816011701" className="w-full inline-flex items-center justify-center gap-2 bg-[#F7F5F0] text-[#2C2A29] hover:border-[#A68A64] border border-[#E6DFD5] font-semibold px-7 py-3 rounded-full transition-colors duration-300 text-sm">
+                  <span>📞</span>
                   <span>+880 1816 011 701</span>
                 </a>
               </div>
 
               <div>
-                <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold px-4 py-3 rounded-2xl transition shadow-md text-sm">
-                  <span>💬</span> 
+                <a href="https://wa.me/message/KBZOTSKH66H4P1" target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] font-semibold px-7 py-3 rounded-full transition-colors duration-300 text-sm">
+                  <span>💬</span>
                   <span>{lang === 'bn' ? 'হোয়াটসঅ্যাপে যোগাযোগ করুন' : 'Chat on WhatsApp'}</span>
                 </a>
               </div>
 
-              <div className="flex items-center justify-center gap-2 pt-2 text-xs text-slate-500 dark:text-slate-400">
+              <div className="flex items-center justify-center gap-2 pt-2 text-xs text-[#5C5852]">
                 <span>✉️</span>
-                <a href="mailto:asir.mosaddeque@gmail.com" className="hover:text-[#00a8e8] transition">asir.mosaddeque@gmail.com</a>
+                <a href="mailto:asir.mosaddeque@gmail.com" className="hover:text-[#A68A64] transition-colors duration-300">asir.mosaddeque@gmail.com</a>
               </div>
             </div>
           </div>
@@ -1449,12 +1385,12 @@ export default function Home() {
 
       {/* সাকসেস মোডাল */}
       {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border" style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
-            <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto bg-emerald-500">✓</div>
-            <h3 className="text-2xl font-black">{t[lang].successTitle}</h3>
-            <p className="text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>{t[lang].successMsg}</p>
-            <button onClick={() => setShowSuccessModal(false)} className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white bg-[#00a8e8]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
+          <div className="p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-4 shadow-xl">
+            <div className="w-16 h-16 text-[#F7F5F0] text-3xl rounded-full flex items-center justify-center mx-auto bg-[#2C2A29]">✓</div>
+            <h3 className="font-serif text-2xl font-bold text-[#2C2A29]">{t[lang].successTitle}</h3>
+            <p className="font-sans text-sm leading-relaxed text-[#5C5852]">{t[lang].successMsg}</p>
+            <button onClick={() => setShowSuccessModal(false)} className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer">
               {t[lang].closeModalBtn}
             </button>
           </div>
@@ -1463,16 +1399,16 @@ export default function Home() {
 
       {/* চেম্বার ক্লোজড নোটিশ মোডাল */}
       {showChamberClosedModal && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="p-6 md:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center space-y-4 border" style={{ backgroundColor: themeStyles.cardBg, borderColor: themeStyles.borderColor, color: themeStyles.textColor }}>
-            <div className="w-16 h-16 text-white text-3xl rounded-full flex items-center justify-center mx-auto bg-amber-500">🔔</div>
-            <h3 className="text-2xl font-black text-amber-500">
+        <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
+          <div className="p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-4 shadow-xl">
+            <div className="w-16 h-16 text-[#F7F5F0] text-3xl rounded-full flex items-center justify-center mx-auto bg-[#A68A64]">✦</div>
+            <h3 className="font-serif text-2xl font-bold text-[#2C2A29]">
               {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
             </h3>
-            <p className="text-sm leading-relaxed" style={{ color: themeStyles.subTextColor }}>
+            <p className="font-sans text-sm leading-relaxed text-[#5C5852]">
               {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
             </p>
-            <button onClick={() => setShowChamberClosedModal(false)} className="w-full font-bold py-3 rounded-xl transition cursor-pointer text-white bg-[#00a8e8]">
+            <button onClick={() => setShowChamberClosedModal(false)} className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer">
               {t[lang].closeModalBtn}
             </button>
           </div>

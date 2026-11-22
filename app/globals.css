@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
-/* ম্যানুয়াল .dark ক্লাসের জন্য ভ্যারিয়েন্ট ডিফাইন */
+/* ম্যানুয়াল .dark ক্লাসের জন্য ভ্যারিয়েন্ট ডিফাইন */
 @variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F7F5F0;
+  --foreground: #2C2A29;
 }
 
 /* সিস্টেমে ডার্ক মোড অন থাকলে বা .dark ক্লাস যুক্ত হলে */
@@ -17,12 +17,13 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Kalpurush', 'Times New Roman', Times, serif;
+  --font-sans: var(--font-jakarta), 'Kalpurush', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), 'Kalpurush', ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Kalpurush', 'Times New Roman', Times, serif;
+  font-family: var(--font-jakarta), 'Kalpurush', ui-sans-serif, system-ui, sans-serif;
 }
