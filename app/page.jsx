@@ -387,8 +387,8 @@ export default function Home() {
       setCustomAlert({
         show: true,
         message: lang === 'bn' 
-          ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক আগামীকাল সকাল ৭ টায় চেষ্টা করবেন। ধন্যবাদ' 
-          : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again tomorrow at 7:00 AM. Thank you'
+          ? 'এপয়েন্টমেন্ট নেয়ার সময় সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত, অনুগ্রহপূর্বক সকাল ৭ টা থেকে আবার চেষ্টা করবেন। ধন্যবাদ' 
+          : 'Appointment booking time is from 7:00 AM to 9:00 PM. Please try again from 7:00 AM. Thank you'
       });
       return;
     }
