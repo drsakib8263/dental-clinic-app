@@ -32,12 +32,10 @@ export default function PrescriptionLookupPage() {
 
     setLoading(true)
     try {
-      // আপনার Supabase টেবিলের নাম 'prescriptions' এবং কলাম 'patient_phone'
-      // কলামের নাম আলাদা হলে নিচের .eq('patient_phone', cleanPhone) অংশটি মিলিয়ে নিন
       const { data, error } = await supabase
-        .from('prescriptions')
+        .from('patients')
         .select('*')
-        .eq('patient_phone', cleanPhone)
+        .eq('phone', cleanPhone)
         .order('created_at', { ascending: false })
 
       if (error) {
@@ -58,9 +56,9 @@ export default function PrescriptionLookupPage() {
 
   const handleDownloadPdf = async (item) => {
     try {
-      let downloadUrl = item.pdf_url || item.file_url || ''
+      let downloadUrl =
+        item.pdf_url || item.prescription_url || item.file_url || item.url || ''
 
-      // Storage বাকেটে file_path থাকলে Signed URL তৈরি করবে
       if (!downloadUrl && item.file_path) {
         const { data, error } = await supabase.storage
           .from('prescriptions')
@@ -72,7 +70,7 @@ export default function PrescriptionLookupPage() {
       }
 
       if (!downloadUrl) {
-        alert('এই প্রেসক্রিপশনের PDF লিংক পাওয়া যায়নি।')
+        alert('এই রেকর্ডের PDF লিংক পাওয়া যায়নি।')
         return
       }
 
@@ -81,15 +79,17 @@ export default function PrescriptionLookupPage() {
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `Prescription_${item.patient_phone || 'patient'}_${item.id || 'file'}.pdf`
+      a.download = `Prescription_${item.phone || 'patient'}_${item.id || 'file'}.pdf`
       document.body.appendChild(a)
       a.click()
       a.remove()
       window.URL.revokeObjectURL(url)
     } catch (err) {
       console.error('PDF download error:', err)
-      if (item.pdf_url || item.file_url) {
-        window.open(item.pdf_url || item.file_url, '_blank', 'noopener,noreferrer')
+      const fallbackUrl =
+        item.pdf_url || item.prescription_url || item.file_url || item.url
+      if (fallbackUrl) {
+        window.open(fallbackUrl, '_blank', 'noopener,noreferrer')
       } else {
         alert('PDF ডাউনলোড করতে সমস্যা হয়েছে।')
       }
@@ -161,17 +161,19 @@ export default function PrescriptionLookupPage() {
                   >
                     <div className="space-y-0.5">
                       <p className="text-sm font-bold text-[#2C2A29]">
-                        {item.patient_name || 'রোগীর প্রেসক্রিপশন'}
+                        {item.name || 'রোগীর প্রেসক্রিপশন'}
                       </p>
                       <p className="text-xs text-[#5C5852]">
-                        মোবাইল: {item.patient_phone}
-                        {item.prescription_date || item.created_at
-                          ? ` • তারিখ: ${
-                              item.prescription_date ||
-                              new Date(item.created_at).toLocaleDateString('bn-BD')
-                            }`
+                        মোবাইল: {item.phone}
+                        {item.created_at
+                          ? ` • তারিখ: ${new Date(item.created_at).toLocaleDateString('bn-BD')}`
                           : ''}
                       </p>
+                      {item.description && (
+                        <p className="text-xs text-[#5C5852] pt-0.5">
+                          {item.description}
+                        </p>
+                      )}
                     </div>
 
                     <button
