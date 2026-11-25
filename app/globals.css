@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Kalpurush";
+  src: local("Kalpurush"),
+       url("/fonts/Kalpurush.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #F7F5F0;
   --foreground: #2C2A29;
@@ -28,7 +37,7 @@ body {
   font-family: var(--font-bn-body), var(--font-en-body), sans-serif;
 }
 
-/* ভাষা অনুযায়ী হেডিং এবং বডি/বাটন ফন্ট */
+/* ভাষা অনুযায়ী হেডিং এবং বডি/বাটন ফন্ট */
 [data-lang="en"] .font-heading,
 [data-lang="en"] h1,
 [data-lang="en"] h2,
@@ -67,4 +76,12 @@ body {
 [data-lang="bn"] textarea,
 [data-lang="bn"] label {
   font-family: var(--font-bn-body) !important;
+}
+
+/* নোটিশের ছোট লেখার জন্য Kalpurush ফন্ট */
+[data-lang="bn"] p.notice-kalpurush,
+[data-lang="bn"] span.notice-kalpurush,
+p.notice-kalpurush,
+span.notice-kalpurush {
+  font-family: "Kalpurush", var(--font-bn-body), sans-serif !important;
 }

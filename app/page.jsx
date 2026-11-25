@@ -739,18 +739,6 @@ export default function Home() {
       />
 
       <style jsx>{`
-        @font-face {
-          font-family: 'Kalpurush';
-          src: local('Kalpurush'),
-               url('/fonts/Kalpurush.woff2') format('woff2'),
-               url('/fonts/Kalpurush.ttf') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-          font-display: swap;
-        }
-        .font-kalpurush {
-          font-family: 'Kalpurush', 'Hind Siliguri', sans-serif;
-        }
         @keyframes marquee {
           0% { transform: translateX(100%); }
           100% { transform: translateX(-100%); }
@@ -911,7 +899,7 @@ export default function Home() {
                 : 'bg-rose-600 ring-4 ring-rose-600/20'
             }`}
           ></span>
-          <span className={!isFriday && chamberNotice.isClosed ? 'font-kalpurush' : ''}>
+          <span className={!isFriday && chamberNotice.isClosed ? 'notice-kalpurush' : ''}>
             {isFriday
               ? lang === 'bn'
                 ? 'আজ শুক্রবার, চেম্বার সম্পূর্ণ বন্ধ রয়েছে'
@@ -1701,7 +1689,7 @@ export default function Home() {
             <h3 className="font-heading text-2xl font-bold text-[#2C2A29]">
               {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
             </h3>
-            <p className="font-kalpurush text-sm md:text-base leading-relaxed text-[#2C2A29]">
+            <p className="notice-kalpurush text-sm md:text-base leading-relaxed text-[#2C2A29]">
               {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
             </p>
             <button type="button" onClick={() => setShowChamberClosedModal(false)} className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer">
