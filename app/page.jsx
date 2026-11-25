@@ -75,7 +75,7 @@ export default function Home() {
       }
 
       const counts = {}
-      data.forEach(item => {
+      ;(data || []).forEach(item => {
         const key = `${item.appointment_date}|${item.appointment_time}`
         if (!counts[key]) {
           counts[key] = { total: 0, new: 0, old: 0 }
@@ -155,6 +155,34 @@ export default function Home() {
     }
   }
 
+  // Supabase Realtime লিসেনার: appointments টেবিলে কোনো পরিবর্তন হলে সাথে সাথে বুকড স্লট আপডেট করবে
+  useEffect(() => {
+    fetchBookingsCount()
+
+    const channel = supabase
+      .channel('realtime-appointments-live')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'appointments'
+        },
+        () => {
+          fetchBookingsCount()
+        }
+      )
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log('Realtime connected to appointments table')
+        }
+      })
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
+
   useEffect(() => {
     const checkChamberStatus = (shouldOpenFridayPopup = false) => {
       const now = new Date()
@@ -203,7 +231,6 @@ export default function Home() {
     checkChamberStatus(true)
     const interval = setInterval(() => checkChamberStatus(false), 60000)
 
-    fetchBookingsCount()
     fetchLiveNotice()
     fetchReviews()
 
@@ -376,10 +403,10 @@ export default function Home() {
       reviewTextLabel: 'আপনার মন্তব্য / রিভিউ *',
       reviewSubmitBtn: 'রিভিউ সাবমিট করুন',
       reviewSubmitting: 'সাবমিট হচ্ছে...',
-      bmdcTitle: 'বিএমডিসি রেজিষ্ট্রেশন যাচাইয়ের প্রয়োজনীয়তা',
+      bmdcTitle: 'বিএমডিসি রেজিষ্ট্রেশন যাচাইয়ের প্রয়োজনীয়তা',
       bmdcBody:
-        'বাংলাদেশ সরকার কর্তৃক সকল বৈধ ও রেজিস্ট্রারড MBBS ও BDS চিকিৎসকদের রেজিষ্ট্রেশন নাম্বার দেয়ার জন্য স্বীকৃত প্রতিষ্ঠান হলো BANGLADESH MEDICAL & DENTAL COUNCIL যাকে সংক্ষেপে BMDC বা BM&DC বলা হয়। বাংলাদেশের সকল বৈধ প্রেকটিশনার বা চিকিৎসকের বিএমডিসি রেজিষ্ট্রেশন নাম্বার থাকা বাধ্যতামূলক। এই নাম্বার ছাড়া সকল প্রকার মেডিকেল ও সার্জিক্যাল চিকিৎসা প্রদান সম্পূর্ণভাবে নিষিদ্ধ ও আইনত দন্ডনীয় অপরাধ। যে কোন MBBS বা BDS ডাক্তারের অবশ্যই BMDC রেজিষ্ট্রেশন নাম্বার থাকবে। এই নাম্বারের সত্যতা যাচাইয়ের জন্য নিচের লিংকে প্রবেশ করে আপনার ডাক্তারের রেজিষ্ট্রেশন নাম্বার লিখে সার্চ করে দেখুন যে সব তথ্য মিল আছে কিনা। দন্ত চিকিৎসকের নাম্বার যাচাইয়ের জন্য BDS এবং মেডিসিন ও সার্জারির চিকিৎসকের নাম্বার যাচাইয়ের জন্য MBBS সিলেক্ট করবেন। এখানের কোন তথ্য মিল না থাকলে বা BMDC রেজিষ্ট্রেশন নাম্বার না থাকলে বুঝতে হবে আপনার সন্ধানকৃত ব্যক্তিটি একজন অবৈধ লাইসেন্সবিহীন প্রেকটিশনার।',
-      bmdcBtn: 'BMDC রেজিষ্ট্রেশন নাম্বার যাচাইয়ের লিংক'
+        'বাংলাদেশ সরকার কর্তৃক সকল বৈধ ও রেজিস্ট্রারড MBBS ও BDS চিকিৎসকদের রেজিষ্ট্রেশন নাম্বার দেয়ার জন্য স্বীকৃত প্রতিষ্ঠান হলো BANGLADESH MEDICAL & DENTAL COUNCIL যাকে সংক্ষেপে BMDC বা BM&DC বলা হয়। বাংলাদেশের সকল বৈধ প্রেকটিশনার বা চিকিৎসকের বিএমডিসি রেজিষ্ট্রেশন নাম্বার থাকা বাধ্যতামূলক। এই নাম্বার ছাড়া সকল প্রকার মেডিকেল ও সার্জিক্যাল চিকিৎসা প্রদান সম্পূর্ণভাবে নিষিদ্ধ ও আইনত দন্ডনীয় অপরাধ। যে কোন MBBS বা BDS ডাক্তারের অবশ্যই BMDC রেজিষ্ট্রেশন নাম্বার থাকবে। এই নাম্বারের সত্যতা যাচাইয়ের জন্য নিচের লিংকে প্রবেশ করে আপনার ডাক্তারের রেজিষ্ট্রেশন নাম্বার লিখে সার্চ করে দেখুন যে সব তথ্য মিল আছে কিনা। দন্ত চিকিৎসকের নাম্বার যাচাইয়ের জন্য BDS এবং মেডিসিন ও সার্জারির চিকিৎসকের নাম্বার যাচাইয়ের জন্য MBBS সিলেক্ট করবেন। এখানের কোন তথ্য মিল না থাকলে বা BMDC রেজিষ্ট্রেশন নাম্বার না থাকলে বুঝতে হবে আপনার সন্ধানকৃত ব্যক্তিটি একজন অবৈধ লাইসেন্সবিহীন প্রেকটিশনার।',
+      bmdcBtn: 'BMDC রেজিষ্ট্রেশন নাম্বার যাচাইয়ের লিংক'
     },
     en: {
       heroTitle: 'Trustworthy Dental Services for a Healthy Smile',
@@ -488,12 +515,12 @@ export default function Home() {
     const { name, value } = e.target
 
     if (name === 'service') {
-      const isNew = value.includes("নতুন সমস্যা") || value.includes("ব্যথা কমছে না") || value.includes("new dental issue") || value.includes("Pain persists");
-      const selectedType = isNew ? 'new' : 'old';
+      const isNew = value.includes("নতুন সমস্যা") || value.includes("ব্যথা কমছে না") || value.includes("new dental issue") || value.includes("Pain persists")
+      const selectedType = isNew ? 'new' : 'old'
 
       if (formData.appointment_date && formData.appointment_time) {
-        const slotKey = `${formData.appointment_date}|${formData.appointment_time}`;
-        const slotData = bookedSlotsCount[slotKey];
+        const slotKey = `${formData.appointment_date}|${formData.appointment_time}`
+        const slotData = bookedSlotsCount[slotKey]
 
         if (slotData) {
           if (slotData.total >= 2) {
@@ -502,8 +529,8 @@ export default function Home() {
               message: lang === 'bn'
                 ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন'
                 : 'Sorry, this slot is already booked. Please choose another time.'
-            });
-            return;
+            })
+            return
           }
           if (selectedType === 'new' && slotData.new >= 1) {
             setCustomAlert({
@@ -511,8 +538,8 @@ export default function Home() {
               message: lang === 'bn'
                 ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন'
                 : 'Sorry, this slot is already booked. Please choose another time.'
-            });
-            return;
+            })
+            return
           }
           if (selectedType === 'old' && slotData.old >= 1) {
             setCustomAlert({
@@ -520,8 +547,8 @@ export default function Home() {
               message: lang === 'bn'
                 ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন'
                 : 'Sorry, this slot is already booked. Please choose another time.'
-            });
-            return;
+            })
+            return
           }
         }
       }
@@ -560,16 +587,16 @@ export default function Home() {
         message: lang === 'bn'
           ? 'আমাদের সিরিয়াল নেয়ার সময় -সকাল ৭ টা থেকে রাত ৯ টা পর্যন্ত। অনুগ্রহপূর্বক সকাল ৭ টা থেকে আবার চেষ্টা করবেন। ধন্যবাদ।'
           : 'Our serial booking hours are from 7:00 AM to 9:00 PM. Please try again starting at 7:00 AM. Thank you.'
-      });
-      setShowPopupBooking(false);
-      return;
+      })
+      setShowPopupBooking(false)
+      return
     }
 
     if (!formData.patient_name || !formData.phone || !formData.service || !formData.appointment_date || !formData.appointment_time) {
       setCustomAlert({
         show: true,
         message: lang === 'bn' ? 'দয়া করে সব ফিল্ড সঠিকভাবে পূরণ করুন।' : 'Please fill in all required fields.'
-      });
+      })
       return
     }
 
@@ -577,18 +604,18 @@ export default function Home() {
       setCustomAlert({
         show: true,
         message: lang === 'bn' ? 'মোবাইল নম্বর অবশ্যই ১১ ডিজিটের হতে হবে।' : 'Mobile number must be exactly 11 digits.'
-      });
+      })
       return
     }
 
     const slotKey = `${formData.appointment_date}|${formData.appointment_time}`
-    const slotData = bookedSlotsCount[slotKey] || { total: 0, new: 0, old: 0 };
+    const slotData = bookedSlotsCount[slotKey] || { total: 0, new: 0, old: 0 }
 
     const isNewPatient = formData.service.includes("নতুন সমস্যা") ||
       formData.service.includes("ব্যথা কমছে না") ||
       formData.service.includes("new dental issue") ||
-      formData.service.includes("Pain persists");
-    const targetType = isNewPatient ? 'new' : 'old';
+      formData.service.includes("Pain persists")
+    const targetType = isNewPatient ? 'new' : 'old'
 
     if (slotData.total >= 2 || (targetType === 'new' && slotData.new >= 1) || (targetType === 'old' && slotData.old >= 1)) {
       setCustomAlert({
@@ -596,14 +623,14 @@ export default function Home() {
         message: lang === 'bn'
           ? 'দুঃখিত, এই স্লটে ইতোমধ্যে একজন রোগী বুক করেছেন। দয়া করে অন্য একটি সময় বেছে নিন'
           : 'Sorry, this slot is already booked. Please choose another time.'
-      });
-      return;
+      })
+      return
     }
 
     setLoading(true)
 
     try {
-      const patientTypeVal = isNewPatient ? 'নতুন রোগী' : 'পুরাতন রোগী';
+      const patientTypeVal = isNewPatient ? 'নতুন রোগী' : 'পুরাতন রোগী'
       const parsedAge = isNaN(formData.age) ? formData.age : (formData.age ? parseInt(formData.age, 10) : null)
 
       const { error } = await supabase
@@ -619,7 +646,7 @@ export default function Home() {
         }])
 
       if (error) {
-        setCustomAlert({ show: true, message: 'Database Error: ' + error.message });
+        setCustomAlert({ show: true, message: 'Database Error: ' + error.message })
         setLoading(false)
         return
       }
@@ -630,22 +657,22 @@ export default function Home() {
         patientType: patientTypeVal,
         patientName: formData.patient_name.trim(),
         patientPhone: formData.phone.trim()
-      };
+      }
 
       try {
         await fetch('/api/appointment', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
-        });
+        })
       } catch (sheetErr) {
-        console.error('Google Sheet Sync Error:', sheetErr);
+        console.error('Google Sheet Sync Error:', sheetErr)
       }
 
-      await fetchBookingsCount();
+      await fetchBookingsCount()
 
-      setShowSuccessModal(true);
-      setShowPopupBooking(false);
+      setShowSuccessModal(true)
+      setShowPopupBooking(false)
 
       setFormData({
         patient_name: '',
@@ -653,14 +680,13 @@ export default function Home() {
         phone: '',
         service: '',
         appointment_date: '',
-        appointment_time: '',
-        patient_type: ''
-      });
+        appointment_time: ''
+      })
 
     } catch (err) {
-      setCustomAlert({ show: true, message: 'Error: ' + (err.message || err) });
+      setCustomAlert({ show: true, message: 'Error: ' + (err.message || err) })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
@@ -671,7 +697,7 @@ export default function Home() {
       setCustomAlert({
         show: true,
         message: lang === 'bn' ? 'দয়া করে নাম এবং রিভিউ এর বিবরণ লিখুন।' : 'Please enter your name and review text.'
-      });
+      })
       return
     }
 
@@ -688,18 +714,18 @@ export default function Home() {
         }])
 
       if (error) {
-        setCustomAlert({ show: true, message: 'Review Error: ' + error.message });
+        setCustomAlert({ show: true, message: 'Review Error: ' + error.message })
       } else {
         setCustomAlert({
           show: true,
           message: lang === 'bn' ? 'আপনার মূল্যবান মতামতের জন্য ধন্যবাদ! রিভিউটি সফলভাবে জমা হয়েছে।' : 'Thank you for your valuable feedback! Your review has been submitted successfully.'
-        });
+        })
         setShowReviewModal(false)
         setReviewForm({ patient_name: '', location: '', review_text: '', rating: 5 })
         fetchReviews()
       }
     } catch (err) {
-      setCustomAlert({ show: true, message: 'Error: ' + (err.message || err) });
+      setCustomAlert({ show: true, message: 'Error: ' + (err.message || err) })
     } finally {
       setReviewSubmitting(false)
     }
@@ -1400,7 +1426,7 @@ export default function Home() {
                 { bn: 'নিয়মিত চেকআপ', en: 'Regular Checkup' },
                 { bn: 'বর্জন করুন', en: 'Avoid Harmful Habits' },
                 { bn: 'ব্যাথায় সচেতনতা', en: 'Dental Pain Care' }
-              ];
+              ]
 
               return (
                 <div
@@ -1413,11 +1439,11 @@ export default function Home() {
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
                     onError={(e) => {
                       if (!e.target.dataset.triedJpg) {
-                        e.target.dataset.triedJpg = "true";
-                        e.target.src = `/tips/${item.id}.jpg`;
+                        e.target.dataset.triedJpg = 'true'
+                        e.target.src = `/tips/${item.id}.jpg`
                       } else {
-                        e.target.onerror = null;
-                        e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23FCFBF9' width='400' height='250'/%3E%3Ctext fill='%232C2A29' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpeg/.jpg)%3E%3C/text%3E%3C/svg%3E";
+                        e.target.onerror = null
+                        e.target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect fill='%23FCFBF9' width='400' height='250'/%3E%3Ctext fill='%232C2A29' font-family='sans-serif' font-size='14' font-weight='bold' x='50%25' y='50%25' text-anchor='middle'%3EMissing: " + item.id + "(.jpeg/.jpg)%3E%3C/text%3E%3C/svg%3E"
                       }
                     }}
                   />
@@ -1432,7 +1458,7 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
         </div>
@@ -1560,7 +1586,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* বিএমডিসি রেজিষ্ট্রেশন যাচাইয়ের প্রয়োজনীয়তা */}
+      {/* বিএমডিসি রেজিষ্ট্রেশন যাচাইয়ের প্রয়োজনীয়তা */}
       <section className="pb-20 md:pb-24 px-4 md:px-8">
         <div className="card-3d max-w-7xl mx-auto p-6 sm:p-8 md:p-12 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] space-y-5 transition-colors duration-300">
           <div className="flex items-center gap-3">
