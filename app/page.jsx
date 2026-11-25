@@ -17,6 +17,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const [showAboutModal, setShowAboutModal] = useState(false)
 
   const [isFriday, setIsFriday] = useState(false)
   const [chamberStatusText, setChamberStatusText] = useState('')
@@ -335,6 +336,9 @@ export default function Home() {
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
       prescriptionBtn: 'প্রেসক্রিপশন ডাউনলোড',
       learnMoreBtn: 'বিস্তারিত জানুন',
+      aboutHeading: 'আমাদের সম্পর্কে',
+      aboutDesc:
+        'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আপনাকে স্বাগতম। আমরা আধুনিক প্রযুক্তির সাহায্যে রোগীদের সর্বাধুনিক ও নিরাপদ ডেন্টাল সেবা প্রদান করে থাকি। আমাদের চেম্বারে রুট ক্যানাল ট্রিটমেন্ট, জিরকনিয়া ও মেটাল-সিরামিক ক্রাউন, স্কেলিং, দাঁত তোলা এবং কসমেটিক ডেন্টিস্ট্রির আধুনিক চিকিৎসা নিশ্চিত করা হয়।',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
       bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকাল ৪:৩০ টা - রাত ৯:৩০ টা)',
       patientName: 'রোগীর নাম *',
@@ -386,6 +390,9 @@ export default function Home() {
       bookingMainBtn: 'Book an Appointment',
       prescriptionBtn: 'Download Prescription',
       learnMoreBtn: 'Learn More',
+      aboutHeading: 'About Us',
+      aboutDesc:
+        'Welcome to Dr. Asir Mosaddeque Sakib Dental Care. We provide advanced and safe dental services using modern technology. Our chamber ensures state-of-the-art treatments including Root Canal Therapy, Zirconia & PFM Crowns, Scaling, Extractions, and Cosmetic Dentistry.',
       bookingTitle: 'Online Appointment Booking',
       bookingSub: 'Saturday to Thursday (4:30 PM - 9:30 PM)',
       patientName: 'Patient Name *',
@@ -1000,12 +1007,13 @@ export default function Home() {
                   <span>{t[lang].bookingMainBtn}</span>
                 </button>
 
-                <a
-                  href="#about-section"
-                  className="px-5 sm:px-6 py-2.5 sm:py-3.5 rounded-full bg-black/45 hover:bg-black/70 text-white font-bold border border-white/25 transition-colors duration-300 text-xs sm:text-sm md:text-base backdrop-blur-xs"
+                <button
+                  type="button"
+                  onClick={() => setShowAboutModal(true)}
+                  className="px-5 sm:px-6 py-2.5 sm:py-3.5 rounded-full bg-black/45 hover:bg-black/70 text-white font-bold border border-white/25 transition-colors duration-300 text-xs sm:text-sm md:text-base backdrop-blur-xs cursor-pointer"
                 >
                   {t[lang].learnMoreBtn}
-                </a>
+                </button>
               </div>
 
               <a
@@ -1026,6 +1034,69 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* "বিস্তারিত জানুন" ক্লিক করলে "আমাদের সম্পর্কে" পপ-আপ মোডাল */}
+      {showAboutModal && (
+        <div
+          onClick={() => setShowAboutModal(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/65 backdrop-blur-sm overflow-y-auto"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="card-3d max-w-2xl w-full p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative space-y-5 my-auto"
+          >
+            <div className="flex items-start justify-between gap-3 border-b border-[#E6DFD5] pb-4">
+              <div className="space-y-1">
+                <span className="inline-block text-[11px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full bg-[#F7F5F0] text-[#A68A64] border border-[#E6DFD5]">
+                  {t[lang].subtitle}
+                </span>
+                <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-[#2C2A29]">
+                  {t[lang].aboutHeading}
+                </h2>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowAboutModal(false)}
+                className="font-bold text-xs sm:text-sm w-8 h-8 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:bg-[#A68A64] hover:text-[#F7F5F0] text-[#2C2A29] transition-colors duration-300 cursor-pointer flex items-center justify-center"
+                aria-label="Close About modal"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4 text-sm sm:text-base leading-relaxed text-[#5C5852]">
+              <p>{t[lang].aboutDesc}</p>
+
+              <div className="p-4 rounded-2xl bg-[#F7F5F0] border border-[#E6DFD5] space-y-1.5 text-xs sm:text-sm text-[#2C2A29]">
+                <p className="font-bold">{t[lang].title}</p>
+                <p className="text-[#5C5852] whitespace-pre-line">{t[lang].doctorInfo}</p>
+                <p className="text-[#5C5852] pt-1">📍 {t[lang].addressText}</p>
+              </div>
+            </div>
+
+            <div className="pt-2 flex flex-wrap items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAboutModal(false)
+                  handleOpenBooking()
+                }}
+                className="bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-6 py-2.5 text-xs sm:text-sm font-semibold cursor-pointer"
+              >
+                {t[lang].bookingMainBtn}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowAboutModal(false)}
+                className="bg-[#F7F5F0] text-[#2C2A29] hover:border-[#A68A64] border border-[#E6DFD5] transition-colors duration-300 rounded-full px-6 py-2.5 text-xs sm:text-sm font-semibold cursor-pointer"
+              >
+                {t[lang].closeModalBtn}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ডাক্তারের ক্রেডেনশিয়াল স্ট্রিপ */}
       <div className="w-full bg-[#FCFBF9] border-b border-[#E6DFD5] px-4 sm:px-6 md:px-12 py-4 transition-colors duration-300">
@@ -1289,15 +1360,10 @@ export default function Home() {
           className="card-3d max-w-7xl mx-auto p-8 md:p-12 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] space-y-4 transition-colors duration-300"
         >
           <h2 className="font-heading text-2xl md:text-4xl font-bold text-[#2C2A29]">
-            {lang === 'bn' ? 'আমাদের সম্পর্কে (About Us)' : 'About Us'}
+            {t[lang].aboutHeading}
           </h2>
           <div className="space-y-3 text-sm md:text-base leading-relaxed text-[#5C5852]">
-            <p>
-              {lang === 'bn'
-                ? 'ডাঃ আসির মোসাদ্দেক সাকিব ডেন্টাল কেয়ারে আপনাকে স্বাগতম। আমরা আধুনিক প্রযুক্তির সাহায্যে রোগীদের সর্বাধুনিক ও নিরাপদ ডেন্টাল সেবা প্রদান করে থাকি। আমাদের চেম্বারে রুট ক্যানাল ট্রিটমেন্ট, জিরকনিয়া ও মেটাল-সিরামিক ক্রাউন, স্কেলিং, দাঁত তোলা এবং কসমেটিক ডেন্টিস্ট্রির আধুনিক চিকিৎসা নিশ্চিত করা হয়।'
-                : 'Welcome to Dr. Asir Mosaddeque Sakib Dental Care. We provide advanced and safe dental services using modern technology. Our chamber ensures state-of-the-art treatments including Root Canal Therapy, Zirconia & PFM Crowns, Scaling, Extractions, and Cosmetic Dentistry.'
-              }
-            </p>
+            <p>{t[lang].aboutDesc}</p>
           </div>
         </div>
       </section>
