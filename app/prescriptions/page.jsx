@@ -8,6 +8,39 @@ const supabaseAnonKey = 'sb_publishable_mcnw0osdruKLepukigC4Zw_JwEojZh7'
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+function extractFileUrls(filesField) {
+  if (!filesField) return []
+
+  let parsed = filesField
+  if (typeof parsed === 'string') {
+    try {
+      parsed = JSON.parse(parsed)
+    } catch {
+      return parsed.startsWith('http') ? [parsed] : []
+    }
+  }
+
+  if (Array.isArray(parsed)) {
+    return parsed
+      .map((entry) => {
+        if (typeof entry === 'string') return entry
+        if (entry && typeof entry === 'object') {
+          return entry.url || entry.pdf_url || entry.file_url || entry.publicUrl || ''
+        }
+        return ''
+      })
+      .filter(Boolean)
+  }
+
+  if (typeof parsed === 'object') {
+    const single =
+      parsed.url || parsed.pdf_url || parsed.file_url || parsed.publicUrl || ''
+    return single ? [single] : []
+  }
+
+  return []
+}
+
 export default function PrescriptionLookupPage() {
   const [phone, setPhone] = useState('')
   const [records, setRecords] = useState([])
@@ -27,7 +60,6 @@ export default function PrescriptionLookupPage() {
       return
     }
 
-    // নম্বরটি 017... বা 88017... যেভাবেই সেভ থাকুক, শেষ ১০ ডিজিট দিয়ে মিলিয়ে নেওয়া যাবে
     const last10 = cleanPhone.slice(-10)
 
     setLoading(true)
@@ -53,54 +85,21 @@ export default function PrescriptionLookupPage() {
     }
   }
 
-  const handleDownloadPdf = async (item) => {
+  const handleDownloadPdf = async (url, item, fileIndex = 0) => {
     try {
-      let downloadUrl =
-        item.pdf_url ||
-        item.prescription_url ||
-        item.file_url ||
-        item.prescription_pdf ||
-        item.url ||
-        ''
-
-      if (!downloadUrl && item.file_path) {
-        const { data, error } = await supabase.storage
-          .from('prescriptions')
-          .createSignedUrl(item.file_path, 60)
-
-        if (!error && data?.signedUrl) {
-          downloadUrl = data.signedUrl
-        }
-      }
-
-      if (!downloadUrl) {
-        alert('এই রেকর্ডের PDF লিংক পাওয়া যায়নি। অনুগ্রহ করে টেবিলের PDF কলামের নাম চেক করুন।')
-        return
-      }
-
-      const response = await fetch(downloadUrl)
+      const response = await fetch(url)
       const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
+      const objectUrl = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
-      a.href = url
-      a.download = `Prescription_${item.phone || 'patient'}_${item.id || 'file'}.pdf`
+      a.href = objectUrl
+      a.download = `Prescription_${item.phone || 'patient'}_${item.id || 'rec'}_${fileIndex + 1}.pdf`
       document.body.appendChild(a)
       a.click()
       a.remove()
-      window.URL.revokeObjectURL(url)
+      window.URL.revokeObjectURL(objectUrl)
     } catch (err) {
       console.error('PDF download error:', err)
-      const fallbackUrl =
-        item.pdf_url ||
-        item.prescription_url ||
-        item.file_url ||
-        item.prescription_pdf ||
-        item.url
-      if (fallbackUrl) {
-        window.open(fallbackUrl, '_blank', 'noopener,noreferrer')
-      } else {
-        alert('PDF ডাউনলোড করতে সমস্যা হয়েছে।')
-      }
+      window.open(url, '_blank', 'noopener,noreferrer')
     }
   }
 
@@ -162,38 +161,57 @@ export default function PrescriptionLookupPage() {
                   এই মোবাইল নম্বরের বিপরীতে কোনো প্রেসক্রিপশন পাওয়া যায়নি।
                 </div>
               ) : (
-                records.map((item, idx) => (
-                  <div
-                    key={item.id || idx}
-                    className="p-4 rounded-2xl bg-[#F7F5F0] border border-[#E6DFD5] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                  >
-                    <div className="space-y-0.5">
-                      <p className="text-sm font-bold text-[#2C2A29]">
-                        {item.name || 'রোগীর প্রেসক্রিপশন'}
-                      </p>
-                      <p className="text-xs text-[#5C5852]">
-                        মোবাইল: {item.phone}
-                        {item.created_at
-                          ? ` • তারিখ: ${new Date(item.created_at).toLocaleDateString('bn-BD')}`
-                          : ''}
-                      </p>
-                      {item.description && (
-                        <p className="text-xs text-[#5C5852] pt-0.5">
-                          {item.description}
-                        </p>
-                      )}
-                    </div>
+                records.map((item, idx) => {
+                  const fileUrls = extractFileUrls(item.files)
 
-                    <button
-                      type="button"
-                      onClick={() => handleDownloadPdf(item)}
-                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] text-xs font-semibold transition-colors cursor-pointer shrink-0"
+                  return (
+                    <div
+                      key={item.id || idx}
+                      className="p-4 rounded-2xl bg-[#F7F5F0] border border-[#E6DFD5] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     >
-                      <span>📄</span>
-                      <span>PDF ডাউনলোড</span>
-                    </button>
-                  </div>
-                ))
+                      <div className="space-y-0.5">
+                        <p className="text-sm font-bold text-[#2C2A29]">
+                          {item.name || 'রোগীর প্রেসক্রিপশন'}
+                        </p>
+                        <p className="text-xs text-[#5C5852]">
+                          মোবাইল: {item.phone}
+                          {item.created_at
+                            ? ` • তারিখ: ${new Date(item.created_at).toLocaleDateString('bn-BD')}`
+                            : ''}
+                        </p>
+                        {item.description && (
+                          <p className="text-xs text-[#5C5852] pt-0.5">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2 shrink-0">
+                        {fileUrls.length > 0 ? (
+                          fileUrls.map((url, fIdx) => (
+                            <button
+                              key={fIdx}
+                              type="button"
+                              onClick={() => handleDownloadPdf(url, item, fIdx)}
+                              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] text-xs font-semibold transition-colors cursor-pointer"
+                            >
+                              <span>📄</span>
+                              <span>
+                                {fileUrls.length > 1
+                                  ? `PDF ${fIdx + 1} ডাউনলোড`
+                                  : 'PDF ডাউনলোড'}
+                              </span>
+                            </button>
+                          ))
+                        ) : (
+                          <span className="text-xs text-[#5C5852] px-3 py-1.5 rounded-full bg-[#FCFBF9] border border-[#E6DFD5]">
+                            ফাইল নেই
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })
               )}
             </div>
           )}
