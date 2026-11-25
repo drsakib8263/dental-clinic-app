@@ -1028,20 +1028,20 @@ export default function Home() {
         </div>
       </div>
 
-      {/* পপ-আপ বুকিং ফর্ম */}
+      {/* পপ-আপ বুকিং ফর্ম (মোবাইলে এক স্ক্রিনে ফিট করার মতো কমপ্যাক্ট) */}
       {showPopupBooking && !chamberNotice.isClosed && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/65 backdrop-blur-sm overflow-y-auto">
-          <div className="card-3d max-w-xl w-full p-6 md:p-8 rounded-3xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-8">
-            <div className="flex items-start justify-between gap-4 pb-4 mb-5 border-b border-[#E6DFD5]">
-              <div className="space-y-1">
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#F7F5F0] text-[#A68A64] border border-[#E6DFD5]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-[#2C2A29]/65 backdrop-blur-sm overflow-y-auto">
+          <div className="card-3d max-w-xl w-full p-4 sm:p-7 rounded-2xl sm:rounded-3xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-auto">
+            <div className="flex items-start justify-between gap-2 pb-2.5 sm:pb-4 mb-3 sm:mb-4 border-b border-[#E6DFD5]">
+              <div className="space-y-0.5 sm:space-y-1">
+                <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#F7F5F0] text-[#A68A64] border border-[#E6DFD5]">
                   <span>📅</span>
                   <span>{lang === 'bn' ? 'সিরিয়াল বুকিং' : 'Online Booking'}</span>
                 </span>
-                <h2 className="font-heading text-xl md:text-2xl font-bold text-[#2C2A29] pt-1">
+                <h2 className="font-heading text-lg sm:text-2xl font-bold text-[#2C2A29] leading-snug">
                   {t[lang].bookingTitle}
                 </h2>
-                <p className="font-medium text-xs md:text-sm text-[#5C5852]">
+                <p className="font-medium text-[11px] sm:text-xs text-[#5C5852]">
                   {t[lang].bookingSub}
                 </p>
               </div>
@@ -1049,17 +1049,18 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setShowPopupBooking(false)}
-                className="font-bold text-sm w-9 h-9 shrink-0 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:bg-[#A68A64] hover:text-[#F7F5F0] text-[#2C2A29] transition-colors duration-300 cursor-pointer flex items-center justify-center"
+                className="font-bold text-xs sm:text-sm w-7 h-7 sm:w-9 sm:h-9 shrink-0 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:bg-[#A68A64] hover:text-[#F7F5F0] text-[#2C2A29] transition-colors duration-300 cursor-pointer flex items-center justify-center"
                 aria-label="Close booking modal"
               >
                 ✕
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 max-h-[72vh] overflow-y-auto pr-1">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">
+            <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3.5">
+              {/* নাম ও বয়স এক লাইনে মোবাইলেও পাশাপাশি */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                <div className="col-span-2">
+                  <label className="block text-xs sm:text-sm font-semibold mb-1 text-[#2C2A29]">
                     {t[lang].patientName}
                   </label>
                   <input
@@ -1069,11 +1070,11 @@ export default function Home() {
                     onChange={handleChange}
                     required
                     placeholder={t[lang].patientNamePlaceholder}
-                    className={inputClass}
+                    className="font-body-ui w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl outline-none border border-[#E6DFD5] bg-[#F7F5F0] text-[#2C2A29] text-xs sm:text-sm placeholder:text-[#5C5852]/70 focus:border-[#A68A64] transition-colors duration-300"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">
+                  <label className="block text-xs sm:text-sm font-semibold mb-1 text-[#2C2A29]">
                     {t[lang].ageLabel}
                   </label>
                   <input
@@ -1083,13 +1084,14 @@ export default function Home() {
                     onChange={handleChange}
                     required
                     placeholder={t[lang].agePlaceholder}
-                    className={inputClass}
+                    className="font-body-ui w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl outline-none border border-[#E6DFD5] bg-[#F7F5F0] text-[#2C2A29] text-xs sm:text-sm placeholder:text-[#5C5852]/70 focus:border-[#A68A64] transition-colors duration-300"
                   />
                 </div>
               </div>
 
+              {/* মোবাইল নম্বর */}
               <div>
-                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">
+                <label className="block text-xs sm:text-sm font-semibold mb-1 text-[#2C2A29]">
                   {t[lang].phoneLabel}
                 </label>
                 <input
@@ -1103,13 +1105,13 @@ export default function Home() {
                   required
                   maxLength="11"
                   placeholder="017XXXXXXXX"
-                  className={inputClass}
+                  className="font-body-ui w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl outline-none border border-[#E6DFD5] bg-[#F7F5F0] text-[#2C2A29] text-xs sm:text-sm placeholder:text-[#5C5852]/70 focus:border-[#A68A64] transition-colors duration-300"
                 />
               </div>
 
-              {/* আধুনিক ড্রপডাউন ১: চিকিৎসার ধরণ */}
-              <div className="p-3.5 rounded-2xl bg-[#F7F5F0]/70 border border-[#E6DFD5]/90 space-y-1.5">
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-[#2C2A29]">
+              {/* ড্রপডাউন ১: চিকিৎসার ধরণ */}
+              <div className="p-2 sm:p-3 rounded-xl bg-[#F7F5F0]/80 border border-[#E6DFD5] space-y-1">
+                <label className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#2C2A29]">
                   <span className="text-[#A68A64]">🦷</span>
                   <span>{t[lang].serviceLabel}</span>
                 </label>
@@ -1119,7 +1121,7 @@ export default function Home() {
                     value={formData.service}
                     onChange={handleChange}
                     required
-                    className="font-body-ui appearance-none w-full pl-4 pr-11 py-3.5 rounded-xl outline-none border border-[#DFD6C7] bg-[#FCFBF9] text-[#2C2A29] text-sm font-medium shadow-xs hover:border-[#A68A64] focus:border-[#A68A64] focus:ring-2 focus:ring-[#A68A64]/20 transition-all duration-300 cursor-pointer"
+                    className="font-body-ui appearance-none w-full pl-3 sm:pl-4 pr-9 py-2 sm:py-2.5 rounded-lg outline-none border border-[#DFD6C7] bg-[#FCFBF9] text-[#2C2A29] text-xs sm:text-sm font-medium shadow-2xs hover:border-[#A68A64] focus:border-[#A68A64] focus:ring-2 focus:ring-[#A68A64]/20 transition-all duration-300 cursor-pointer"
                   >
                     <option value="">{t[lang].serviceDefault}</option>
                     <option value={t[lang].service1}>{t[lang].service1}</option>
@@ -1127,7 +1129,7 @@ export default function Home() {
                     <option value={t[lang].service3}>{t[lang].service3}</option>
                     <option value={t[lang].service4}>{t[lang].service4}</option>
                   </select>
-                  <span className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-[#A68A64]">
+                  <span className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-[#A68A64]">
                     <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
                       <path
                         fillRule="evenodd"
@@ -1139,12 +1141,12 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* আধুনিক ড্রপডাউন ২ ও ৩: পছন্দের তারিখ ও সময় */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-3.5 rounded-2xl bg-[#F7F5F0]/70 border border-[#E6DFD5]/90 space-y-1.5">
-                  <label className="flex items-center gap-1.5 text-sm font-semibold text-[#2C2A29]">
+              {/* ড্রপডাউন ২ ও ৩: পছন্দের তারিখ ও সময় (মোবাইলেও পাশাপাশি) */}
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="p-2 sm:p-3 rounded-xl bg-[#F7F5F0]/80 border border-[#E6DFD5] space-y-1 min-w-0">
+                  <label className="flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#2C2A29]">
                     <span className="text-[#A68A64]">📆</span>
-                    <span>{t[lang].dateLabel}</span>
+                    <span className="truncate">{t[lang].dateLabel}</span>
                   </label>
                   <div className="relative">
                     <select
@@ -1152,7 +1154,7 @@ export default function Home() {
                       value={formData.appointment_date}
                       onChange={handleChange}
                       required
-                      className="font-body-ui appearance-none w-full pl-4 pr-11 py-3.5 rounded-xl outline-none border border-[#DFD6C7] bg-[#FCFBF9] text-[#2C2A29] text-sm font-medium shadow-xs hover:border-[#A68A64] focus:border-[#A68A64] focus:ring-2 focus:ring-[#A68A64]/20 transition-all duration-300 cursor-pointer"
+                      className="font-body-ui appearance-none w-full pl-2.5 sm:pl-3.5 pr-8 py-2 sm:py-2.5 rounded-lg outline-none border border-[#DFD6C7] bg-[#FCFBF9] text-[#2C2A29] text-xs sm:text-sm font-medium shadow-2xs hover:border-[#A68A64] focus:border-[#A68A64] focus:ring-2 focus:ring-[#A68A64]/20 transition-all duration-300 cursor-pointer truncate"
                     >
                       <option value="">{t[lang].dateDefault}</option>
                       {availableDates.map((item, index) => (
@@ -1166,8 +1168,8 @@ export default function Home() {
                         </option>
                       ))}
                     </select>
-                    <span className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-[#A68A64]">
-                      <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                    <span className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-[#A68A64]">
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                         <path
                           fillRule="evenodd"
                           d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
@@ -1178,10 +1180,10 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-[#F7F5F0]/70 border border-[#E6DFD5]/90 space-y-1.5">
-                  <label className="flex items-center gap-1.5 text-sm font-semibold text-[#2C2A29]">
+                <div className="p-2 sm:p-3 rounded-xl bg-[#F7F5F0]/80 border border-[#E6DFD5] space-y-1 min-w-0">
+                  <label className="flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#2C2A29]">
                     <span className="text-[#A68A64]">⏰</span>
-                    <span>{t[lang].timeLabel}</span>
+                    <span className="truncate">{t[lang].timeLabel}</span>
                   </label>
                   <div className="relative">
                     <select
@@ -1189,7 +1191,7 @@ export default function Home() {
                       value={formData.appointment_time}
                       onChange={handleChange}
                       required
-                      className="font-body-ui appearance-none w-full pl-4 pr-11 py-3.5 rounded-xl outline-none border border-[#DFD6C7] bg-[#FCFBF9] text-[#2C2A29] text-sm font-medium shadow-xs hover:border-[#A68A64] focus:border-[#A68A64] focus:ring-2 focus:ring-[#A68A64]/20 transition-all duration-300 cursor-pointer"
+                      className="font-body-ui appearance-none w-full pl-2.5 sm:pl-3.5 pr-8 py-2 sm:py-2.5 rounded-lg outline-none border border-[#DFD6C7] bg-[#FCFBF9] text-[#2C2A29] text-xs sm:text-sm font-medium shadow-2xs hover:border-[#A68A64] focus:border-[#A68A64] focus:ring-2 focus:ring-[#A68A64]/20 transition-all duration-300 cursor-pointer truncate"
                     >
                       <option value="">{t[lang].timeDefault}</option>
                       {rawTimes.map((time, index) => {
@@ -1209,8 +1211,8 @@ export default function Home() {
                         )
                       })}
                     </select>
-                    <span className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-[#A68A64]">
-                      <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                    <span className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-[#A68A64]">
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                         <path
                           fillRule="evenodd"
                           d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
@@ -1225,7 +1227,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3.5 font-semibold cursor-pointer mt-2 shadow-md"
+                className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-5 py-2.5 sm:py-3 font-semibold text-xs sm:text-sm cursor-pointer mt-1 shadow-md"
               >
                 {loading ? t[lang].submitting : t[lang].submitBtn}
               </button>
