@@ -2,9 +2,8 @@
 
 @font-face {
   font-family: "Kalpurush";
-  src: local("Kalpurush"),
-       url("/fonts/Kalpurush.ttf") format("truetype");
-  font-weight: normal;
+  src: url("/fonts/Kalpurush.ttf") format("truetype");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -79,9 +78,9 @@ body {
 }
 
 /* নোটিশের ছোট লেখার জন্য Kalpurush ফন্ট */
+[data-lang="bn"] .notice-kalpurush,
 [data-lang="bn"] p.notice-kalpurush,
 [data-lang="bn"] span.notice-kalpurush,
-p.notice-kalpurush,
-span.notice-kalpurush {
+.notice-kalpurush {
   font-family: "Kalpurush", var(--font-bn-body), sans-serif !important;
 }
