@@ -739,6 +739,9 @@ export default function Home() {
       />
 
       <style jsx>{`
+        .font-admin-notice {
+          font-family: 'Noto Serif Bengali', serif;
+        }
         @keyframes marquee {
           0% { transform: translateX(100%); }
           100% { transform: translateX(-100%); }
@@ -899,7 +902,7 @@ export default function Home() {
                 : 'bg-rose-600 ring-4 ring-rose-600/20'
             }`}
           ></span>
-          <span>
+          <span className={!isFriday && chamberNotice.isClosed ? 'font-admin-notice' : ''}>
             {isFriday
               ? lang === 'bn'
                 ? 'আজ শুক্রবার, চেম্বার সম্পূর্ণ বন্ধ রয়েছে'
@@ -1684,15 +1687,15 @@ export default function Home() {
       {/* চেম্বার ক্লোজড নোটিশ মোডাল */}
       {showChamberClosedModal && (
         <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
-          <div className="card-3d p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-4">
+          <div className="font-admin-notice card-3d p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-4">
             <div className="w-16 h-16 text-[#F7F5F0] text-3xl rounded-full flex items-center justify-center mx-auto bg-[#A68A64]">✦</div>
-            <h3 className="font-heading text-2xl font-bold text-[#2C2A29]">
+            <h3 className="font-admin-notice text-2xl font-bold text-[#2C2A29]">
               {lang === 'bn' ? chamberNotice.titleBn : chamberNotice.titleEn}
             </h3>
-            <p className="text-sm leading-relaxed text-[#5C5852]">
+            <p className="font-admin-notice text-sm md:text-base leading-relaxed text-[#5C5852]">
               {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
             </p>
-            <button type="button" onClick={() => setShowChamberClosedModal(false)} className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer">
+            <button type="button" onClick={() => setShowChamberClosedModal(false)} className="font-admin-notice w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer">
               {t[lang].closeModalBtn}
             </button>
           </div>
