@@ -309,13 +309,6 @@ export default function Home() {
       isButton: false
     },
     {
-      href: '/prescriptions',
-      icon: '/about_dentistry.png',
-      label: lang === 'bn' ? 'প্রেসক্রিপশন' : 'Prescriptions',
-      active: false,
-      isButton: false
-    },
-    {
       href: '/gallery',
       icon: '/gallery.png',
       label: lang === 'bn' ? 'গ্যালারি' : 'Gallery',
@@ -340,6 +333,7 @@ export default function Home() {
       doctorInfo: 'বিডিএস (চট্টগ্রাম মেডিকেল কলেজ)\nবিএমডিসি রেজি. ৮২৬৩',
       addressText: 'আলম মেডিকেল হল, পটিয়া কলেজ সংলগ্ন আনোয়ারা বিকল্প সড়ক, বাস স্টেশন, পটিয়া, চট্টগ্রাম।',
       bookingMainBtn: 'অ্যাপয়েন্টমেন্ট বুক করুন',
+      prescriptionBtn: 'প্রেসক্রিপশন ডাউনলোড',
       learnMoreBtn: 'বিস্তারিত জানুন',
       bookingTitle: 'অনলাইন অ্যাপয়েন্টমেন্ট বুকিং',
       bookingSub: 'শনিবার থেকে বৃহস্পতিবার (বিকাল ৪:৩০ টা - রাত ৯:৩০ টা)',
@@ -390,6 +384,7 @@ export default function Home() {
       doctorInfo: 'BDS (Chittagong Medical College)\nBMDC reg. 8263',
       addressText: 'Alam Medical Hall, Beside Patiya Govt. College, Anwara Bypass Road, Bus Station, Patiya, Chattogram.',
       bookingMainBtn: 'Book an Appointment',
+      prescriptionBtn: 'Download Prescription',
       learnMoreBtn: 'Learn More',
       bookingTitle: 'Online Appointment Booking',
       bookingSub: 'Saturday to Thursday (4:30 PM - 9:30 PM)',
@@ -920,7 +915,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* মোবাইল ড্রপডাউন মেনু */}
+      {/* মোবাইল ড্রপডাউন মেনু (হ্যামবার্গার মেনু) */}
       {mobileMenuOpen && (
         <div className="card-3d lg:hidden fixed inset-x-0 top-[116px] sm:top-[128px] z-50 px-4 sm:px-6 py-4 space-y-2.5 bg-[#FCFBF9] border-b border-[#E6DFD5] transition-all duration-300 max-h-[75vh] overflow-y-auto">
           {navItems.map((item, idx) =>
@@ -993,19 +988,39 @@ export default function Home() {
               {t[lang].heroSub}
             </p>
 
-            <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-2.5 sm:gap-4">
-              <button
-                type="button"
-                onClick={handleOpenBooking}
-                className="bg-[#F7F5F0] text-[#2C2A29] hover:bg-[#A68A64] hover:text-white transition-colors duration-300 rounded-full px-5 sm:px-7 py-2.5 sm:py-3.5 font-bold cursor-pointer text-xs sm:text-sm md:text-base shadow-md"
-              >
-                {t[lang].bookingMainBtn}
-              </button>
+            {/* অ্যাপয়েন্টমেন্ট বুক করুন + ঠিক নিচে অ্যাডজাস্টেবল প্রেসক্রিপশন ডাউনলোড বাটন */}
+            <div className="pt-1 sm:pt-2 flex flex-col items-start gap-2.5 sm:gap-3 w-full max-w-md">
+              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 w-full">
+                <button
+                  type="button"
+                  onClick={handleOpenBooking}
+                  className="flex-1 sm:flex-initial justify-center inline-flex items-center gap-2 bg-[#F7F5F0] text-[#2C2A29] hover:bg-[#A68A64] hover:text-white transition-all duration-300 rounded-full px-5 sm:px-7 py-2.5 sm:py-3.5 font-bold cursor-pointer text-xs sm:text-sm md:text-base shadow-md active:scale-[0.99]"
+                >
+                  <span>📅</span>
+                  <span>{t[lang].bookingMainBtn}</span>
+                </button>
+
+                <a
+                  href="#about-section"
+                  className="px-5 sm:px-6 py-2.5 sm:py-3.5 rounded-full bg-black/45 hover:bg-black/70 text-white font-bold border border-white/25 transition-colors duration-300 text-xs sm:text-sm md:text-base backdrop-blur-xs"
+                >
+                  {t[lang].learnMoreBtn}
+                </a>
+              </div>
+
               <a
-                href="#about-section"
-                className="px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full bg-black/45 hover:bg-black/70 text-white font-bold border border-white/25 transition-colors duration-300 text-xs sm:text-sm md:text-base backdrop-blur-xs"
+                href="/prescriptions"
+                className="group w-full sm:w-auto min-w-[230px] inline-flex items-center justify-between sm:justify-center gap-2.5 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#FCFBF9]/15 hover:bg-[#A68A64] text-[#F7F5F0] hover:text-white font-semibold border border-[#E6DFD5]/45 hover:border-[#A68A64] backdrop-blur-md transition-all duration-300 text-xs sm:text-sm shadow-sm active:scale-[0.99]"
               >
-                {t[lang].learnMoreBtn}
+                <span className="inline-flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-[#A68A64]/30 group-hover:bg-white/20 flex items-center justify-center text-xs transition-colors">
+                    📄
+                  </span>
+                  <span>{t[lang].prescriptionBtn}</span>
+                </span>
+                <span className="text-xs opacity-80 group-hover:translate-x-0.5 transition-transform">
+                  →
+                </span>
               </a>
             </div>
           </div>
