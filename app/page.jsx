@@ -648,15 +648,15 @@ export default function Home() {
   ]
 
   const videoList = lang === 'bn' ? [
-    { title: '১. রুট ক্যানাল ট্রিটমেন্ট প্রক্রিয়া', id: 'YOUR_ROOT_CANAL_VIDEO_ID' },
-    { title: '২. দাঁত এক্সট্রাকশন (দাঁত তোলা)', id: 'YOUR_EXTRACTION_VIDEO_ID' },
-    { title: '৩. দাঁতের ফিলিং পদ্ধতি', id: 'YOUR_FILLING_VIDEO_ID' },
-    { title: '৪. দাঁতের ক্যাপ ও ক্রাউন সংক্রান্ত', id: 'YOUR_CROWN_VIDEO_ID' }
+    { title: 'রুট ক্যানাল ট্রিটমেন্ট প্রক্রিয়া', id: 'YOUR_ROOT_CANAL_VIDEO_ID' },
+    { title: 'দাঁত এক্সট্রাকশন (দাঁত তোলা)', id: 'YOUR_EXTRACTION_VIDEO_ID' },
+    { title: 'দাঁতের ফিলিং পদ্ধতি', id: 'YOUR_FILLING_VIDEO_ID' },
+    { title: 'দাঁতের ক্যাপ ও ক্রাউন সংক্রান্ত', id: 'YOUR_CROWN_VIDEO_ID' }
   ] : [
-    { title: '1. Root Canal Treatment Procedure', id: 'YOUR_ROOT_CANAL_VIDEO_ID' },
-    { title: '2. Tooth Extraction Process', id: 'YOUR_EXTRACTION_VIDEO_ID' },
-    { title: '3. Dental Filling Method', id: 'YOUR_FILLING_VIDEO_ID' },
-    { title: '4. Dental Crowns & Caps Overview', id: 'YOUR_CROWN_VIDEO_ID' }
+    { title: 'Root Canal Treatment Procedure', id: 'YOUR_ROOT_CANAL_VIDEO_ID' },
+    { title: 'Tooth Extraction Process', id: 'YOUR_EXTRACTION_VIDEO_ID' },
+    { title: 'Dental Filling Method', id: 'YOUR_FILLING_VIDEO_ID' },
+    { title: 'Dental Crowns & Caps Overview', id: 'YOUR_CROWN_VIDEO_ID' }
   ]
 
   const inputClass =
