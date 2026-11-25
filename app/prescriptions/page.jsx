@@ -8,7 +8,38 @@ const supabaseAnonKey = 'sb_publishable_mcnw0osdruKLepukigC4Zw_JwEojZh7'
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-function extractFileUrls(filesField) {
+function isPdfFile(entry, url = '') {
+  const cleanUrl = (url || '').split('?')[0].toLowerCase()
+  const nameOrPath =
+    typeof entry === 'object' && entry !== null
+      ? `${entry.name || ''} ${entry.file_name || ''} ${entry.path || ''} ${entry.file_path || ''}`.toLowerCase()
+      : ''
+  const mimeOrType =
+    typeof entry === 'object' && entry !== null
+      ? `${entry.type || ''} ${entry.mime_type || ''} ${entry.contentType || ''}`.toLowerCase()
+      : ''
+
+  if (
+    cleanUrl.endsWith('.xlsm') ||
+    cleanUrl.endsWith('.xlsx') ||
+    cleanUrl.endsWith('.xls') ||
+    nameOrPath.includes('.xlsm') ||
+    nameOrPath.includes('.xlsx') ||
+    nameOrPath.includes('.xls') ||
+    mimeOrType.includes('sheet') ||
+    mimeOrType.includes('excel')
+  ) {
+    return false
+  }
+
+  return (
+    cleanUrl.endsWith('.pdf') ||
+    nameOrPath.includes('.pdf') ||
+    mimeOrType.includes('pdf')
+  )
+}
+
+function extractPdfUrls(filesField) {
   if (!filesField) return []
 
   let parsed = filesField
@@ -16,16 +47,20 @@ function extractFileUrls(filesField) {
     try {
       parsed = JSON.parse(parsed)
     } catch {
-      return parsed.startsWith('http') ? [parsed] : []
+      return parsed.toLowerCase().includes('.pdf') ? [parsed] : []
     }
   }
 
   if (Array.isArray(parsed)) {
     return parsed
       .map((entry) => {
-        if (typeof entry === 'string') return entry
+        if (typeof entry === 'string') {
+          return isPdfFile(entry, entry) ? entry : ''
+        }
         if (entry && typeof entry === 'object') {
-          return entry.url || entry.pdf_url || entry.file_url || entry.publicUrl || ''
+          const url =
+            entry.url || entry.pdf_url || entry.file_url || entry.publicUrl || ''
+          return url && isPdfFile(entry, url) ? url : ''
         }
         return ''
       })
@@ -35,7 +70,7 @@ function extractFileUrls(filesField) {
   if (typeof parsed === 'object') {
     const single =
       parsed.url || parsed.pdf_url || parsed.file_url || parsed.publicUrl || ''
-    return single ? [single] : []
+    return single && isPdfFile(parsed, single) ? [single] : []
   }
 
   return []
@@ -162,7 +197,7 @@ export default function PrescriptionLookupPage() {
                 </div>
               ) : (
                 records.map((item, idx) => {
-                  const fileUrls = extractFileUrls(item.files)
+                  const pdfUrls = extractPdfUrls(item.files)
 
                   return (
                     <div
@@ -187,8 +222,8 @@ export default function PrescriptionLookupPage() {
                       </div>
 
                       <div className="flex flex-wrap items-center gap-2 shrink-0">
-                        {fileUrls.length > 0 ? (
-                          fileUrls.map((url, fIdx) => (
+                        {pdfUrls.length > 0 ? (
+                          pdfUrls.map((url, fIdx) => (
                             <button
                               key={fIdx}
                               type="button"
@@ -197,7 +232,7 @@ export default function PrescriptionLookupPage() {
                             >
                               <span>📄</span>
                               <span>
-                                {fileUrls.length > 1
+                                {pdfUrls.length > 1
                                   ? `PDF ${fIdx + 1} ডাউনলোড`
                                   : 'PDF ডাউনলোড'}
                               </span>
@@ -205,7 +240,7 @@ export default function PrescriptionLookupPage() {
                           ))
                         ) : (
                           <span className="text-xs text-[#5C5852] px-3 py-1.5 rounded-full bg-[#FCFBF9] border border-[#E6DFD5]">
-                            ফাইল নেই
+                            কোনো PDF নেই
                           </span>
                         )}
                       </div>
