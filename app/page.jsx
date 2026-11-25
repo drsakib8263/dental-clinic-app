@@ -790,36 +790,37 @@ export default function Home() {
       </div>
 
       {/* ন্যাভিগেশন বার (হেডার) */}
-      <header className="sticky top-0 z-50 px-2.5 sm:px-6 md:px-12 py-3 md:py-4 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-[#E6DFD5] flex items-center justify-between gap-2 transition-colors duration-300">
-        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-          <div className="w-9 h-9 sm:w-11 sm:h-11 shrink-0 rounded-full bg-[#F7F5F0] flex items-center justify-center overflow-hidden border border-[#A68A64]/45 shadow-xs p-1">
+      <header className="sticky top-0 z-50 px-2.5 sm:px-5 lg:px-6 xl:px-10 py-3 md:py-3.5 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-[#E6DFD5] flex items-center justify-between gap-2 lg:gap-3 transition-colors duration-300">
+        {/* বাম পাশে ডাক্তারের নাম ও আইকন (যাতে কখনোই ঢাকা না পড়ে) */}
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-full bg-[#F7F5F0] flex items-center justify-center overflow-hidden border border-[#A68A64]/45 shadow-xs p-0.5">
             <img
               src="/doctor_icon.png"
               alt={t[lang].title}
               className="w-full h-full object-contain rounded-full"
             />
           </div>
-          <div className="flex flex-col min-w-0">
-            <span className="font-bold text-xs sm:text-base md:text-xl tracking-tight truncate text-[#2C2A29]">
+          <div className="flex flex-col shrink-0">
+            <span className="font-bold text-xs sm:text-sm xl:text-lg tracking-tight whitespace-nowrap text-[#2C2A29]">
               {t[lang].title}
             </span>
-            <span className="text-[9px] sm:text-[10px] font-semibold text-[#A68A64] uppercase tracking-wider truncate">
+            <span className="text-[9px] xl:text-[10px] font-semibold text-[#A68A64] uppercase tracking-wider whitespace-nowrap">
               {t[lang].subtitle}
             </span>
           </div>
         </div>
 
-        {/* কম্পিউটার ন্যাভিগেশন মেনু */}
-        <nav className="hidden lg:flex items-center gap-2 xl:gap-2.5 font-medium text-xs xl:text-sm text-[#5C5852]">
+        {/* কম্পিউটার ন্যাভিগেশন মেনু (ছোট বাটন ও বড় আইকন) */}
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 font-medium text-[11px] xl:text-xs text-[#5C5852] min-w-0">
           {navItems.map((item, idx) =>
             item.isButton ? (
               <button
                 key={idx}
                 type="button"
                 onClick={() => setIsContactModalOpen(true)}
-                className="group inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-[#E6DFD5] bg-[#F7F5F0]/80 hover:bg-[#FCFBF9] hover:border-[#A68A64] hover:text-[#2C2A29] transition-all duration-300 cursor-pointer font-medium text-xs xl:text-sm text-[#5C5852] shadow-2xs"
+                className="group inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full border border-[#E6DFD5] bg-[#F7F5F0]/80 hover:bg-[#FCFBF9] hover:border-[#A68A64] hover:text-[#2C2A29] transition-all duration-300 cursor-pointer font-medium text-[11px] xl:text-xs text-[#5C5852] whitespace-nowrap shrink-0"
               >
-                <span className="w-6 h-6 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] group-hover:border-[#A68A64] flex items-center justify-center overflow-hidden p-0.5 shrink-0 transition-colors duration-300">
+                <span className="w-7 h-7 xl:w-8 xl:h-8 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] group-hover:border-[#A68A64] flex items-center justify-center overflow-hidden p-0.5 shrink-0 transition-colors duration-300">
                   <img src={item.icon} alt={item.label} className="w-full h-full object-contain" />
                 </span>
                 <span>{item.label}</span>
@@ -828,13 +829,13 @@ export default function Home() {
               <a
                 key={idx}
                 href={item.href}
-                className={`group inline-flex items-center gap-2 px-3.5 py-2 rounded-full border transition-all duration-300 shadow-2xs ${
+                className={`group inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full border transition-all duration-300 whitespace-nowrap shrink-0 ${
                   item.active
                     ? 'bg-[#2C2A29] text-[#F7F5F0] border-[#2C2A29] font-semibold'
                     : 'border-[#E6DFD5] bg-[#F7F5F0]/80 hover:bg-[#FCFBF9] hover:border-[#A68A64] hover:text-[#2C2A29]'
                 }`}
               >
-                <span className="w-6 h-6 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] group-hover:border-[#A68A64] flex items-center justify-center overflow-hidden p-0.5 shrink-0 transition-colors duration-300">
+                <span className="w-7 h-7 xl:w-8 xl:h-8 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] group-hover:border-[#A68A64] flex items-center justify-center overflow-hidden p-0.5 shrink-0 transition-colors duration-300">
                   <img src={item.icon} alt={item.label} className="w-full h-full object-contain" />
                 </span>
                 <span>{item.label}</span>
@@ -843,16 +844,17 @@ export default function Home() {
           )}
         </nav>
 
-        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-          <a href="tel:+8801816011701" className="hidden xl:flex items-center gap-2 font-semibold text-xs md:text-sm text-[#2C2A29] hover:text-[#A68A64] transition-colors duration-300">
-            <span className="w-8 h-8 rounded-full bg-[#F7F5F0] border border-[#E6DFD5] flex items-center justify-center text-sm">📞</span>
+        {/* ডান পাশের ভাষা ও মেনু বাটন */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <a href="tel:+8801816011701" className="hidden 2xl:flex items-center gap-1.5 font-semibold text-xs text-[#2C2A29] hover:text-[#A68A64] transition-colors duration-300 whitespace-nowrap shrink-0">
+            <span className="w-7 h-7 rounded-full bg-[#F7F5F0] border border-[#E6DFD5] flex items-center justify-center text-xs">📞</span>
             <span>+880 1816 011 701</span>
           </a>
 
           <button
             type="button"
             onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
-            className="font-semibold px-2.5 sm:px-4 py-1.5 sm:py-2 shrink-0 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:border-[#A68A64] text-[#2C2A29] text-[11px] sm:text-xs cursor-pointer transition-colors duration-300"
+            className="font-semibold px-2.5 xl:px-3.5 py-1.5 shrink-0 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:border-[#A68A64] text-[#2C2A29] text-[11px] xl:text-xs cursor-pointer transition-colors duration-300 whitespace-nowrap"
           >
             {lang === 'bn' ? 'English' : 'বাংলা'}
           </button>
@@ -907,7 +909,7 @@ export default function Home() {
                 className="w-full flex items-center justify-between px-4 py-2.5 rounded-2xl border border-[#E6DFD5] bg-[#F7F5F0]/80 hover:border-[#A68A64] font-semibold text-sm bg-transparent cursor-pointer text-[#2C2A29] transition-all duration-300"
               >
                 <span className="flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] flex items-center justify-center overflow-hidden p-1 shrink-0">
+                  <span className="w-9 h-9 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] flex items-center justify-center overflow-hidden p-0.5 shrink-0">
                     <img src={item.icon} alt={item.label} className="w-full h-full object-contain" />
                   </span>
                   <span>{item.label}</span>
@@ -926,7 +928,7 @@ export default function Home() {
                 }`}
               >
                 <span className="flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] flex items-center justify-center overflow-hidden p-1 shrink-0">
+                  <span className="w-9 h-9 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] flex items-center justify-center overflow-hidden p-0.5 shrink-0">
                     <img src={item.icon} alt={item.label} className="w-full h-full object-contain" />
                   </span>
                   <span>{item.label}</span>
@@ -987,7 +989,7 @@ export default function Home() {
       <div className="w-full bg-[#FCFBF9] border-b border-[#E6DFD5] px-4 sm:px-6 md:px-12 py-4 transition-colors duration-300">
         <div className="card-3d max-w-7xl mx-auto rounded-2xl border border-[#E6DFD5] bg-[#F7F5F0]/60 px-5 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 text-left">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 shrink-0 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] flex items-center justify-center overflow-hidden p-1">
+            <div className="w-11 h-11 shrink-0 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] flex items-center justify-center overflow-hidden p-0.5">
               <img src="/doctor_icon.png" alt={t[lang].title} className="w-full h-full object-contain" />
             </div>
             <div>
@@ -1489,7 +1491,7 @@ export default function Home() {
 
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#F7F5F0] text-[#2C2A29] flex items-center justify-center overflow-hidden p-1">
+              <div className="w-10 h-10 rounded-full bg-[#F7F5F0] text-[#2C2A29] flex items-center justify-center overflow-hidden p-0.5">
                 <img src="/doctor_icon.png" alt={t[lang].title} className="w-full h-full object-contain" />
               </div>
               <span className="font-bold text-lg text-[#F7F5F0] tracking-tight">
