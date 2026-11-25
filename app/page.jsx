@@ -268,6 +268,51 @@ export default function Home() {
     setAvailableDates(dates)
   }, [lang])
 
+  const navItems = [
+    {
+      href: '/',
+      icon: '/home.png',
+      label: lang === 'bn' ? 'হোম' : 'Home',
+      active: true,
+      isButton: false
+    },
+    {
+      href: '#about-section',
+      icon: '/about_us.png',
+      label: lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us',
+      active: false,
+      isButton: false
+    },
+    {
+      href: '/introduction-to-dentistry',
+      icon: '/about_dentistry.png',
+      label: lang === 'bn' ? 'ডেন্টিস্ট্রি সম্পর্কে' : 'About Dentistry',
+      active: false,
+      isButton: false
+    },
+    {
+      href: '/services',
+      icon: '/our_services.png',
+      label: lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services',
+      active: false,
+      isButton: false
+    },
+    {
+      href: '/gallery',
+      icon: '/gallery.png',
+      label: lang === 'bn' ? 'গ্যালারি' : 'Gallery',
+      active: false,
+      isButton: false
+    },
+    {
+      href: '#contact',
+      icon: '/contact.png',
+      label: lang === 'bn' ? 'যোগাযোগ' : 'Contact Us',
+      active: false,
+      isButton: true
+    }
+  ]
+
   const t = {
     bn: {
       heroTitle: 'বিশ্বস্ত ডেন্টাল সেবা ও সুন্দর হাসির নিশ্চয়তা',
@@ -745,10 +790,14 @@ export default function Home() {
       </div>
 
       {/* ন্যাভিগেশন বার (হেডার) */}
-      <header className="sticky top-0 z-50 px-2.5 sm:px-6 md:px-12 py-3 md:py-4 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-[#E6DFD5] flex items-center justify-between gap-1.5 transition-colors duration-300">
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-full bg-[#2C2A29] text-[#F7F5F0] flex items-center justify-center text-sm sm:text-lg border border-[#A68A64]/40">
-            🦷
+      <header className="sticky top-0 z-50 px-2.5 sm:px-6 md:px-12 py-3 md:py-4 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-[#E6DFD5] flex items-center justify-between gap-2 transition-colors duration-300">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <div className="w-9 h-9 sm:w-11 sm:h-11 shrink-0 rounded-full bg-[#F7F5F0] flex items-center justify-center overflow-hidden border border-[#A68A64]/45 shadow-xs p-1">
+            <img
+              src="/doctor_icon.png"
+              alt={t[lang].title}
+              className="w-full h-full object-contain rounded-full"
+            />
           </div>
           <div className="flex flex-col min-w-0">
             <span className="font-bold text-xs sm:text-base md:text-xl tracking-tight truncate text-[#2C2A29]">
@@ -760,18 +809,38 @@ export default function Home() {
           </div>
         </div>
 
-        <nav className="hidden lg:flex items-center gap-8 font-medium text-sm text-[#5C5852]">
-          <a href="/" className="text-[#2C2A29] font-semibold border-b border-[#A68A64] pb-0.5 transition-colors duration-300">{lang === 'bn' ? 'হোম' : 'Home'}</a>
-          <a href="#about-section" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}</a>
-          <a href="/introduction-to-dentistry" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'ডেন্টিস্ট্রি সম্পর্কে' : 'About Dentistry'}</a>
-          <a href="/services" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}</a>
-          <a href="/gallery" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'গ্যালারি' : 'Gallery'}</a>
-          <button
-            onClick={() => setIsContactModalOpen(true)}
-            className="hover:text-[#A68A64] transition-colors duration-300 bg-transparent border-none cursor-pointer font-medium text-sm text-[#5C5852]"
-          >
-            {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
-          </button>
+        {/* কম্পিউটার ন্যাভিগেশন মেনু */}
+        <nav className="hidden lg:flex items-center gap-2 xl:gap-2.5 font-medium text-xs xl:text-sm text-[#5C5852]">
+          {navItems.map((item, idx) =>
+            item.isButton ? (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setIsContactModalOpen(true)}
+                className="group inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-[#E6DFD5] bg-[#F7F5F0]/80 hover:bg-[#FCFBF9] hover:border-[#A68A64] hover:text-[#2C2A29] transition-all duration-300 cursor-pointer font-medium text-xs xl:text-sm text-[#5C5852] shadow-2xs"
+              >
+                <span className="w-6 h-6 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] group-hover:border-[#A68A64] flex items-center justify-center overflow-hidden p-0.5 shrink-0 transition-colors duration-300">
+                  <img src={item.icon} alt={item.label} className="w-full h-full object-contain" />
+                </span>
+                <span>{item.label}</span>
+              </button>
+            ) : (
+              <a
+                key={idx}
+                href={item.href}
+                className={`group inline-flex items-center gap-2 px-3.5 py-2 rounded-full border transition-all duration-300 shadow-2xs ${
+                  item.active
+                    ? 'bg-[#2C2A29] text-[#F7F5F0] border-[#2C2A29] font-semibold'
+                    : 'border-[#E6DFD5] bg-[#F7F5F0]/80 hover:bg-[#FCFBF9] hover:border-[#A68A64] hover:text-[#2C2A29]'
+                }`}
+              >
+                <span className="w-6 h-6 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] group-hover:border-[#A68A64] flex items-center justify-center overflow-hidden p-0.5 shrink-0 transition-colors duration-300">
+                  <img src={item.icon} alt={item.label} className="w-full h-full object-contain" />
+                </span>
+                <span>{item.label}</span>
+              </a>
+            )
+          )}
         </nav>
 
         <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
@@ -825,31 +894,47 @@ export default function Home() {
 
       {/* মোবাইল ড্রপডাউন মেনু */}
       {mobileMenuOpen && (
-        <div className="card-3d lg:hidden fixed inset-x-0 top-[116px] sm:top-[128px] z-50 px-4 sm:px-6 py-4 space-y-2 bg-[#FCFBF9] border-b border-[#E6DFD5] transition-all duration-300 max-h-[75vh] overflow-y-auto">
-          <a href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#2C2A29]">
-            {lang === 'bn' ? 'হোম' : 'Home'}
-          </a>
-          <a href="#about-section" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#5C5852]">
-            {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
-          </a>
-          <a href="/introduction-to-dentistry" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#5C5852]">
-            {lang === 'bn' ? 'ডেন্টিস্ট্রি সম্পর্কে' : 'About Dentistry'}
-          </a>
-          <a href="/services" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#5C5852]">
-            {lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services'}
-          </a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block py-2 font-semibold text-sm border-b border-[#E6DFD5] text-[#5C5852]">
-            {lang === 'bn' ? 'গ্যালারি' : 'Gallery'}
-          </a>
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false)
-              setIsContactModalOpen(true)
-            }}
-            className="w-full text-left py-2 font-semibold text-sm bg-transparent border-none cursor-pointer text-[#5C5852]"
-          >
-            {lang === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
-          </button>
+        <div className="card-3d lg:hidden fixed inset-x-0 top-[116px] sm:top-[128px] z-50 px-4 sm:px-6 py-4 space-y-2.5 bg-[#FCFBF9] border-b border-[#E6DFD5] transition-all duration-300 max-h-[75vh] overflow-y-auto">
+          {navItems.map((item, idx) =>
+            item.isButton ? (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  setIsContactModalOpen(true)
+                }}
+                className="w-full flex items-center justify-between px-4 py-2.5 rounded-2xl border border-[#E6DFD5] bg-[#F7F5F0]/80 hover:border-[#A68A64] font-semibold text-sm bg-transparent cursor-pointer text-[#2C2A29] transition-all duration-300"
+              >
+                <span className="flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] flex items-center justify-center overflow-hidden p-1 shrink-0">
+                    <img src={item.icon} alt={item.label} className="w-full h-full object-contain" />
+                  </span>
+                  <span>{item.label}</span>
+                </span>
+                <span className="text-[#A68A64] text-xs">›</span>
+              </button>
+            ) : (
+              <a
+                key={idx}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center justify-between px-4 py-2.5 rounded-2xl border font-semibold text-sm transition-all duration-300 ${
+                  item.active
+                    ? 'bg-[#2C2A29] text-[#F7F5F0] border-[#2C2A29]'
+                    : 'border-[#E6DFD5] bg-[#F7F5F0]/80 hover:border-[#A68A64] text-[#2C2A29]'
+                }`}
+              >
+                <span className="flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] flex items-center justify-center overflow-hidden p-1 shrink-0">
+                    <img src={item.icon} alt={item.label} className="w-full h-full object-contain" />
+                  </span>
+                  <span>{item.label}</span>
+                </span>
+                <span className={item.active ? 'text-[#E6DFD5] text-xs' : 'text-[#A68A64] text-xs'}>›</span>
+              </a>
+            )
+          )}
         </div>
       )}
 
@@ -901,13 +986,18 @@ export default function Home() {
       {/* ডাক্তারের ক্রেডেনশিয়াল স্ট্রিপ */}
       <div className="w-full bg-[#FCFBF9] border-b border-[#E6DFD5] px-4 sm:px-6 md:px-12 py-4 transition-colors duration-300">
         <div className="card-3d max-w-7xl mx-auto rounded-2xl border border-[#E6DFD5] bg-[#F7F5F0]/60 px-5 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 text-left">
-          <div>
-            <h2 className="font-heading font-bold text-base sm:text-lg md:text-xl text-[#2C2A29]">
-              {t[lang].title}
-            </h2>
-            <p className="text-xs sm:text-sm font-semibold text-[#A68A64]">
-              {t[lang].subtitle}
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 shrink-0 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] flex items-center justify-center overflow-hidden p-1">
+              <img src="/doctor_icon.png" alt={t[lang].title} className="w-full h-full object-contain" />
+            </div>
+            <div>
+              <h2 className="font-heading font-bold text-base sm:text-lg md:text-xl text-[#2C2A29]">
+                {t[lang].title}
+              </h2>
+              <p className="text-xs sm:text-sm font-semibold text-[#A68A64]">
+                {t[lang].subtitle}
+              </p>
+            </div>
           </div>
 
           <div className="text-xs sm:text-sm text-[#5C5852] md:text-right whitespace-pre-line font-medium">
@@ -1399,8 +1489,8 @@ export default function Home() {
 
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#F7F5F0] text-[#2C2A29] flex items-center justify-center text-lg">
-                🦷
+              <div className="w-10 h-10 rounded-full bg-[#F7F5F0] text-[#2C2A29] flex items-center justify-center overflow-hidden p-1">
+                <img src="/doctor_icon.png" alt={t[lang].title} className="w-full h-full object-contain" />
               </div>
               <span className="font-bold text-lg text-[#F7F5F0] tracking-tight">
                 {t[lang].title}
