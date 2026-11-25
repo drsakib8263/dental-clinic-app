@@ -8,6 +8,55 @@ const supabaseAnonKey = 'sb_publishable_mcnw0osdruKLepukigC4Zw_JwEojZh7'
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+const TEXT = {
+  bn: {
+    backHome: 'হোম পেজে ফিরুন',
+    portalLabel: 'ডিজিটাল প্রেসক্রিপশন পোর্টাল',
+    toggleBtn: 'English',
+    title: 'প্রেসক্রিপশন ডাউনলোড (PDF)',
+    subtitle:
+      'আপনার চিকিৎসা সংক্রান্ত প্রেসক্রিপশন PDF আকারে পেতে চেম্বারে রেজিস্ট্রিকৃত মোবাইল নম্বর দিয়ে সার্চ করুন।',
+    phonePlaceholder: 'মোবাইল নম্বর লিখুন (যেমন: 017XXXXXXXX)',
+    searchBtn: 'প্রেসক্রিপশন খুঁজুন',
+    searching: 'খোঁজা হচ্ছে...',
+    invalidPhone: 'অনুগ্রহ করে সঠিক ১১ ডিজিটের মোবাইল নম্বর লিখুন।',
+    searchErrorPrefix: 'তথ্য খুঁজতে সমস্যা হয়েছে:',
+    networkError: 'নেটওয়ার্ক বা সার্ভার ত্রুটি হয়েছে।',
+    noRecords: 'এই মোবাইল নম্বরের বিপরীতে কোনো প্রেসক্রিপশন পাওয়া যায়নি।',
+    defaultPatientName: 'রোগীর প্রেসক্রিপশন',
+    mobileLabel: 'মোবাইল',
+    dateLabel: 'তারিখ',
+    downloadSingle: 'PDF ডাউনলোড',
+    downloadMultiPrefix: 'PDF',
+    downloadMultiSuffix: 'ডাউনলোড',
+    noPdfBadge: 'কোনো PDF নেই',
+    downloadAlert: 'PDF ডাউনলোড করতে সমস্যা হয়েছে।'
+  },
+  en: {
+    backHome: 'Back to Home',
+    portalLabel: 'Digital Prescription Portal',
+    toggleBtn: 'বাংলা',
+    title: 'Download Prescription (PDF)',
+    subtitle:
+      'Search with the mobile number registered at the chamber to download your prescription in PDF format.',
+    phonePlaceholder: 'Enter mobile number (e.g. 017XXXXXXXX)',
+    searchBtn: 'Find Prescription',
+    searching: 'Searching...',
+    invalidPhone: 'Please enter a valid 11-digit mobile number.',
+    searchErrorPrefix: 'Failed to fetch records:',
+    networkError: 'Network or server error occurred.',
+    noRecords: 'No prescription records found for this mobile number.',
+    defaultPatientName: 'Patient Prescription',
+    mobileLabel: 'Mobile',
+    dateLabel: 'Date',
+    downloadSingle: 'Download PDF',
+    downloadMultiPrefix: 'Download PDF',
+    downloadMultiSuffix: '',
+    noPdfBadge: 'No PDF available',
+    downloadAlert: 'Failed to download PDF.'
+  }
+}
+
 function isPdfFile(entry, url = '') {
   const cleanUrl = (url || '').split('?')[0].toLowerCase()
   const nameOrPath =
@@ -77,11 +126,14 @@ function extractPdfUrls(filesField) {
 }
 
 export default function PrescriptionLookupPage() {
+  const [lang, setLang] = useState('bn')
   const [phone, setPhone] = useState('')
   const [records, setRecords] = useState([])
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
+
+  const t = TEXT[lang]
 
   const handleSearch = async (e) => {
     e.preventDefault()
@@ -90,7 +142,7 @@ export default function PrescriptionLookupPage() {
 
     const cleanPhone = phone.replace(/\D/g, '').trim()
     if (cleanPhone.length < 10) {
-      setErrorMsg('অনুগ্রহ করে সঠিক ১১ ডিজিটের মোবাইল নম্বর লিখুন।')
+      setErrorMsg(t.invalidPhone)
       setRecords([])
       return
     }
@@ -106,14 +158,14 @@ export default function PrescriptionLookupPage() {
 
       if (error) {
         console.error('Supabase search error:', error)
-        setErrorMsg(`তথ্য খুঁজতে সমস্যা হয়েছে: ${error.message}`)
+        setErrorMsg(`${t.searchErrorPrefix} ${error.message}`)
         setRecords([])
       } else {
         setRecords(data || [])
       }
     } catch (err) {
       console.error('Error:', err)
-      setErrorMsg('নেটওয়ার্ক বা সার্ভার ত্রুটি হয়েছে।')
+      setErrorMsg(t.networkError)
       setRecords([])
     } finally {
       setLoading(false)
@@ -139,28 +191,43 @@ export default function PrescriptionLookupPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F7F5F0] text-[#2C2A29] px-4 py-10 md:py-16">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <div className="flex items-center justify-between gap-3">
+    <main className="min-h-screen bg-[#F7F5F0] text-[#2C2A29] px-4 py-8 sm:py-12 md:py-16">
+      <div className="max-w-2xl mx-auto space-y-5 sm:space-y-6">
+        {/* টপ বার: হোম লিংক + পোর্টাল লেবেল + বাংলা/ইংলিশ টগল বাটন */}
+        <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
           <a
             href="/"
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold px-4 py-2 rounded-full border border-[#E6DFD5] bg-[#FCFBF9] hover:border-[#A68A64] transition-colors"
           >
             <span>←</span>
-            <span>হোম পেজে ফিরুন</span>
+            <span>{t.backHome}</span>
           </a>
-          <span className="text-xs font-semibold text-[#A68A64]">
-            ডিজিটাল প্রেসক্রিপশন পোর্টাল
-          </span>
+
+          <div className="flex items-center gap-2.5 sm:gap-3 ml-auto">
+            <span className="text-[11px] sm:text-xs font-semibold text-[#A68A64]">
+              {t.portalLabel}
+            </span>
+
+            <button
+              type="button"
+              onClick={() => setLang(lang === 'bn' ? 'en' : 'bn')}
+              aria-label="Toggle Language"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#DFD6C7] bg-[#FCFBF9] hover:bg-[#2C2A29] hover:text-[#F7F5F0] hover:border-[#2C2A29] text-[#2C2A29] text-xs font-bold transition-all duration-300 cursor-pointer shadow-2xs"
+            >
+              <span>🌐</span>
+              <span>{t.toggleBtn}</span>
+            </button>
+          </div>
         </div>
 
-        <div className="rounded-3xl border border-[#E6DFD5] bg-[#FCFBF9] p-6 md:p-8 shadow-sm space-y-5">
+        {/* মূল কার্ড */}
+        <div className="rounded-3xl border border-[#E6DFD5] bg-[#FCFBF9] p-5 sm:p-6 md:p-8 shadow-sm space-y-5">
           <div className="space-y-1.5">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#2C2A29]">
-              প্রেসক্রিপশন ডাউনলোড (PDF)
+              {t.title}
             </h1>
             <p className="text-xs sm:text-sm text-[#5C5852] leading-relaxed">
-              আপনার চিকিৎসা সংক্রান্ত প্রেসক্রিপশন PDF আকারে পেতে চেম্বারে রেজিস্ট্রিকৃত মোবাইল নম্বর দিয়ে সার্চ করুন।
+              {t.subtitle}
             </p>
           </div>
 
@@ -169,7 +236,7 @@ export default function PrescriptionLookupPage() {
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 11))}
-              placeholder="মোবাইল নম্বর লিখুন (যেমন: 017XXXXXXXX)"
+              placeholder={t.phonePlaceholder}
               maxLength="11"
               required
               className="flex-1 px-4 py-3 rounded-2xl border border-[#DFD6C7] bg-[#F7F5F0] text-sm font-medium text-[#2C2A29] outline-none focus:border-[#A68A64]"
@@ -179,7 +246,7 @@ export default function PrescriptionLookupPage() {
               disabled={loading}
               className="px-6 py-3 rounded-2xl bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] font-semibold text-sm transition-colors cursor-pointer shrink-0"
             >
-              {loading ? 'খোঁজা হচ্ছে...' : 'প্রেসক্রিপশন খুঁজুন'}
+              {loading ? t.searching : t.searchBtn}
             </button>
           </form>
 
@@ -193,7 +260,7 @@ export default function PrescriptionLookupPage() {
             <div className="pt-2 space-y-3">
               {records.length === 0 ? (
                 <div className="p-5 rounded-2xl bg-[#F7F5F0] border border-[#E6DFD5] text-center text-xs sm:text-sm text-[#5C5852]">
-                  এই মোবাইল নম্বরের বিপরীতে কোনো প্রেসক্রিপশন পাওয়া যায়নি।
+                  {t.noRecords}
                 </div>
               ) : (
                 records.map((item, idx) => {
@@ -206,12 +273,14 @@ export default function PrescriptionLookupPage() {
                     >
                       <div className="space-y-0.5">
                         <p className="text-sm font-bold text-[#2C2A29]">
-                          {item.name || 'রোগীর প্রেসক্রিপশন'}
+                          {item.name || t.defaultPatientName}
                         </p>
                         <p className="text-xs text-[#5C5852]">
-                          মোবাইল: {item.phone}
+                          {t.mobileLabel}: {item.phone}
                           {item.created_at
-                            ? ` • তারিখ: ${new Date(item.created_at).toLocaleDateString('bn-BD')}`
+                            ? ` • ${t.dateLabel}: ${new Date(item.created_at).toLocaleDateString(
+                                lang === 'bn' ? 'bn-BD' : 'en-US'
+                              )}`
                             : ''}
                         </p>
                         {item.description && (
@@ -233,14 +302,14 @@ export default function PrescriptionLookupPage() {
                               <span>📄</span>
                               <span>
                                 {pdfUrls.length > 1
-                                  ? `PDF ${fIdx + 1} ডাউনলোড`
-                                  : 'PDF ডাউনলোড'}
+                                  ? `${t.downloadMultiPrefix} ${fIdx + 1} ${t.downloadMultiSuffix}`.trim()
+                                  : t.downloadSingle}
                               </span>
                             </button>
                           ))
                         ) : (
                           <span className="text-xs text-[#5C5852] px-3 py-1.5 rounded-full bg-[#FCFBF9] border border-[#E6DFD5]">
-                            কোনো PDF নেই
+                            {t.noPdfBadge}
                           </span>
                         )}
                       </div>
