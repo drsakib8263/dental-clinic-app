@@ -3,11 +3,8 @@
 import { useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl =
-  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ejdewrkkadndjlspmhyj.supabase.co'
-const supabaseAnonKey =
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-  'sb_publishable_mcnw0osdruKLepukigC4Zw_JwEojZh7'
+const supabaseUrl = 'https://ejdewrkkadndjlspmhyj.supabase.co'
+const supabaseAnonKey = 'sb_publishable_mcnw0osdruKLepukigC4Zw_JwEojZh7'
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -30,17 +27,19 @@ export default function PrescriptionLookupPage() {
       return
     }
 
+    // নম্বরটি 017... বা 88017... যেভাবেই সেভ থাকুক, শেষ ১০ ডিজিট দিয়ে মিলিয়ে নেওয়া যাবে
+    const last10 = cleanPhone.slice(-10)
+
     setLoading(true)
     try {
       const { data, error } = await supabase
         .from('patients')
         .select('*')
-        .eq('phone', cleanPhone)
-        .order('created_at', { ascending: false })
+        .ilike('phone', `%${last10}%`)
 
       if (error) {
         console.error('Supabase search error:', error)
-        setErrorMsg('তথ্য খুঁজতে সমস্যা হয়েছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।')
+        setErrorMsg(`তথ্য খুঁজতে সমস্যা হয়েছে: ${error.message}`)
         setRecords([])
       } else {
         setRecords(data || [])
@@ -57,7 +56,12 @@ export default function PrescriptionLookupPage() {
   const handleDownloadPdf = async (item) => {
     try {
       let downloadUrl =
-        item.pdf_url || item.prescription_url || item.file_url || item.url || ''
+        item.pdf_url ||
+        item.prescription_url ||
+        item.file_url ||
+        item.prescription_pdf ||
+        item.url ||
+        ''
 
       if (!downloadUrl && item.file_path) {
         const { data, error } = await supabase.storage
@@ -70,7 +74,7 @@ export default function PrescriptionLookupPage() {
       }
 
       if (!downloadUrl) {
-        alert('এই রেকর্ডের PDF লিংক পাওয়া যায়নি।')
+        alert('এই রেকর্ডের PDF লিংক পাওয়া যায়নি। অনুগ্রহ করে টেবিলের PDF কলামের নাম চেক করুন।')
         return
       }
 
@@ -87,7 +91,11 @@ export default function PrescriptionLookupPage() {
     } catch (err) {
       console.error('PDF download error:', err)
       const fallbackUrl =
-        item.pdf_url || item.prescription_url || item.file_url || item.url
+        item.pdf_url ||
+        item.prescription_url ||
+        item.file_url ||
+        item.prescription_pdf ||
+        item.url
       if (fallbackUrl) {
         window.open(fallbackUrl, '_blank', 'noopener,noreferrer')
       } else {
