@@ -1030,28 +1030,38 @@ export default function Home() {
 
       {/* পপ-আপ বুকিং ফর্ম */}
       {showPopupBooking && !chamberNotice.isClosed && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm overflow-y-auto">
-          <div className="card-3d max-w-xl w-full p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-8">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="font-heading text-xl md:text-2xl font-bold text-[#2C2A29] flex items-center gap-2">
-                <span>📅</span> {t[lang].bookingTitle}
-              </h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/65 backdrop-blur-sm overflow-y-auto">
+          <div className="card-3d max-w-xl w-full p-6 md:p-8 rounded-3xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-8">
+            <div className="flex items-start justify-between gap-4 pb-4 mb-5 border-b border-[#E6DFD5]">
+              <div className="space-y-1">
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#F7F5F0] text-[#A68A64] border border-[#E6DFD5]">
+                  <span>📅</span>
+                  <span>{lang === 'bn' ? 'সিরিয়াল বুকিং' : 'Online Booking'}</span>
+                </span>
+                <h2 className="font-heading text-xl md:text-2xl font-bold text-[#2C2A29] pt-1">
+                  {t[lang].bookingTitle}
+                </h2>
+                <p className="font-medium text-xs md:text-sm text-[#5C5852]">
+                  {t[lang].bookingSub}
+                </p>
+              </div>
+
               <button
                 type="button"
                 onClick={() => setShowPopupBooking(false)}
-                className="font-bold text-sm px-3.5 py-1.5 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:bg-[#A68A64] hover:text-[#F7F5F0] text-[#2C2A29] transition-colors duration-300 cursor-pointer"
+                className="font-bold text-sm w-9 h-9 shrink-0 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:bg-[#A68A64] hover:text-[#F7F5F0] text-[#2C2A29] transition-colors duration-300 cursor-pointer flex items-center justify-center"
+                aria-label="Close booking modal"
               >
                 ✕
               </button>
             </div>
-            <p className="font-medium mb-6 text-xs md:text-sm text-[#5C5852]">
-              {t[lang].bookingSub}
-            </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4 max-h-[75vh] overflow-y-auto pr-1">
+            <form onSubmit={handleSubmit} className="space-y-4 max-h-[72vh] overflow-y-auto pr-1">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].patientName}</label>
+                  <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">
+                    {t[lang].patientName}
+                  </label>
                   <input
                     type="text"
                     name="patient_name"
@@ -1063,7 +1073,9 @@ export default function Home() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].ageLabel}</label>
+                  <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">
+                    {t[lang].ageLabel}
+                  </label>
                   <input
                     type="text"
                     name="age"
@@ -1077,14 +1089,16 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].phoneLabel}</label>
+                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">
+                  {t[lang].phoneLabel}
+                </label>
                 <input
                   type="tel"
                   name="phone"
                   value={formData.phone}
                   onChange={(e) => {
-                    const val = e.target.value.replace(/\D/g, '').slice(0, 11);
-                    setFormData(prev => ({ ...prev, phone: val }));
+                    const val = e.target.value.replace(/\D/g, '').slice(0, 11)
+                    setFormData(prev => ({ ...prev, phone: val }))
                   }}
                   required
                   maxLength="11"
@@ -1093,74 +1107,125 @@ export default function Home() {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].serviceLabel}</label>
-                <select
-                  name="service"
-                  value={formData.service}
-                  onChange={handleChange}
-                  required
-                  className={`${inputClass} cursor-pointer`}
-                >
-                  <option value="">{t[lang].serviceDefault}</option>
-                  <option value={t[lang].service1}>{t[lang].service1}</option>
-                  <option value={t[lang].service2}>{t[lang].service2}</option>
-                  <option value={t[lang].service3}>{t[lang].service3}</option>
-                  <option value={t[lang].service4}>{t[lang].service4}</option>
-                </select>
+              {/* আধুনিক ড্রপডাউন ১: চিকিৎসার ধরণ */}
+              <div className="p-3.5 rounded-2xl bg-[#F7F5F0]/70 border border-[#E6DFD5]/90 space-y-1.5">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-[#2C2A29]">
+                  <span className="text-[#A68A64]">🦷</span>
+                  <span>{t[lang].serviceLabel}</span>
+                </label>
+                <div className="relative">
+                  <select
+                    name="service"
+                    value={formData.service}
+                    onChange={handleChange}
+                    required
+                    className="font-body-ui appearance-none w-full pl-4 pr-11 py-3.5 rounded-xl outline-none border border-[#DFD6C7] bg-[#FCFBF9] text-[#2C2A29] text-sm font-medium shadow-xs hover:border-[#A68A64] focus:border-[#A68A64] focus:ring-2 focus:ring-[#A68A64]/20 transition-all duration-300 cursor-pointer"
+                  >
+                    <option value="">{t[lang].serviceDefault}</option>
+                    <option value={t[lang].service1}>{t[lang].service1}</option>
+                    <option value={t[lang].service2}>{t[lang].service2}</option>
+                    <option value={t[lang].service3}>{t[lang].service3}</option>
+                    <option value={t[lang].service4}>{t[lang].service4}</option>
+                  </select>
+                  <span className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-[#A68A64]">
+                    <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path
+                        fillRule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].dateLabel}</label>
-                <select
-                  name="appointment_date"
-                  value={formData.appointment_date}
-                  onChange={handleChange}
-                  required
-                  className={`${inputClass} cursor-pointer`}
-                >
-                  <option value="">{t[lang].dateDefault}</option>
-                  {availableDates.map((item, index) => (
-                    <option
-                      key={index}
-                      value={item.value}
-                      disabled={item.isPast}
-                      className={item.isPast ? 'text-[#5C5852]/50' : ''}
+              {/* আধুনিক ড্রপডাউন ২ ও ৩: পছন্দের তারিখ ও সময় */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="p-3.5 rounded-2xl bg-[#F7F5F0]/70 border border-[#E6DFD5]/90 space-y-1.5">
+                  <label className="flex items-center gap-1.5 text-sm font-semibold text-[#2C2A29]">
+                    <span className="text-[#A68A64]">📆</span>
+                    <span>{t[lang].dateLabel}</span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      name="appointment_date"
+                      value={formData.appointment_date}
+                      onChange={handleChange}
+                      required
+                      className="font-body-ui appearance-none w-full pl-4 pr-11 py-3.5 rounded-xl outline-none border border-[#DFD6C7] bg-[#FCFBF9] text-[#2C2A29] text-sm font-medium shadow-xs hover:border-[#A68A64] focus:border-[#A68A64] focus:ring-2 focus:ring-[#A68A64]/20 transition-all duration-300 cursor-pointer"
                     >
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                      <option value="">{t[lang].dateDefault}</option>
+                      {availableDates.map((item, index) => (
+                        <option
+                          key={index}
+                          value={item.value}
+                          disabled={item.isPast}
+                          className={item.isPast ? 'text-[#5C5852]/50' : ''}
+                        >
+                          {item.label}
+                        </option>
+                      ))}
+                    </select>
+                    <span className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-[#A68A64]">
+                      <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
 
-              <div>
-                <label className="block text-sm font-semibold mb-1.5 text-[#2C2A29]">{t[lang].timeLabel}</label>
-                <select
-                  name="appointment_time"
-                  value={formData.appointment_time}
-                  onChange={handleChange}
-                  required
-                  className={`${inputClass} cursor-pointer`}
-                >
-                  <option value="">{t[lang].timeDefault}</option>
-                  {rawTimes.map((time, index) => {
-                    const slotKey = `${formData.appointment_date}|${time}`
-                    const slotData = bookedSlotsCount[slotKey] || { total: 0, new: 0, old: 0 }
-                    const isFull = slotData.total >= 2
+                <div className="p-3.5 rounded-2xl bg-[#F7F5F0]/70 border border-[#E6DFD5]/90 space-y-1.5">
+                  <label className="flex items-center gap-1.5 text-sm font-semibold text-[#2C2A29]">
+                    <span className="text-[#A68A64]">⏰</span>
+                    <span>{t[lang].timeLabel}</span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      name="appointment_time"
+                      value={formData.appointment_time}
+                      onChange={handleChange}
+                      required
+                      className="font-body-ui appearance-none w-full pl-4 pr-11 py-3.5 rounded-xl outline-none border border-[#DFD6C7] bg-[#FCFBF9] text-[#2C2A29] text-sm font-medium shadow-xs hover:border-[#A68A64] focus:border-[#A68A64] focus:ring-2 focus:ring-[#A68A64]/20 transition-all duration-300 cursor-pointer"
+                    >
+                      <option value="">{t[lang].timeDefault}</option>
+                      {rawTimes.map((time, index) => {
+                        const slotKey = `${formData.appointment_date}|${time}`
+                        const slotData = bookedSlotsCount[slotKey] || { total: 0, new: 0, old: 0 }
+                        const isFull = slotData.total >= 2
 
-                    return (
-                      <option key={index} value={time} disabled={isFull} className={isFull ? 'text-rose-700' : ''}>
-                        {time} {isFull ? (lang === 'bn' ? '(বুকড)' : '(Full)') : ''}
-                      </option>
-                    )
-                  })}
-                </select>
+                        return (
+                          <option
+                            key={index}
+                            value={time}
+                            disabled={isFull}
+                            className={isFull ? 'text-rose-700' : ''}
+                          >
+                            {time} {isFull ? (lang === 'bn' ? '(বুকড)' : '(Full)') : ''}
+                          </option>
+                        )
+                      })}
+                    </select>
+                    <span className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-[#A68A64]">
+                      <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3.5 font-semibold cursor-pointer mt-2"
+                className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3.5 font-semibold cursor-pointer mt-2 shadow-md"
               >
                 {loading ? t[lang].submitting : t[lang].submitBtn}
               </button>
