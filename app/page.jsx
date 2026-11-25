@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -19,6 +19,8 @@ export default function Home() {
   const [chamberStatusText, setChamberStatusText] = useState('')
   const [isChamberOpenNow, setIsChamberOpenNow] = useState(false)
   const [showChamberClosedModal, setShowChamberClosedModal] = useState(false)
+  const initialNoticeShownRef = useRef(false)
+  const fridayPopupShownRef = useRef(false)
   const [chamberNotice, setChamberNotice] = useState({
     isClosed: false,
     titleBn: 'জরুরি নোটিশ: চেম্বার বন্ধ সংক্রান্ত',
@@ -96,15 +98,20 @@ export default function Home() {
         .single()
 
       if (data && !error) {
+        const isClosedNow = Boolean(data.is_closed)
         setChamberNotice({
-          isClosed: data.is_closed,
+          isClosed: isClosedNow,
           titleBn: data.title_bn || 'জরুরি নোটিশ: চেম্বার বন্ধ সংক্রান্ত',
           titleEn: data.title_en || 'Important Notice: Chamber Closure',
           messageBn: data.message_bn || '',
           messageEn: data.message_en || ''
         })
-        if (data.is_closed && !isFriday) {
+        if (isClosedNow && !initialNoticeShownRef.current) {
+          initialNoticeShownRef.current = true
           setShowChamberClosedModal(true)
+        } else if (!isClosedNow) {
+          initialNoticeShownRef.current = false
+          setShowChamberClosedModal(false)
         }
       }
     } catch (err) {
@@ -171,7 +178,8 @@ export default function Home() {
             ? 'আজ শুক্রবার, চেম্বার সম্পূর্ণ বন্ধ রয়েছে'
             : 'Today is Friday, the chamber is completely closed'
         )
-        if (shouldOpenFridayPopup) {
+        if (shouldOpenFridayPopup && !fridayPopupShownRef.current) {
+          fridayPopupShownRef.current = true
           setCustomAlert({
             show: true,
             message: lang === 'bn' ? fridayNoticeBn : fridayNoticeEn
@@ -441,6 +449,11 @@ export default function Home() {
       return
     }
 
+    if (chamberNotice.isClosed) {
+      setShowChamberClosedModal(true)
+      return
+    }
+
     const now = new Date()
     const bdTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }))
     const currentHour = bdTime.getHours()
@@ -515,6 +528,12 @@ export default function Home() {
         show: true,
         message: lang === 'bn' ? fridayNoticeBn : fridayNoticeEn
       })
+      setShowPopupBooking(false)
+      return
+    }
+
+    if (chamberNotice.isClosed) {
+      setShowChamberClosedModal(true)
       setShowPopupBooking(false)
       return
     }
@@ -791,7 +810,7 @@ export default function Home() {
 
       {/* ন্যাভিগেশন বার (হেডার) */}
       <header className="sticky top-0 z-50 px-2.5 sm:px-5 lg:px-6 xl:px-10 py-3 md:py-3.5 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-[#E6DFD5] flex items-center justify-between gap-2 lg:gap-3 transition-colors duration-300">
-        {/* বাম পাশে ডাক্তারের নাম ও আইকন (যাতে কখনোই ঢাকা না পড়ে) */}
+        {/* বাম পাশে ডাক্তারের নাম ও আইকন */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           <div className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-full bg-[#F7F5F0] flex items-center justify-center overflow-hidden border border-[#A68A64]/45 shadow-xs p-0.5">
             <img
@@ -810,7 +829,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* কম্পিউটার ন্যাভিগেশন মেনু (ছোট বাটন ও বড় আইকন) */}
+        {/* কম্পিউটার ন্যাভিগেশন মেনু */}
         <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 font-medium text-[11px] xl:text-xs text-[#5C5852] min-w-0">
           {navItems.map((item, idx) =>
             item.isButton ? (
@@ -969,6 +988,7 @@ export default function Home() {
 
             <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-2.5 sm:gap-4">
               <button
+                type="button"
                 onClick={handleOpenBooking}
                 className="bg-[#F7F5F0] text-[#2C2A29] hover:bg-[#A68A64] hover:text-white transition-colors duration-300 rounded-full px-5 sm:px-7 py-2.5 sm:py-3.5 font-bold cursor-pointer text-xs sm:text-sm md:text-base shadow-md"
               >
@@ -1009,7 +1029,7 @@ export default function Home() {
       </div>
 
       {/* পপ-আপ বুকিং ফর্ম */}
-      {showPopupBooking && (
+      {showPopupBooking && !chamberNotice.isClosed && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm overflow-y-auto">
           <div className="card-3d max-w-xl w-full p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-8">
             <div className="flex items-center justify-between mb-3">
@@ -1017,6 +1037,7 @@ export default function Home() {
                 <span>📅</span> {t[lang].bookingTitle}
               </h2>
               <button
+                type="button"
                 onClick={() => setShowPopupBooking(false)}
                 className="font-bold text-sm px-3.5 py-1.5 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:bg-[#A68A64] hover:text-[#F7F5F0] text-[#2C2A29] transition-colors duration-300 cursor-pointer"
               >
@@ -1166,6 +1187,7 @@ export default function Home() {
             </div>
 
             <button
+              type="button"
               onClick={() => setCustomAlert({ show: false, message: '' })}
               className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer"
             >
@@ -1335,6 +1357,7 @@ export default function Home() {
 
             <div className="pt-3">
               <button
+                type="button"
                 onClick={() => setShowReviewModal(true)}
                 className="bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer text-sm shadow-md"
               >
@@ -1414,6 +1437,7 @@ export default function Home() {
                 <span>✍️</span> {t[lang].reviewModalTitle}
               </h2>
               <button
+                type="button"
                 onClick={() => setShowReviewModal(false)}
                 className="font-bold text-sm px-3.5 py-1.5 rounded-full border border-[#E6DFD5] bg-[#F7F5F0] hover:bg-[#A68A64] hover:text-[#F7F5F0] text-[#2C2A29] transition-colors duration-300 cursor-pointer"
               >
@@ -1594,7 +1618,7 @@ export default function Home() {
       {isContactModalOpen && (
         <div onClick={() => setIsContactModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
           <div onClick={(e) => e.stopPropagation()} className="card-3d bg-[#FCFBF9] p-6 md:p-8 rounded-2xl border border-[#E6DFD5] max-w-md w-full relative space-y-6 text-[#2C2A29]">
-            <button onClick={() => setIsContactModalOpen(false)} className="absolute top-4 right-4 bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] font-bold w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300 cursor-pointer text-sm">
+            <button type="button" onClick={() => setIsContactModalOpen(false)} className="absolute top-4 right-4 bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] font-bold w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300 cursor-pointer text-sm">
               ✕
             </button>
 
@@ -1650,7 +1674,7 @@ export default function Home() {
             <div className="w-16 h-16 text-[#F7F5F0] text-3xl rounded-full flex items-center justify-center mx-auto bg-[#2C2A29]">✓</div>
             <h3 className="font-heading text-2xl font-bold text-[#2C2A29]">{t[lang].successTitle}</h3>
             <p className="text-sm leading-relaxed text-[#5C5852]">{t[lang].successMsg}</p>
-            <button onClick={() => setShowSuccessModal(false)} className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer">
+            <button type="button" onClick={() => setShowSuccessModal(false)} className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer">
               {t[lang].closeModalBtn}
             </button>
           </div>
@@ -1668,7 +1692,7 @@ export default function Home() {
             <p className="text-sm leading-relaxed text-[#5C5852]">
               {lang === 'bn' ? chamberNotice.messageBn : chamberNotice.messageEn}
             </p>
-            <button onClick={() => setShowChamberClosedModal(false)} className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer">
+            <button type="button" onClick={() => setShowChamberClosedModal(false)} className="w-full bg-[#2C2A29] text-[#F7F5F0] hover:bg-[#A68A64] transition-colors duration-300 rounded-full px-7 py-3 font-semibold cursor-pointer">
               {t[lang].closeModalBtn}
             </button>
           </div>
