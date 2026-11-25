@@ -3,8 +3,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const supabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ejdewrkkadndjlspmhyj.supabase.co'
+const supabaseAnonKey =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  'sb_publishable_mcnw0osdruKLepukigC4Zw_JwEojZh7'
 const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export default function Home() {
@@ -302,6 +305,13 @@ export default function Home() {
       href: '/services',
       icon: '/our_services.png',
       label: lang === 'bn' ? 'সার্ভিস সমূহ' : 'Services',
+      active: false,
+      isButton: false
+    },
+    {
+      href: '/prescriptions',
+      icon: '/about_dentistry.png',
+      label: lang === 'bn' ? 'প্রেসক্রিপশন' : 'Prescriptions',
       active: false,
       isButton: false
     },
@@ -810,7 +820,6 @@ export default function Home() {
 
       {/* ন্যাভিগেশন বার (হেডার) */}
       <header className="sticky top-0 z-50 px-2.5 sm:px-5 lg:px-6 xl:px-10 py-3 md:py-3.5 bg-[#FCFBF9]/95 backdrop-blur-md border-b border-[#E6DFD5] flex items-center justify-between gap-2 lg:gap-3 transition-colors duration-300">
-        {/* বাম পাশে ডাক্তারের নাম ও আইকন */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           <div className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-full bg-[#F7F5F0] flex items-center justify-center overflow-hidden border border-[#A68A64]/45 shadow-xs p-0.5">
             <img
@@ -829,7 +838,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* কম্পিউটার ন্যাভিগেশন মেনু */}
         <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 font-medium text-[11px] xl:text-xs text-[#5C5852] min-w-0">
           {navItems.map((item, idx) =>
             item.isButton ? (
@@ -863,7 +871,6 @@ export default function Home() {
           )}
         </nav>
 
-        {/* ডান পাশের ভাষা ও মেনু বাটন */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <a href="tel:+8801816011701" className="hidden 2xl:flex items-center gap-1.5 font-semibold text-xs text-[#2C2A29] hover:text-[#A68A64] transition-colors duration-300 whitespace-nowrap shrink-0">
             <span className="w-7 h-7 rounded-full bg-[#F7F5F0] border border-[#E6DFD5] flex items-center justify-center text-xs">📞</span>
@@ -1028,7 +1035,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* পপ-আপ বুকিং ফর্ম (মোবাইলে এক স্ক্রিনে ফিট করার মতো কমপ্যাক্ট) */}
+      {/* পপ-আপ বুকিং ফর্ম */}
       {showPopupBooking && !chamberNotice.isClosed && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-[#2C2A29]/65 backdrop-blur-sm overflow-y-auto">
           <div className="card-3d max-w-xl w-full p-4 sm:p-7 rounded-2xl sm:rounded-3xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] relative my-auto">
@@ -1057,7 +1064,6 @@ export default function Home() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3.5">
-              {/* নাম ও বয়স এক লাইনে মোবাইলেও পাশাপাশি */}
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 <div className="col-span-2">
                   <label className="block text-xs sm:text-sm font-semibold mb-1 text-[#2C2A29]">
@@ -1089,7 +1095,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* মোবাইল নম্বর */}
               <div>
                 <label className="block text-xs sm:text-sm font-semibold mb-1 text-[#2C2A29]">
                   {t[lang].phoneLabel}
@@ -1109,7 +1114,6 @@ export default function Home() {
                 />
               </div>
 
-              {/* ড্রপডাউন ১: চিকিৎসার ধরণ */}
               <div className="p-2 sm:p-3 rounded-xl bg-[#F7F5F0]/80 border border-[#E6DFD5] space-y-1">
                 <label className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#2C2A29]">
                   <span className="text-[#A68A64]">🦷</span>
@@ -1141,7 +1145,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* ড্রপডাউন ২ ও ৩: পছন্দের তারিখ ও সময় (মোবাইলেও পাশাপাশি) */}
               <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 <div className="p-2 sm:p-3 rounded-xl bg-[#F7F5F0]/80 border border-[#E6DFD5] space-y-1 min-w-0">
                   <label className="flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#2C2A29]">
@@ -1236,7 +1239,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* কাস্টম নোটিশ মোডাল (শুক্রবার নোটিশ ও অ্যালার্টের জন্য) */}
+      {/* কাস্টম নোটিশ মোডাল */}
       {customAlert.show && (
         <div className="fixed inset-0 z-55 flex items-center justify-center p-4 bg-[#2C2A29]/60 backdrop-blur-sm">
           <div className="card-3d p-6 md:p-8 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] text-[#2C2A29] max-w-md w-full text-center space-y-5">
@@ -1465,7 +1468,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* বিএমডিসি রেজিষ্ট্রেশন যাচাইয়ের প্রয়োজনীয়তা (সতর্কতামূলক সেকশন) */}
+      {/* বিএমডিসি রেজিষ্ট্রেশন যাচাইয়ের প্রয়োজনীয়তা */}
       <section className="pb-20 md:pb-24 px-4 md:px-8">
         <div className="card-3d max-w-7xl mx-auto p-6 sm:p-8 md:p-12 rounded-2xl border border-[#E6DFD5] bg-[#FCFBF9] space-y-5 transition-colors duration-300">
           <div className="flex items-center gap-3">
@@ -1615,6 +1618,7 @@ export default function Home() {
               <li><a href="/" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'হোম পেজ' : 'Home'}</a></li>
               <li><a href="#about-section" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}</a></li>
               <li><a href="/services" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'সেবাসমূহ' : 'Services'}</a></li>
+              <li><a href="/prescriptions" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'প্রেসক্রিপশন ডাউনলোড' : 'Download Prescription'}</a></li>
               <li><a href="/gallery" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'গ্যালারি' : 'Gallery'}</a></li>
             </ul>
           </div>
