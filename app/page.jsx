@@ -293,7 +293,8 @@ export default function Home() {
       icon: '/about_us.png',
       label: lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us',
       active: false,
-      isButton: false
+      isButton: true,
+      openAboutModal: true
     },
     {
       href: '/introduction-to-dentistry',
@@ -846,7 +847,13 @@ export default function Home() {
               <button
                 key={idx}
                 type="button"
-                onClick={() => setIsContactModalOpen(true)}
+                onClick={() => {
+                  if (item.openAboutModal) {
+                    setShowAboutModal(true)
+                  } else {
+                    setIsContactModalOpen(true)
+                  }
+                }}
                 className="group inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full border border-[#E6DFD5] bg-[#F7F5F0]/80 hover:bg-[#FCFBF9] hover:border-[#A68A64] hover:text-[#2C2A29] transition-all duration-300 cursor-pointer font-medium text-[11px] xl:text-xs text-[#5C5852] whitespace-nowrap shrink-0"
               >
                 <span className="w-7 h-7 xl:w-8 xl:h-8 rounded-full bg-[#FCFBF9] border border-[#E6DFD5] group-hover:border-[#A68A64] flex items-center justify-center overflow-hidden p-0.5 shrink-0 transition-colors duration-300">
@@ -932,7 +939,11 @@ export default function Home() {
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false)
-                  setIsContactModalOpen(true)
+                  if (item.openAboutModal) {
+                    setShowAboutModal(true)
+                  } else {
+                    setIsContactModalOpen(true)
+                  }
                 }}
                 className="w-full flex items-center justify-between px-4 py-2.5 rounded-2xl border border-[#E6DFD5] bg-[#F7F5F0]/80 hover:border-[#A68A64] font-semibold text-sm bg-transparent cursor-pointer text-[#2C2A29] transition-all duration-300"
               >
@@ -1035,7 +1046,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* "বিস্তারিত জানুন" ক্লিক করলে "আমাদের সম্পর্কে" পপ-আপ মোডাল */}
+      {/* "বিস্তারিত জানুন" বা "আমাদের সম্পর্কে" ক্লিক করলে পপ-আপ মোডাল */}
       {showAboutModal && (
         <div
           onClick={() => setShowAboutModal(false)}
@@ -1697,7 +1708,15 @@ export default function Home() {
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li><a href="/" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'হোম পেজ' : 'Home'}</a></li>
-              <li><a href="#about-section" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}</a></li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => setShowAboutModal(true)}
+                  className="hover:text-[#A68A64] transition-colors duration-300 cursor-pointer text-left"
+                >
+                  {lang === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
+                </button>
+              </li>
               <li><a href="/services" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'সেবাসমূহ' : 'Services'}</a></li>
               <li><a href="/prescriptions" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'প্রেসক্রিপশন ডাউনলোড' : 'Download Prescription'}</a></li>
               <li><a href="/gallery" className="hover:text-[#A68A64] transition-colors duration-300">{lang === 'bn' ? 'গ্যালারি' : 'Gallery'}</a></li>
